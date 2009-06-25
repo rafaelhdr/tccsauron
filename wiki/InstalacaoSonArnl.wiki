@@ -1,4 +1,5 @@
-#summary Instruções de instalação dos softwares da !MobileRobots
+#summary Instruções de instalação dos softwares da MobileRobots
+#labels Featured
 
 = Introdução =
 
