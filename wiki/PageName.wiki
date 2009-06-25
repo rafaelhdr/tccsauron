@@ -1,4 +1,4 @@
-#summary Instruções de instalação dos softwares da MobileRobots
+#summary Instruções de instalação dos softwares da !MobileRobots
 #labels Featured
 
 = Introdução =
@@ -13,7 +13,7 @@ Todos eles são a versão mais recente., à exceção do !MobileSim que por algu
 
 = Instalação =
 
-Todos os arquivos necessários estão neste projeto do Google Code, na aba "Downloads". Todos os caminhos são referentes a "\Arquivos de Programas\MobileRobots"
+Todos os arquivos necessários estão neste projeto do Google Code, na aba "Downloads". Todos os caminhos são referentes a "\Arquivos de Programas\!MobileRobots"
 
   # Baixe e extraia o arquivo InstalaçãoMobileRobots.zip
   # Baixe também os arquivos "sonarnlServer.exe" e "sonarnlServer.cpp"
