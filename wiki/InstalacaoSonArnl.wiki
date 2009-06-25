@@ -9,7 +9,6 @@ Este documento ensina a instalar e rodar os seguintes pacotes:
   * !MobileSim
   * !MobileEyes
 Todos eles são a versão mais recente., à exceção do !MobileSim que por algum motivo é incrivelmente lento na versão 0.5 mas não na 0.4. Modificações precisam ser feitas na instalação do SonARNL.
-
 = Instalação =
 
 Todos os arquivos necessários estão neste projeto do Google Code, na aba "Downloads". Todos os caminhos são referentes a "\Arquivos de Programas\!MobileRobots"
