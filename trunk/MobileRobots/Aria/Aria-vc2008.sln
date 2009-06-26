@@ -1,0 +1,98 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AriaDLL", "src\AriaDLL-vc2008.vcproj", "{606257AE-E882-4C66-84C0-72331642D09F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo", "examples\demo-vc2008.vcproj", "{E1137892-32C1-4250-8784-8D48A6BEE2DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{606257AE-E882-4C66-84C0-72331642D09F} = {606257AE-E882-4C66-84C0-72331642D09F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serverDemo", "ArNetworking\examples\serverDemo-vc2008.vcproj", "{B9C37E51-E357-4019-B4B5-71C42E1FCD11}"
+	ProjectSection(ProjectDependencies) = postProject
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575} = {783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}
+		{606257AE-E882-4C66-84C0-72331642D09F} = {606257AE-E882-4C66-84C0-72331642D09F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clientDemo", "ArNetworking\examples\clientDemo-vc2008.vcproj", "{806E0C42-BE8A-4857-A97B-068FD56C27A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575} = {783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}
+		{606257AE-E882-4C66-84C0-72331642D09F} = {606257AE-E882-4C66-84C0-72331642D09F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demoStatic", "examples\demoStatic-vc2008.vcproj", "{B7623346-D762-4325-BC88-B85E84E78D19}"
+	ProjectSection(ProjectDependencies) = postProject
+		{527BBF7C-631F-486B-8E4F-EA594299A71A} = {527BBF7C-631F-486B-8E4F-EA594299A71A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AriaStatic", "src\AriaStatic-vc2008.vcproj", "{527BBF7C-631F-486B-8E4F-EA594299A71A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "serverDemoStatic", "ArNetworking\examples\serverDemoStatic-vc2008.vcproj", "{EEF9FE4C-34C4-4C76-94C4-D11930C88DE1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{527BBF7C-631F-486B-8E4F-EA594299A71A} = {527BBF7C-631F-486B-8E4F-EA594299A71A}
+		{5AD87287-2610-453A-A986-A4CDCCC24C89} = {5AD87287-2610-453A-A986-A4CDCCC24C89}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clientDemoStatic", "ArNetworking\examples\clientDemoStatic-vc2008.vcproj", "{0A8A179D-832B-44B2-829A-AB6E61BFF46E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{527BBF7C-631F-486B-8E4F-EA594299A71A} = {527BBF7C-631F-486B-8E4F-EA594299A71A}
+		{5AD87287-2610-453A-A986-A4CDCCC24C89} = {5AD87287-2610-453A-A986-A4CDCCC24C89}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArNetworkingDLL", "ArNetworking\src\ArNetworkingDLL-vc2008.vcproj", "{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}"
+	ProjectSection(ProjectDependencies) = postProject
+		{606257AE-E882-4C66-84C0-72331642D09F} = {606257AE-E882-4C66-84C0-72331642D09F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ArNetworkingStatic", "ArNetworking\src\ArNetworkingStatic-vc2008.vcproj", "{5AD87287-2610-453A-A986-A4CDCCC24C89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{606257AE-E882-4C66-84C0-72331642D09F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{606257AE-E882-4C66-84C0-72331642D09F}.Debug|Win32.Build.0 = Debug|Win32
+		{606257AE-E882-4C66-84C0-72331642D09F}.Release|Win32.ActiveCfg = Release|Win32
+		{606257AE-E882-4C66-84C0-72331642D09F}.Release|Win32.Build.0 = Release|Win32
+		{E1137892-32C1-4250-8784-8D48A6BEE2DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E1137892-32C1-4250-8784-8D48A6BEE2DD}.Debug|Win32.Build.0 = Debug|Win32
+		{E1137892-32C1-4250-8784-8D48A6BEE2DD}.Release|Win32.ActiveCfg = Release|Win32
+		{E1137892-32C1-4250-8784-8D48A6BEE2DD}.Release|Win32.Build.0 = Release|Win32
+		{B9C37E51-E357-4019-B4B5-71C42E1FCD11}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B9C37E51-E357-4019-B4B5-71C42E1FCD11}.Debug|Win32.Build.0 = Debug|Win32
+		{B9C37E51-E357-4019-B4B5-71C42E1FCD11}.Release|Win32.ActiveCfg = Release|Win32
+		{B9C37E51-E357-4019-B4B5-71C42E1FCD11}.Release|Win32.Build.0 = Release|Win32
+		{806E0C42-BE8A-4857-A97B-068FD56C27A1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{806E0C42-BE8A-4857-A97B-068FD56C27A1}.Debug|Win32.Build.0 = Debug|Win32
+		{806E0C42-BE8A-4857-A97B-068FD56C27A1}.Release|Win32.ActiveCfg = Release|Win32
+		{806E0C42-BE8A-4857-A97B-068FD56C27A1}.Release|Win32.Build.0 = Release|Win32
+		{B7623346-D762-4325-BC88-B85E84E78D19}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7623346-D762-4325-BC88-B85E84E78D19}.Debug|Win32.Build.0 = Debug|Win32
+		{B7623346-D762-4325-BC88-B85E84E78D19}.Release|Win32.ActiveCfg = Release|Win32
+		{B7623346-D762-4325-BC88-B85E84E78D19}.Release|Win32.Build.0 = Release|Win32
+		{527BBF7C-631F-486B-8E4F-EA594299A71A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{527BBF7C-631F-486B-8E4F-EA594299A71A}.Debug|Win32.Build.0 = Debug|Win32
+		{527BBF7C-631F-486B-8E4F-EA594299A71A}.Release|Win32.ActiveCfg = Release|Win32
+		{527BBF7C-631F-486B-8E4F-EA594299A71A}.Release|Win32.Build.0 = Release|Win32
+		{EEF9FE4C-34C4-4C76-94C4-D11930C88DE1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EEF9FE4C-34C4-4C76-94C4-D11930C88DE1}.Debug|Win32.Build.0 = Debug|Win32
+		{EEF9FE4C-34C4-4C76-94C4-D11930C88DE1}.Release|Win32.ActiveCfg = Release|Win32
+		{EEF9FE4C-34C4-4C76-94C4-D11930C88DE1}.Release|Win32.Build.0 = Release|Win32
+		{0A8A179D-832B-44B2-829A-AB6E61BFF46E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A8A179D-832B-44B2-829A-AB6E61BFF46E}.Debug|Win32.Build.0 = Debug|Win32
+		{0A8A179D-832B-44B2-829A-AB6E61BFF46E}.Release|Win32.ActiveCfg = Release|Win32
+		{0A8A179D-832B-44B2-829A-AB6E61BFF46E}.Release|Win32.Build.0 = Release|Win32
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}.Debug|Win32.ActiveCfg = Debug|Win32
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}.Debug|Win32.Build.0 = Debug|Win32
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}.Release|Win32.ActiveCfg = Release|Win32
+		{783BA2AB-07CE-43AD-8FC2-FFD9F19DF575}.Release|Win32.Build.0 = Release|Win32
+		{5AD87287-2610-453A-A986-A4CDCCC24C89}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5AD87287-2610-453A-A986-A4CDCCC24C89}.Debug|Win32.Build.0 = Debug|Win32
+		{5AD87287-2610-453A-A986-A4CDCCC24C89}.Release|Win32.ActiveCfg = Release|Win32
+		{5AD87287-2610-453A-A986-A4CDCCC24C89}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
