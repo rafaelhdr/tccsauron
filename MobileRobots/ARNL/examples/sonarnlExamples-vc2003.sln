@@ -1,0 +1,39 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sonarnlServer", "sonarnlServer-vc2003.vcproj", "{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sonarnlJustLocalization", "sonarnlJustLocalization-vc2003.vcproj", "{8AD13C27-5666-458D-8EB9-19F8E8EE3751}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Debug (For Dist) = Debug (For Dist)
+		Full Debug (Proprietary) = Full Debug (Proprietary)
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Debug.ActiveCfg = Debug (For Dist)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Debug.Build.0 = Debug (For Dist)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Debug (For Dist).ActiveCfg = Debug (For Dist)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Debug (For Dist).Build.0 = Debug (For Dist)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Full Debug (Proprietary).ActiveCfg = Full Debug (Proprietary)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Full Debug (Proprietary).Build.0 = Full Debug (Proprietary)|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Release.ActiveCfg = Release|Win32
+		{BAFA3B60-E0E3-4D87-AB57-925FAA48EE8D}.Release.Build.0 = Release|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Debug.ActiveCfg = Debug (For Dist)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Debug.Build.0 = Debug (For Dist)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Debug (For Dist).ActiveCfg = Debug (For Dist)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Debug (For Dist).Build.0 = Debug (For Dist)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Full Debug (Proprietary).ActiveCfg = Full Debug (Proprietary)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Full Debug (Proprietary).Build.0 = Full Debug (Proprietary)|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Release.ActiveCfg = Release|Win32
+		{8AD13C27-5666-458D-8EB9-19F8E8EE3751}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
