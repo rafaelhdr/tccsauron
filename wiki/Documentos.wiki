@@ -8,4 +8,4 @@
 
 = Mapas =
 
-  * [http://tccsauron.googlecode.com/files/BlocoC_PavSup.map Bloco C - Segundo Andar]
+  * [http://tccsauron.googlecode.com/files/pavsup.map Bloco C - Segundo Andar]
