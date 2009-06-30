@@ -3,7 +3,8 @@
 
 = Relatórios =
 
-  * [http://tccsauron.googlecode.com/files/RelatorioTestes_20_06_09.pdf Testes de Precisão do SonARNL]
+  * [http://tccsauron.googlecode.com/files/RelatorioTestes_20_06_09.pdf Testes de Precisão do SonARNL - 20/06]
+  * [http://tccsauron.googlecode.com/files/RelatorioTestes_28_06_09.pdf SonARNL em ambientes grandes - 28/06]
 
 
 = Mapas =
