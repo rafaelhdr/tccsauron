@@ -28,5 +28,5 @@ Para estruturarmos o trabalho com a visão computacional, iremos dividir o traba
     * _Seleção de um conjunto de associação, selecionando o que apresenta maior quantidade de associações válidas_
     {{{ }}}
   # *Obtenção das projeções esperadas para cada marco*
-    Como ja associamos os marcos à retas (3), e a associação de retas e projeções já foi realizada, est etapa torna-se então trivial.
-    Após isto, é necessário verificar possíveis variáveis que podem melhorar a efetividade do algoritmo. Um exemplo extraído da tese lida é a utilização de um período de quarentena para determinação de marcos, reduzindo a probabilidade de falsos positivos, altamente danosos ao sistema de localização.
+  Como ja associamos os marcos à retas (3), e a associação de retas e projeções já foi realizada, est etapa torna-se então trivial.
+  Após isto, é necessário verificar possíveis variáveis que podem melhorar a efetividade do algoritmo. Um exemplo extraído da tese lida é a utilização de um período de quarentena para determinação de marcos, reduzindo a probabilidade de falsos positivos, altamente danosos ao sistema de localização.
