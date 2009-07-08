@@ -1,3 +1,6 @@
+#summary Roteiro de pesquisa e implementação da visão
+#labels Featured
+
 =Roteiro da Visão=
 
 Para estruturarmos o trabalho com a visão computacional, iremos dividir o trabalho em etapas. Cada etapa pode ser desenvolvida integracionalmente, ou seja, iremos acrescentando novas funcionalidades a uma arquitetura que já esteja bem testada previamente.
