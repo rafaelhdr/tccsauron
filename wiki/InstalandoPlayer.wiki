@@ -1,13 +1,14 @@
-#summary Instruções de como compilar o Player no Ubuntu
+#summary Instruções de como compilar o Player e o Stage no Ubuntu
 #labels Featured
 
 = Introdução =
 
-O [http://playerstage.sourceforge.net/ player] é uma biblioteca de controle de robôs. Esta página ensina a instalá-lo no Ubuntu (ao menos no 9.04), o que não é tão simples como se pode imaginar.
+O [http://playerstage.sourceforge.net/ player] é uma biblioteca de controle de robôs. Esta página ensina a instalá-lo no Ubuntu (ao menos no 9.04), o que não é tão simples como se pode imaginar. O Stage é o programa de simulação.
 
 
 = Instruções =
 
+== Player ==
 A parte complicada é saber quais dependências se deve instalar. [http://www.control.aau.dk/~tb/wiki/index.php/Installing_Player_and_Stage_in_Ubuntu Esse cara] descobriu que a seguinte linha resolve nossos problemas:
 
 {{{
@@ -31,4 +32,15 @@ $ make
 
 # Install Player. By default, Player will be installed in /usr/local so you need to become root for this step. Remember to return to your normal user ID afterwards.
 $ make install
+}}}
+
+== Stage ==
+para instalar o stage:
+
+{{{
+sudo apt-get install cmake
+sudo apt-get install libfltk1.1-dev libfltk1.1
+sudo apt-get install libglu1-mesa-dev
+
+no ~/.bashrc: LD_LIBRARY_PATH=/usr/local/lib
 }}}
