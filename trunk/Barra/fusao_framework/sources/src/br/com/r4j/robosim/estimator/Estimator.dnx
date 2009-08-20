@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.rational.xtools.umlvisualizer.emfnotation:Pack xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.rational.xtools.umlvisualizer.emfnotation="http:///com/rational/xtools/umlvisualizer/emfnotation.ecore" Id="1ff6fdd5-0108-eaa5-31d7-c0a80064aa77" version="8">
+  <Diagram DiagramId="1ff6fdd6-0108-e76b-34e6-c0a80064aa77">
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:PositionalGeneralView" LineColor="4009615" FillColor="13565951" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff700e2-0108-f7d9-6aa0-c0a80064aa77" sourceConnectors="1ff7e1a7-0108-fbb9-68e6-c0a80064aa77 1ff7e1ac-0108-e565-2e4c-c0a80064aa77 1ff7e1c0-0108-fae3-1873-c0a80064aa77" targetConnectors="1ff7e2d9-0108-ecaa-6a73-c0a80064aa77" PositionX="7300" PositionY="9350" ExtentX="10875" ExtentY="7125" Autosize="false" VisibilityStyle="2" ShowCompartmentTitle="false" CompartmentStereotypeStyle="2" ShowParentName="false">
+      <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})" Name="Estimator" Kind="29"/>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff700f6-0108-eaf4-1e42-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})" Name="Estimator" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff700f7-0108-ec07-274d-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})" Name="Estimator" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Attribute" ShapeStereotypeStyle="2" Id="1ff700f8-0108-f167-2f0b-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})" Name="Estimator" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Operation" ShapeStereotypeStyle="2" Id="1ff700f9-0108-f27a-38ba-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})" Name="Estimator" Kind="29"/>
+      </children>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:PositionalGeneralView" LineColor="4009615" FillColor="13565951" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7df27-0108-ea47-62cb-c0a80064aa77" targetConnectors="1ff7e1a7-0108-fbb9-68e6-c0a80064aa77 1ff7e1d6-0108-ebd8-1a1b-c0a80064aa77 1ff7e1fd-0108-fa0d-72c9-c0a80064aa77" PositionX="43200" PositionY="5250" ExtentX="150" ExtentY="150" Autosize="true" VisibilityStyle="2" ShowCompartmentTitle="false" CompartmentStereotypeStyle="2" ShowParentName="false">
+      <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor})" Name="Sensor" Kind="29"/>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7df28-0108-efa7-6f7f-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor})" Name="Sensor" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7df29-0108-f0ba-788d-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor})" Name="Sensor" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Attribute" ShapeStereotypeStyle="2" Id="1ff7df2a-0108-ed81-00d4-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor})" Name="Sensor" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Operation" ShapeStereotypeStyle="2" Id="1ff7df2b-0108-ee94-0a81-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor})" Name="Sensor" Kind="29"/>
+      </children>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:PositionalGeneralView" LineColor="4009615" FillColor="13565951" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7df2c-0108-f3f3-1830-c0a80064aa77" sourceConnectors="1ff7e1d6-0108-ebd8-1a1b-c0a80064aa77" targetConnectors="1ff7e1ac-0108-e565-2e4c-c0a80064aa77" PositionX="35150" PositionY="33800" ExtentX="10625" ExtentY="4275" Autosize="false" VisibilityStyle="2" ShowCompartmentTitle="false" CompartmentStereotypeStyle="2" ShowParentName="false">
+      <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})" Name="DynamicModel" Kind="29"/>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7df2d-0108-f506-2510-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})" Name="DynamicModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7df2e-0108-f1cd-2e17-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})" Name="DynamicModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Attribute" ShapeStereotypeStyle="2" Id="1ff7df2f-0108-f2e0-3623-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})" Name="DynamicModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Operation" ShapeStereotypeStyle="2" Id="1ff7df30-0108-f5dc-4a71-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})" Name="DynamicModel" Kind="29"/>
+      </children>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:PositionalGeneralView" LineColor="4009615" FillColor="13565951" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7df45-0108-eed1-2f96-c0a80064aa77" sourceConnectors="1ff7e1fd-0108-fa0d-72c9-c0a80064aa77" targetConnectors="1ff7e1c0-0108-fae3-1873-c0a80064aa77 1ff7e2e9-0108-e03f-13b8-c0a80064aa77" PositionX="34450" PositionY="14850" ExtentX="150" ExtentY="150" Autosize="true" VisibilityStyle="2" ShowCompartmentTitle="false" CompartmentStereotypeStyle="2" ShowParentName="false">
+      <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})" Name="SensorModel" Kind="29"/>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7df46-0108-eb97-3c50-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})" Name="SensorModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7df47-0108-ecab-4558-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})" Name="SensorModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Attribute" ShapeStereotypeStyle="2" Id="1ff7df48-0108-f20a-4d18-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})" Name="SensorModel" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Operation" ShapeStereotypeStyle="2" Id="1ff7df49-0108-f31d-56ab-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})" Name="SensorModel" Kind="29"/>
+      </children>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:PositionalGeneralView" LineColor="4009615" FillColor="13565951" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7df5b-0108-ffc5-26c3-c0a80064aa77" sourceConnectors="1ff7e2d9-0108-ecaa-6a73-c0a80064aa77 1ff7e2e9-0108-e03f-13b8-c0a80064aa77" PositionX="7550" PositionY="25750" ExtentX="16025" ExtentY="11225" Autosize="false" VisibilityStyle="2" ShowCompartmentTitle="false" CompartmentStereotypeStyle="2" ShowParentName="false">
+      <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})" Name="AditiveNosieExtendedKalmanFilter" Kind="29"/>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7df5c-0108-e525-3394-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})" Name="AditiveNosieExtendedKalmanFilter" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7df5d-0108-e638-3cbe-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})" Name="AditiveNosieExtendedKalmanFilter" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Attribute" ShapeStereotypeStyle="2" Id="1ff7df5e-0108-e2ff-452b-c0a80064aa77" Ratio="-1.0" Collapsed="true">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})" Name="AditiveNosieExtendedKalmanFilter" Kind="29"/>
+      </children>
+      <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ListCompartmentView" Visible="true" FactoryHint="Operation" ShapeStereotypeStyle="2" Id="1ff7df5f-0108-e412-4f77-c0a80064aa77" Ratio="-1.0" Collapsed="false">
+        <SemanticReference Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})" Name="AditiveNosieExtendedKalmanFilter" Kind="29"/>
+      </children>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e1a7-0108-fbb9-68e6-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff700e2-0108-f7d9-6aa0-c0a80064aa77" target="1ff7df27-0108-ea47-62cb-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1a9-0108-e22c-7424-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e1aa-0108-fef3-7e97-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1ab-0108-e006-0845-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="210" y="-84"/>
+      <BendPoints x="-1120" y="138"/>
+      <BendPoints x="396" y="-156"/>
+      <BendPoints x="-934" y="66"/>
+      <BendPoints x="1224" y="-214"/>
+      <BendPoints x="-106" y="8"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e1ac-0108-e565-2e4c-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff700e2-0108-f7d9-6aa0-c0a80064aa77" target="1ff7df2c-0108-f3f3-1830-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1ad-0108-e678-3944-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e1ae-0108-e33f-438a-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1af-0108-e452-4d9e-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="4" y="144"/>
+      <BendPoints x="-236" y="-110"/>
+      <BendPoints x="245" y="176"/>
+      <BendPoints x="5" y="-78"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e1c0-0108-fae3-1873-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff700e2-0108-f7d9-6aa0-c0a80064aa77" target="1ff7df45-0108-eed1-2f96-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1c1-0108-fbf6-2371-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e1c2-0108-f8bd-2e08-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1c3-0108-f9d0-37f2-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="210" y="112"/>
+      <BendPoints x="-684" y="-232"/>
+      <BendPoints x="706" y="382"/>
+      <BendPoints x="-188" y="38"/>
+      <BendPoints x="760" y="370"/>
+      <BendPoints x="-134" y="26"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e1d6-0108-ebd8-1a1b-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff7df2c-0108-f3f3-1830-c0a80064aa77" target="1ff7df27-0108-ea47-62cb-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1d7-0108-eceb-251f-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e1d8-0108-f24a-2f67-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1d9-0108-f35d-399b-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.DynamicModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="5" y="364"/>
+      <BendPoints x="231" y="-322"/>
+      <BendPoints x="-108" y="396"/>
+      <BendPoints x="118" y="-290"/>
+      <BendPoints x="-108" y="578"/>
+      <BendPoints x="118" y="-108"/>
+      <BendPoints x="-220" y="610"/>
+      <BendPoints x="6" y="-76"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e1fd-0108-fa0d-72c9-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff7df45-0108-eed1-2f96-c0a80064aa77" target="1ff7df27-0108-ea47-62cb-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e1fe-0108-f6d4-7dd2-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e1ff-0108-f7e7-0822-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e200-0108-f8f6-1219-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Sensor}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="5" y="96"/>
+      <BendPoints x="-285" y="-108"/>
+      <BendPoints x="296" y="128"/>
+      <BendPoints x="6" y="-76"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e2d9-0108-ecaa-6a73-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff7df5b-0108-ffc5-26c3-c0a80064aa77" target="1ff700e2-0108-f7d9-6aa0-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLRealization}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator}))" Name="" Kind="125"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e2da-0108-e971-75f0-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLRealization}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator}))" Name="" Kind="125"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e2db-0108-ea84-00f8-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLRealization}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator}))" Name="" Kind="125"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e2dc-0108-efe4-0acf-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLRealization}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator}))" Name="" Kind="125"/>
+        </children>
+      </Labels>
+      <Labels Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e2df-0108-eed0-16d0-c0a80064aa77">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLRealization}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.Estimator}))" Name="" Kind="125"/>
+      </Labels>
+      <BendPoints x="6" y="-216"/>
+      <BendPoints x="-328" y="176"/>
+      <BendPoints x="338" y="-248"/>
+      <BendPoints x="4" y="144"/>
+    </children>
+    <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:ConnectorView" LineColor="4009615" Font="Courier|10|0|" Visible="true" FactoryHint="" ShapeStereotypeStyle="2" Id="1ff7e2e9-0108-e03f-13b8-c0a80064aa77" Routing="0" Smoothness="0" AvoidObstructions="false" ClosestDistance="false" SourceAnchor="anchor" TargetAnchor="anchor" JumpLinksStatus="0" JumpLinksType="1" JumpLinksReverse="false" ShowCompartmentTitle="false" source="1ff7df5b-0108-ffc5-26c3-c0a80064aa77" target="1ff7df45-0108-eed1-2f96-c0a80064aa77">
+      <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+      <Labels Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e2ea-0108-fd06-1ef1-c0a80064aa77" FromLine="-18" FromEnd="50" IsPercentage="true">
+        <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Stereotype" ShapeStereotypeStyle="2" Id="1ff7e2eb-0108-fe19-29ae-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        </children>
+        <children xsi:type="com.rational.xtools.umlvisualizer.emfnotation:NameCompartmentView" Visible="true" FactoryHint="Name" ShapeStereotypeStyle="2" Id="1ff7e2ec-0108-e378-3387-c0a80064aa77">
+          <SemanticReference Id="emfsemantic:(~sc{%UMLDependency}(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter})(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.estimator.SensorModel}))" Name="" Kind="49"/>
+        </children>
+      </Labels>
+      <BendPoints x="6" y="226"/>
+      <BendPoints x="-52" y="-118"/>
+      <BendPoints x="63" y="258"/>
+      <BendPoints x="5" y="-86"/>
+    </children>
+    <FieldMappings FieldName="strNameMyName" FieldType="java.lang.String" FieldPosition="3" ShowAs="Association" Multiplicity="1" Id="1ffd05c5-0108-f606-7ef0-c0a80064aa77">
+      <FieldOwner Id="emfsemantic:(~jclass{!pid%TestePos_1}{%br.com.r4j.robosim.RobotTrack})"/>
+      <AssocTarget Id="emfsemantic:*"/>
+    </FieldMappings>
+  </Diagram>
+</com.rational.xtools.umlvisualizer.emfnotation:Pack>
