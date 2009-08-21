@@ -1,0 +1,10 @@
+package br.com.r4j.math;
+
+import JSci.maths.*;
+
+
+public class VectorScrambler
+{
+	public void calculate(AbstractDoubleMatrix input, AbstractDoubleMatrix output);
+}
+

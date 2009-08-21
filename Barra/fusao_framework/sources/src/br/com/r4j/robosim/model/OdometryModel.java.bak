@@ -1,0 +1,154 @@
+package br.com.r4j.robosim.model;
+
+import java.io.IOException;
+import java.awt.*;
+import java.util.*;
+import java.awt.image.*;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
+import JSci.maths.AbstractDoubleMatrix;
+import JSci.maths.AbstractDoubleSquareMatrix;
+import JSci.maths.AbstractDoubleVector;
+import JSci.maths.DoubleMatrix;
+import br.com.r4j.robosim.estimator.DoubleVectorFunction;
+import br.com.r4j.robosim.estimator.DynamicModel;
+import br.com.r4j.robosim.estimator.EKFDoubleVectorFunction;
+import br.com.r4j.robosim.estimator.PosteriorProbabilityDensityFunction;
+import br.com.r4j.robosim.estimator.Sensor;
+import br.com.r4j.robosim.estimator.ParticleCloudPredictorFunction;
+import br.com.r4j.robosim.estimator.UKFDoubleVectorFunction;
+
+
+public class OdometryModel implements DynamicModel, DoubleVectorFunction, UKFDoubleVectorFunction, EKFDoubleVectorFunction, ParticleCloudPredictorFunction, MapDependent
+{
+	private static Log log = LogFactory.getLog(OdometryModel.class.getName());
+
+	private WorldMap map = null;
+
+	private AbstractDoubleMatrix F = null;
+	private double dXekf = 0;
+	private double dYekf = 0;
+
+	private Random rnd = null;
+
+
+	public OdometryModel()
+	{
+		F = new DoubleMatrix(3, 3);
+
+		F.setElement(0, 0, 1);
+		F.setElement(0, 1, 0);
+
+		F.setElement(1, 0, 0);
+		F.setElement(1, 1, 1);
+
+		F.setElement(2, 0, 0);
+		F.setElement(2, 1, 0);
+		F.setElement(2, 2, 1);
+
+		rnd = new Random((new Date()).getTime());
+	}
+
+
+	public String getName()
+	{
+		return "Odometry Model";
+	}
+
+	
+	public void setSensor(Sensor sns)
+	{
+	}
+
+
+	public void setWorldMap(WorldMap map)
+	{
+		this.map = map;
+	}
+
+
+	/** 
+	 * Método invocado quando os dados estiverem disponíveis.
+	 *
+	 */
+	public void dataAvailable()
+	{
+		// não precisa fazer nada ...
+	}
+
+
+	public int getDataDimension()
+	{
+		return 3;
+	}
+
+
+	/**
+	 */
+	public void produceResults(AbstractDoubleVector stateBefore, AbstractDoubleVector sensorReadings, AbstractDoubleSquareMatrix stateCovar, AbstractDoubleVector statePredictedOut)
+	{
+		dXekf = sensorReadings.getComponent(0);
+		dYekf = sensorReadings.getComponent(1);
+		double dTheta = sensorReadings.getComponent(2);
+
+		statePredictedOut.setComponent(0, stateBefore.getComponent(0) + dXekf);
+		statePredictedOut.setComponent(1, stateBefore.getComponent(1) + dYekf);
+		statePredictedOut.setComponent(2, stateBefore.getComponent(2) + dTheta);
+	}
+
+
+	public AbstractDoubleSquareMatrix getModelIncrementalCovariance(AbstractDoubleSquareMatrix sensorCovariance)
+	{
+		return sensorCovariance;
+	}
+
+
+	public AbstractDoubleMatrix getTransitionMatrixJacobian(AbstractDoubleVector state)
+	{
+//		double d = Math.sqrt(dX*dX + dY*dY);
+//		double dThetaMean = state.getElement() - dTheta/2;
+
+		F.setElement(0, 2, -dYekf);
+		F.setElement(1, 2, dXekf);
+
+		return F;
+	}
+
+
+	public boolean produceResults(AbstractDoubleMatrix sigmaIn, AbstractDoubleVector sensorReadings, AbstractDoubleMatrix sigmaOut)
+	{
+		double dX = sensorReadings.getComponent(0);
+		double dY = sensorReadings.getComponent(1);
+		double dTheta = sensorReadings.getComponent(2);
+
+		for (int idxInput = 0; idxInput < sigmaIn.columns(); idxInput++)
+		{
+			sigmaOut.setElement(0, idxInput, sigmaIn.getElement(0, idxInput) + dX);
+			sigmaOut.setElement(1, idxInput, sigmaIn.getElement(1, idxInput) + dY);
+			sigmaOut.setElement(2, idxInput, sigmaIn.getElement(2, idxInput) + dTheta);
+		}
+		return true;
+	}
+
+
+	public void calculateNextStateCloud(AbstractDoubleMatrix input, AbstractDoubleMatrix output, AbstractDoubleVector sensorReadings, AbstractDoubleSquareMatrix sensorCovariance)
+	{
+		double dX = sensorReadings.getComponent(0);
+		double dY = sensorReadings.getComponent(1);
+		double dTheta = sensorReadings.getComponent(2);
+
+		double dThetaSin = Math.sin(dTheta), dThetaCos = Math.cos(dTheta);
+		for (int idxInput = 0; idxInput < input.rows(); idxInput++)
+		{
+			double xRobot = input.getElement(idxInput, 0) + dX + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(0, 0));
+			double yRobot = input.getElement(idxInput, 1) + dY + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(1, 1));
+			double tRobot = input.getElement(idxInput, 1) + dTheta + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(2, 2));
+
+			output.setElement(idxInput, 0, xRobot);
+			output.setElement(idxInput, 1, yRobot);
+			output.setElement(idxInput, 2, tRobot);
+		}
+	}
+}

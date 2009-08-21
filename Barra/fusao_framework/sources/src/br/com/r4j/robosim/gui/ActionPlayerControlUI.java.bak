@@ -1,0 +1,248 @@
+package br.com.r4j.robosim.gui;
+
+import java.util.*;
+import java.util.List;
+import java.io.*;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.awt.*;
+import java.net.URL;
+
+import javax.swing.*;
+import javax.swing.event.*;
+
+import br.com.r4j.commons.util.*;
+import br.com.r4j.commons.file.*;
+import br.com.r4j.gui.*;
+import br.com.r4j.configurator.*;
+
+import br.com.r4j.robosim.gui.actions.*;
+import br.com.r4j.robosim.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+/**
+ *
+ * Responsável por renderizar a UI de controle do player de ações.
+ *
+ *
+ */
+public class ActionPlayerControlUI implements BlockUI, RobotPlayerListener, ChangeListener
+{
+	private static Log log = LogFactory.getLog(ActionPlayerControlUI.class.getName());
+
+	private JComponent contentPane = null;
+	private JSlider slider = null;
+
+	private Action actOpenActionFile = null;
+	private Action actPlay = null;
+	private Action actPause = null;
+	private Action actStep = null;
+
+	private ActionFileRobotPlayer robotPlayer = null;
+
+	protected GUIStyleManager styleManager = null;
+
+
+	public ActionPlayerControlUI()
+	{
+		log.debug("ActionPlayerControlUI");
+
+		slider = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
+		slider.setPaintTicks(true); slider.setPaintTicks(true); slider.setPaintLabels(true); 
+
+		this.initActions();
+	}
+
+
+	public GUIStyleManager getStyleManager()	{return styleManager;}
+	public void setStyleManager(GUIStyleManager aStyleMan)	{styleManager = aStyleMan;}
+
+
+	private void initActions()
+	{
+		log.debug("initActions");
+
+		actOpenActionFile = new FileAction("Trocar Arquivo de Ações", this, "setActionFile");
+		actPlay = new PlayAction();
+		actPause = new PauseAction();
+		actStep = new StepAction();
+	}
+
+
+	public void setContentPane(JComponent contentPane)	{this.contentPane = contentPane;}
+	public JComponent getContentPane()	{return this.contentPane;}
+	public void setMenuBar(JMenuBar menuBar)	{}	
+
+
+	public void build()
+	{
+		log.debug("build");
+
+		JButton btnPlay = GUIUtil.createToolBarLikeButton(actPlay, 16, 16);
+		JButton btnPause = GUIUtil.createToolBarLikeButton(actPause, 16, 16);
+		JButton btnStep = GUIUtil.createToolBarLikeButton(actStep, 16, 16);
+		JButton btnOpenActionFile = new JButton(actOpenActionFile);
+
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		contentPane.add(slider);
+		JPanel pnlControls = new JPanel();
+		contentPane.add(pnlControls);
+
+		slider.addChangeListener(this);
+
+        SpringLayout layout = new SpringLayout();
+        pnlControls.setLayout(layout);
+		pnlControls.add(btnPlay);
+		pnlControls.add(btnPause);
+		pnlControls.add(btnStep);
+		pnlControls.add(btnOpenActionFile);
+		layout.putConstraint(SpringLayout.WEST, btnPlay, 5, SpringLayout.WEST, pnlControls);
+		layout.putConstraint(SpringLayout.WEST, btnPause, 5, SpringLayout.EAST, btnPlay);
+		layout.putConstraint(SpringLayout.WEST, btnStep, 5, SpringLayout.EAST, btnPause);
+		layout.putConstraint(SpringLayout.EAST, btnOpenActionFile, 5, SpringLayout.EAST, pnlControls);
+
+		log.debug("build:end");
+	}
+
+
+	public void setPlayer(ActionFileRobotPlayer robotPlayer)
+	{
+		if (this.robotPlayer != null)
+			this.robotPlayer.removeRobotPlayerListener(this);
+
+		this.robotPlayer = robotPlayer;
+		this.robotPlayer.addRobotPlayerListener(this);
+		this.resetSlider();
+	}
+
+
+	public void adjustComponents()
+	{
+	}
+
+
+
+	public void stop()
+	{
+	}
+
+
+	public void destroy()
+	{
+	}
+
+
+	public void actionCompleted(RobotPlayerEvent e)
+	{
+		slider.setValue(e.getStepIdx());
+//		slider.revalidate();
+	}
+
+
+	public void endOfActions(RobotPlayerEvent e)
+	{
+	}
+
+
+	public void beginOfActions(RobotPlayerEvent e)
+	{
+	}
+
+
+	public void actionsUpdated(RobotPlayerEvent e)
+	{
+		this.resetSlider();
+	}
+
+
+	private void resetSlider()
+	{
+		slider.setMinimum(0);
+		slider.setMaximum(robotPlayer.getNumberOfSteps());
+		int dTime = robotPlayer.getNumberOfSteps();
+		if (dTime > 100)
+		{
+			slider.setMinorTickSpacing(1);
+			slider.setMajorTickSpacing((int) dTime / 10);
+		}
+		else if (dTime > 10)
+		{
+			slider.setMinorTickSpacing(1);
+			slider.setMajorTickSpacing((int) dTime / 3);
+		}
+		else
+		{
+			slider.setMinorTickSpacing(1);
+			slider.setMajorTickSpacing(2);
+		}
+		slider.setPaintTicks(true); slider.setPaintTicks(true); slider.setPaintLabels(true); 
+		slider.revalidate();
+	}
+
+
+	public void stateChanged(ChangeEvent e)
+	{
+		if (e.getSource() instanceof JSlider)
+		{
+			JSlider source = (JSlider) e.getSource();
+			robotPlayer.seek(source.getValue());
+		}
+	}
+
+	
+	public void setActionFile(String strFile)
+	{
+		robotPlayer.setActionFile(new File(strFile));
+	}
+
+
+	class PlayAction extends AbstractAction
+	{
+		public PlayAction()
+		{
+			super(null, GUIUtil.getButtonIcon("/br/com/r4j/gui", "play16.gif", "Play", PlayAction.class));
+			this.putValue(Action.SHORT_DESCRIPTION, "Play");
+		}
+
+
+		public void actionPerformed(ActionEvent e)
+		{
+			robotPlayer.play();
+		}
+	}
+
+
+	class PauseAction extends AbstractAction
+	{
+		public PauseAction()
+		{
+			super(null, GUIUtil.getButtonIcon("/br/com/r4j/gui", "pause16.gif", "Pause", PauseAction.class));
+			this.putValue(Action.SHORT_DESCRIPTION, "Pause");
+		}
+
+
+		public void actionPerformed(ActionEvent e)
+		{
+			robotPlayer.step();
+		}
+	}
+
+
+	class StepAction extends AbstractAction
+	{
+		public StepAction()
+		{
+			super(null, GUIUtil.getButtonIcon("/br/com/r4j/gui", "step16.gif", "Step", StepAction.class));
+			this.putValue(Action.SHORT_DESCRIPTION, "Step");
+		}
+
+
+		public void actionPerformed(ActionEvent e)
+		{
+			robotPlayer.step();
+		}
+	}
+}

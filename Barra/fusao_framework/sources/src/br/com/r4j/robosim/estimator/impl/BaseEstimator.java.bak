@@ -1,0 +1,145 @@
+package br.com.r4j.robosim.estimator.impl;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import br.com.r4j.commons.util.MatrixUtil;
+import br.com.r4j.math.*;
+
+import br.com.r4j.robosim.estimator.*;
+
+import JSci.maths.*;
+
+
+public abstract class BaseEstimator implements Estimator
+{
+	private static Log log = LogFactory.getLog(BaseEstimator.class.getName());
+	
+	protected AbstractDoubleVector stateEstimate = null;
+	protected AbstractDoubleSquareMatrix stateCovarEstimate = null;
+
+	private ArrayList listTrackers = null;
+
+
+	public BaseEstimator()
+	{
+		listTrackers = new ArrayList();
+	}
+
+
+	public List getRenderers()
+	{
+		return new ArrayList();
+	}
+
+
+	public void addSensorModel(SensorModel sensModel, Sensor sens) throws ConfiguratorException
+	{
+		if (!(sensModel instanceof InvertibleEKFDoubleVectorFunction))
+			throw new ConfiguratorException("Sensor Model " + sensModel.getName() + " não implementa InvertibleEKFDoubleVectorFunction");
+
+		bAltered = true;
+		this.sens = sens;
+		this.sensModel = (InvertibleEKFDoubleVectorFunction) sensModel;
+	}
+
+	
+	public List getSensorModels()
+	{
+		return Collections.createList(sensModel);
+	}
+
+	
+	public void setDynamicModel(DynamicModel dynModel, Sensor dynModelSensor) throws ConfiguratorException
+	{
+	}
+
+	
+	public DynamicModel getDynamicModel()
+	{
+		return null;
+	}
+
+
+	private void prepareBuffers()
+	{
+	}
+
+
+	public void setState(AbstractDoubleVector stateEstimate, AbstractDoubleSquareMatrix stateCovarEstimate)
+	{
+		this.stateEstimate = stateEstimate;
+		this.stateCovarEstimate = stateCovarEstimate;
+	}
+
+
+	public AbstractDoubleVector getMean()
+	{
+		return stateEstimate;
+	}
+
+
+	public AbstractDoubleSquareMatrix getCovariance()
+	{
+		return stateCovarEstimate;
+	}
+
+
+	public void addRobotTracker(EstimatorRenderer track)
+	{
+		listTrackers.add(track);
+	}
+	
+	
+	protected void fireNewRobotPose()
+	{
+		Pose2D pose = new Pose2D(this.getMean());
+		Iterator itTrackers = listTrackers.iterator();
+		while (itTrackers.hasNext())
+		{
+			EstimatorRenderer track = (EstimatorRenderer) itTrackers.next();
+			track.newPose(pose);
+		}
+	}
+
+
+	public static ModelFilter getModelFilter()
+	{
+		return new EKFModelFilter();
+	}
+
+
+	public void estimate()
+	{
+		if (bAltered)
+		{
+			bAltered = false;
+			this.prepareBuffers();
+		}
+
+
+		AbstractDoubleVector vectReadings = new DoubleVector(snsModelSensor.getDataDimension());
+		snsModelSensor.getData(vectReadings);
+		stateEstimate = snsModel.produceInverseResults(stateEstimate, vectReadings);
+
+		AbstractDoubleMatrix invHi = measureFunction.getInverseTransitionMatrixJacobian(vectReadings);
+		AbstractDoubleMatrix R = snsModel.getObservationCovariance(snsModelSensor.getDataCovariance());
+		AbstractDoubleMatrix reTmp = invHi.multiply(R.multiply((AbstractDoubleMatrix) invHi.transpose()));
+		stateCovarEstimate = MatrixUtil.convert2SquareMatrix(reTmp);
+	}
+}
+
+
+class EKFModelFilter implements ModelFilter
+{
+	public boolean canUseDynamicModel(DynamicModel dynModel)
+	{
+		return (dynModel instanceof EKFDoubleVectorFunction);
+	}
+
+
+	public boolean canUseSensorModel(SensorModel sensModel)
+	{
+		return (sensModel instanceof EKFDoubleVectorFunction);
+	}
+}

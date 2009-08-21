@@ -1,0 +1,46 @@
+package br.com.r4j.robosim.estimator.provider;
+
+
+
+public class EstimatorInfo
+{
+	private String name = null;
+	private boolean invModel = false;
+	private int minSensor = -1;
+	private int maxSensor = -1;
+	private int dynModelNecessity = -1;
+
+
+	public EstimatorInfo(String name)
+	{
+		this.name = name;
+	}
+
+
+	public void setUsesInvertedModel(boolean invModel)	{this.invModel = invModel;}
+	public boolean usesInvertedModel()	{return this.invModel;}
+
+	public void setMinSensors(int minSensor)	{this.minSensor = minSensor;}
+	public int getMinSensors()	{return this.minSensor;}
+
+	public void setMaxSensors(int maxSensor)	{this.maxSensor = maxSensor;}
+	public int getMaxSensors()	{return this.maxSensor;}
+
+	public void setDynamicModeNecessity(int dynModelNecessity) {this.dynModelNecessity = dynModelNecessity;}
+	public int getDynamicModeNecessity() {return this.dynModelNecessity;}
+
+	
+	public String getName()
+	{
+		return name;
+	}
+
+	
+	public String toString()
+	{
+		return name;
+	}
+
+
+	public abstract Class getEstimatorClass();
+}
