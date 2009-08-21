@@ -1,0 +1,51 @@
+package br.com.r4j.m2v.view.tostringconverter;
+
+import java.util.Locale;
+
+import br.com.r4j.m2v.MVBean;
+import br.com.r4j.m2v.MVException;
+import br.com.r4j.m2v.MVField;
+import br.com.r4j.m2v.configurator.ConverterInfo;
+import br.com.r4j.m2v.view.converter.*;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * @author giord
+ *
+ * Define um Conversor M2V/V2M que trabalha sob um dado Locale.
+ */
+public class StringFormatConverter extends DoubleConverter
+{
+	private static Log log = LogFactory.getLog(StringFormatConverter.class.getName());
+
+	private int minSpaces = 0;
+
+
+	public StringFormatConverter()
+	{
+	}
+
+
+	public StringFormatConverter(int minSpaces)
+	{
+		this.minSpaces = minSpaces;
+	}
+
+
+	public void setFormat(int minSpaces)
+	{
+		this.minSpaces = minSpaces;
+	}
+
+
+	protected String doConvertM2V(Object value) throws ConversionException
+	{
+		String strVal = value.toString();
+		if (strVal.length() < minSpaces)
+			for (int i = strVal.length(); i < minSpaces; i++)
+				strBuff = " " + strBuff;
+		return strBuff;
+	}
+}

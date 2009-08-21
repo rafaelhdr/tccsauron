@@ -1,0 +1,10 @@
+package br.com.r4j.math.statistics;
+
+import JSci.maths.*;
+
+
+public interface ConstantProbabilityContour
+{
+	public Shape getContourAsShape();
+}
+

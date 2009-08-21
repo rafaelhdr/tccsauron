@@ -1,0 +1,11 @@
+package br.com.r4j.math.kalmanfilter;
+
+import JSci.maths.*;
+
+
+public interface EKFDoubleVectorFunction extends DoubleVectorFunction
+{
+	public void update();
+
+	public AbstractDoubleMatrix getTransitionMatrixJacobian(AbstractDoubleVector state);
+}
