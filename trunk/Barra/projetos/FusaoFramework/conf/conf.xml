@@ -104,8 +104,8 @@
 			</sim_world>
 		</estimator_provider>
 	
-		<readings type='string_local_path'>./data/readings.data</readings>
-		<realpose type='string_local_path'>./data/realpose.data</realpose>
+		<readings type='string_local_path'>./data/data_rodada2.log</readings>
+		<realpose type='string_local_path'>./data/data_rodada_1_real_400.log</realpose>
 		<worldmap type='string_local_path'>./data/worldmap.data</worldmap>
 		<actions type='string_local_path'>./data/actions.data</actions>
 	</robosim>

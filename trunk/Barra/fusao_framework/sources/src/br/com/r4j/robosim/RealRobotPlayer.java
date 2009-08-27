@@ -16,7 +16,7 @@ import br.com.r4j.robosim.realrobot.RealSonarSensor;
 
 
 /**
- * Guia o robô conforme informação real.
+ * Guia o robï¿½ conforme informaï¿½ï¿½o real.
  *
  *
  * arquivo de poses:
@@ -98,7 +98,7 @@ public class RealRobotPlayer extends RobotPlayer
 				}
 				else if (strPre.equals("r"))
 				{
-					// tchãn!
+					// tchï¿½n!
 				}
 				else if (strPre.equals("i"))
 				{
@@ -106,7 +106,7 @@ public class RealRobotPlayer extends RobotPlayer
 				}
 				else
 				{
-					log.error("dado de sensor não encontrado: " + strLine);
+					log.error("dado de sensor nï¿½o encontrado: " + strLine);
 					continue;
 				}
 				String strX = strToks.nextToken();
@@ -166,17 +166,17 @@ public class RealRobotPlayer extends RobotPlayer
 				String strX = strToks.nextToken();
 				String strY = strToks.nextToken();
 				String strAng = strToks.nextToken();
-				String strTimemillis = strToks.nextToken();
-				log.debug("strPre = " + strPre + ", strX = " + strX + ", strY = " + strY + ", strAng = " + strAng + ", strTimemillis = " + strTimemillis);
+				//String strTimemillis = strToks.nextToken();
+				log.debug("strPre = " + strPre + ", strX = " + strX + ", strY = " + strY + ", strAng = " + strAng);// + ", strTimemillis = " + strTimemillis);
 
 				int x = Integer.parseInt(strX);
 				int y = Integer.parseInt(strY);
 				int ang = Integer.parseInt(strAng);
-				long timemillis = Long.parseLong(strTimemillis);
+				//long timemillis = Long.parseLong(strTimemillis);
 
 				Pose2D poseIt = new Pose2D(x, y, ang);
 				listPosesReal.add(poseIt);
-				listPosesRealTimeMillis.add(new Long(timemillis));
+				//listPosesRealTimeMillis.add(new Long(timemillis));
 			}
 		}
 		catch (NumberFormatException e)
