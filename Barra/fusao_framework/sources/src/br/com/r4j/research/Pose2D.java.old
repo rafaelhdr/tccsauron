@@ -1,0 +1,190 @@
+package br.com.r4j.research;
+
+import java.util.*;
+import JSci.maths.*;
+import br.com.r4j.research.vline.*;
+
+
+/**
+ * Armazena um pose no plano horizontal, com seu respectivo erro.
+ *
+ * Para calcular as tranformações, se utiliza de linearização sobre o
+ * ponto, através das técnicas de linearização do EKF.
+ *
+ * Para isso, é considerado como vetor de variáveis as duas
+ * posições da reta, mais as tr6es componentes do pose.
+ *
+ */
+public class Pose2D
+{
+	private double x;
+	private double y;
+	private double theta;
+
+	private double cosTheta;
+	private double sinTheta;
+
+	private AbstractDoubleMatrix covar = null;
+	private AbstractDoubleMatrix deltaF = null;
+	private AbstractDoubleMatrix deltaFTransposed = null;
+	private AbstractDoubleMatrix covarFullState = null;
+
+
+	public Pose2D(double x, double y, double theta)
+	{
+		this.x = x;
+		this.y = y;
+		this.theta = theta;
+		this.cosTheta = Math.cos(theta);
+		this.sinTheta = Math.sin(theta);
+		this.covar = new DoubleMatrix(3, 3);
+		covar.setElement(0, 0, 1);
+		covar.setElement(1, 1, 1);
+		covar.setElement(2, 2, 1);
+
+//		this.initF();
+	}
+
+
+	public Pose2D(double x, double y, double theta, AbstractDoubleMatrix covar)
+	{
+		this.x = x;
+		this.y = y;
+		this.theta = theta;
+		this.cosTheta = Math.cos(theta);
+		this.sinTheta = Math.sin(theta);
+		this.covar = covar;
+
+//		this.initF();
+	}
+
+/*
+	protected void initF()
+	{
+		this.deltaF = new DoubleMatrix(5, 5);
+		deltaF.setElement(0, 0, cosTheta);
+		deltaF.setElement(0, 1, sinTheta);
+		deltaF.setElement(1, 0, -sinTheta);
+		deltaF.setElement(1, 1, cosTheta);
+
+		deltaF.setElement(0, 2, 1);
+		deltaF.setElement(0, 3, 0);
+		deltaF.setElement(1, 2, 0);
+		deltaF.setElement(1, 3, 1);
+
+		deltaF.setElement(2, 2, 1);
+		deltaF.setElement(2, 3, 0);
+		deltaF.setElement(3, 2, 0);
+		deltaF.setElement(3, 3, 1);
+
+		deltaF.setElement(4, 4, 1);
+
+		deltaFTransposed = (AbstractDoubleMatrix) deltaF.transpose();
+
+		covarFullState = new DoubleMatrix(5, 5);
+		covarFullState.setElement(2, 2, covar.getElement(0, 0));
+		covarFullState.setElement(2, 2, covar.getElement(1, 0));
+		covarFullState.setElement(3, 2, covar.getElement(2, 0));
+		covarFullState.setElement(2, 3, covar.getElement(0, 1));
+		covarFullState.setElement(3, 3, covar.getElement(1, 1));
+		covarFullState.setElement(4, 3, covar.getElement(2, 1));
+		covarFullState.setElement(2, 4, covar.getElement(0, 2));
+		covarFullState.setElement(3, 4, covar.getElement(1, 2));
+		covarFullState.setElement(4, 4, covar.getElement(2, 2));
+	}
+//*/
+
+	public double getX()	{return this.x;}
+	public double getY()	{return this.y;}
+	public double getTheta()	{return this.theta;}
+	public void setX(double a)	{this.x = a;}
+	public void setY(double a)	{this.y = a;}
+	public void setTheta(double a)	{this.theta = a;}
+
+	public AbstractDoubleMatrix getCovar()	{return this.covar;}
+	public void setCovar(AbstractDoubleMatrix covar)	{this.covar = covar;}
+
+
+	/**
+ * Não é mais usado!
+ * Não é mais usado!
+ * Não é mais usado!
+ * Não é mais usado!
+ *
+ *
+	 * Retorna uma linha alterada pela rotação + deslocamento (nessa ordem) 
+	 * representado pelo vetor formado pela origem e esse Pose2D.
+	 */
+/*
+	public VLine transform(VLine line)
+	{
+		double xLine = line.getX();
+		double yLine = line.getY();
+		AbstractDoubleMatrix covarLine = line.getCovar();
+
+		double xLineNew = xLine*cosTheta + yLine*sinTheta;
+		double yLineNew = yLine*cosTheta - xLine*sinTheta;
+
+		deltaF.setElement(4, 0, yLineNew);
+		deltaF.setElement(4, 0, -xLineNew);
+		deltaFTransposed.setElement(0, 4, yLineNew);
+		deltaFTransposed.setElement(0, 4, -xLineNew);
+		covarFullState.setElement(0, 0, covarLine.getElement(0, 0));
+		covarFullState.setElement(1, 0, covarLine.getElement(1, 1));
+		covarFullState.setElement(0, 1, covarLine.getElement(0, 0));
+		covarFullState.setElement(1, 1, covarLine.getElement(1, 1));
+
+		AbstractDoubleMatrix covarFullStateNew = (AbstractDoubleMatrix) deltaF.multiply(covarFullState).multiply(deltaFTransposed);
+
+		AbstractDoubleMatrix covarLineNew = new DoubleMatrix(2, 2);
+		covarLineNew.setElement(0, 0, covarFullStateNew.getElement(0, 0));
+		covarLineNew.setElement(1, 0, covarFullStateNew.getElement(1, 1));
+		covarLineNew.setElement(0, 1, covarFullStateNew.getElement(0, 0));
+		covarLineNew.setElement(1, 1, covarFullStateNew.getElement(1, 1));
+
+		return new VLine(xLineNew, yLineNew, covarLineNew);
+	}
+//*/
+
+	/**
+	 * Retorna um Pose2D que é o caminho contrário desse pose. 
+	 */
+	public Pose2D negate()
+	{
+		double xNegated = -x;
+		double yNegated = -y;
+		double thetaNegated = -theta;
+
+		AbstractDoubleMatrix covarNegated = this.covar;
+		return new Pose2D(xNegated, yNegated, thetaNegated, covarNegated);
+	}
+
+
+	public double getDistance(Pose2D poseAct)
+	{
+		double dx = x - poseAct.getX();
+		double dy = y - poseAct.getY();
+		return Math.sqrt(dx*dx + dy*dy);
+	}
+
+	
+	public Pose2D add(Pose2D poseAdd)
+	{
+		Pose2D pnew = new Pose2D(x + poseAdd.getX(), y + poseAdd.getY(), theta + poseAdd.getTheta());
+		return pnew;
+	}
+
+
+	public Pose2D sub(Pose2D poseAdd)
+	{
+		Pose2D pnew = new Pose2D(x - poseAdd.getX(), y - poseAdd.getY(), theta - poseAdd.getTheta());
+		return pnew;
+	}
+
+
+	public String toString()
+	{
+		return "(" + x + "," + y + "," + theta + ")";
+	}
+}
+

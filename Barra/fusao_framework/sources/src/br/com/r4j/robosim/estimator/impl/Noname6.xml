@@ -1,0 +1,8 @@
+
+
+<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><mt_create_project_request xmlns="http://braskem.com.br/xi/clarity/prj"><FLAG xmlns="">1</FLAG><PSPID xmlns="">PJ-081359</PSPID><POST1 xmlns="">Adequacao Sistema Exautao CTS</POST1><VERNR xmlns="">01056283</VERNR><PLFAZ xmlns="">20040801</PLFAZ><PLSEZ xmlns="">20051211</PLSEZ><ASTNR xmlns="">2</ASTNR><IZWEK xmlns="">13</IZWEK><USR01 xmlns="">Conclu&#xED;do</USR01><POSID xmlns="">CONDENSANTE</POSID><GJAHR xmlns="">2019</GJAHR><WERKS xmlns="">08</WERKS><PROFL xmlns="">ZEMPR01</PROFL><PRNAM xmlns="">INVEST</PRNAM><VORLAGE xmlns="">PJ-6700006</VORLAGE><AUFPR xmlns="">100</AUFPR><POSNR xmlns=""></POSNR></mt_create_project_request></soapenv:Body></soapenv:Envelope>
+
+
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><ns1:mt_create_project_response xmlns:ns1="http://braskem.com.br/xi/clarity/prj"><COD_MSG>PJ-081359</COD_MSG><ITEM><MSG>Entry Person Responsible = 01056283 does not exist in TCJ04 - check your</MSG></ITEM><ITEM><MSG> entry</MSG></ITEM><ITEM><MSG>Plant 08 does not exist</MSG></ITEM><ITEM><MSG>Termination: Too many errors (more than 10% of methods)</MSG></ITEM><ITEM><MSG>Data cannot be saved</MSG></ITEM><ITEM><MSG>Inv. program INVEST/2019 does not exist</MSG></ITEM></ns1:mt_create_project_response></SOAP:Body></SOAP:Envelope>
+
+

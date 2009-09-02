@@ -1,0 +1,113 @@
+package br.com.r4j.research.image.sequence.featurematch.vline.test;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.awt.*;
+import java.util.*;
+import java.awt.image.*;
+
+import javax.media.*;
+import javax.media.format.*;
+
+import br.com.r4j.image.*;
+import br.com.r4j.commons.util.*;
+import br.com.r4j.image.operation.threebandpacked.*;
+import br.com.r4j.image.operation.threebandpacked.morphology.*;
+import br.com.r4j.image.operation.threebandpacked.colorspace.*;
+import br.com.r4j.math.*;
+import br.com.r4j.research.image.sequence.featurematch.vline.*;
+import br.com.r4j.video.operation.threebandpacked.*;
+
+import br.com.r4j.research.*;
+import br.com.r4j.research.vline.*;
+import br.com.r4j.research.image.sequence.*;
+
+import JSci.maths.*;
+
+
+/** 
+ * Classe centralizadora dos dados, reponsável por gerar as estimativas.
+ *
+ */
+public class VLineMatcherVideoInput extends ThreeBandPackedBaseEffect
+{
+	private static Log log = LogFactory.getLog(VLineMatcherVideoInput.class.getName());
+
+	private long timeTaken = 0; 
+	private Matcher matchTest = null;
+	Pose2D poseEstimateTotal = null;
+
+	private int frameJump = 5;
+	private int frameCount = 0;
+
+	private int [] arraCopyOut = null;
+
+
+	public VLineMatcherVideoInput()
+	{
+		matchTest = new Matcher();
+
+		AbstractDoubleMatrix covar = new DoubleMatrix(3, 3);
+		covar.setElement(0, 0, 1);
+		covar.setElement(1, 1, 1);
+		covar.setElement(2, 2, 1);
+		poseEstimateTotal = new Pose2D(0, 0, 0, covar);
+		frameJump = 1;
+		frameCount = 0;
+	}
+
+
+	protected int doProcess(Buffer inBuffer, Buffer outBuffer, int [] inData, int [] outData, int width, int height)
+	{
+		if (arraCopyOut == null || arraCopyOut.length < inData.length)
+		{
+			arraCopyOut = new int[inData.length];
+		}
+
+		long timeTaken = 0, start_t = System.currentTimeMillis();
+
+		AbstractDoubleMatrix covarInc = new DoubleMatrix(3, 3);
+		covarInc.setElement(0, 0, 30);
+		covarInc.setElement(1, 1, 30);
+		covarInc.setElement(2, 2, 20*Math.PI/180);
+		Pose2D poseEstimate = new Pose2D(0, 0, 0, covarInc);
+		Pose2D structurePoseEstimate = poseEstimate.negate();
+
+		AbstractDoubleMatrix covarTotalOld = poseEstimateTotal.getCovar();
+		covarTotalOld.setElement(0, 0, covarInc.getElement(0, 0) + covarTotalOld.getElement(0, 0));
+		covarTotalOld.setElement(1, 1, covarInc.getElement(1, 1) + covarTotalOld.getElement(1, 1));
+		covarTotalOld.setElement(2, 2, covarInc.getElement(2, 2) + covarTotalOld.getElement(2, 2));
+		poseEstimateTotal = new Pose2D(poseEstimateTotal.getX(), poseEstimateTotal.getY(), poseEstimateTotal.getTheta(), covarTotalOld);
+		Pose2D structurePoseEstimateTotal = poseEstimateTotal.negate();
+
+		if (frameCount%frameJump == 0)
+		{
+			// Calcula as estimativas das linhas conhecidas para o movimento atual.
+			// Usa o erro total até agora para tentar repuperar linhas já processadas.
+//			matchTest.getMeasures().calculateEstimatedProjections(structurePoseEstimateTotal);
+
+			// Calcula as novas medidas e extrai possíveis novas linhas.
+			matchTest.update(inData, width, height, structurePoseEstimateTotal, structurePoseEstimate, outData);
+			timeTaken = System.currentTimeMillis() - start_t;
+			br.com.r4j.commons.util.Arrays.arrayCopy(outData, arraCopyOut);
+			log.debug("timeTaken = " + timeTaken);
+		}
+		else
+		{
+			br.com.r4j.commons.util.Arrays.arrayCopy(arraCopyOut, outData);
+		}
+		frameCount++;
+
+        return BUFFER_PROCESSED_OK;       
+    }
+
+
+	// methods for interface PlugIn
+    public String getName()
+	{
+        return "Line Matcher";
+    }
+
+}

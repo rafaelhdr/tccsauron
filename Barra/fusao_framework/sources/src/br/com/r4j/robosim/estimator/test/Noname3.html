@@ -1,0 +1,181 @@
+
+
+
+<html>
+
+
+
+
+
+
+
+
+
+
+
+<head>
+
+	<title>Programa&ccedil;&atilde;o 24 Horas</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="/tvarca/css/css.css" type="text/css">
+	<link rel="stylesheet" href="/tvarca/css/ent-integra.css" type="text/css">
+	<script language="javascript1.1" src="/tvarca/scripts.jsp"></script>
+
+
+<script language="JavaScript1.2" src="/tvarca/video/video_window.js">
+</script>
+<script>
+	inicializaTimerAtualizaTCPlayer();
+	var pageNum = 0;
+	var pageCount = 6;
+	var hasNext = true;
+	var hasPrev = false;
+
+	function nextPage()
+	{
+		if (hasNext)
+		{
+			paginator_window.thumbsLoaded = false;
+			pageNum = pageNum + 1;
+			hasPrev = pageNum > 0 ? true : false;
+			hasNext = pageNum < pageCount ? true : false;
+			document.paginator_window.navigate('/tvarca/struts/video_thumbs?rootid=52&assetid=6&page=' + pageNum + '');
+		}
+	}
+
+	function previousPage()
+	{
+		if (hasPrev)
+		{
+			paginator_window.thumbsLoaded = false;
+			pageNum = pageNum - 1;
+			hasPrev = pageNum > 0 ? true : false;
+			hasNext = pageNum < pageCount ? true : false;
+			document.paginator_window.navigate('/tvarca/struts/video_thumbs?rootid=52&assetid=6&page=' + pageNum + '');
+		}
+	}
+
+</script>
+
+<link rel="stylesheet" href="css/css.css" type="text/css">
+</head>
+
+<body name="video_window" id="video_window" bgcolor="#FFFFFF" text="#000000" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="430" border="0" cellspacing="0" cellpadding="0" height="650" bgcolor="#EFEFEF">
+  <tr background="/tvarca/image/ent-vid-dstq-topo.gif"> 
+    <td height="20" background="/tvarca/image/vidvivo-dstq-topo.gif" width="422">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="422" valign="top"> 
+      <table width="420" border="0" cellspacing="0" cellpadding="0">
+        
+        
+        
+        
+        
+        <tr> 
+          <td height="368" align="center" valign="bottom" bgcolor="#EFEFEF"> 
+            <table width="391" border="0" cellpadding="0" cellspacing="0" height="360">
+
+              <tr> 
+                <td  background="/tvarca2/image/video-topo.gif" height="19" colspan="3">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td height="309" width="36" background="/tvarca2/image/video-esq.gif">&nbsp;</td>
+                <td height="309"><object classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" id="IMediaPlayerX" name="IMediaPlayerX_name" width="319" height="309">
+                    <param name="Filename" value="/videoad/6_1.asx"/>
+                    <param name="AutoStart" value="true"/>
+                    <param name="AutoRewind" value="false"/>
+                    <param name="PlayCount" value="1"/>
+
+                    <param name="AutoRewind" value="false"/>
+                    <param name="Volume" value="0"/>
+                    <param name="Balance" value="0"/>
+                    <param name="ShowDisplay" value="false"/>
+                    <param name="ShowGotoBar" value="false"/>
+                    <param name="ShowStatusBar" value="true"/>
+                    <param name="ShowAudioControls" value="true"/>
+                    <param name="ShowControls" value="true"/>
+                    <param name="ShowPositionControls" value="true"/>
+
+                    <param name="ShowTracker" value="true"/>
+                  </object></td>
+                <td height="309" width="35" background="/tvarca2/image/video-dir.gif">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td background="/tvarca2/image/video-bottom.gif" height="32" colspan="3">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+        <tr> 
+          <td height="64" align="center" valign="bottom" bgcolor="#EFEFEF"> 
+            <table width="357" border="0" height="60" cellpadding="0" cellspacing="0">
+              <tr> 
+                
+                <td height="58" align="center"> 
+                  
+                  
+                  <iframe src="/tvarca/struts/grade_programacao_list_resumida_video?date=14/02/06" title="no title" scrolling="auto" name="grade_resumida" width="360" height="54" align="left" frameborder="0" marginheight="1" marginwidth="0" noresize></iframe> 
+                </td>
+                
+              </tr>
+            </table>
+          </td>
+
+        </tr>
+        
+      </table>
+    </td>
+  </tr>
+  <tr> </tr>
+  <tr> 
+    
+    <td height="60" bgcolor="#EFEFEF" width="422"> 
+      <script>window.resizeTo(450 + 10, 650 + 38);</script>
+      <table width="421" border="0" cellspacing="0" cellpadding="0" height="138">
+
+        <tr> 
+          <td rowspan="3" width="46" align="right"> <a href="#"> <img src="/tvarca/image/ent/vivo_vid_seta_esq.gif" width="29" height="29" border="0" onclick="previousPage(); return false;"/> 
+            </a> </td>
+          <td rowspan="3" width="22" align="right"><img src="/tvarca/image/ent/vid_time_esq.gif" width="15" height="140"></td>
+          <td rowspan="3" width="10" align="right"><img src="/tvarca/image/ent/vid_time_bg.gif" width="10" height="140"></td>
+          <td rowspan="1" height="1" bgcolor="#aaaaaa" width="273"><img src="/tvarca/image/spacer.gif" width="1" 	height="1"></td>
+          <td rowspan="3" width="23" align="left"><img src="/tvarca/image/ent/vid_time_dir.gif" width="15" height="140"></td>
+          <td rowspan="3" width="47" align="left"> <a href="#"> <img src="/tvarca/image/ent/vivo_vid_seta_dir.gif" width="29" height="29" border="0" onclick="nextPage(); return false;"/> 
+            </a> </td>
+
+        </tr>
+        <tr> 
+          <td valign="middle" height="138" background="/tvarca/image/ent/vid_time_bg.gif" width="320"> 
+            <iframe src="/tvarca/struts/video_thumbs?rootid=52&assetid=6&page=0" title="list_thumbs" name="paginator_window" id="paginator_window" scrolling="auto" width="320" height="138" frameborder="0" marginheight="0" marginwidth="1" noresize="true"></iframe> 
+          </td>
+        </tr>
+        <tr> 
+          <td rowspan="1" height="1" bgcolor="#AAAAAA" width="273"><img src="/tvarca/image/spacer.gif" width="1" height="1"></td>
+        </tr>
+      </table>
+
+  <tr>
+    <td height="5" class="txt_10px_v_b_10esq" width="422" align="center"></td>
+  </tr>
+  <tr> 
+    <td height="20" bgcolor="#CBCBCB" class="txt_10px_v_b_10esq" width="422" align="center">Timeline 
+      - <span align="left" id="timecodePlayer"></span></td>
+  </tr>
+  <tr> 
+    <td height="21" bgcolor="#B7B6B6" class="txt_10px_v_10esq" width="422" align="center"><img src="/tvarca/image/seta-video.gif" width="11" height="9"> 
+      <a href="/tvarca/struts/grade_programacao"  onClick="return openProgramacao();">Veja 
+      a grade completa</a><img src="/tvarca/image/spacer.gif" width="20" height="1"><img src="/tvarca/image/seta-video.gif" width="11" height="9"> 
+      <a href="/tvarca/struts/fale_conosoco" target="faleconosco" onClick="return openFaleConosoco();">Fale 
+      conosco</a></td>
+
+  </tr>
+  
+  </td>
+  </tr>
+</table>
+</body>
+</html>
+

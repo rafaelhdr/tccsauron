@@ -1,0 +1,72 @@
+package br.com.r4j.research.image.sequence.featurematch.vline.test;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.awt.*;
+import java.util.*;
+import java.awt.image.*;
+import br.com.r4j.image.*;
+import br.com.r4j.commons.util.*;
+import br.com.r4j.image.operation.threebandpacked.*;
+import br.com.r4j.image.operation.threebandpacked.morphology.*;
+import br.com.r4j.image.operation.threebandpacked.colorspace.*;
+import br.com.r4j.math.*;
+import br.com.r4j.research.image.sequence.featurematch.vline.*;
+
+import br.com.r4j.research.*;
+import br.com.r4j.research.vline.*;
+import br.com.r4j.research.image.sequence.*;
+
+import JSci.maths.*;
+
+
+
+public class VLineMatcherOneInputImageOp implements ThreeBandPackedOneInputImageOp
+{
+	private static Log log = LogFactory.getLog(VLineMatcherOneInputImageOp.class.getName());
+
+	private long timeTaken = 0; 
+	private Matcher matchTest = null;
+
+
+	public VLineMatcherOneInputImageOp()
+	{
+		matchTest = new Matcher();
+	}
+
+
+	public int operate(int [] inData, int [] outData, int imgWidth, int imgHeight)
+	{
+		long timeTaken = 0, start_t = System.currentTimeMillis();
+		AbstractDoubleMatrix covar = new DoubleMatrix(3, 3);
+		covar.setElement(0, 0, 1);
+		covar.setElement(1, 1, 1);
+		covar.setElement(2, 2, 1);
+		Pose2D poseEstimate = new Pose2D(0, 0, 0, covar);
+		matchTest.update(inData, imgWidth, imgHeight, poseEstimate, poseEstimate, outData);
+		timeTaken = System.currentTimeMillis() - start_t; 
+		log.debug("timeTaken = " + (System.currentTimeMillis() - start_t));
+
+		VLineMap lineMap = matchTest.getMeasures();
+		log.debug("lineMap.getNumberOfVisibleLines() = " + lineMap.getNumberOfVisibleLines() + ", lineMap.getNumberOfLines() = " + lineMap.getNumberOfLines());
+
+		Iterator itLines = lineMap.getVisibleAndValidLineIndexIterator();
+		while (lineMap.hasNext(itLines))
+		{
+			VLine line = lineMap.nextLine(itLines);
+			log.debug("line.getX() = " + line.getX() + ", line.getY() = " + line.getY());
+		}
+
+
+
+		return 0;
+	}
+}
+/*
+		BufferedImage buffImg = ImageUtil.getPackedBufferedImage(ImageUtil.loadImage(strBkgPath), BufferedImage.TYPE_INT_RGB);
+		this.imgBkgData = ImageFilterUtil.getThreeBandPackedData(buffImg);
+		this.width = buffImg.getWidth();
+		this.height = buffImg.getHeight();
+//*/

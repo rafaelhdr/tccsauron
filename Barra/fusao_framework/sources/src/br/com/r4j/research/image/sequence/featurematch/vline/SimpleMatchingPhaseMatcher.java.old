@@ -1,0 +1,414 @@
+package br.com.r4j.research.image.sequence.featurematch.vline;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.*;
+import java.util.Arrays;
+import java.awt.Point;
+import java.awt.image.*;
+import java.awt.Color;
+
+import JSci.maths.*;
+
+import br.com.r4j.math.FunctionsR;
+import br.com.r4j.research.*;
+import br.com.r4j.research.vline.*;
+import br.com.r4j.commons.util.*;
+import br.com.r4j.math.matrix.*;
+
+import br.com.r4j.image.operation.threebandpacked.*;
+import br.com.r4j.image.operation.threebandpacked.basic.*;
+import br.com.r4j.image.operation.threebandpacked.segmentation.*;
+import br.com.r4j.image.operation.threebandpacked.spatialfilter.*;
+import br.com.r4j.image.operation.threebandpacked.featureextraction.*;
+import br.com.r4j.image.operation.threebandpacked.morphology.*;
+import br.com.r4j.research.image.sequence.*;
+
+
+
+/**
+ *
+ */
+public class SimpleMatchingPhaseMatcher
+{
+	private static Log log = LogFactory.getLog(SimpleMatchingPhaseMatcher.class.getName());
+	private static Log logLineProj = LogFactory.getLog("line_proj");
+
+	///// Variáveis com a descrição do sistema
+	//
+	private CameraModel camModel = null;
+
+	///// Variáveis com o estado do sistema
+	//
+	private MatchVLineMap lineMap = null;
+
+	// Parâmetros
+	int hashVectorTreshold = 50;
+	int minDepthDist = 2*1000;
+
+	///// Buffers temporários
+	//
+
+
+	public SimpleMatchingPhaseMatcher()
+	{
+	}
+
+
+	public void setCameraModel(CameraModel camModel)	{this.camModel = camModel;}
+	public void setLineMap(MatchVLineMap lineMap)	{this.lineMap = lineMap;}
+	public void setItCount(int itCount)	{this.itCount = itCount;}
+
+	private int itCount = 0; // de-de-debug!
+
+
+	public LineMatchingResult lineMatching(int [] arrayImg, int imgWidth, int imgHeight, Pose2D structurePoseEstimate, Pose2D structurePoseEstimateMove, LineExtrationResult newLineProjs)
+	{
+		LineMatchingResult result = new LineMatchingResult();
+		long timeTaken = System.currentTimeMillis();
+
+		PairedLines pairedLines = this.createLineProjPairs(structurePoseEstimateMove, newLineProjs, result);
+
+		// procura pelos melhores matches ...
+		this.performMatches(newLineProjs, pairedLines, result, structurePoseEstimateMove, structurePoseEstimate);
+
+		// Adiciona as medidas não casadas como novas estimativas não válidas.
+		this.addNotMatchedMeasures(pairedLines.arrayProjMeasuresAlreadyUsed, newLineProjs.arrayProjMeasures, newLineProjs.arrayProjVLinePerfil, result.arrayProjMeasuresLines, structurePoseEstimate);
+
+		// Elimina as linhas de matches não bem-sucedidos.
+		this.removeNotMatchedLines(pairedLines.arrayProjLastMeasuresAlreadyUsed, pairedLines.arrayProjLastMeasuresLines);
+
+		if (log.isDebugEnabled())
+		{
+			log.debug("lineMap.getNumberOfLines() = " + lineMap.getNumberOfLines());
+
+			TreeMap treeMap = lineMap.buildLastMeasuredProjectionOrderedMap();
+			Iterator itElements = treeMap.keySet().iterator();
+			log.debug("output:treeMap.keySet().size() = " + treeMap.keySet().size());
+			while (itElements.hasNext())
+			{
+				Object oKey = itElements.next();
+				VLine line = (VLine) treeMap.get(oKey);
+				VLineProj lineProj = lineMap.getLastMeasuredProjection(line);
+				log.debug("output:lineProj.getU() = " + lineProj.getU() + ", lineMap.arrayTTL[line.mapIdx] = " + lineMap.arrayTTL[line.mapIdx]);
+			}
+			log.debug("arrayProjMeasuresLines = " + br.com.r4j.commons.util.Arrays.toString(result.arrayProjMeasuresLines));
+		}
+		return result;
+	}
+
+
+	private PairedLines createLineProjPairs(Pose2D structurePoseEstimateMove, LineExtrationResult newLineProjs, LineMatchingResult lineMatchingResult)
+	{
+		PairedLines result = new PairedLines();
+
+		int uCount = camModel.getUAxisPixelCount(), uCenter = camModel.getUAxisPixelCenter();
+		double visAngle = camModel.getVisibilityRangeAngle();
+
+		int dY = 0, dX = 0;
+		int dYMax = 0, dXMax = 0;
+		double dTheta = 0;
+		AbstractDoubleMatrix moveCovar = structurePoseEstimateMove.getCovar();
+		dY = (int) structurePoseEstimateMove.getY();
+		dX = (int) structurePoseEstimateMove.getX();
+		dTheta = FunctionsR.centerRadian(structurePoseEstimateMove.getTheta(), 0);
+		if (dYMax > 0)
+			dYMax = (int) (dY + moveCovar.getElement(1, 1));
+		else
+			dYMax = (int) (dY - moveCovar.getElement(1, 1));
+
+		if (dXMax > 0)
+			dXMax = (int) (dX + moveCovar.getElement(0, 0));
+		else
+			dXMax = (int) (dX - moveCovar.getElement(0, 0));
+		log.debug("dXMax = " + dXMax + ", dYMax = " + dYMax);
+
+		// rotation window
+		double thetaMult = uCount/visAngle;
+		int rotWindowCenter = (int) (dTheta*thetaMult);
+
+		// 2 é o fator de incerteza.
+		int rotWindowSideBandSize = (int) (Math.sqrt(structurePoseEstimateMove.getCovar().getElement(2, 2))*thetaMult) * 2;
+		if (rotWindowSideBandSize < 1)
+			rotWindowSideBandSize = 1;
+
+		log.debug("rotWindowCenter = " + rotWindowCenter + ", rotWindowSideBandSize = " + rotWindowSideBandSize + ", thetaMult = " + thetaMult);
+
+
+		TreeMap treeMap = lineMap.buildLastMeasuredProjectionOrderedMap();
+		result.arrayProjLastMeasuresAlreadyUsed = new boolean[treeMap.keySet().size()];
+		result.arrayProjLastMeasuresLines = new VLine[treeMap.keySet().size()];
+		result.arrayProjMeasuresAlreadyUsed = new boolean[newLineProjs.arrayProjMeasures.length];
+
+		int idxBeginSearch = 0, idxEndSearch = 0, idxLastLineIdx = -1;
+		Iterator itElements = treeMap.keySet().iterator();
+		int desempate = 0;
+		if (newLineProjs.arrayProjMeasures.length > 0) while (itElements.hasNext())
+		{
+			idxLastLineIdx++;
+			Object oKey = itElements.next();
+			VLine line = (VLine) treeMap.get(oKey);
+			VLineProj lineProj = lineMap.getLastMeasuredProjection(line);
+			VLinePerfil linePerfil = lineMap.getPerfil(line);
+			result.arrayProjLastMeasuresLines[idxLastLineIdx] = line;
+
+			int lastVBegin = lineProj.getVBegin(), lastVEnd = lineProj.getVEnd();
+			int uLastMeasured = (int) lineProj.getU();
+			double uSigmaLastMeasured = lineProj.getUErrorSigma();
+
+			// Cálculo da janela de visualização
+			int measureWindowBegin = uLastMeasured + rotWindowCenter - rotWindowSideBandSize;
+			int measureWindowEnd = uLastMeasured + rotWindowCenter + rotWindowSideBandSize;
+
+			// translation window
+			// X -> depth
+			// Y última projeção
+			double f = camModel.getFocusDistance();
+			double trueY = (uCenter - line.getY()) * line.getX() / f;
+			int u_proj_x = (int) (f * trueY / (line.getX() + dXMax));
+			int u_proj_y = (int) (f * ((trueY + dYMax)) / line.getX());
+
+			log.debug("translaction window for: u = " + uLastMeasured + ", projection of: " + line);
+			log.debug("trueY = " + trueY + ", (uCenter - trueY) = " + (uCenter - trueY));
+			log.debug("u_proj_x = " + u_proj_x + ", u_proj_y = " + u_proj_y);
+
+			if (u_proj_x - uLastMeasured > 0)
+				measureWindowEnd += (u_proj_x - uLastMeasured);
+			else
+				measureWindowBegin += (u_proj_x - uLastMeasured);
+
+			if (u_proj_y - uLastMeasured > 0)
+				measureWindowEnd += (u_proj_y - uLastMeasured);
+			else
+				measureWindowBegin += (u_proj_y - uLastMeasured);
+			log.debug("measureWindowBegin = " + measureWindowBegin + ", measureWindowEnd = " + measureWindowEnd);
+
+			// Primeiro, retorna um pouco a janela caso necessário.
+			if (idxEndSearch > 0 && newLineProjs.arrayProjMeasures[idxEndSearch].getU() >= measureWindowEnd) 
+				idxEndSearch--;
+			// Posiciona a janela de medição.
+			while (newLineProjs.arrayProjMeasures[idxBeginSearch].getU() <= measureWindowBegin && idxBeginSearch < newLineProjs.arrayProjMeasures.length - 1) 
+				idxBeginSearch++;
+			while (newLineProjs.arrayProjMeasures[idxEndSearch].getU() <= measureWindowEnd && idxEndSearch < newLineProjs.arrayProjMeasures.length - 1) 
+				idxEndSearch++;
+
+			// Em seguida verifica dentro da janela quem tem condições de corresponder.
+			double biggerComparsion = 0; int idxBiggerComparsion = -1;
+			for (int idx = idxBeginSearch; idx <= idxEndSearch; idx++)
+			{
+				int vBegin = newLineProjs.arrayProjMeasures[idx].getVBegin(), vEnd = newLineProjs.arrayProjMeasures[idx].getVEnd();
+				int vSize = vEnd - vBegin + 1;
+
+				if ((vBegin <= lastVBegin && lastVBegin <= vEnd) || (lastVBegin <= vBegin && vBegin <= lastVEnd))
+				{
+					double comparsion = linePerfil.compare(newLineProjs.arrayProjVLinePerfil[idx]);
+					int idxsPacked = (idxLastLineIdx&0xFFFF)<<16 | (idx&0xFFFF);
+					if (comparsion > hashVectorTreshold)
+					{
+						log.debug("comparsion = " + comparsion + ",u last: " + uLastMeasured + ",u: " + newLineProjs.arrayProjMeasures[idx].getU());
+						result.treeMapLinks.put(new DoubleCompa(-comparsion, desempate++), new Integer(idxsPacked));
+					}
+					else
+					{
+						log.debug("comparsion = " + comparsion + ",u last: " + uLastMeasured + ",u: " + newLineProjs.arrayProjMeasures[idx].getU() + "; not matched by perfil");
+					}
+				}
+				else
+				{
+					double comparsion = linePerfil.compare(newLineProjs.arrayProjVLinePerfil[idx]);
+					log.debug("comparsion = " + comparsion + ",u last: " + uLastMeasured + ",u: " + newLineProjs.arrayProjMeasures[idx].getU() + "; not matched by geom contraints");
+				}
+			}
+		}
+		else while (itElements.hasNext())
+		{
+			idxLastLineIdx++;
+			Object oKey = itElements.next();
+			VLine line = (VLine) treeMap.get(oKey);
+			VLineProj lineProj = lineMap.getLastMeasuredProjection(line);
+			VLinePerfil linePerfil = lineMap.getPerfil(line);
+			result.arrayProjLastMeasuresLines[idxLastLineIdx] = line;
+		}
+		return result;
+	}
+
+
+	/**
+	 * Tendo os pairs feitos, realiza o casamento entre os matches corretos ...
+	 *
+	 */
+	private void performMatches(LineExtrationResult lineExtrResult, PairedLines pairedLines, LineMatchingResult result, Pose2D structurePoseEstimateMove, Pose2D structurePoseEstimate)
+	{
+		long timeTaken = System.currentTimeMillis();
+		result.arrayProjMeasuresLines = new VLine[lineExtrResult.arrayProjMeasures.length];
+		Iterator itMatches = pairedLines.treeMapLinks.keySet().iterator();
+		log.debug("treeMapLinks.keySet().size() = " + pairedLines.treeMapLinks.keySet().size());
+		while (itMatches.hasNext())
+		{
+			Object oKey = itMatches.next();
+			Integer intKeys = (Integer) pairedLines.treeMapLinks.get(oKey);
+			int keys = intKeys.intValue();
+			int idxLastMeas = (keys>>16)&0xFFFF;
+			int idxNewMeas = keys&0xFFFF;
+
+			if (!pairedLines.arrayProjLastMeasuresAlreadyUsed[idxLastMeas] && !pairedLines.arrayProjMeasuresAlreadyUsed[idxNewMeas])
+			{
+				LineMatch lineMatch = new LineMatch();
+				result.listLineMatches.add(lineMatch);
+				lineMatch.line = pairedLines.arrayProjLastMeasuresLines[idxLastMeas];
+				lineMatch.projNew = lineExtrResult.arrayProjMeasures[idxNewMeas];
+				lineMatch.projLast = lineMap.getLastMeasuredProjection(pairedLines.arrayProjLastMeasuresLines[idxLastMeas]);
+
+				log.debug("results:comparsion = " + oKey + ",u last: " + lineMatch.projLast.getU() + ",u: " + lineMatch.projNew.getU() + ":used");
+				pairedLines.arrayProjLastMeasuresAlreadyUsed[idxLastMeas] = true;
+				pairedLines.arrayProjMeasuresAlreadyUsed[idxNewMeas] = true;
+				result.arrayProjMeasuresLines[idxNewMeas] = lineMatch.line;
+
+				this.projectionMatched(lineMatch.line, lineMatch.projNew, lineExtrResult.arrayProjVLinePerfil[idxNewMeas], structurePoseEstimateMove, structurePoseEstimate);
+
+				lineMap.arrayTTL[lineMatch.line.mapIdx]++;
+			}
+			else
+			{
+				log.debug("results:comparsion = " + oKey + ",u last: " + lineMap.getLastMeasuredProjection(pairedLines.arrayProjLastMeasuresLines[idxLastMeas]).getU() + ",u: " + lineExtrResult.arrayProjMeasures[idxNewMeas].getU() + ":not used");
+			}
+		}
+		log.debug("performMatches: timeTaken = " + (System.currentTimeMillis() - timeTaken));
+	}
+
+
+	/**
+	 * Organiza as coisas para o caso de match das linhas
+	 *
+	 *
+	 * Calcula o pior caso do depth. Isso é para a menor variação do movimento do robô e maior deslocamento ds pixels.
+	 */
+	private void projectionMatched(VLine line, VLineProj projMeasured, VLinePerfil measuredPerfil, Pose2D structurePoseEstimateMove, Pose2D tructurePoseEstimate)
+	{
+		// Se a linha não é válida, torna-a válida setando uma primeira aproximação
+		boolean bValueCalculated = false;
+		if (!lineMap.isValid(line))
+		{
+			// Realiza primeira aproximação da linha. Coordenadas epipolares ...
+			Pose2D poseP1Robot = lineMap.getFirstMeasuredProjectionPoseCam(line).negate();
+			Pose2D poseP2Robot = tructurePoseEstimate.negate();
+
+			VLineProj p1 = lineMap.getFirstMeasuredProjection(line);
+			VLineProj p2 = projMeasured;
+			double uCenter = camModel.getUAxisPixelCenter();
+			double u1 = uCenter - p1.getU();
+			double u2 = uCenter - p2.getU();
+			// Diminui o depth, simulando o worst-case.
+			if (u1 > u2)
+				{u1 +=1; u2 -= 1;}
+			else
+				{u2 +=1; u1 -= 1;}
+			if (Math.abs(u1 - u2) > 2 && u1 != 0 && u2 != 0)
+			{
+				double dX = poseP1Robot.getX() - poseP2Robot.getX();
+				double dY = poseP1Robot.getY() - poseP2Robot.getY();
+				double dTheta = poseP1Robot.getTheta() - poseP2Robot.getTheta();
+				double d2 = dX*dX + dY*dY;
+				if (d2 < 1000)
+					log.debug("Movimento muito pequeno 2 ...");
+				else
+				{
+					double focalDist = camModel.getFocusDistance();
+					double sinDTheta = Math.sin(dTheta), cosDTheta = Math.cos(dTheta);
+					log.debug("u1 = " + u1 + ", u2 = " + u2 + ", dX = " + dX + ", dY = " + dY + ", dTheta = " + dTheta + ", focalDist = " + focalDist);
+
+					double divisor = cosDTheta*u1/focalDist + sinDTheta;
+					log.debug("divisor = " + divisor);
+
+					if (Math.abs(divisor) < 0.00001)
+						log.debug("valor nào calculável ...");
+					else
+					{
+						double A1 = (cosDTheta - sinDTheta*u1/focalDist) / divisor;
+						double B1 = (dY - dX*u1/focalDist) / divisor;
+						double A2 = focalDist/u2;
+						log.debug("A1 = " + A1 + ", B1 = " + B1 + ", A2 = " + A2);
+
+						double y = B1 / (A2 - A1);
+						double xA = y * A1 + B1;
+						double xB = y * A2;
+						double x = (xA + xB)/2;
+						log.debug("y = " + y + ", xA = " + xA + ", xB = " + xB + ", x = " + x);
+
+						// Y É a projeção na unidade de projeção mesmo.
+						line.setY(p2.getU()); 
+						// X É o depth (o próprio X ...)
+						line.setX(x);
+
+						AbstractDoubleMatrix covar = line.getCovar();
+						covar.setElement(0, 0, 10000);
+						covar.setElement(1, 1, 1);
+					
+						lineMap.setValid(line, true);
+						bValueCalculated = true;
+					}
+				}
+			}
+			else
+			{
+				log.debug("Movimento muito pequeno ...");
+			}
+		}
+		lineMap.setLastMeasuredProjection(line, projMeasured);
+		lineMap.getPerfil(line).add(measuredPerfil);
+	}
+
+	
+	private void addNotMatchedMeasures(boolean [] arrayProjMeasuresAlreadyUsed, VLineProj [] arrayProjMeasures, VLinePerfil [] arrayProjVLinePerfil, VLine [] arrayProjMeasuresLines, Pose2D structurePoseEstimate)
+	{
+		int uCenter = camModel.getUAxisPixelCenter();
+		for (int i = 0; i < arrayProjMeasures.length; i++)
+		{
+			if (!arrayProjMeasuresAlreadyUsed[i])
+			{
+				int uValue = (int) arrayProjMeasures[i].getU();
+				AbstractDoubleMatrix covar = new DoubleMatrix(2, 2); 
+				covar.setElement(0, 0, minDepthDist/camModel.getFocusDistance()); 
+				covar.setElement(1, 1, 1);
+//				VLine line = new VLine(minDepthDist/camModel.getFocusDistance(), (uCenter - uValue), covar);
+
+				VLine line = new VLine(minDepthDist, (uCenter - uValue), covar);
+				arrayProjMeasuresLines[i] = line;
+				lineMap.add(line);
+				lineMap.arrayTTL[line.mapIdx] = 1;
+				lineMap.setLastMeasuredProjection(line, arrayProjMeasures[i]);
+				lineMap.setFirstMeasuredProjection(line, arrayProjMeasures[i], structurePoseEstimate);
+				lineMap.setVisible(line, true);
+				lineMap.setValid(line, false);
+				lineMap.setPerfil(line, arrayProjVLinePerfil[i]);
+			}
+		}
+	}
+
+
+	private void removeNotMatchedLines(boolean [] arrayProjLastMeasuresAlreadyUsed, VLine [] arrayProjLastMeasuresLines)
+	{
+		for (int idx = 0; idx < arrayProjLastMeasuresAlreadyUsed.length; idx++)
+		{
+			if (!arrayProjLastMeasuresAlreadyUsed[idx])
+			{
+				VLine line = arrayProjLastMeasuresLines[idx];
+				lineMap.arrayTTL[line.mapIdx] = 0;
+				lineMap.setDebugColor(line, null);
+				lineMap.remove(line);
+			}
+		}
+	}
+
+	class PairedLines
+	{
+		public boolean [] arrayProjLastMeasuresAlreadyUsed = null;
+		public boolean [] arrayProjMeasuresAlreadyUsed = null;
+		public VLine [] arrayProjLastMeasuresLines = null;
+		public TreeMap treeMapLinks = new TreeMap();
+	}
+}
+
+
+

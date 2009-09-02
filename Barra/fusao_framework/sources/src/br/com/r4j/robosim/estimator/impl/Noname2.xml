@@ -1,0 +1,1279 @@
+POST /XISOAPAdapter/MessageServlet?channel=:SOAP_SERVICE_CLARITY:cc_rfc_pla_custo&version=3.0&Sender.Service=SOAP_SERVICE_CLARITY&Interface=http%3A%2F%2Fbraskem.com.br%2Fxi%2Fclarity%2Fprj%5Emi_plan_custos_ob HTTP/1.0
+Content-Type: text/xml; charset=utf-8
+Accept: application/soap+xml, application/dime, multipart/related, text/*
+User-Agent: Axis/1.4
+Host: xi.braskem.com.br:58000
+Cache-Control: no-cache
+Pragma: no-cache
+SOAPAction: "http://sap.com/xi/WebService/soap1.1"
+Content-Length: 571
+Authorization: Basic eGlhY2Nlc3M6eGlhY2Nlc3M=
+
+
+xi.braskem.com.br:58000
+/XISOAPAdapter/MessageServlet?channel=:SOAP_SERVICE_CLARITY:cc_rfc_pla_custo&version=3.0&Sender.Service=SOAP_SERVICE_CLARITY&Interface=http%3A%2F%2Fbraskem.com.br%2Fxi%2Fclarity%2Fprj%5Emi_plan_custos_ob HTTP/1.0
+
+xi.braskem.com.br:58000
+/XISOAPAdapter/MessageServlet?channel=:SOAP_SERVICE_CLARITY:cc_soap_sender_create_proj&version=3.0&Sender.Service=SOAP_SERVICE_CLARITY&Interface=http%3A%2F%2Fbraskem.com.br%2Fxi%2Fclarity%2Fprj%5Emi_create_project_request_ob
+
+
+15180551 DEBUG org.apache.axis.encoding.SerializationContext 29 May 2006 - End element SOAP:Body
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (32)
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(endElem00)
+15180551 DEBUG org.apache.axis.encoding.SerializationContext 29 May 2006 - End element SOAP:Envelope
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(empty00)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (empty)
+15180551 DEBUG org.apache.axis.transport.http.HTTPSender 29 May 2006 - 
+<SOAP:Envelope xmlns:SOAP="http://schemas.xmlsoap.org/soap/envelope/"><SOAP:Body><SOAP:Fault>
+      <faultcode>SOAP:Server</faultcode>
+      <faultstring>Server Error</faultstring>
+      <detail>
+        <s:SystemError xmlns:s="http://sap.com/xi/WebService/xi2.0">
+          <context>XIAdapter</context>
+          <code>ModuleUnknownException</code>
+          <text><![CDATA[
+com.sap.aii.af.mp.module.ModuleException: either no channelID specified or no channel found for the specified party, service, and channel name, MessageServlet(Version $Id: //tc/aii/30_REL/src/_adapters/_soap/java/com/sap/aii/af/mp/soap/web/MessageServlet.java#10 $)
+	at com.sap.aii.af.mp.soap.web.MessageServlet.doPost(MessageServlet.java:380)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:760)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:853)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.runServlet(HttpHandlerImpl.java:390)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.handleRequest(HttpHandlerImpl.java:264)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:347)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:325)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.invokeWebContainer(RequestAnalizer.java:887)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.handle(RequestAnalizer.java:241)
+	at com.sap.engine.services.httpserver.server.Client.handle(Client.java:92)
+	at com.sap.engine.services.httpserver.server.Processor.request(Processor.java:148)
+	at com.sap.engine.core.service630.context.cluster.session.ApplicationSessionMessageListener.process(ApplicationSessionMessageListener.java:33)
+	at com.sap.engine.core.cluster.impl6.session.MessageRunner.run(MessageRunner.java:41)
+	at com.sap.engine.core.thread.impl3.ActionObject.run(ActionObject.java:37)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sap.engine.core.thread.impl3.SingleThread.execute(SingleThread.java:100)
+	at com.sap.engine.core.thread.impl3.SingleThread.run(SingleThread.java:170)
+          ]]></text>
+        </s:SystemError>
+      </detail>
+    </SOAP:Fault></SOAP:Body></SOAP:Envelope>
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(exit00)
+15180551 DEBUG org.apache.axis.transport.http.HTTPSender 29 May 2006 - Exit:  HTTPDispatchHandler::invoke
+15180551 DEBUG org.apache.axis.SimpleChain 29 May 2006 - Exit: SimpleChain::invoke
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - Enter: SOAPPart::getAsSOAPEnvelope()
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(currForm)
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - current form is FORM_SOAPENVELOPE
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(semanticCheck00)
+15180551 DEBUG org.apache.axis.handlers.soap.MustUnderstandChecker 29 May 2006 - Doing SOAP semantic checks...
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - Enter: SOAPPart::getAsSOAPEnvelope()
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(currForm)
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - current form is FORM_SOAPENVELOPE
+15180551 DEBUG org.apache.axis.client.AxisClient 29 May 2006 - Exit: AxisClient::invoke
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - Enter: SOAPPart::getAsSOAPEnvelope()
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(currForm)
+15180551 DEBUG org.apache.axis.SOAPPart 29 May 2006 - current form is FORM_SOAPENVELOPE
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(toAxisFault00)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPush (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPush (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPush (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPush (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPush (32)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (32)
+15180551 DEBUG org.apache.axis.i18n.ProjectResourceBundle 29 May 2006 - org.apache.axis.i18n.resource::handleGetObject(empty00)
+15180551 DEBUG org.apache.axis.utils.NSStack 29 May 2006 - NSPop (empty)
+15181379 DEBUG org.apache.axis.MessageContext 29 May 2006 - disposing of message context
+15181379 DEBUG org.apache.axis.MessageContext 29 May 2006 - disposing of message context
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+950888 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002923
+950903 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+951028 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+951044 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - Initializing Connection Pool ...
+951044 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - initPoolThread()
+951044 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - poolName = clarity_pool
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - loadPoolParams(): start
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - myPoolProperties.isLoggingSQL(): false
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - parâmetros passados: 
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	:PoolProperties:
+	strPoolClassName = br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask
+	strServerType = oracle
+	strServerURL = null
+	strUserName = null
+	strPassword = null
+	strDriverUrl = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+	strDatabaseName = null
+	strTestTableName = srm_projects
+	iTestDelay = 100
+	iPoolInitialCapacity = 1
+	iPoolMaxCapacity = 5
+	iIncrementRate = 1
+	iShrinkDelay = 100
+	strLogSQLClassBase = null
+
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	initialNumberOfConnections: 1
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	myPoolProperties.getPoolMaxCapacity(): 5
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	incRate: 1
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	isLoggingSQL: false
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	shrinkDelay: 100
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	testDelay: 100
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	testTable: srm_projects
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - loadPoolParams(): end
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - startPool(): begin
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strConnURL = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+951060 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strDriverClassName = oracle.jdbc.driver.OracleDriver
+951560 ERROR br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - startPool():Exceção durante a inicialização do pool
+java.sql.SQLException: Io exception: Connection refused(DESCRIPTION=(TMP=)(VSNNUM=153093120)(ERR=12500)(ERROR_STACK=(ERROR=(CODE=12500)(EMFI=4))(ERROR=(CODE=12540)(EMFI=4))(ERROR=(CODE=12560)(EMFI=4))(ERROR=(CODE=510)(EMFI=4))(ERROR=(BUF='IBM/AIX RISC System/6000 Error: 12: Not enough space'))))
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:134)
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:179)
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:334)
+	at oracle.jdbc.ttc7.TTC7Protocol.handleIOException(TTC7Protocol.java:3678)
+	at oracle.jdbc.ttc7.TTC7Protocol.logon(TTC7Protocol.java:352)
+	at oracle.jdbc.driver.OracleConnection.<init>(OracleConnection.java:365)
+	at oracle.jdbc.driver.OracleDriver.getConnectionInstance(OracleDriver.java:547)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:347)
+	at java.sql.DriverManager.getConnection(DriverManager.java:512)
+	at java.sql.DriverManager.getConnection(DriverManager.java:193)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.createNewConnection(DriverBasedSQLConnectionPoolTask.java:394)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.initPoolOfConnections(DriverBasedSQLConnectionPoolTask.java:184)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.startPool(DriverBasedSQLConnectionPoolTask.java:429)
+	at br.com.r4j.jdbc.ConnectionPoolManager.addConnectionPool(ConnectionPoolManager.java:120)
+	at br.com.r4j.jdbc.ConnectionPoolManager.initPoolThread(ConnectionPoolManager.java:155)
+	at br.com.r4j.jdbc.ConnectionPoolManager.<init>(ConnectionPoolManager.java:44)
+	at br.com.r4j.jdbc.ConnectionPoolManager.getInstance(ConnectionPoolManager.java:33)
+	at br.com.spectrum.braskem.infra.SQLUtil.getConnection(SQLUtil.java:21)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:115)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+951560 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - startPool(): end
+951560 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - done!
+951560 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - addConnectionsToPoolOfConnections: begin
+951560 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strConnURL = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+951560 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strDriverClassName = oracle.jdbc.driver.OracleDriver
+952060 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+java.sql.SQLException: Io exception: Connection refused(DESCRIPTION=(TMP=)(VSNNUM=153093120)(ERR=12500)(ERROR_STACK=(ERROR=(CODE=12500)(EMFI=4))(ERROR=(CODE=12540)(EMFI=4))(ERROR=(CODE=12560)(EMFI=4))(ERROR=(CODE=510)(EMFI=4))(ERROR=(BUF='IBM/AIX RISC System/6000 Error: 12: Not enough space'))))
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:134)
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:179)
+	at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:334)
+	at oracle.jdbc.ttc7.TTC7Protocol.handleIOException(TTC7Protocol.java:3678)
+	at oracle.jdbc.ttc7.TTC7Protocol.logon(TTC7Protocol.java:352)
+	at oracle.jdbc.driver.OracleConnection.<init>(OracleConnection.java:365)
+	at oracle.jdbc.driver.OracleDriver.getConnectionInstance(OracleDriver.java:547)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:347)
+	at java.sql.DriverManager.getConnection(DriverManager.java:512)
+	at java.sql.DriverManager.getConnection(DriverManager.java:193)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.createNewConnection(DriverBasedSQLConnectionPoolTask.java:394)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.addConnectionsToPoolOfConnections(DriverBasedSQLConnectionPoolTask.java:359)
+	at br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask.getConnection(DriverBasedSQLConnectionPoolTask.java:511)
+	at br.com.spectrum.braskem.infra.SQLUtil.getConnection(SQLUtil.java:22)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:115)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+952075 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+952075 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error(2)
+java.lang.NullPointerException
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:152)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+1109624 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002715
+1109640 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+1109796 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+1109811 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - Initializing Connection Pool ...
+1109811 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - initPoolThread()
+1109811 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - poolName = clarity_pool
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - loadPoolParams(): start
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - myPoolProperties.isLoggingSQL(): false
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - parâmetros passados: 
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	:PoolProperties:
+	strPoolClassName = br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask
+	strServerType = oracle
+	strServerURL = null
+	strUserName = null
+	strPassword = null
+	strDriverUrl = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+	strDatabaseName = null
+	strTestTableName = srm_projects
+	iTestDelay = 100
+	iPoolInitialCapacity = 1
+	iPoolMaxCapacity = 5
+	iIncrementRate = 1
+	iShrinkDelay = 100
+	strLogSQLClassBase = null
+
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	initialNumberOfConnections: 1
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	myPoolProperties.getPoolMaxCapacity(): 5
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	incRate: 1
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	isLoggingSQL: false
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	shrinkDelay: 100
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	testDelay: 100
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - 	testTable: srm_projects
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - loadPoolParams(): end
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - startPool(): begin
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strConnURL = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+1109843 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strDriverClassName = oracle.jdbc.driver.OracleDriver
+1109983 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - pool inicializado com 1conexões
+1109983 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - setTestingTimer(): iTestDelay = 100000
+1109999 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - startPool(): end
+1109999 DEBUG br.com.r4j.jdbc.ConnectionPoolManager 29 May 2006 - done!
+1109999 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+1110030 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002715
+1110046 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - addConnectionsToPoolOfConnections: begin
+1110046 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strConnURL = jdbc:oracle:thin:niku/niku@ucam03.braskem.com.br:1521:ca9h2
+1110046 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - !!!!!createNewConnection()!!!!:strDriverClassName = oracle.jdbc.driver.OracleDriver
+1110108 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - addConnectionsToPoolOfConnections: conn being added: br.com.r4j.jdbc.ProxyConnection@acae32
+1110108 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - adicionadas 1conexões no pool. listFreeConn.size() = 1
+1110108 DEBUG br.com.r4j.jdbc.DriverBasedSQLConnectionPoolTask 29 May 2006 - addConnectionsToPoolOfConnections: end
+1110108 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+1110390 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002715, 1
+	uniqueName: 24
+	name: Adequação Secadores de Propeno FA-4407
+	description: Adequação Secadores de Propeno FA-4407
+	dtStart, dtFinish: Thu Jan 01 00:00:00 GMT-03:00 2004, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000221, OLEFINAS I, 06
+	idFaseInvestimento, strFaseInvestimentoSAP: 10, Concluído
+	idTipoEmpreend, idTipoEmpreendSAP: 3, 103
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+1110390 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-0624, type: 1
+1111624 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+1111640 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+1111640 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+1180672 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - Erro se comunicando com o SAP: Server Error
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>DeliveryException</code>
+          <text><![CDATA[
+com.sap.aii.af.ra.ms.api.DeliveryException: Received HTTP response code 500 : Timeout
+	at com.sap.aii.af.ra.ms.impl.core.queue.CallConsumer.onMessage(CallConsumer.java:144)
+	at com.sap.aii.af.ra.ms.impl.core.queue.Queue.run(Queue.java:795)
+	at com.sap.engine.frame.core.thread.Task.run(Task.java:64)
+	at com.sap.engine.core.thread.impl5.SingleThread.execute(SingleThread.java:79)
+	at com.sap.engine.core.thread.impl5.SingleThread.run(SingleThread.java:150)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_create_project_request_obBindingStub.mi_create_project_request_ob(Mi_create_project_request_obBindingStub.java:171)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:193)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+1180687 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Erro se comunicando com o SAP
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:211)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+1180687 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+2111486 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002715
+2111501 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+2111548 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+2111548 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+2111548 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002715
+2111548 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+2111564 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002715, 1
+	uniqueName: 24
+	name: Adequação Secadores de Propeno FA-4407
+	description: Adequação Secadores de Propeno FA-4407
+	dtStart, dtFinish: Thu Jan 01 00:00:00 GMT-03:00 2004, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000221, OLEFINAS I, 06
+	idFaseInvestimento, strFaseInvestimentoSAP: 10, Concluído
+	idTipoEmpreend, idTipoEmpreendSAP: 3, 103
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+2111564 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-0624, type: 1
+2111580 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+2111580 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+2111580 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+2176275 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - Erro se comunicando com o SAP: Server Error
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>DeliveryException</code>
+          <text><![CDATA[
+com.sap.aii.af.ra.ms.api.DeliveryException: XIServer:CLIENT_RECEIVE_FAILED:&lt;html&gt;&lt;head&gt;&lt;title&gt;SAP Web Application Server Error&lt;/title&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+body { font-family: arial, sans-serif;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;BODY text=&quot;#172972&quot; link=&quot;#808080&quot; vlink=&quot;#808080&quot;
+alink=&quot;#8e236b&quot; bgcolor=white  leftmargin=&quot;0&quot; topmargin=&quot;0&quot;
+marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+&lt;table height=&quot;61&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;
+cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/bluebar_tile.gif&quot;
+height=&quot;30&quot;&gt;&lt;table&gt; &lt;tr&gt; &lt;td width=5&gt;&lt;/td&gt; &lt;td width=20% nowrap&gt;&lt;font face=arial size=&quot;-1&quot; color=white&gt;SAP Web Application Server
+&lt;/font&gt;&lt;/td&gt;&lt;td width=75% align=&quot;right&quot; nowrap&gt;&lt;font face=arial
+size=&quot;-1&quot; color=&quot;white&quot;&gt;&lt;a href=&quot;http://help.sap.com/&quot;&gt;Help
+&lt;/font&gt;&lt;/td&gt;&lt;td width=5% nowrap&gt;&lt;/font&gt;&lt;/td&gt; &lt;/tr&gt;&lt;/table&gt;
+&lt;/td&gt;&lt;td rowspan=2 width=122 height=61 valign=top&gt;&lt;img src=
+&quot;http://wbir105:58000/sap/public/icman/img/theme.jpg&quot; width=122 height=61 border=0 alt=&quot;SAP&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/graybar_tile.jpg&quot; height=&quot;31&quot;&gt;
+&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;table width=800&gt;
+&lt;tr&gt;&lt;td width=50 nowrap&gt;
+&lt;/td&gt;&lt;td&gt;
+&lt;H2&gt;500 Connection timed out&lt;/H2&gt;&lt;br&gt;Connection timed out (-5)
+&lt;br&gt;&lt;hr&gt;
+&lt;table border=&quot;0&quot;&gt;
+&lt;tr&gt;&lt;td&gt;Error:&lt;/td&gt;&lt;td&gt;-5&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Version:&lt;/td&gt;&lt;td&gt;6040&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Component:&lt;/td&gt;&lt;td&gt;ICM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Date/Time:&lt;/td&gt;&lt;td&gt;Mon May 29 13:02:58 2006
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Module:&lt;/td&gt;&lt;td&gt;icxxthr.c&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Line:&lt;/td&gt;&lt;td&gt;2551&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Server:&lt;/td&gt;&lt;td&gt;wbir105_XD0_80&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Detail:&lt;/td&gt;&lt;td&gt;Connection to partner timed out after 60s&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td width=50 nowrap&gt;&lt;/td&gt;
+&lt;td nowrap&gt;&lt;FONT SIZE=-1&gt;&lt;a href=&quot;http://www.sap.com/&quot;&gt;&amp;copy; 2001-2005, SAP AG&lt;/a&gt;&lt;/FONT&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+	at com.sap.aii.adapter.xi.ms.XIEventHandler.onTransmit(XIEventHandler.java:451)
+	at com.sap.aii.af.ra.ms.impl.core.queue.CallConsumer.onMessage(CallConsumer.java:125)
+	at com.sap.aii.af.ra.ms.impl.core.queue.Queue.run(Queue.java:795)
+	at com.sap.engine.frame.core.thread.Task.run(Task.java:64)
+	at com.sap.engine.core.thread.impl5.SingleThread.execute(SingleThread.java:79)
+	at com.sap.engine.core.thread.impl5.SingleThread.run(SingleThread.java:150)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_create_project_request_obBindingStub.mi_create_project_request_ob(Mi_create_project_request_obBindingStub.java:171)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:193)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+2176275 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Erro se comunicando com o SAP
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:211)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+2176275 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+13359653 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002715
+13359668 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+13360200 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+13360200 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+13360965 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002715
+13360965 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+13362215 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002715, 1
+	uniqueName: 24
+	name: Adequação Secadores de Propeno FA-4407
+	description: Adequação Secadores de Propeno FA-4407
+	dtStart, dtFinish: Thu Jan 01 00:00:00 GMT-03:00 2004, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000221, OLEFINAS I, 06
+	idFaseInvestimento, strFaseInvestimentoSAP: 10, Concluído
+	idTipoEmpreend, idTipoEmpreendSAP: 3, 103
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+13362215 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-0624, type: 1
+13362325 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+13362325 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+13362325 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+13426622 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - Erro se comunicando com o SAP: Server Error
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>DeliveryException</code>
+          <text><![CDATA[
+com.sap.aii.af.ra.ms.api.DeliveryException: XIServer:CLIENT_RECEIVE_FAILED:&lt;html&gt;&lt;head&gt;&lt;title&gt;SAP Web Application Server Error&lt;/title&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+body { font-family: arial, sans-serif;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;BODY text=&quot;#172972&quot; link=&quot;#808080&quot; vlink=&quot;#808080&quot;
+alink=&quot;#8e236b&quot; bgcolor=white  leftmargin=&quot;0&quot; topmargin=&quot;0&quot;
+marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+&lt;table height=&quot;61&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;
+cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/bluebar_tile.gif&quot;
+height=&quot;30&quot;&gt;&lt;table&gt; &lt;tr&gt; &lt;td width=5&gt;&lt;/td&gt; &lt;td width=20% nowrap&gt;&lt;font face=arial size=&quot;-1&quot; color=white&gt;SAP Web Application Server
+&lt;/font&gt;&lt;/td&gt;&lt;td width=75% align=&quot;right&quot; nowrap&gt;&lt;font face=arial
+size=&quot;-1&quot; color=&quot;white&quot;&gt;&lt;a href=&quot;http://help.sap.com/&quot;&gt;Help
+&lt;/font&gt;&lt;/td&gt;&lt;td width=5% nowrap&gt;&lt;/font&gt;&lt;/td&gt; &lt;/tr&gt;&lt;/table&gt;
+&lt;/td&gt;&lt;td rowspan=2 width=122 height=61 valign=top&gt;&lt;img src=
+&quot;http://wbir105:58000/sap/public/icman/img/theme.jpg&quot; width=122 height=61 border=0 alt=&quot;SAP&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/graybar_tile.jpg&quot; height=&quot;31&quot;&gt;
+&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;table width=800&gt;
+&lt;tr&gt;&lt;td width=50 nowrap&gt;
+&lt;/td&gt;&lt;td&gt;
+&lt;H2&gt;500 Connection timed out&lt;/H2&gt;&lt;br&gt;Connection timed out (-5)
+&lt;br&gt;&lt;hr&gt;
+&lt;table border=&quot;0&quot;&gt;
+&lt;tr&gt;&lt;td&gt;Error:&lt;/td&gt;&lt;td&gt;-5&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Version:&lt;/td&gt;&lt;td&gt;6040&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Component:&lt;/td&gt;&lt;td&gt;ICM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Date/Time:&lt;/td&gt;&lt;td&gt;Mon May 29 16:10:29 2006
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Module:&lt;/td&gt;&lt;td&gt;icxxthr.c&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Line:&lt;/td&gt;&lt;td&gt;2551&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Server:&lt;/td&gt;&lt;td&gt;wbir105_XD0_80&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Detail:&lt;/td&gt;&lt;td&gt;Connection to partner timed out after 60s&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td width=50 nowrap&gt;&lt;/td&gt;
+&lt;td nowrap&gt;&lt;FONT SIZE=-1&gt;&lt;a href=&quot;http://www.sap.com/&quot;&gt;&amp;copy; 2001-2005, SAP AG&lt;/a&gt;&lt;/FONT&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+	at com.sap.aii.adapter.xi.ms.XIEventHandler.onTransmit(XIEventHandler.java:451)
+	at com.sap.aii.af.ra.ms.impl.core.queue.CallConsumer.onMessage(CallConsumer.java:125)
+	at com.sap.aii.af.ra.ms.impl.core.queue.Queue.run(Queue.java:795)
+	at com.sap.engine.frame.core.thread.Task.run(Task.java:64)
+	at com.sap.engine.core.thread.impl5.SingleThread.execute(SingleThread.java:79)
+	at com.sap.engine.core.thread.impl5.SingleThread.run(SingleThread.java:150)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_create_project_request_obBindingStub.mi_create_project_request_ob(Mi_create_project_request_obBindingStub.java:171)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:193)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+13426622 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Erro se comunicando com o SAP
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:211)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+13426622 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+14329556 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002923
+14329556 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+14329618 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+14329618 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+14329650 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002923
+14329650 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+14329697 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002923, 1
+	uniqueName: 2616
+	name: Adequacao dos Vestiarios da UNIB
+	description: Adequar as instalacoes internas dos vestiários com alto padrao de acabamento e conforto, notadamente no conforto termico com a aplicacao do forro com isolante, pisos renovados, e divisórias especiais nos banheiros.  Elaborado projeto para adequacao do Vestiario Central da UNIB com destaque para acabamentos dos pisos dos banheiros, forro de PVC com manta isolante termico e nova iluminação, alem de divisorias especiais para banheiros.
+	dtStart, dtFinish: Tue Mar 01 00:00:00 GMT-03:00 2005, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000242, AR SERVIÇO, 08
+	idFaseInvestimento, strFaseInvestimentoSAP: 3, FEL3
+	idTipoEmpreend, idTipoEmpreendSAP: 4, 104
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+14329697 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-082616, type: 1
+14329712 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+14329712 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+14329712 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+14394088 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - Erro se comunicando com o SAP: Server Error
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>DeliveryException</code>
+          <text><![CDATA[
+com.sap.aii.af.ra.ms.api.DeliveryException: XIServer:CLIENT_RECEIVE_FAILED:&lt;html&gt;&lt;head&gt;&lt;title&gt;SAP Web Application Server Error&lt;/title&gt;
+&lt;style type=&quot;text/css&quot;&gt;
+body { font-family: arial, sans-serif;}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;BODY text=&quot;#172972&quot; link=&quot;#808080&quot; vlink=&quot;#808080&quot;
+alink=&quot;#8e236b&quot; bgcolor=white  leftmargin=&quot;0&quot; topmargin=&quot;0&quot;
+marginheight=&quot;0&quot; marginwidth=&quot;0&quot;&gt;
+&lt;table height=&quot;61&quot; width=&quot;100%&quot; border=&quot;0&quot; cellspacing=&quot;0&quot;
+cellpadding=&quot;0&quot;&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/bluebar_tile.gif&quot;
+height=&quot;30&quot;&gt;&lt;table&gt; &lt;tr&gt; &lt;td width=5&gt;&lt;/td&gt; &lt;td width=20% nowrap&gt;&lt;font face=arial size=&quot;-1&quot; color=white&gt;SAP Web Application Server
+&lt;/font&gt;&lt;/td&gt;&lt;td width=75% align=&quot;right&quot; nowrap&gt;&lt;font face=arial
+size=&quot;-1&quot; color=&quot;white&quot;&gt;&lt;a href=&quot;http://help.sap.com/&quot;&gt;Help
+&lt;/font&gt;&lt;/td&gt;&lt;td width=5% nowrap&gt;&lt;/font&gt;&lt;/td&gt; &lt;/tr&gt;&lt;/table&gt;
+&lt;/td&gt;&lt;td rowspan=2 width=122 height=61 valign=top&gt;&lt;img src=
+&quot;http://wbir105:58000/sap/public/icman/img/theme.jpg&quot; width=122 height=61 border=0 alt=&quot;SAP&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;tr&gt;&lt;td background=&quot;http://wbir105:58000/sap/public/icman/img/graybar_tile.jpg&quot; height=&quot;31&quot;&gt;
+&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;table width=800&gt;
+&lt;tr&gt;&lt;td width=50 nowrap&gt;
+&lt;/td&gt;&lt;td&gt;
+&lt;H2&gt;500 Connection timed out&lt;/H2&gt;&lt;br&gt;Connection timed out (-5)
+&lt;br&gt;&lt;hr&gt;
+&lt;table border=&quot;0&quot;&gt;
+&lt;tr&gt;&lt;td&gt;Error:&lt;/td&gt;&lt;td&gt;-5&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Version:&lt;/td&gt;&lt;td&gt;6040&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Component:&lt;/td&gt;&lt;td&gt;ICM&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Date/Time:&lt;/td&gt;&lt;td&gt;Mon May 29 16:26:36 2006
+&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Module:&lt;/td&gt;&lt;td&gt;icxxthr.c&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Line:&lt;/td&gt;&lt;td&gt;2551&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Server:&lt;/td&gt;&lt;td&gt;wbir105_XD0_80&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Detail:&lt;/td&gt;&lt;td&gt;Connection to partner timed out after 60s&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;/p&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td width=50 nowrap&gt;&lt;/td&gt;
+&lt;td nowrap&gt;&lt;FONT SIZE=-1&gt;&lt;a href=&quot;http://www.sap.com/&quot;&gt;&amp;copy; 2001-2005, SAP AG&lt;/a&gt;&lt;/FONT&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+	at com.sap.aii.adapter.xi.ms.XIEventHandler.onTransmit(XIEventHandler.java:451)
+	at com.sap.aii.af.ra.ms.impl.core.queue.CallConsumer.onMessage(CallConsumer.java:125)
+	at com.sap.aii.af.ra.ms.impl.core.queue.Queue.run(Queue.java:795)
+	at com.sap.engine.frame.core.thread.Task.run(Task.java:64)
+	at com.sap.engine.core.thread.impl5.SingleThread.execute(SingleThread.java:79)
+	at com.sap.engine.core.thread.impl5.SingleThread.run(SingleThread.java:150)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_create_project_request_obBindingStub.mi_create_project_request_ob(Mi_create_project_request_obBindingStub.java:171)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:193)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+14394088 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Erro se comunicando com o SAP
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:211)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+14394088 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+15155707 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002405
+15155707 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+15155754 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+15155754 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+15155832 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002405
+15155832 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+15156035 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002405, 1
+	uniqueName: 1359
+	name: Adequacao Sistema Exautao CTS
+	description: teste
+	dtStart, dtFinish: Sun Aug 01 00:00:00 GMT-03:00 2004, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000237, CONDENSANTE, 08
+	idFaseInvestimento, strFaseInvestimentoSAP: 10, Concluído
+	idTipoEmpreend, idTipoEmpreendSAP: 4, 104
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+15156035 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-081359, type: 1
+15156051 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+15156051 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+15156051 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - resp: PJ-081359
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Entry Person Responsible = 01056283 does not exist in TCJ04 - check your
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG:  entry
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Plant 08 does not exist
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Termination: Too many errors (more than 10% of methods)
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Data cannot be saved
+15171676 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Inv. program INVEST/2019 does not exist
+15171723 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strPlanCustosWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+15171723 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strUser: admin
+15171723 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strPassword: 4p7ctrum
+15171723 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strServer: vcam0013
+15171723 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - port: 80
+15171848 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - xogCaller.setInput(strXML) = <?xml version="1.0" encoding="UTF-8"?>
+<NikuDataBus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/nikuxog_read.xsd">
+	<Header version="7.0.2.2705" action="read" objectType="financial_planning" externalSource="NIKU"/>
+	<Query>
+		<Filter name="projectID" criteria="EQUALS">1359</Filter>
+<!--
+		<Filter name="forecastType" criteria="EQUALS">FORECAST</Filter >
+		<Filter name="revision" criteria="EQUALS">0</Filter >
+		<Filter name="startPeriod" criteria="EQUALS">02-2001</Filter >
+-->
+	</Query>
+</NikuDataBus>
+
+15171848 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - constructURL:urlPath = http://vcam0013:80/niku/soap
+15171848 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - claritySOAPURL: http://vcam0013:80/niku/soap
+15172254 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - userName: admin, password = 4p7ctrum
+15174332 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - strUser: admin, strPass = 4p7ctrum
+15180036 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strXMLFinancial= <NikuDataBus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/nikuxog_financial_planning.xsd">
+    <Header action="write" externalSource="NIKU"
+        objectType="financial_planning" version="7.5.2.3495"/>
+    <Plans>
+        <Plan currencyType="System Currency" detailType="TRANSCLASS"
+            finishPeriod="2004-08" forecastType="BUDGET"
+            periodType="MONTHLY" project="1359"
+            revisionDescription="APE" startPeriod="2004-08"
+            status="SUBMIT_APPROVE" userName="admin">
+            <Details>
+                <Detail detailName="MATINST">
+                    <PlanData cost="4.323" period="2004-08" revenue="0" units="0"/>
+                </Detail>
+            </Details>
+        </Plan>
+    </Plans>
+    <XOGOutput>
+        <Object type="financial_planning"/>
+        <Status state="SUCCESS"/>
+        <Statistics failureRecords="0" insertedRecords="0"
+            totalNumberOfRecords="1" updatedRecords="0"/>
+        <Records/>
+    </XOGOutput>
+</NikuDataBus>
+
+15180051 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - ndList.getLength() = 1
+15180051 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - ndListPlanData.getLength() = 1
+15180082 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strTXClass = MATINST
+15180082 DEBUG br.com.spectrum.braskem.sap.model.LookupManager 29 May 2006 - strSelect: select cap.name from cmn_lookups look join cmn_captions_nls cap on cap.PK_ID = look.id and  cap.language_code = 'en' and  cap.table_name = 'CMN_LOOKUPS'  where look.lookup_type = ? and  look.lookup_code = ?
+15180161 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strTXClassSAP = 
+15180161 WARN  br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - Transaction Class sem mapeamento para o SAP: MATINST
+15180161 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - 	strDtPlanData:(cost, revenue) = 2004-08:(4.323, 0)
+15180161 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - 	dtPlanData:(cost, revenue) = Sun Aug 01 00:00:00 GMT-03:00 2004:(4323.0, 0.0)
+15180192 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strPlanCustosWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+15180551 ERROR br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - erro
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>ModuleUnknownException</code>
+          <text><![CDATA[
+com.sap.aii.af.mp.module.ModuleException: either no channelID specified or no channel found for the specified party, service, and channel name, MessageServlet(Version $Id: //tc/aii/30_REL/src/_adapters/_soap/java/com/sap/aii/af/mp/soap/web/MessageServlet.java#10 $)
+	at com.sap.aii.af.mp.soap.web.MessageServlet.doPost(MessageServlet.java:380)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:760)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:853)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.runServlet(HttpHandlerImpl.java:390)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.handleRequest(HttpHandlerImpl.java:264)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:347)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:325)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.invokeWebContainer(RequestAnalizer.java:887)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.handle(RequestAnalizer.java:241)
+	at com.sap.engine.services.httpserver.server.Client.handle(Client.java:92)
+	at com.sap.engine.services.httpserver.server.Processor.request(Processor.java:148)
+	at com.sap.engine.core.service630.context.cluster.session.ApplicationSessionMessageListener.process(ApplicationSessionMessageListener.java:33)
+	at com.sap.engine.core.cluster.impl6.session.MessageRunner.run(MessageRunner.java:41)
+	at com.sap.engine.core.thread.impl3.ActionObject.run(ActionObject.java:37)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sap.engine.core.thread.impl3.SingleThread.execute(SingleThread.java:100)
+	at com.sap.engine.core.thread.impl3.SingleThread.run(SingleThread.java:170)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_plan_custos_obBindingStub.mi_plan_custos_ob(Mi_plan_custos_obBindingStub.java:182)
+	at br.com.spectrum.braskem.sap.FinancialExporter.exportLastPlanning(FinancialExporter.java:247)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:201)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+15180551 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Server Error
+	at br.com.spectrum.braskem.sap.FinancialExporter.exportLastPlanning(FinancialExporter.java:272)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:201)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+15180567 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+18435952 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - chamado: forceMonitorByProject(int prjId):prjId = 5002405
+18435968 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - flDeb: D:\Pgm\niku\clarity\webroot\conf\conf.xml
+18436046 DEBUG br.com.r4j.jdbc.configuration.ConnectionPoolPropertyHandler 29 May 2006 - handleProperties:begin
+18436046 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?
+18436233 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - export: 5002405
+18436233 DEBUG br.com.spectrum.braskem.sap.model.ECBProjectManager 29 May 2006 - strSelect: select p.id id, pud.ecb_sap_prj_type type, p.unique_name unique_name, pud.ecb_sap_external_id external_id, p.name name, p.description description, res.id manager_id, res.unique_name manager_unique_name,  prj.prstart prstart, prj.prfinish prfinish,  NVL2(pud.faseinvestestagio, pud.faseinvestestagio, 0) faseinvetimento, NVL2(caps_faseinv.name, caps_faseinv.name, '--') faseinvetimento_sap,  NVL2(pud.ecb_categoria, pud.ecb_categoria, 0) categoria, to_number(NVL2(capssap_cat.name, capssap_cat.name, '0')) categoria_sap,  NVL2(pud.ecb_tipoempreendimen, pud.ecb_tipoempreendimen, 0) empreend, to_number(NVL2(capssap_empreend.name, capssap_empreend.name, '0')) empreend_sap,  NVL2(pud.ecb_respexecucao, pud.ecb_respexecucao, 0) respexecucao, to_number(NVL2(capssap_rexec.name, capssap_rexec.name, '0')) respexecucao_sap,  unit.id obs, obsMap.sap_code obs_sap, obsMap.centro_code centro_sap,  NVL2(pud.ecb_pn, pud.ecb_pn, 0) pn  from srm_projects p join prj_projects prj left join srm_resources res  on prj.manager_id = res.user_id							  join odf_ca_project pud left join cmn_lookups look_faseinv  join cmn_captions_nls caps_faseinv  on caps_faseinv.PK_ID = look_faseinv.id and  caps_faseinv.language_code = 'en' and  caps_faseinv.table_name = 'CMN_LOOKUPS'  on look_faseinv.lookup_type = 'ECB_FASEINVESTIMENTO_ESTAGIO' and  pud.faseinvestestagio = look_faseinv.lookup_enum  left join cmn_lookups looksap_cat  join cmn_captions_nls capssap_cat on capssap_cat.PK_ID = looksap_cat.id and  capssap_cat.language_code = 'en' and  capssap_cat.table_name = 'CMN_LOOKUPS'  on looksap_cat.lookup_type = 'ECB_SAP_CATEGORIA' and  pud.ecb_categoria = looksap_cat.lookup_enum  left join cmn_lookups looksap_rexec join cmn_captions_nls capssap_rexec on capssap_rexec.PK_ID = looksap_rexec.id and  capssap_rexec.language_code = 'en' and  capssap_rexec.table_name = 'CMN_LOOKUPS'  on looksap_rexec.lookup_type = 'ECB_SAP_RESPEXECUCAO' and  pud.ecb_respexecucao = looksap_rexec.lookup_enum  left join cmn_lookups looksap_empreend join cmn_captions_nls capssap_empreend on capssap_empreend.PK_ID = looksap_empreend.id and  capssap_empreend.language_code = 'en' and  capssap_empreend.table_name = 'CMN_LOOKUPS'  on looksap_empreend.lookup_type = 'ECB_SAP_TIPO' and  pud.ecb_tipoempreendimen = looksap_empreend.lookup_enum  on prj.prid = pud.id  left join prj_obs_associations assocPrj join prj_obs_units unit join prj_obs_types obstypes  on unit.type_id = obstypes.id and obstypes.name = ecbSapGetUnObsName()  join prj_obs_associations assocObsMap 	join odf_ca_ecb_sap_obs_estr_inv obsMap 	on assocObsMap.record_id = obsMap.id and 	assocObsMap.table_name = 'ecb_sap_obs_estr_inv' on unit.id = assocObsMap.unit_id on assocPrj.unit_id = unit.id on prj.prid = assocPrj.record_id and assocPrj.table_name = 'SRM_PROJECTS' on p.id = prj.prid and p.is_template = 0 and  p.investment_code = 'PROJECT' and  p.is_program = 0 and p.id = ?
+18436999 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ecbProj: id, type: 5002405, 1
+	uniqueName: 1359
+	name: Adequacao Sistema Exautao CTS
+	description: teste
+	dtStart, dtFinish: Sun Aug 01 00:00:00 GMT-03:00 2004, Sun Dec 11 00:00:00 GMT-03:00 2005
+	idManager, uniqueNameManager: 5039197, 01056283
+	idUnitObs, idUnitObsSAP, centroObsSAP: 5000237, CONDENSANTE, 08
+	idFaseInvestimento, strFaseInvestimentoSAP: 10, Concluído
+	idTipoEmpreend, idTipoEmpreendSAP: 4, 104
+	idCategoria, idCategoriaSAP: 3, 13
+	PN: 2019
+18436999 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - ExternalId: PJ-081359, type: 1
+18437015 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strUserSAP: xiaccess, strPassworSAP: xiaccess
+18437015 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - strProjectWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+18437015 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - insertion
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - resp: PJ-081359
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Entry Person Responsible = 01056283 does not exist in TCJ04 - check your
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG:  entry
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Plant 08 does not exist
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Termination: Too many errors (more than 10% of methods)
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Data cannot be saved
+18457781 DEBUG br.com.spectrum.braskem.sap.ProjectExporter 29 May 2006 - 	MSG: Inv. program INVEST/2019 does not exist
+18457781 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - xogCaller.setInput(strXML) = <?xml version="1.0" encoding="UTF-8"?>
+<NikuDataBus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/nikuxog_read.xsd">
+	<Header version="7.0.2.2705" action="read" objectType="financial_planning" externalSource="NIKU"/>
+	<Query>
+		<Filter name="projectID" criteria="EQUALS">1359</Filter>
+<!--
+		<Filter name="forecastType" criteria="EQUALS">FORECAST</Filter >
+		<Filter name="revision" criteria="EQUALS">0</Filter >
+		<Filter name="startPeriod" criteria="EQUALS">02-2001</Filter >
+-->
+	</Query>
+</NikuDataBus>
+
+18457781 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - constructURL:urlPath = http://vcam0013:80/niku/soap
+18457781 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - claritySOAPURL: http://vcam0013:80/niku/soap
+18457796 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - userName: admin, password = 4p7ctrum
+18458077 DEBUG br.com.spectrum.braskem.infra.XOGCaller 29 May 2006 - strUser: admin, strPass = 4p7ctrum
+18460421 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strXMLFinancial= <NikuDataBus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/nikuxog_financial_planning.xsd">
+    <Header action="write" externalSource="NIKU"
+        objectType="financial_planning" version="7.5.2.3495"/>
+    <Plans>
+        <Plan currencyType="System Currency" detailType="TRANSCLASS"
+            finishPeriod="2004-08" forecastType="BUDGET"
+            periodType="MONTHLY" project="1359"
+            revisionDescription="APE" startPeriod="2004-08"
+            status="SUBMIT_APPROVE" userName="admin">
+            <Details>
+                <Detail detailName="MATINST">
+                    <PlanData cost="4.323" period="2004-08" revenue="0" units="0"/>
+                </Detail>
+            </Details>
+        </Plan>
+    </Plans>
+    <XOGOutput>
+        <Object type="financial_planning"/>
+        <Status state="SUCCESS"/>
+        <Statistics failureRecords="0" insertedRecords="0"
+            totalNumberOfRecords="1" updatedRecords="0"/>
+        <Records/>
+    </XOGOutput>
+</NikuDataBus>
+
+18460437 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - ndList.getLength() = 1
+18460437 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - ndListPlanData.getLength() = 1
+18460437 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strTXClass = MATINST
+18460437 DEBUG br.com.spectrum.braskem.sap.model.LookupManager 29 May 2006 - strSelect: select cap.name from cmn_lookups look join cmn_captions_nls cap on cap.PK_ID = look.id and  cap.language_code = 'en' and  cap.table_name = 'CMN_LOOKUPS'  where look.lookup_type = ? and  look.lookup_code = ?
+18460437 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strTXClassSAP = 
+18460437 WARN  br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - Transaction Class sem mapeamento para o SAP: MATINST
+18460437 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - 	strDtPlanData:(cost, revenue) = 2004-08:(4.323, 0)
+18460453 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - 	dtPlanData:(cost, revenue) = Sun Aug 01 00:00:00 GMT-03:00 2004:(4323.0, 0.0)
+18460468 DEBUG br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - strPlanCustosWSDLLocation: http://xi.braskem.com.br:58000/XISOAPAdapter/MessageServlet
+18460890 ERROR br.com.spectrum.braskem.sap.FinancialExporter 29 May 2006 - erro
+AxisFault
+ faultCode: {http://schemas.xmlsoap.org/soap/envelope/}Server
+ faultSubcode: 
+ faultString: Server Error
+ faultActor: 
+ faultNode: 
+ faultDetail: 
+	{http://sap.com/xi/WebService/xi2.0}SystemError:
+          <context>XIAdapter</context>
+          <code>ModuleUnknownException</code>
+          <text><![CDATA[
+com.sap.aii.af.mp.module.ModuleException: either no channelID specified or no channel found for the specified party, service, and channel name, MessageServlet(Version $Id: //tc/aii/30_REL/src/_adapters/_soap/java/com/sap/aii/af/mp/soap/web/MessageServlet.java#10 $)
+	at com.sap.aii.af.mp.soap.web.MessageServlet.doPost(MessageServlet.java:380)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:760)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:853)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.runServlet(HttpHandlerImpl.java:390)
+	at com.sap.engine.services.servlets_jsp.server.HttpHandlerImpl.handleRequest(HttpHandlerImpl.java:264)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:347)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.startServlet(RequestAnalizer.java:325)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.invokeWebContainer(RequestAnalizer.java:887)
+	at com.sap.engine.services.httpserver.server.RequestAnalizer.handle(RequestAnalizer.java:241)
+	at com.sap.engine.services.httpserver.server.Client.handle(Client.java:92)
+	at com.sap.engine.services.httpserver.server.Processor.request(Processor.java:148)
+	at com.sap.engine.core.service630.context.cluster.session.ApplicationSessionMessageListener.process(ApplicationSessionMessageListener.java:33)
+	at com.sap.engine.core.cluster.impl6.session.MessageRunner.run(MessageRunner.java:41)
+	at com.sap.engine.core.thread.impl3.ActionObject.run(ActionObject.java:37)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at com.sap.engine.core.thread.impl3.SingleThread.execute(SingleThread.java:100)
+	at com.sap.engine.core.thread.impl3.SingleThread.run(SingleThread.java:170)
+          ]]></text>
+        
+
+Server Error
+	at org.apache.axis.message.SOAPFaultBuilder.createFault(SOAPFaultBuilder.java:222)
+	at org.apache.axis.message.SOAPFaultBuilder.endElement(SOAPFaultBuilder.java:129)
+	at org.apache.axis.encoding.DeserializationContext.endElement(DeserializationContext.java:1087)
+	at org.apache.xerces.parsers.AbstractSAXParser.endElement(Unknown Source)
+	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanEndElement(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at javax.xml.parsers.SAXParser.parse(SAXParser.java:345)
+	at org.apache.axis.encoding.DeserializationContext.parse(DeserializationContext.java:227)
+	at org.apache.axis.SOAPPart.getAsSOAPEnvelope(SOAPPart.java:695)
+	at org.apache.axis.Message.getSOAPEnvelope(Message.java:435)
+	at org.apache.axis.transport.http.HTTPSender.readFromSocket(HTTPSender.java:807)
+	at org.apache.axis.transport.http.HTTPSender.invoke(HTTPSender.java:144)
+	at org.apache.axis.strategies.InvocationStrategy.visit(InvocationStrategy.java:32)
+	at org.apache.axis.SimpleChain.doVisiting(SimpleChain.java:118)
+	at org.apache.axis.SimpleChain.invoke(SimpleChain.java:83)
+	at org.apache.axis.client.AxisClient.invokeTransport(AxisClient.java:145)
+	at org.apache.axis.client.AxisClient.invoke(AxisClient.java:281)
+	at org.apache.axis.client.Call.invokeEngine(Call.java:2825)
+	at org.apache.axis.client.Call.invoke(Call.java:2806)
+	at org.apache.axis.client.Call.invoke(Call.java:2482)
+	at org.apache.axis.client.Call.invoke(Call.java:2405)
+	at org.apache.axis.client.Call.invoke(Call.java:1816)
+	at br.com.braskem.xi.clarity.prj.Mi_plan_custos_obBindingStub.mi_plan_custos_ob(Mi_plan_custos_obBindingStub.java:182)
+	at br.com.spectrum.braskem.sap.FinancialExporter.exportLastPlanning(FinancialExporter.java:247)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:201)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+18460906 ERROR br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - error
+br.com.spectrum.braskem.sap.SAPException: Server Error
+	at br.com.spectrum.braskem.sap.FinancialExporter.exportLastPlanning(FinancialExporter.java:272)
+	at br.com.spectrum.braskem.sap.ProjectExporter.exportProject(ProjectExporter.java:201)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.doForceMonitorByProject(ProjectExporterEngine.java:128)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:104)
+	at br.com.spectrum.braskem.sap.ProjectExporterEngine.forceMonitorByProject(ProjectExporterEngine.java:85)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at org.apache.commons.jelly.tags.core.InvokeStaticTag.doTag(InvokeStaticTag.java:125)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at org.apache.commons.jelly.impl.ScriptBlock.run(ScriptBlock.java:95)
+	at org.apache.commons.jelly.TagSupport.invokeBody(TagSupport.java:186)
+	at com.niku.union.gel.tags.ScriptTag.doTag(ScriptTag.java:20)
+	at org.apache.commons.jelly.impl.TagScript.run(TagScript.java:241)
+	at com.niku.union.gel.GELScript.run(GELScript.java:80)
+	at com.niku.union.gel.GELController.invoke(GELController.java:20)
+	at com.niku.bpm.services.ExecuteCustomAction.execute(ExecuteCustomAction.java:117)
+	at com.niku.bpm.services.ProcessEngine.executeStepAction(ProcessEngine.java:120)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.processWaitingForActionSteps(ProcessReadySteps.java:110)
+	at com.niku.bpm.engine.rules.ProcessReadySteps.process(ProcessReadySteps.java:66)
+	at com.niku.bpm.engine.AbstractEngine.execute(AbstractEngine.java:1003)
+	at com.niku.bpm.jobs.ProcessEngineThread.run(ProcessEngineThread.java:118)
+18460906 DEBUG br.com.spectrum.braskem.sap.ProjectExporterEngine 29 May 2006 - strSelect: update odf_ca_project set ecb_sap_exp_ctrl = ? where id = ?

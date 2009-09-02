@@ -1,0 +1,189 @@
+
+
+
+<html>
+
+
+
+
+
+
+
+
+
+
+
+
+<head>
+	<title>Programa&ccedil;&atilde;o 24 Horas</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" href="/tvarca2/css/css.css" type="text/css">
+	<link rel="stylesheet" href="/tvarca2/css/ent-integra.css" type="text/css">
+	<script language="javascript1.1" src="/tvarca2/scripts.jsp"></script>
+
+
+<script language="JavaScript1.2" src="/tvarca2/video/video_window.js">
+
+</script>
+<script>
+//	inicializaTimerAtualizaTCPlayer();
+	var pageNum = 0;
+	var pageCount = 6;
+	var hasNext = true;
+	var hasPrev = false;
+
+	function nextPage()
+	{
+		if (hasNext)
+		{
+			paginator_window.thumbsLoaded = false;
+			pageNum = pageNum + 1;
+			hasPrev = pageNum > 0 ? true : false;
+			hasNext = pageNum < pageCount ? true : false;
+			paginator_window.location.href = '/tvarca2/struts/video_thumbs?rootid=52&assetid=6&page=' + pageNum + '';
+		}
+	}
+
+	function previousPage()
+	{
+		if (hasPrev)
+		{
+			paginator_window.thumbsLoaded = false;
+			pageNum = pageNum - 1;
+			hasPrev = pageNum > 0 ? true : false;
+			hasNext = pageNum < pageCount ? true : false;
+			paginator_window.location.href = '/tvarca2/struts/video_thumbs?rootid=52&assetid=6&page=' + pageNum + '';
+		}
+	}
+
+	var timerLoadThumbs;
+	var oldTitle;
+	function initLoadThumbs()
+	{
+		if (checkIt('msie'))
+			inicializaTimerAtualizaTCPlayer();
+		if (checkIt('msie') && IMediaPlayerX.controls)
+			timerLoadThumbs = setInterval(verifyLoadThumbs, 200)
+	}
+
+</script>
+
+<link rel="stylesheet" href="css/css.css" type="text/css">
+</head>
+
+
+
+
+
+<body  name="video_window" id="video_window" bgcolor="#FFFFFF" text="#000000" link="#000000" vlink="#000000" alink="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<table width="430" border="0" cellspacing="0" cellpadding="0" bgcolor="#EFEFEF">
+  <tr background="/tvarca2/image/ent-vid-dstq-topo.gif"> 
+    <td height="20" background="/tvarca2/image/vidvivo-dstq-topo.gif" width="422">&nbsp;</td>
+  </tr>
+
+  <tr> 
+    <td width="422" valign="top"> 
+      <table width="420" border="0" cellspacing="0" cellpadding="0">
+        
+        
+        
+        
+        
+        <tr> 
+          <td height="368" align="center" valign="bottom" bgcolor="#EFEFEF"> 
+            <table width="391" border="0" cellpadding="0" cellspacing="0" height="360">
+              <tr> 
+                <td  background="/tvarca2/image/video-topo.gif" height="19" colspan="3">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td height="309" width="36" background="/tvarca2/image/video-esq.gif">&nbsp;</td>
+                <td height="309">
+
+<object id="IMediaPlayerX" width="319" height="309" classid="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6"
+				codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701"
+				standby="Carregando...."
+				type="application/x-oleobject" VIEWASTEXT>
+						<PARAM NAME="URL" VALUE=""/>
+						<PARAM NAME="AutoStart" VALUE="true"/>
+						<PARAM NAME="AutoRewind" VALUE="false"/>
+						<PARAM NAME="PlayCount" VALUE="1"/>
+						<PARAM NAME="AutoRewind" VALUE="false"/>
+						<PARAM NAME="Volume" VALUE="5"/>
+						<PARAM NAME="Balance" VALUE="0"/>
+						<PARAM NAME="ShowDisplay" VALUE="false"/>
+
+						<PARAM NAME="ShowGotoBar" VALUE="false"/>
+						<PARAM NAME="ShowStatusBar" VALUE="true"/>
+						<PARAM NAME="ShowAudioControls" VALUE="true"/>
+						<PARAM NAME="ShowControls" VALUE="true"/>
+						<PARAM NAME="ShowPositionControls" VALUE="true"/>
+						<PARAM NAME="ShowTracker" VALUE="true"/>
+	<embed type="application/x-mplayer2" 
+			pluginspage="http://www.microsoft.com/windows/mediaplayer/download/default.asp"
+			id="IMediaPlayerX" name="IMediaPlayerX" width="319" height="309" src="" autostart="1" showstatusbar="1">
+		<PARAM NAME="AutoStart" VALUE="true"/>
+	</embed> 
+
+</object>
+<!--
+				
+				<object classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" id="IMediaPlayerX" name="IMediaPlayerX_name" width="319" height="309">
+                    <param name="Filename" value="/videoad/6_2.asx"/>
+                    <param name="AutoStart" value="true"/>
+                    <param name="AutoRewind" value="false"/>
+                    <param name="PlayCount" value="1"/>
+                    <param name="AutoRewind" value="false"/>
+                    <param name="Volume" value="0"/>
+                    <param name="Balance" value="0"/>
+                    <param name="ShowDisplay" value="false"/>
+                    <param name="ShowGotoBar" value="false"/>
+                    <param name="ShowStatusBar" value="true"/>
+                    <param name="ShowAudioControls" value="true"/>
+                    <param name="ShowControls" value="true"/>
+                    <param name="ShowPositionControls" value="true"/>
+                    <param name="ShowTracker" value="true"/>
+                  </object>
+-->					
+				</td>
+                <td height="309" width="35" background="/tvarca2/image/video-dir.gif">&nbsp;</td>
+              </tr>
+              <tr> 
+                <td background="/tvarca2/image/video-bottom.gif" height="32" colspan="3">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr> 
+          <td height="64" align="center" valign="bottom" bgcolor="#EFEFEF"> 
+            <table width="357" border="0" height="60" cellpadding="0" cellspacing="0">
+              <tr> 
+                
+                <td height="58" align="center"> 
+                  
+                  
+                  <iframe src="/tvarca2/struts/grade_programacao_list_resumida_video?date=14/02/06" title="no title" scrolling="auto" name="grade_resumida" width="360" height="54" align="left" frameborder="0" marginheight="1" marginwidth="0" noresize></iframe> 
+                </td>
+                
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        
+      </table>
+    </td>
+  </tr>
+  <tr> </tr>
+  <tr> 
+    
+  <td colspan="2" height="4" bgcolor="#EFEFEF" rowspan="3" width="450"> 
+    <script>window.resizeTo(460, 515);</script>
+    
+  </td>
+  </tr>
+
+</table>
+</body>
+</html>
+
