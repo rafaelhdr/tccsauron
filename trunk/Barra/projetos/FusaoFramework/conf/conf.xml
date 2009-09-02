@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<property>
+	<!-- Variáveis necessárias para iniciar o log4j.
+	     log4j é o primeiro item a ser carregado
+	-->
+	<log4j>
+		<property-handler>br.com.r4j.configurator.Log4JPropertyHandler</property-handler>
+		<configurator><class name='org.apache.log4j.xml.DOMConfigurator'/></configurator>
+		<log4j-resource type='string_local_path'>./conf/log4j.xml</log4j-resource>
+		<log4j-logs-location type='string_local_path'>./log</log4j-logs-location>
+	</log4j>
+
+	<hsensor>
+		<readings>F:/arquivos/POLI/posgrad/ReBEL-0.2.6/examples/state_estimation/y.mat</readings>
+	</hsensor>
+
+	<robosim>
+
+		<tracker><jump>35</jump></tracker>
+
+		<ini_pos_covar>
+				<x_std_dev_mm>50</x_std_dev_mm>
+				<y_std_dev_mm>50</y_std_dev_mm>
+				<theta_std_dev_graus>3</theta_std_dev_graus>
+<!--
+				<x_std_dev_mm>50</x_std_dev_mm>
+				<y_std_dev_mm>50</y_std_dev_mm>
+				<theta_std_dev_graus>3</theta_std_dev_graus>
+-->
+		</ini_pos_covar>
+		
+		<estimator_provider>
+			<estimators>
+				<estimator_1 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieExtendedKalmanFilter" name="EKF" id="ekf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+				<estimator_2 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieMeasureOnlyFilter" name="Filtro de Observação" id="fobs" inverse_model="true" min_sensors="1" max_sensors="1" dyn_model="dont_use"/>
+				<estimator_3 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieDynamicModelOnlyFilter" name="Filtro de Movimento" id="fmov" inverse_model="false" min_sensors="0" max_sensors="0" dyn_model="required"/>
+				<estimator_4 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieUnscentedKalmanFilter" name="UKF" id="ukf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+				<estimator_5 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieParticleFilter" name="Particle Filter 100" id="pf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required">
+					<resamplingMinFactor>10</resamplingMinFactor>
+					<numberOfParticles>400</numberOfParticles>
+				</estimator_5>
+<!--
+				<estimator_5_1 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieParticleFilter" name="Particle Filter 500" id="pf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required">
+					<resamplingMinFactor>50</resamplingMinFactor>
+					<numberOfParticles>500</numberOfParticles>
+				</estimator_5_1>
+				<estimator_4_2 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieAugmentedUnscentedKalmanFilter" name="Augmented Unscented Kalman Filter" id="ukf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+-->
+				<estimator_4_3 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieSquareRootUnscentedKalmanFilter" name="Square Root Unscented Kalman Filter" id="ukf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+<!--
+				<estimator_4_4 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosiePersistentSigmaPointsUnscentedKalmanFilter" name="Persistent Unscented Kalman Filter" id="ukf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+-->
+				<estimator_4_5 class_name="br.com.r4j.robosim.estimator.impl.AditiveNosieEigenvector3SigmaPointsUnscentedKalmanFilter" name="Eigen Unscented Kalman Filter" id="ukf" inverse_model="false" min_sensors="0" max_sensors="-1" dyn_model="required"/>
+			</estimators>
+
+			<real_world>
+				<sensors>
+					<sonsensor_1 class="br.com.r4j.robosim.realrobot.RealSonarSensor" name="Sonares" id="sonar_real">
+						<sonar_error>20</sonar_error>
+						<max_range>3500</max_range>
+						<beta>30</beta>
+					</sonsensor_1>
+					<sensor_2 class="br.com.r4j.robosim.realrobot.OdoSensor" name="Odometros" id="odometros_real">
+						<phoErrorFront4mm>0.08</phoErrorFront4mm>
+						<thetaError4mm>0.0055</thetaError4mm>
+						<thetaError4Gra>0.035</thetaError4Gra>
+<!--
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.0015</thetaError4mm>
+						<thetaError4Gra>0.035</thetaError4Gra>
+
+						
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.055</thetaError4mm>
+						<thetaError4Gra>0.075</thetaError4Gra>
+
+						<phoErrorFront4mm>0.0</phoErrorFront4mm>
+						<thetaError4mm>0.0</thetaError4mm>
+						<thetaError4Gra>0.00</thetaError4Gra>
+
+						<phoErrorFront4mm>0.3</phoErrorFront4mm>
+						<thetaError4mm>0.1</thetaError4mm>
+						<thetaError4Gra>0.09</thetaError4Gra>
+-->
+					</sensor_2>
+				</sensors>
+				<sensor_models>
+					<sensor_model_1_0 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 1" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>0</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_0>
+					<sensor_model_1_1 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 2" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>1</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_1>
+					<sensor_model_1_2 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 3" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>2</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_2>
+					<sensor_model_1_3 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 4" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>3</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_3>
+					<sensor_model_1_4 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 5" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>4</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_4>
+					<sensor_model_1_5 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 6" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>5</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_5>
+					<sensor_model_1_6 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 7" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>6</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_6>
+					<sensor_model_1_7 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 8" sensor="sonar_real" inverse_model_avail="false">
+						<idx_sonar>7</idx_sonar>
+						<phoErrorFront4mm>0.03</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_7>
+
+					<vlinestate name="vlinestate" sensor="" inverse_model_avail="false">vlinestate</vlinestate>
+					<vlinemap name="vlinemap" sensor="" inverse_model_avail="false">vlinemap</vlinemap>
+				</sensor_models>
+				<dynamic_models>
+					<dynamic_model_1 class="br.com.r4j.robosim.model.OdometryModel" name="Odometros" sensor="odometros_real"/>
+				</dynamic_models>
+				<sensormanangers>
+
+				</sensormanangers>
+			</real_world>
+
+			<sim_world>
+				<sensormanangers>
+				</sensormanangers>
+
+				<sensors>
+					<sensor_1 class="br.com.r4j.robosim.simrobot.SimSonarSensor" name="Sonares" id="sonares">
+						<sonar_error>25</sonar_error>
+						<max_range>3000</max_range>
+						<beta>30</beta>
+					</sensor_1>
+					<sensor_2 class="br.com.r4j.robosim.simrobot.SimOdoSensor" name="Odometros" id="odometros">
+						<phoErrorFront4mm>0.2</phoErrorFront4mm>
+						<thetaError4mm>0.02</thetaError4mm>
+						<thetaError4Gra>0.09</thetaError4Gra>
+					</sensor_2>
+					<sensor_3 class="br.com.r4j.robosim.simrobot.SimRadarSensor" name="Radar" id="radar">
+						<phoErrorMm>50</phoErrorMm>
+						<thetaErrorGra>5</thetaErrorGra>
+						<radar_x>-2000</radar_x>
+						<radar_y>-2000</radar_y>
+					</sensor_3>
+
+				</sensors>
+				<sensor_models>
+					<vlinestate name="vlinestate" sensor="" inverse_model_avail="false">vlinestate</vlinestate>
+					<vlinemap name="vlinemap" sensor="" inverse_model_avail="false">vlinemap</vlinemap>
+
+					<sensor_model_1_0 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 1" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>0</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_0>
+					<sensor_model_1_1 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 2" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>1</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_1>
+					<sensor_model_1_2 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 3" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>2</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_2>
+					<sensor_model_1_3 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 4" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>3</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_3>
+					<sensor_model_1_4 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 5" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>4</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_4>
+					<sensor_model_1_5 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 6" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>5</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_5>
+					<sensor_model_1_6 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 7" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>6</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_6>
+					<sensor_model_1_7 class="br.com.r4j.robosim.model.SonarModel" name="Sonar 8" sensor="sonares" inverse_model_avail="false">
+						<idx_sonar>7</idx_sonar>
+						<phoErrorFront4mm>0.02</phoErrorFront4mm>
+						<thetaError4mm>0.002</thetaError4mm>
+					</sensor_model_1_7>
+					<sensor_model_2 class="br.com.r4j.robosim.model.RadarModel" name="radar" sensor="radar" inverse_model_avail="true"/>
+				</sensor_models>
+				<dynamic_models>
+					<dynamic_model_1 class="br.com.r4j.robosim.model.OdometryModel" name="Odometros" sensor="odometros"/>
+				</dynamic_models>
+			</sim_world>
+		</estimator_provider>
+
+		<readings_vline type='string_local_path'>./data/data_rodada2.log</readings_vline>
+<!--	
+		<readings_vline type='string_local_path'>F:/arquivos/POLI/posgrad/datasets/20060404_controle_sala_1/odometry_vline.data</readings_vline>
+		<readings_vline type='string_local_path'>F:/arquivos/POLI/posgrad/datasets/20060309_imagems_corredor_camera_nova_pctv/imgs_poli1_set1_1/odometry_vline.data</readings_vline>
+-->
+		<readings type='string_local_path'>./data/data_rodada2.log</readings>
+		<realpose type='string_local_path'>./data/data_rodada_1_real_400.log</realpose>
+<!--
+		<realpose type='string_local_path'>C:/arquivos/POLI/simulador/data/data_rodada_1_real_200.log</realpose>
+		<realpose type='string_local_path'>C:/arquivos/POLI/simulador/data/data_rodada_1_real_300.log</realpose>
+		<realpose type='string_local_path'>C:/arquivos/POLI/simulador/data/data_rodada_1_real_400.log</realpose>
+F:\arquivos\POLI\posgrad\datasets\20060527_POLI_fds\data_rodada_1_real.log
+F:\arquivos\POLI\posgrad\datasets\20060527_POLI_fds\data_rodada_1_real.log
+		<readings type='string_local_path'>F:/arquivos/POLI/posgrad/modulos_trabalho/coleta_dados/interface/data.log</readings>
+		<realpose type='string_local_path'>F:/arquivos/POLI/posgrad/modulos_trabalho/coleta_dados/interface/data_errorless.log</realpose>
+		<worldmap type='string_local_path'>./data/worldmap.data</worldmap>
+		<worldmap type='string_local_path'>./data/worldmap_sonar.data</worldmap>
+		<worldmap type='string_local_path'>C:\arquivos\POLI\simulador\data/worldmap.data</worldmap>
+		<actions type='string_local_path'>./data/actions.data</actions>
+		F:\arquivos\POLI\posgrad\datasets\20060527_POLI_fds\data_rodada2.log
+		<actions type='string_local_path'>./data/actions.data</actions>
+-->
+		<worldmap type='string_local_path'>./data/worldmap.data</worldmap>
+		<!--
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_A.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_B.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_C.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_D.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_E.data</worldmap>
+		<worldmap type='string_local_path'>C:/arquivos/POLI/simulador/data/worldmap_minus_F.data</worldmap>
+		-->
+		<actions type='string_local_path'>./data/data_rodada_1_real_actions.data</actions>
+
+	</robosim>
+
+	<odosensor>
+		<phoErrorFront4mm>0.2</phoErrorFront4mm>
+		<thetaError4mm>0.009</thetaError4mm>
+		<thetaError4Gra>0.09</thetaError4Gra>
+<!--
+		<phoErrorFront4mm>0.1</phoErrorFront4mm>
+		<thetaError4mm>0.005</thetaError4mm>
+		<thetaError4Gra>0.05</thetaError4Gra>
+-->
+	</odosensor>
+
+	<vlinemanager>
+<!--
+		<focal-distance>418.5352</focal-distance>
+		<focal-distance>421.5352</focal-distance>
+		<focal-distance>421.5352</focal-distance>
+-->
+		<focal-distance>421.5352</focal-distance>
+		<u-center>159.5</u-center>
+		<v-center>119.5</v-center>
+		<u-count>320</u-count>
+		<v-count>240</v-count>
+
+		<!-- rotação da câmera em cima do robô. -->
+<!--
+		<z-rot-graus>-2.2</z-rot-graus>
+-->
+		<z-rot-graus>-2.2</z-rot-graus>
+
+		<x-offset>190</x-offset>
+		<y-offset>0</y-offset>
+
+		<frames-to-analyze>4</frames-to-analyze>
+		<use-window>true</use-window>
+		<use-direct-window>false</use-direct-window>
+		<direct-window-size>50</direct-window-size>
+		<min-depth>300</min-depth>
+		<hash-treshold>70</hash-treshold>
+		<hash-side-band>4</hash-side-band>
+		<hash-attenuation>0.95</hash-attenuation>
+		<hash-hist-size>1</hash-hist-size>
+		<compensate-illumination>true</compensate-illumination>
+		<simple-match>false</simple-match>
+	</vlinemanager>
+
+</property>
+

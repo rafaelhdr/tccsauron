@@ -5,7 +5,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
 
 	<appender name="sonar" class="org.apache.log4j.RollingFileAppender">
-		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxFileSize" value="8000KB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/sonar.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
@@ -13,8 +13,26 @@
 		</layout>	    
 	</appender>
 
-	<appender name="sonarmodel" class="org.apache.log4j.RollingFileAppender">
+	<appender name="comparisons" class="org.apache.log4j.RollingFileAppender">
 		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/comparisons.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd MMM yyyy} - %m\r\n"/>
+		</layout>	    
+	</appender>
+
+	<appender name="output" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/output.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m\r\n"/>
+		</layout>	    
+	</appender>
+
+	<appender name="sonarmodel" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="8000KB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/sonarmodel.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
@@ -45,7 +63,7 @@
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/ekf.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{dd MMM yyyy} - %m\r\n"/>
+			<param name="ConversionPattern" value="%-4r %d{HH:mm:ss dd MMM yyyy} - %m\r\n"/>
 		</layout>	    
 	</appender>
 
@@ -75,6 +93,14 @@
 			<param name="ConversionPattern" value="%d{dd MMM yyyy} - %m\r\n"/>
 		</layout>	    
 	</appender>
+	<appender name="perukf" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/perukf.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd MMM yyyy} - %m\r\n"/>
+		</layout>	    
+	</appender>
 
 	<appender name="aukf" class="org.apache.log4j.RollingFileAppender">
 		<param name="MaxFileSize" value="4000KB"/>
@@ -86,9 +112,18 @@
 	</appender>
 
 	<appender name="ukf" class="org.apache.log4j.RollingFileAppender">
-		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxFileSize" value="20000KB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/ukf.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-4r %d{HH:mm:ss dd MMM yyyy} - %m\r\n"/>
+		</layout>	    
+	</appender>
+
+	<appender name="eigenukf" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="8000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/eigenukf.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd MMM yyyy} - %m\r\n"/>
 		</layout>	    
@@ -149,7 +184,7 @@
 	</appender>
 
 	<appender name="br.com" class="org.apache.log4j.RollingFileAppender">
-		<param name="MaxFileSize" value="1500KB"/>
+		<param name="MaxFileSize" value="5500KB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/br.com.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
@@ -164,11 +199,11 @@
 	</appender>
 
 	<appender name="RootFileRoller" class="org.apache.log4j.RollingFileAppender">
-		<param name="MaxFileSize" value="6000KB"/>
+		<param name="MaxFileSize" value="20000KB"/>
 		<param name="MaxBackupIndex" value="10"/>
 		<param name="File" value="${log4j-logs-location}/root.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-4r %-5p %d{HH:mm:ss:} - %m\r\n"/>
+			<param name="ConversionPattern" value="%-4r %d{HH:mm:ss} - %m\r\n"/>
 		</layout>
 	</appender>
 
@@ -225,8 +260,21 @@
 		</layout>	    
 	</appender>
 
-	<category name="canvas">
+	<appender name="perfil_gen" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="4000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/perfil_gen.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m\r\n"/>
+		</layout>	    
+	</appender>
+
+	<category name="perfil_gen">
 		<priority value="debug"/>
+		<appender-ref ref="perfil_gen"/>
+	</category>
+	<category name="canvas">
+		<priority value="warn"/>
 		<appender-ref ref="canvas"/>
 	</category>
 	<category name="sonarmodel">
@@ -238,31 +286,31 @@
 		<appender-ref ref="sonar"/>
 	</category>
 	<category name="time">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="time"/>
 	</category>
 	<category name="movfilter">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="movfilter"/>
 	</category>
 	
 	<category name="realpose">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="RealPoseFileRoller"/>
 	</category>
 
 	<category name="odom">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="OdomFileRoller"/>
 	</category>
 
 	<category name="radar">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="RadarFileRoller"/>
 	</category>
 
 	<category name="estimates">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="EstimatesFileRoller"/>
 	</category>
 
@@ -277,15 +325,24 @@
 	</category>
 
 	<category name="ekf_input">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="e"/>
 	</category>
 
 	<category name="ekf_res1">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="ekf_res1"/>
 	</category>
 
+	<category name="perukf">
+		<priority value="warn"/>
+		<appender-ref ref="perukf"/>
+	</category>
+
+	<category name="eigenukf">
+		<priority value="debug"/>
+		<appender-ref ref="eigenukf"/>
+	</category>
 	<category name="ukf">
 		<priority value="debug"/>
 		<appender-ref ref="ukf"/>
@@ -295,37 +352,37 @@
 		<appender-ref ref="srukf"/>
 	</category>
 	<category name="aukf">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="aukf"/>
 	</category>
 
 	<category name="ukf_input">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="ukf_input"/>
 	</category>
 
 	<category name="ukf_res1">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="ukf_res1"/>
 	</category>
 
 	<category name="ukf_covar">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="ukf_covar"/>
 	</category>
 
 	<category name="pf">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="pf"/>
 	</category>
 
 	<category name="pf_input">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="pf_input"/>
 	</category>
 
 	<category name="pf_covar">
-		<priority value="debug"/>
+		<priority value="warn"/>
 		<appender-ref ref="pf_covar"/>
 	</category>
 
@@ -339,9 +396,18 @@
 		<appender-ref ref="TimeFileRoller"/>
 	</category>
 
+	<category name="comparisons">
+		<priority value="debug"/>
+		<appender-ref ref="comparisons"/>
+	</category>
+
+	<category name="output">
+		<priority value="debug"/>
+		<appender-ref ref="output"/>
+	</category>
 
 	<root>
-		<priority value="error"/>
+		<priority value="debug"/>
 		<appender-ref ref="RootRootFileRoller"/>
 	</root>
 
