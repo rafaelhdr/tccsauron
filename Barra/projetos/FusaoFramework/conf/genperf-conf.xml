@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<property>
+	<!-- Variáveis necessárias para iniciar o log4j.
+	     log4j é o primeiro item a ser carregado
+	-->
+	<log4j>
+		<property-handler>br.com.r4j.configurator.Log4JPropertyHandler</property-handler>
+		<configurator><class name='org.apache.log4j.xml.DOMConfigurator'/></configurator>
+		<log4j-resource type='string_local_path'>./conf/genperf-log4j.xml</log4j-resource>
+		<log4j-logs-location type='string_local_path'>./log</log4j-logs-location>
+	</log4j>
+
+	<gen-perfil>
+		<file>.\imgs\12_step_original.bmp</file>
+<!--
+		<file>.\imgs\0_step_original.bmp</file>
+-->
+	</gen-perfil>
+
+</property>

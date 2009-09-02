@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+
+	<appender name="out" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="8000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/out-perfis.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%m\r\n"/>
+		</layout>	    
+	</appender>
+	<appender name="RootFileRoller" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxFileSize" value="20000KB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<param name="File" value="${log4j-logs-location}/root.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-4r %d{HH:mm:ss} - %m\r\n"/>
+		</layout>
+	</appender>
+
+	<category name="out">
+		<priority value="debug"/>
+		<appender-ref ref="out"/>
+	</category>
+	<category name="br">
+		<priority value="debug"/>
+		<appender-ref ref="RootFileRoller"/>
+	</category>
+
+</log4j:configuration>
