@@ -1,0 +1,236 @@
+
+package br.com.r4j.robosim.model;
+
+import java.util.Date;
+import java.util.Random;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import JSci.maths.AbstractDoubleMatrix;
+import JSci.maths.AbstractDoubleSquareMatrix;
+import JSci.maths.AbstractDoubleVector;
+import JSci.maths.DoubleMatrix;
+import JSci.maths.DoubleSquareMatrix;
+import JSci.maths.DoubleVector;
+import br.com.r4j.commons.util.MatrixUtil;
+import br.com.r4j.math.JSciMatrixMath;
+import br.com.r4j.robosim.estimator.DoubleVectorFunction;
+import br.com.r4j.robosim.estimator.DynamicModel;
+import br.com.r4j.robosim.estimator.EKFDoubleVectorFunction;
+import br.com.r4j.robosim.estimator.ParticleCloudPredictorFunction;
+import br.com.r4j.robosim.estimator.Sensor;
+import br.com.r4j.robosim.estimator.UKFDoubleVectorFunction;
+import br.com.r4j.robosim.MapDependent;
+import br.com.r4j.robosim.WorldMap;
+
+
+/** @modelguid {1638027C-02A2-4F7B-840B-17D7DDE3014D} */
+public class OdometryModel implements DynamicModel, DoubleVectorFunction, UKFDoubleVectorFunction, EKFDoubleVectorFunction, ParticleCloudPredictorFunction, MapDependent//, MapDependent
+{
+	/** @modelguid {703BAF61-D40B-4CEC-8D21-234116EE4833} */
+	private static Log log = LogFactory.getLog(OdometryModel.class.getName());
+
+//	private WorldMap map = null;
+
+	/** @modelguid {DFD7C098-A0C8-4865-BD4A-8450F17FD4CB} */
+	private AbstractDoubleMatrix F = null;
+	/** @modelguid {29D08F42-61FF-4413-9FB9-E5460205B505} */
+	private double d = 0;
+	/** @modelguid {0A62A4A6-3B6F-401F-A438-DB0236A5C5BD} */
+	private double dThetaTrans = 0;
+	/** @modelguid {0505EA63-8A67-4FEA-957B-2B41FF226244} */
+	private double dTheta = 0;
+	/** @modelguid {D0B868B2-0AF7-48AC-96FC-0DA7C252B2A0} */
+	private double sin = 0;
+	/** @modelguid {232A9AA1-2C70-4B55-8A80-BAEF5AF09ABB} */
+	private double cos = 0;
+
+	/** @modelguid {AA038EFE-9FC4-4C5C-AA89-C1EAEE4B0D7D} */
+	private Random rnd = null;
+
+	/** @modelguid {6F1704DF-033A-4490-96F5-6912B1EFE5A3} */
+	private WorldMap map = null;
+
+
+	/** @modelguid {A477AE95-0515-4089-8E16-DA14BD368193} */
+	public OdometryModel()
+	{
+		if (log.isDebugEnabled())
+			log.debug("OdometryModel: nova instância");
+		
+		F = new DoubleMatrix(3, 3);
+
+		F.setElement(0, 0, 1);
+		F.setElement(0, 1, 0);
+
+		F.setElement(1, 0, 0);
+		F.setElement(1, 1, 1);
+
+		F.setElement(2, 0, 0);
+		F.setElement(2, 1, 0);
+		F.setElement(2, 2, 1);
+
+		rnd = new Random((new Date()).getTime());
+	}
+
+
+	/** @modelguid {6E98A6B9-F7B2-4F08-A31A-88279B426230} */
+	public String getName()
+	{
+		return "Odometry Model";
+	}
+
+	
+	/** @modelguid {6F0639B7-2539-4B90-96A5-9145A3D71462} */
+	public void setSensor(Sensor sns)
+	{
+	}
+
+/*
+	public void setWorldMap(WorldMap map)
+	{
+		this.map = map;
+	}
+//*/
+
+
+	/** 
+	 * Método invocado quando os dados estiverem disponíveis.
+	 *
+	 * @modelguid {12264C92-0461-48E1-AADC-9B1C6B3B1654}
+	 */
+	public void dataAvailable()
+	{
+		// não precisa fazer nada ...
+	}
+
+
+	/** @modelguid {1EC45EF9-1363-4C72-A555-9E7405503DB4} */
+	public int getDataDimension()
+	{
+		return 3;
+	}
+
+
+	/** @modelguid {F27260AA-F709-473B-89E2-C0AC59ABDF77} */
+	public AbstractDoubleSquareMatrix getModelIncrementalCovariance(AbstractDoubleVector stateBefore, AbstractDoubleVector sensorReadings, AbstractDoubleSquareMatrix sensorCovariance)
+	{
+		if (stateBefore != null)
+		{
+			d = sensorReadings.getComponent(0);
+			dThetaTrans = sensorReadings.getComponent(1);
+			dTheta = sensorReadings.getComponent(2);
+
+			sin = Math.sin(stateBefore.getComponent(2) + dThetaTrans);
+			cos = Math.cos(stateBefore.getComponent(2) + dThetaTrans);
+//			log.debug("stateBefore.getComponent(2) + dThetaTrans: " + (stateBefore.getComponent(2) + dThetaTrans));
+		}
+//		log.debug("d: " + d + ", sin: " + sin + ", cos: " + cos);
+//		log.debug("dThetaTrans: " + dThetaTrans + ", dTheta: " + dTheta);
+
+
+		AbstractDoubleSquareMatrix HF = new DoubleSquareMatrix(3);
+//*		
+		HF.setElement(0, 0, cos); HF.setElement(0, 1, -d*sin); HF.setElement(0, 2, 0);
+		HF.setElement(1, 0, sin); HF.setElement(1, 1, d*cos);  HF.setElement(1, 2,  0);
+		HF.setElement(2, 0, 0);   HF.setElement(2, 1, 0);      HF.setElement(2, 2, 1);
+/*/		
+		HF.setElement(0, 0, cos); HF.setElement(0, 1, 0); HF.setElement(0, 2, 0);
+		HF.setElement(1, 0, sin); HF.setElement(1, 1, 0); HF.setElement(1, 2, 0);
+		HF.setElement(2, 0, 0); HF.setElement(2, 1, 1); HF.setElement(2, 2, 0);
+//*/		
+		AbstractDoubleMatrix HFT = (AbstractDoubleMatrix) HF.transpose();
+		return MatrixUtil.convert2SquareMatrix(HF.multiply(sensorCovariance).multiply(HFT));
+	}
+
+
+	/** @modelguid {17623B41-E6DC-49E8-9BF8-48252C85FEEE} */
+	public AbstractDoubleMatrix getTransitionMatrixJacobian(AbstractDoubleVector state)
+	{
+//		double d = Math.sqrt(dX*dX + dY*dY);
+//		double dThetaMean = state.getElement() - dTheta/2;
+
+		F.setElement(0, 2, -d*sin);
+		F.setElement(1, 2, d*cos);
+
+		return F;
+	}
+
+
+
+	/** @modelguid {0668C287-C472-4F6A-9203-20B2089EB264} */
+	public void calculateNextStateCloud(AbstractDoubleMatrix input, AbstractDoubleMatrix output, AbstractDoubleVector sensorReadings, AbstractDoubleSquareMatrix sensorCovariance)
+	{
+		d = sensorReadings.getComponent(0);
+		dThetaTrans = sensorReadings.getComponent(1);
+		dTheta = sensorReadings.getComponent(2);
+//		log.debug("calculateNextStateCloud:(d, dThetaTrans, dTheta): " + "(" + d + "," + dThetaTrans + "," + dTheta + ")");
+		
+		double detQ = JSciMatrixMath.det(sensorCovariance);
+//		log.debug("detQ: " + detQ);
+		
+		if (detQ == 0 || Double.isNaN(detQ))
+		{
+			double dThetaSin = Math.sin(dTheta), dThetaCos = Math.cos(dTheta);
+			for (int idxInput = 0; idxInput < input.rows(); idxInput++)
+			{
+				sin = Math.sin(input.getElement(idxInput, 2) + dThetaTrans + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(1, 1)));
+				cos = Math.cos(input.getElement(idxInput, 2) + dThetaTrans + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(1, 1)));
+				double xRobot = input.getElement(idxInput, 0) + d*cos + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(0, 0));
+				double yRobot = input.getElement(idxInput, 1) + d*sin + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(0, 0));
+				double tRobot = input.getElement(idxInput, 2) + dTheta + rnd.nextGaussian()*Math.sqrt(sensorCovariance.getElement(2, 2));
+
+				output.setElement(idxInput, 0, xRobot);
+				output.setElement(idxInput, 1, yRobot);
+				output.setElement(idxInput, 2, tRobot);
+			}
+		}
+		else
+		{		
+			AbstractDoubleVector vectWhiteNoise = new DoubleVector(3);
+//			log.debug("calculateNextStateCloud:sensorCovariance: \r\n" + MatrixUtil.toString(sensorCovariance, 9, 4));
+			AbstractDoubleMatrix [] arraySqrt = JSciMatrixMath.choleskyDecompose(sensorCovariance); 
+//			log.debug("calculateNextStateCloud:arraySqrt[0]: \r\n" + MatrixUtil.toString(arraySqrt[0], 9, 4));
+//			log.debug("calculateNextStateCloud:arraySqrt[1]: \r\n" + MatrixUtil.toString(arraySqrt[1], 9, 4));
+
+			double dThetaSin = Math.sin(dTheta), dThetaCos = Math.cos(dTheta);
+			for (int idxInput = 0; idxInput < input.rows(); idxInput++)
+			{
+				JSciMatrixMath.generateUnitaryWhiteNoise(vectWhiteNoise);
+				AbstractDoubleVector vectNoise = arraySqrt[0].multiply(vectWhiteNoise);  
+				sin = Math.sin(input.getElement(idxInput, 2) + dThetaTrans + vectNoise.getComponent(1));
+				cos = Math.cos(input.getElement(idxInput, 2) + dThetaTrans + vectNoise.getComponent(1));
+				double xRobot = input.getElement(idxInput, 0) + d*cos + vectNoise.getComponent(0);
+				double yRobot = input.getElement(idxInput, 1) + d*sin + vectNoise.getComponent(0);
+				double tRobot = input.getElement(idxInput, 2) + dTheta + vectNoise.getComponent(2);
+				output.setElement(idxInput, 0, xRobot);
+				output.setElement(idxInput, 1, yRobot);
+				output.setElement(idxInput, 2, tRobot);
+			}
+//			log.debug("input: \r\n" + MatrixUtil.toString((AbstractDoubleMatrix) input.transpose(), 9, 4));
+//			log.debug("output: \r\n" + MatrixUtil.toString((AbstractDoubleMatrix) output.transpose(), 9, 4));
+		}
+	}
+
+	/** @modelguid {5E4F3C48-A410-4988-A449-F869235ACEF7} */
+	public void setWorldMap(WorldMap map)
+	{
+	}
+
+	/**
+	 * @modelguid {1405C388-80ED-4BF0-A720-FD4B6FF66CCA}
+	 */
+	public void produceResults(AbstractDoubleVector stateBefore, AbstractDoubleVector sensorReadings, AbstractDoubleSquareMatrix stateCovar, AbstractDoubleVector statePredictedOut)
+	{
+	}
+
+	/** @modelguid {E48A8FAF-282C-41ED-A5BA-0D5F2B1AB499} */
+	public void produceResults(AbstractDoubleMatrix sigmaIn, AbstractDoubleVector sensorReadings, AbstractDoubleMatrix sigmaError, AbstractDoubleMatrix sigmaOut, AbstractDoubleSquareMatrix stateCovar)
+	{
+	}
+
+
+
+
+}

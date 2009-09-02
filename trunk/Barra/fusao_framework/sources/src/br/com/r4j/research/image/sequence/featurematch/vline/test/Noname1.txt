@@ -1,0 +1,26 @@
+29863 DEBUG 01:46:36: - ---> meas u: 19.07603890362506
+29863 DEBUG 01:46:36: - ---> meas u: 228.49253731343214
+29863 DEBUG 01:46:36: - ---> meas u: 297.72232645403534
+29863 DEBUG 01:46:36: - ---> meas u: 300.95275590551273
+
+30063 DEBUG 01:46:37: - output:lineProj.getU() = 19.07603890362506, lineMap.arrayTTL[line.mapIdx] = 1
+30063 DEBUG 01:46:37: - output:lineProj.getU() = 228.49253731343214, lineMap.arrayTTL[line.mapIdx] = 1
+30063 DEBUG 01:46:37: - output:lineProj.getU() = 297.72232645403534, lineMap.arrayTTL[line.mapIdx] = 1
+30063 DEBUG 01:46:37: - output:lineProj.getU() = 300.95275590551273, lineMap.arrayTTL[line.mapIdx] = 1
+
+30814 DEBUG 01:46:37: - output:lineProj.getU() = 19.07603890362506, lineMap.arrayTTL[line.mapIdx] = 2
+30814 DEBUG 01:46:37: - output:lineProj.getU() = 228.49253731343214, lineMap.arrayTTL[line.mapIdx] = 2
+30814 DEBUG 01:46:37: - output:lineProj.getU() = 297.72232645403534, lineMap.arrayTTL[line.mapIdx] = 2
+30814 DEBUG 01:46:37: - output:lineProj.getU() = 300.95275590551273, lineMap.arrayTTL[line.mapIdx] = 2
+
+
+31555 DEBUG 01:46:38: - output:lineProj.getU() = 19.07603890362506, lineMap.arrayTTL[line.mapIdx] = 3
+31555 DEBUG 01:46:38: - output:lineProj.getU() = 228.49253731343214, lineMap.arrayTTL[line.mapIdx] = 1
+31555 DEBUG 01:46:38: - output:lineProj.getU() = 297.72232645403534, lineMap.arrayTTL[line.mapIdx] = 3
+31555 DEBUG 01:46:38: - output:lineProj.getU() = 300.95275590551273, lineMap.arrayTTL[line.mapIdx] = 3
+
+32276 DEBUG 01:46:39: - ---> meas u: 16.076038903625076
+32276 DEBUG 01:46:39: - ---> meas u: 230.49253731343214
+32276 DEBUG 01:46:39: - ---> meas u: 300.72232645403534
+32276 DEBUG 01:46:39: - ---> meas u: 303.95275590551273
+

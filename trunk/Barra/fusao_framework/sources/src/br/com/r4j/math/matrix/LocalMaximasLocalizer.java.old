@@ -1,0 +1,101 @@
+package br.com.r4j.math.matrix;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+/**
+ * Localiza num array os pontos de mínimo local.
+ *
+ *
+ * @modelguid {A2FB485B-287D-4798-B67A-E272751D7861}
+ */
+public class LocalMaximasLocalizer
+{
+	/** @modelguid {EE97BF04-CB12-46E9-815D-507968C63B55} */
+	private static Log log = LogFactory.getLog(LocalMaximasLocalizer.class.getName());
+
+	
+	/** @modelguid {6EE81F4C-320D-4184-9E72-AAD60A9C8209} */
+	private int widthWindow = 3;
+	/** @modelguid {31EB8132-FDE3-4EB9-976C-767822C98418} */
+	private int heightWindow = 3;
+
+
+	/** @modelguid {57151BE7-48DA-4F58-9AFE-5F473CA42F81} */
+	public LocalMaximasLocalizer()
+	{
+	}
+
+
+	/** @modelguid {D047316F-2F34-423B-8F7E-5B512975B8EC} */
+	public void setWindowSize(int width, int height)
+	{
+		this.widthWindow = width;
+		this.heightWindow = height;
+	}
+	/** @modelguid {D5E492DC-99CC-4720-BE5D-A7A6CDA514BB} */
+	public int getWindowSize()	{return this.widthWindow*this.heightWindow;}
+
+
+	/**
+	 * @param minValue valor mínimo que um máximo precisa ter para ser considerado.
+	 * @returns uma lista com Points indicando os achados.
+	 * @modelguid {FA6760A7-2411-43DD-9BD2-8EB6B242553E}
+	 */
+	public List findLocalMaximas(int [] arrayMap, int width, int height, int minValue)
+	{
+		ArrayList listMaximas = new ArrayList();
+
+		int cutWidthRight = widthWindow/2;
+		int cutWidthLeft = widthWindow - cutWidthRight;
+		int cutHeightUp = heightWindow/2;
+		int cutHeightBottom = heightWindow - cutHeightUp;
+
+		for (int j = 0; j < height; j++)
+		{
+			for (int i = 0; i < width; i++)
+			{
+				int idxCenter = j*width + i;
+				int higherVal = arrayMap[idxCenter];
+				int idxHigher = idxCenter;
+
+				int windowWidthBegin = i-cutWidthRight >= 0 ? -cutWidthRight : -i;
+				int windowWidthEnd = i+cutWidthLeft <= width ? cutWidthLeft : width-i;
+
+				int windowHeightBegin = j-cutHeightUp >= 0 ? -cutHeightUp : -j;
+				int windowHeightEnd = j+cutHeightBottom <= height ? cutHeightBottom : height-j;
+
+				for (int jj = windowHeightBegin; jj < windowHeightEnd; jj++) for (int ii = windowWidthBegin; ii < windowWidthEnd; ii++)
+				{
+					int indexImg = (j + jj)*width + i + ii;
+					if (indexImg == idxCenter)
+						continue;
+
+					if (higherVal <= arrayMap[indexImg])
+					{
+						higherVal = arrayMap[indexImg];
+						idxHigher = indexImg;
+					}
+				}
+				if (idxHigher != idxCenter && higherVal == arrayMap[idxCenter])
+				{
+//					log.debug("...j = " + j + ", i = " + i);
+					arrayMap[idxCenter]--;
+				}
+				else if (idxHigher == idxCenter && minValue < arrayMap[idxCenter])
+				{
+//					log.debug("!j = " + j + ", i = " + i);
+//					log.debug("arrayMap[idxCenter] = " + arrayMap[idxCenter]);
+					listMaximas.add(new Point(i, j));
+				}
+			}
+		}
+		return listMaximas;
+	}
+}
+

@@ -1,0 +1,315 @@
+package br.com.r4j.robosim.estimator.impl;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import JSci.maths.AbstractDoubleMatrix;
+import JSci.maths.AbstractDoubleSquareMatrix;
+import JSci.maths.AbstractDoubleVector;
+import JSci.maths.DoubleMatrix;
+import JSci.maths.DoubleVector;
+import br.com.r4j.commons.util.MatrixUtil;
+import br.com.r4j.math.JSciMatrixMath;
+import br.com.r4j.robosim.estimator.DynamicModel;
+import br.com.r4j.robosim.estimator.EstimationException;
+import br.com.r4j.robosim.estimator.ModelFilter;
+import br.com.r4j.robosim.estimator.Sensor;
+import br.com.r4j.robosim.estimator.SensorModel;
+import br.com.r4j.robosim.estimator.UKFDoubleVectorFunction;
+
+
+/** @modelguid {0A9FAD87-84F5-4CBB-A839-B82E5B054AE1} */
+public class AditiveNosiePersistentSigmaPointsUnscentedKalmanFilter extends BaseAditiveUnscentedKalmanFilter
+{
+	/** @modelguid {CBB31B7F-9DE0-4430-9F35-3459D33092DD} */
+	private static Log log = LogFactory.getLog(AditiveNosiePersistentSigmaPointsUnscentedKalmanFilter.class.getName());
+	/** @modelguid {1F828254-D381-46FB-A9B3-E4EF54EF7CAB} */
+	private static Log logUKF = LogFactory.getLog("perukf");
+	private static Log logTime = LogFactory.getLog("time");
+
+	
+	private AbstractDoubleMatrix sigmaPredict = null;
+
+	
+	/** @modelguid {59C4BF2B-5379-4C65-AB3C-A3B0A07BB631} */
+	public AditiveNosiePersistentSigmaPointsUnscentedKalmanFilter()
+	{
+		super();
+		this.logEstimator = logUKF;
+	}
+
+
+	/** @modelguid {0A54C4AE-3315-421D-89C6-D0816F0A2A19} */
+	public String getName()
+	{
+		return "Filtro de Kalman Unscented Persistente";
+	}
+
+	
+	/** @modelguid {9409875A-2998-4017-A72A-D9B3C657C17A} */
+	protected void doEstimate()
+	{
+		if (logEstimator.isDebugEnabled())
+		{
+			logEstimator.debug("------------------------------ NOVA ITER: " + this.getIerationCount());
+			logEstimator.debug("stateEstimate: \r\n" + MatrixUtil.toString(stateEstimate, 9, 7) + "\r\nstateCovarEstimate: \r\n" + MatrixUtil.toString(stateCovarEstimate, 9, 10));
+		}
+
+		this.setModifiers(stateEstimate.dimension());
+
+		// predição
+		AbstractDoubleVector vectDynReadings = new DoubleVector(dynModelSensor.getDataDimension());
+		dynModelSensor.getData(vectDynReadings, dynModel);
+		AbstractDoubleSquareMatrix snsQ = dynModelSensor.getDataCovariance(dynModel);
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("snsQ: \r\n" + MatrixUtil.toString(snsQ, 9, 7));
+		AbstractDoubleSquareMatrix Q = dynModel.getModelIncrementalCovariance(stateEstimate, vectDynReadings, dynModelSensor.getDataCovariance(dynModel));
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("vectDynReadings: \r\n" + MatrixUtil.toString(vectDynReadings, 9, 7) + "\r\nQ: \r\n" + MatrixUtil.toString(Q, 9, 7));
+
+		// Calcula os sigmas iniciais
+		double detQ = JSciMatrixMath.det(Q);
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("detQ: " + detQ);
+
+		if (sigmaPredict == null)
+			sigmaPredict = this.generateSigmaPoints(stateEstimate, stateCovarEstimate, gamma);
+
+		if (sigmaPredict != null)
+		{
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("sigmaPredict: \r\n" + MatrixUtil.toString(sigmaPredict, 8, 5));
+		}
+		else
+		{
+			logEstimator.warn("sigmaPredict: null!");
+			throw new EstimationException("UKF: sigmaPredict: null. Não pode estimar.");
+		}
+
+		// Calcula os sigmas pela tranformação de estado
+		AbstractDoubleMatrix sigmaStatei_iminus1 = new DoubleMatrix(sigmaPredict.rows(), sigmaPredict.columns());
+		stateFunction.produceResults(sigmaPredict, 
+									vectDynReadings, 
+									new DoubleMatrix(sigmaPredict.rows(), sigmaPredict.columns()), 
+									sigmaStatei_iminus1, 
+									this.getCovariance());
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("sigmaStatei_iminus1: \r\n" + MatrixUtil.toString(sigmaStatei_iminus1, 8, 5));
+
+		this.addSigmaPointsPredicted(sigmaStatei_iminus1);
+
+		// Persiste os sigma-points ...
+		sigmaPredict = sigmaStatei_iminus1;
+
+		// 2 - Calcula os vetores ...
+		AbstractDoubleVector statei_iminus1 = this.calculateMean(sigmaStatei_iminus1, w0state, wi);
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("statei_iminus1: \r\n" + MatrixUtil.toString(statei_iminus1, 9, 7));
+		AbstractDoubleSquareMatrix Pi_iminus1 = this.calculateCov(sigmaStatei_iminus1, statei_iminus1, w0cov, wi);
+		Pi_iminus1 = Pi_iminus1.add(Q);
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("Pi_iminus1: \r\n" + MatrixUtil.toString(Pi_iminus1, 9, 4));
+		double det = JSciMatrixMath.det(Pi_iminus1);
+		if (logEstimator.isDebugEnabled())
+			logEstimator.debug("Pi_iminus1.isSymmetric(): " + Pi_iminus1.isSymmetric() + ", Pi_iminus1.det(): " + det);
+		this.setPredictedState(statei_iminus1, Pi_iminus1);
+
+/*
+	  	AbstractDoubleMatrix [] arrayQSqrts = JSciMatrixMath.choleskyDecompose(Q);
+		logEstimator.debug("arrayQSqrts[0]: \r\n" + MatrixUtil.toString(arrayQSqrts[0], 9, 4));
+		AbstractDoubleMatrix sigmaStatei_iminus1_meanless = MatrixUtil.colSubtract(sigmaStatei_iminus1, statei_iminus1);
+		logEstimator.debug("sigmaStatei_iminus1_meanless: \r\n" + MatrixUtil.toString(sigmaStatei_iminus1_meanless, 9, 4));
+  		AbstractDoubleMatrix sigmaStatei_iminus1_multiplied = sigmaStatei_iminus1_meanless.scalarMultiply(Math.sqrt(wi));
+		logEstimator.debug("sigmaStatei_iminus1_multiplied: \r\n" + MatrixUtil.toString(sigmaStatei_iminus1_multiplied, 9, 4));
+		AbstractDoubleMatrix sigmaStatei_iminus1_extended = MatrixUtil.colsAppend(
+														sigmaStatei_iminus1_multiplied, 
+														arrayQSqrts[0]);
+		for (int i = 0; i < sigmaStatei_iminus1_extended.rows(); i++)
+			sigmaStatei_iminus1_extended.setElement(i, 0, 0);
+		AbstractDoubleMatrix [] arrayQR = JSciMatrixMath.qrDecompose((AbstractDoubleMatrix) sigmaStatei_iminus1_extended.transpose());
+		AbstractDoubleMatrix [] arraySqrts = JSciMatrixMath.choleskyDecompose(Pi_iminus1);
+
+		logEstimator.debug("sigmaStatei_iminus1_extended: \r\n" + MatrixUtil.toString(sigmaStatei_iminus1_extended, 9, 4));
+		logEstimator.debug("arrayQR[0]: \r\n" + MatrixUtil.toString(arrayQR[0], 9, 4));
+		logEstimator.debug("arrayQR[1]: \r\n" + MatrixUtil.toString(arrayQR[1], 9, 4));
+		logEstimator.debug("arraySqrts[0]: \r\n" + MatrixUtil.toString(arraySqrts[0], 9, 4));
+		logEstimator.debug("arraySqrts[1]: \r\n" + MatrixUtil.toString(arraySqrts[1], 9, 4));
+//*/														
+		// Verifica quais sensores possuem observacões.
+		ArrayList listObsObjects = new ArrayList();  
+		Iterator itSensModels = listSensModels.iterator();
+		Iterator itSens = listSens.iterator();
+		while (itSensModels.hasNext())
+		{
+			SensorModel snsModel = (SensorModel) itSensModels.next();
+			Sensor sns = (Sensor) itSens.next();
+			UKFDoubleVectorFunction snsFunc = (UKFDoubleVectorFunction) snsModel;
+		
+			boolean bResults = sns.hasNewData(snsModel);
+			if (bResults)
+			{
+				AbstractDoubleVector vectReadings = new DoubleVector(sns.getDataDimension());
+				sns.getData(vectReadings, snsModel);
+				AbstractDoubleSquareMatrix snsR = sns.getDataCovariance(snsModel);
+				bResults = snsFunc.canProduceObservations(vectReadings, snsR, statei_iminus1, Pi_iminus1);
+				if (bResults)
+				{
+					AbstractDoubleVector vectObservations = snsModel.getObservation(vectReadings);
+					AbstractDoubleSquareMatrix R = snsModel.getObservationCovariance(snsR);
+					if (logEstimator.isDebugEnabled())
+						logEstimator.debug("R: \r\n" + MatrixUtil.toString(R, 9, 4));
+							
+					listObsObjects.add(snsModel);
+					listObsObjects.add(vectObservations);
+					listObsObjects.add(R);
+				}
+			}
+		}
+
+
+		boolean bFiltered = false;
+		Iterator itObsObjects = listObsObjects.iterator();
+		if (!itObsObjects.hasNext())
+			this.addSigmaPointsFiltered(this.generateSigmaPoints(statei_iminus1, Pi_iminus1, gamma));
+		while (itObsObjects.hasNext())
+		{
+			SensorModel snsModel = (SensorModel) itObsObjects.next();
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("snsModel.getName(): " + snsModel.getName());
+			UKFDoubleVectorFunction snsFunc = (UKFDoubleVectorFunction) snsModel;
+			AbstractDoubleVector vectObservations = (AbstractDoubleVector) itObsObjects.next();
+			AbstractDoubleSquareMatrix R = (AbstractDoubleSquareMatrix) itObsObjects.next();
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("R: \r\n" + MatrixUtil.toString(R, 8, 5));
+			
+			// Calcula os sigmas pela tranformação de medição
+			DoubleMatrix obsPredSigma = new DoubleMatrix(vectObservations.dimension(), sigmaStatei_iminus1.columns());
+			snsFunc.produceResults(sigmaStatei_iminus1, 
+									statei_iminus1, 
+									new DoubleMatrix(vectObservations.dimension(), 
+									sigmaStatei_iminus1.columns()), 
+									obsPredSigma, 
+									Pi_iminus1);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("obsPredSigma: \r\n" + MatrixUtil.toString(obsPredSigma, 8, 5));
+
+			AbstractDoubleVector obsPred = this.calculateMean(obsPredSigma, w0state, wi);
+
+			AbstractDoubleSquareMatrix pYY = this.calculateCov(obsPredSigma, obsPred, w0cov, wi);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("pYY: \r\n" + MatrixUtil.toString(pYY, 9, 4));
+			pYY = pYY.add(R);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("pYY.add(R): \r\n" + MatrixUtil.toString(pYY, 9, 4));
+
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("statei_iminus1: \r\n" + MatrixUtil.toString(statei_iminus1, 9, 4));
+			AbstractDoubleMatrix pXY = this.calculateCov(sigmaStatei_iminus1, statei_iminus1, obsPredSigma, obsPred, w0cov, wi);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("pXY: \r\n" + MatrixUtil.toString(pXY, 9, 4));
+
+			AbstractDoubleSquareMatrix pYYInv = pYY.inverse();
+			AbstractDoubleMatrix gain = pXY.multiply(pYYInv);
+			if (logEstimator.isDebugEnabled())
+			{
+				logEstimator.debug("gain: \r\n" + MatrixUtil.toString(gain, 9, 4));
+				logEstimator.debug("vectObservations: \r\n" + MatrixUtil.toString(vectObservations, 9, 4));
+				logEstimator.debug("obsPred: \r\n" + MatrixUtil.toString(obsPred, 9, 4));
+			}
+			AbstractDoubleVector obsDiff = vectObservations.subtract(obsPred);
+			AbstractDoubleVector stateGain =  gain.multiply(obsDiff);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("stateGain: \r\n" + MatrixUtil.toString(stateGain, 9, 4));
+			AbstractDoubleVector statei_i = statei_iminus1.add(stateGain);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("statei_i corr: \r\n" + MatrixUtil.toString(statei_i, 9, 4));
+
+			AbstractDoubleSquareMatrix pXXcorrSim = (AbstractDoubleSquareMatrix) gain.multiply(pYY).multiply((AbstractDoubleMatrix) gain.transpose());
+			if (logEstimator.isDebugEnabled())
+			{
+				logEstimator.debug("pXXcorrSim: \r\n" + MatrixUtil.toString(pXXcorrSim, 9, 7));
+				logEstimator.debug("JSciMatrixMath.det(pXXcorrSim): " + JSciMatrixMath.det(pXXcorrSim));
+			}
+
+			AbstractDoubleSquareMatrix Pi_i = (AbstractDoubleSquareMatrix) Pi_iminus1.subtract(pXXcorrSim);
+			double detPi_i = JSciMatrixMath.det(Pi_i);
+			if (logEstimator.isDebugEnabled())
+				logEstimator.debug("detPi_i: " + detPi_i);
+			
+			if (detPi_i < 0)
+			{
+				double alpha = 0.85;
+				if (logEstimator.isDebugEnabled())
+					logEstimator.debug("alpha: " + alpha);
+
+				AbstractDoubleSquareMatrix pXXcorrSimSim = pXXcorrSim;
+				int counter = 0;
+				while (detPi_i < 0 && counter++ < 10)
+				{
+					pXXcorrSimSim = (AbstractDoubleSquareMatrix) pXXcorrSimSim.scalarMultiply(alpha);
+					if (logEstimator.isDebugEnabled())
+						logEstimator.debug("pXXcorrSimSim: \r\n" + MatrixUtil.toString(pXXcorrSimSim, 9, 7));
+					Pi_i = (AbstractDoubleSquareMatrix) Pi_iminus1.subtract(pXXcorrSimSim);
+					if (logEstimator.isDebugEnabled())
+						logEstimator.debug("Pi_i: \r\n" + MatrixUtil.toString(Pi_i, 9, 16));
+					detPi_i = JSciMatrixMath.det(Pi_i);
+					if (logEstimator.isDebugEnabled())
+						logEstimator.debug("detPi_i again: " + detPi_i);
+				}
+
+				if (detPi_i > 0)
+				{
+					bFiltered = true;
+					statei_iminus1 = statei_i; Pi_iminus1 = Pi_i;
+					this.setState(statei_i, Pi_i);
+				}
+				else
+				{
+					this.setState(statei_i, Pi_iminus1);
+					statei_iminus1 = statei_i;
+				}
+				if (!itObsObjects.hasNext())
+					this.addSigmaPointsFiltered(this.generateSigmaPoints(statei_i, Pi_i, gamma));
+			}
+			else
+			{
+				bFiltered = true;
+				if (!itObsObjects.hasNext())
+					this.addSigmaPointsFiltered(this.generateSigmaPoints(statei_i, Pi_i, gamma));
+				this.setState(statei_i, Pi_i);
+				statei_iminus1 = statei_i; Pi_iminus1 = Pi_i;
+			}
+		}
+		if (bFiltered)
+			sigmaPredict = null;
+	}
+
+
+	/** @modelguid {28EDE538-1E1E-4E26-B007-25E768D7A7B4} */
+	public static ModelFilter getModelFilter()
+	{
+		return new PerUKFModelFilter();
+	}
+}
+
+
+/** @modelguid {E06275EB-3BEB-41E3-BC2B-A1C921E04C76} */
+class PerUKFModelFilter implements ModelFilter
+{
+	/** @modelguid {830CE287-6146-49AB-B9D4-914A766FDBC3} */
+	public boolean canUseDynamicModel(DynamicModel dynModel)
+	{
+		return (dynModel instanceof UKFDoubleVectorFunction);
+	}
+
+
+	/** @modelguid {59102E8A-F7D7-4D39-963A-C13B1073A7AD} */
+	public boolean canUseSensorModel(SensorModel sensModel)
+	{
+		return (sensModel instanceof UKFDoubleVectorFunction);
+	}
+}
+

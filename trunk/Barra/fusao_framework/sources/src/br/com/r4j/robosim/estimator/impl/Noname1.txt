@@ -1,0 +1,439 @@
+insert into ecbSapObsDePara (clarity_unit_id, sap_unit_code) values (
+
+
+
+ 
+***** SCRIPT START :  Session:ca9h2-NIKU:1   26-mai-06  6:00:43 pm **** 
+ 
+SCRIPT File: UnNamed1
+ 
+Starting from line number : 1
+ 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000263, 'ADMINISTRATIVO POLIOLEFINAS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000246, 'ADMINISTRATIVO UNIB','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000224, 'AROMÁTICOS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000225, 'AROMÁTICOS I','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000227, 'AROMÁTICOS II','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000249, 'BRASKEM CONTROLADORA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+call updateObjectOBS2('07','BA01',5000217, 'BUTADIENO I & II','22732201','12732003')
+call updateObjectOBS2('07','BA01',5000217, 'BUTADIENO I & II','22732201','12732003')
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000310, 'COMPETITIV. EMPRESARIAL','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000297, 'CPL','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000267, 'CS AL','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000280, 'CS BA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000261, 'DMY','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000313, 'ENGENHARIA E AUTOMAÇÃO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000306, 'FINANÇAS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000234, 'IESE','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000316, 'JURÍDICO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000266, 'MINERAÇÃO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000265, 'MINERAÇÃO VINÍLICOS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+call updateObjectOBS2('07','BA01',5000230, 'MTBE I & II','22732301','12732004')
+call updateObjectOBS2('07','BA01',5000230, 'MTBE I & II','22732301','12732004')
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000219, 'OLEFINAS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000220, 'OLEFINAS I UNIDADE INDUSTRIAL','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000222, 'OLEFINAS II UNIDADE INDUSTRIAL','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000251, 'PE RS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000255, 'PESSOAS E ORGANIZAÇÃO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000308, 'PET POLIOLEFINAS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000262, 'PE1 BA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000260, 'PE2 BA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000309, 'PLANEJAMENTO ESTRATÉGICO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000247, 'POLIOLEFINAS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000248, 'PP RS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000305, 'PRESIDÊNCIA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000315, 'PROGRAMA BRASKEM +','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000294, 'PVC AL VINÍLICOS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000291, 'PVC BA VINÍLICOS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000289, 'PVC SP VINÍLICOS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000307, 'RELAÇÕES INSTITUCIONAIS','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000311, 'SISTEMAS DE INFORMAÇÃO','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000314, 'SSMA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000312, 'SUPRIMENTOS E LOGÍSTICA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000218, 'UNIB','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000243, 'UTA','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+ 
+call updateObjectOBS2('NCOD','NCOD',5000235, 'UTE','NCOD','NCOD')
+      *
+ORA-01722: invalid number ORA-06512: at "NIKU.UPDATEOBJECTOBS2", line 16 
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+Processing ... 
+Statement processed
+ 
+***** SCRIPT END :  26-mai-06  6:00:58 pm **** 

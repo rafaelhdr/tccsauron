@@ -1,0 +1,89 @@
+package br.com.r4j.research.image.sequence.featurematch.vline.test;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+import java.io.File;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import java.awt.image.*;
+import javax.swing.*;
+
+import br.com.r4j.image.*;
+import br.com.r4j.commons.util.*;
+import br.com.r4j.image.operation.threebandpacked.*;
+import br.com.r4j.image.operation.threebandpacked.morphology.*;
+import br.com.r4j.image.operation.threebandpacked.colorspace.*;
+import br.com.r4j.math.*;
+import br.com.r4j.research.image.sequence.featurematch.vline.*;
+
+import br.com.r4j.research.*;
+import br.com.r4j.research.vline.*;
+
+import br.com.r4j.configurator.*;
+
+import br.com.r4j.gui.*;
+import br.com.r4j.gui.swing.*;
+import br.com.r4j.research.image.sequence.*;
+import br.com.r4j.research.pose2destimation.*;
+
+import JSci.maths.*;
+import br.com.r4j.jmr.test.*;
+
+
+
+public class VideoFileAcquisitorRunner
+{
+	private static Log log = LogFactory.getLog(VideoFileAcquisitorRunner.class.getName());
+
+
+	public static void main(String [] args)
+	{
+		try
+		{
+			if (args.length > 0)
+				PlainConfigurator.createConfigurator(new File(args[0]));
+			else
+				PlainConfigurator.createConfigurator(new File("conf/conf.xml"));
+		}
+		catch (ConfiguratorException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		PropertiesHolder propHldr = Configurator.getPropsHolder();
+
+
+		RespostaVaziaPoseGrabber poseGrbr = new RespostaVaziaPoseGrabber();
+		poseGrbr.initEngine();
+
+		VideoFileAcquisitor camAcq = new VideoFileAcquisitor();
+		camAcq.setDir2Save(propHldr.getStringProperty("img-acq-from-vid/dir_img"));
+		camAcq.setVideoFile(propHldr.getStringProperty("img-acq-from-vid/file_vid"));
+		camAcq.setPoseGrabber(poseGrbr);
+
+
+		if (!camAcq.initEngine())
+		{
+			return;
+		}
+	
+		poseGrbr.runEngine();
+		camAcq.runEngine();
+
+		InputDialogGenerator diagGen = new InputDialogGenerator(null);
+		diagGen.setTitle("Clique para parar!");
+		boolean bOK = diagGen.getInput();
+		if (bOK)
+		{
+		}
+		poseGrbr.stopEngine();
+		camAcq.stopEngine();
+	}
+}
