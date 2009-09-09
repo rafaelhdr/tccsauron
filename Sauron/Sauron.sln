@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Vision", "Vision\Vision.vcproj", "{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VisionTests", "VisionTests\VisionTests.vcproj", "{8A289A9B-0037-4F70-8145-922EC4A2F7A3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49} = {2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}.Debug|Win32.Build.0 = Debug|Win32
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}.Release|Win32.ActiveCfg = Release|Win32
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}.Release|Win32.Build.0 = Release|Win32
+		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Debug|Win32.Build.0 = Debug|Win32
+		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Release|Win32.ActiveCfg = Release|Win32
+		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
