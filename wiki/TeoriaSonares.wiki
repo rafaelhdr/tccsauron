@@ -1,6 +1,8 @@
 #summary Modelo de observação dos sonares
 #labels Featured
 
+*<wiki:toc max_depth="4">*
+
 = Modelo de observação: sonares =
 
 O principal sensor do Pioneer 2DX é um anel de oito sonares
