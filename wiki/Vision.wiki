@@ -1,4 +1,5 @@
 #summary Descrição do funcionamento do sistema de visão
+#labels Featured
 
 *<wiki:toc max_depth="2">*
 
