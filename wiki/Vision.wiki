@@ -18,6 +18,8 @@ A idéia básica da convolução de imagens, que é discreta e bidimensional, é
 
   [http://images.gamedev.net/features/programming/imageproc/image051.jpg]
 
+(Note que o ponto (0,0) é o canto superior esquerdo da imagem.)
+
   == Implementação ==
 
 _Todo o algoritmo de convolução está centralizado na classe [http://code.google.com/p/tccsauron/source/browse/trunk/Sauron/Vision/VerticalLineConvolutionOperator.h VerticalLineConvolutionOperator]_
