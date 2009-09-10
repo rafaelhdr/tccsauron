@@ -1,0 +1,59 @@
+#summary Descrição do funcionamento do sistema de visão
+
+*<wiki:toc max_depth="2">*
+
+= Introdução =
+
+Neste documento será descrito o funcionamento atual do sistema de visão, abordando tanto os aspectos de implementação e funcionamento geral quanto os conceitos gerais envolvidos.
+
+= Convolução =
+
+A convolução é aplicada sobre as imagens para que seja possível ressaltar os cantos de objetos contidos na imagem, de maneira análoga ao Filtro de Sobel, uma vez que a característica visual de interesse são retas verticais. 
+
+  == Conceitos ==
+A idéia básica da convolução de imagens, que é discreta e bidimensional, é a de uma janela que é deslizada sobre a imagem. O valor do pixel resultante é igual à soma ponderada dos pixels da imagem original que se encontram dentro da janela. Os pesos são os valores do filtro que foram estabelecidos para cada um dos pixels da janela. Tal janela é denomindada *kernel* da convolução.
+
+  [http://images.gamedev.net/features/programming/imageproc/image050.gif]
+
+  [http://images.gamedev.net/features/programming/imageproc/image051.jpg]
+
+  == Implementação ==
+
+_Todo o algoritmo de convolução está centralizado na classe [http://code.google.com/p/tccsauron/source/browse/trunk/Sauron/Vision/VerticalLineConvolutionOperator.h VerticalLineConvolutionOperator]_
+
+O primeiro passo é aplicar um filtro de *blur* visando remover o máximo de ruído possível da image obtida da câmera. Em seguida, os valores dos pixel são reduzidos por um fator _s_. Tal redução se mostrou necessária para evitar a saturação nos níveis de intensidade dos pixels que serão ressaltados pelo filtro, o que dificultaria e reduziria a qualidade do algoritmo de detecção de projeções verticais.
+Por fim, aplica-se a convolução sobre a imagem pré-processada, resultando em uma nova imagem, na qual as linhas vericais da imagem estarão demarcadas.
+
+Para ganhos de desempenho, a convolução é feita somente em tons de cinza, exigindo um imagem entrada previamente convertida.
+
+= Detecção de Projeções =
+
+*TODO*
+
+= Rastreamento =
+
+*TODO*
+
+= Próximos Passos =
+
+*TODO*
+
+= Glossário =
+
+  * *Kernel*
+    Matriz que contém os valores que serão empregados na convolução de imagens.
+
+  * *Marco* 
+    Reta vertical que possui uma representação no mapa
+
+  * *Projeção*
+    Representação de uma reta vertical no plano de projeção da câmera
+
+  * *Reta vertical*
+    Elemento físico vertical.
+
+= Referências =
+
+  * http://en.wikipedia.org/wiki/Convolution
+  * http://en.wikipedia.org/wiki/Sobel_operator
+  * http://www.gamedev.net/reference/programming/features/imageproc/page2.asp
