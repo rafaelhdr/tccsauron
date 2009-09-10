@@ -27,9 +27,19 @@ Por fim, aplica-se a convolução sobre a imagem pré-processada, resultando em 
 
 Para ganhos de desempenho, a convolução é feita somente em tons de cinza, exigindo um imagem entrada previamente convertida.
 
-= Detecção de Projeções =
+= Detecção de Projeções Verticais =
 
-*TODO*
+A detecção de projeções é feita sobre a imagem em tons de cinza resultante da convolução do filtro para linhas verticais. 
+
+Antes de iniciar a detecção, aplica-se um procedimento que filtra pixels que não são máximos locais, isto é, dada uma pequena porção da imagem, a intensidade não é a maior dessa região. Já que a tendência do filtro de convolução usado é marcar os pixels mais perto do centro de uma linha vertical com valores maiores que os pixels periféricos da mesma linha, o procedimento aplicado faz com que uma possível projeção, antes representada na imagem como uma linha relativamente grossa (vários pixels), passe a ter largura de um único pixel.
+
+Feito isso, a detecção é iniciada. Ela inicia-se em um estado no qual a imagem é varrida, da esquerda para a direita, de cima para baixo, buscando um pixel que tenha intensidade maior do que um limiar de início. Quando um pixel atende a esse requisito, passa-se a um estado secundário. 
+
+Neste novo estado, supoe-se que o pixel acima do limiar é um ponto de um nova projeção. A partir dele, a imagem passa a ser varrida verticalmente, da seguinte forma: compara-se o valor dos três pixels vizinhos que estão abaixo do pixel recém-inserido na nova possível projeção. O pixel que será adicionado na projeção será aquele com o maior valor, mas exitem algumas ressalvas: 
+  * se o de maior valor for um dos inferiores laterais, entra em ação um fator de inércia vertical cujo papel é forçar a projeção a ser o mais vertical possível. Enquanto este fator estiver ativo, é dada preferência para o pixel diretamente abaixo, mesmo que seu valor não seja o maior. Esse fator será desativado quando alguns pixels não máximos forem adicionados, evitando a formação de um projeção distorcida.
+  * se o maior valor for menor que um limiar de término, o pixel é adicionado temporariamente à projeção e passa-se a contar quantos pixels abaixo do limiar foram inseridos em sequencia. Caso essa contagem atinja um valor máximo, todos os que foram adicionados temporariamente são removidos e a projeção é considerada completa e o algoritmo volta ao estado inicial. Caso após alguns pixels abaixo do limiar de término serem inseridos, mas com contagem menor do que a máxima permitida, a adição deles é confirmada e a contagem é zerada.
+
+Após a detecção de uma projeção ter sido considerada finalizada, ela passa por algumas verificações que incluem o tamanho da projeção, eliminando, assim, projeções muito pequenas, e a inclinação, descartando aquelas que não são tão verticais quanto o desejado.
 
 = Rastreamento =
 
