@@ -3,7 +3,7 @@
 
 = Teorias e Implementações =
  * [TeoriaSonares Sonares]
- * [Vision]
+ * [Vision Visão]
 
 = Relatórios =
 
