@@ -1,4 +1,5 @@
 #summary Modelo de observação dos sonares
+#labels Featured
 
 = Modelo de observação: sonares =
 
