@@ -1,6 +1,10 @@
 #summary Listagem de documentos
 #labels Featured
 
+= Teorias e Implementações =
+ * [TeoriaSonares Sonares]
+ * [Vision]
+
 = Relatórios =
 
   * [http://tccsauron.googlecode.com/files/RelatorioTestes_20_06_09.pdf Testes de Precisão do SonARNL - 20/06]
