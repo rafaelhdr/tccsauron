@@ -22,12 +22,16 @@ A idéia básica da convolução de imagens, que é discreta e bidimensional, é
 
 _Todo o algoritmo de convolução está centralizado na classe [http://code.google.com/p/tccsauron/source/browse/trunk/Sauron/Vision/VerticalLineConvolutionOperator.h VerticalLineConvolutionOperator]_
 
+
 O primeiro passo é aplicar um filtro de *blur* visando remover o máximo de ruído possível da image obtida da câmera. Em seguida, os valores dos pixel são reduzidos por um fator _s_. Tal redução se mostrou necessária para evitar a saturação nos níveis de intensidade dos pixels que serão ressaltados pelo filtro, o que dificultaria e reduziria a qualidade do algoritmo de detecção de projeções verticais.
 Por fim, aplica-se a convolução sobre a imagem pré-processada, resultando em uma nova imagem, na qual as linhas vericais da imagem estarão demarcadas.
 
 Para ganhos de desempenho, a convolução é feita somente em tons de cinza, exigindo um imagem entrada previamente convertida.
 
 = Detecção de Projeções Verticais =
+
+_Todo o algoritmo de detecção está centralizado na classe [http://code.google.com/p/tccsauron/source/browse/trunk/Sauron/Vision/VerticalProjectionDetector.h VerticalProjectionDetector]_
+
 
 A detecção de projeções é feita sobre a imagem em tons de cinza resultante da convolução do filtro para linhas verticais. 
 
