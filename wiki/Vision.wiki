@@ -45,6 +45,10 @@ Neste novo estado, supoe-se que o pixel acima do limiar é um ponto de um nova p
 
 Após a detecção de uma projeção ter sido considerada finalizada, ela passa por algumas verificações que incluem o tamanho da projeção, eliminando, assim, projeções muito pequenas, e a inclinação, descartando aquelas que não são tão verticais quanto o desejado.
 
+= Perfil de Cor =
+
+*TODO*
+
 = Rastreamento =
 
 *TODO*
