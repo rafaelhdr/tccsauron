@@ -47,7 +47,11 @@ Após a detecção de uma projeção ter sido considerada finalizada, ela passa 
 
 = Perfil de Cor =
 
-*TODO*
+O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
+
+Ele considera uma região da imagem centrada na seqüência de pixels que pertencem a uma projeção identificada, estendendo-se por uma faixa de _n_ pixels para a direita e para a esquerda de cada pixel da projeção.
+
+É representada como um conjunto de três vetores, um para cada componente de cor da imagem. Eles tem o mesmo tamanho da largura da região considerada (sempre tamanho ímpar para permitir a centralização). Cada elemento de cada vetor recebe o valor médio, da cor correpondente, dos pixels que estão à mesma distância do centro e estão do mesmo lado. No caso do elemento central, este recebe o valor médio dos pixels pertencentes à projeção.
 
 = Rastreamento =
 
