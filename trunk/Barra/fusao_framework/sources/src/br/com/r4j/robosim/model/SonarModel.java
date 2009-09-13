@@ -50,28 +50,28 @@ import br.com.r4j.robosim.estimator.UKFDoubleVectorFunction;
  * 
  * @author giord
  *
- * Condições para produzir resultado:
+ * CondiÃ§Ãµes para produzir resultado:
  * 
  * 1 - O sonar certo ter produzido uma leitura.
- * 2 - Movimento pode ser considerado retilíneo.
+ * 2 - Movimento pode ser considerado retilÃ­neo.
  * 3 - Estar rastreando com sucesso uma parede.
  * 
  * 
- * Condições para determinar se uma parede esta sendo rastrada.
+ * CondiÃ§Ãµes para determinar se uma parede esta sendo rastrada.
  * 1 - O sonar certo ter produzido uma leitura.
- * 2 - Movimento pode ser considerado retilíneo.
+ * 2 - Movimento pode ser considerado retilï¿½neo.
  * 
  * 
- * Operação
+ * OperaÃ§Ã£o
  * 
- * 1 - Determinar se uma parede está sendo observada ou não.
- * 2 - Verifica se uma parede está sendo rastreada.
- * 3 - Se não, procura uma para rastrear.
- * 4 - Se sim, verifica se a mesma está sendo rastreada ainda.
+ * 1 - Determinar se uma parede estÃ¡ sendo observada ou nÃ£o.
+ * 2 - Verifica se uma parede estÃ¡ sendo rastreada.
+ * 3 - Se nÃ£o, procura uma para rastrear.
+ * 4 - Se sim, verifica se a mesma estÃ¡ sendo rastreada ainda.
  * 5 - Se for a mesma, marca como sucesso, e zera contador de falhas.
- * 6 - Se não, marca como insucesso e incrementa contador de falhas.
- * 7 - Se contadorde falhas etiver zerado e mais de uma associação com sucesso tiver sido feita, então libera observação.
- * 8 - Se contador de falhas estiver em 3, então resseta tudo, limpando o buffer de parede associada.
+ * 6 - Se nÃ£o, marca como insucesso e incrementa contador de falhas.
+ * 7 - Se contadorde falhas etiver zerado e mais de uma associaÃ§Ã£o com sucesso tiver sido feita, entÃ£o libera observaÃ§Ã£o.
+ * 8 - Se contador de falhas estiver em 3, entÃ£o resseta tudo, limpando o buffer de parede associada.
  * 
  */
 //, InvertibleEKFDoubleVectorFunction
@@ -106,7 +106,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 	private double [][][] arrayPoses = null; 
 	private double [][] arraySigma2Theta = null; 
 
-	// indica se a observação está dentro do alcance do sonar.
+	// indica se a observaï¿½ï¿½o estï¿½ dentro do alcance do sonar.
 	private boolean [][] arrayValid = null; 
 
 	private boolean bAlphaValid = false;
@@ -199,7 +199,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 
 	/** 
-	 * Método invocado quando os dados estiverem disponíveis.
+	 * Mï¿½todo invocado quando os dados estiverem disponï¿½veis.
 	 *
 	 */
 	public void dataAvailable()
@@ -218,13 +218,13 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 //	/// Interface DoubleVectorFunction
 
 	/**
-	 * 2 - Verifica se uma parede está sendo rastreada.
-	 * 3 - Se não, procura uma para rastrear.
-	 * 4 - Se sim, verifica se a mesma está sendo rastreada ainda.
+	 * 2 - Verifica se uma parede estï¿½ sendo rastreada.
+	 * 3 - Se nï¿½o, procura uma para rastrear.
+	 * 4 - Se sim, verifica se a mesma estï¿½ sendo rastreada ainda.
 	 * 5 - Se for a mesma, marca como sucesso, e zera contador de falhas.
-	 * 6 - Se não, marca como insucesso e incrementa contador de falhas.
-	 * 7 - Se contador de falhas etiver zerado e mais de uma associação com sucesso tiver sido feita, então libera observação.
-	 * 8 - Se contador de falhas estiver em 3, então resseta tudo, limpando o buffer de parede associada.
+	 * 6 - Se nï¿½o, marca como insucesso e incrementa contador de falhas.
+	 * 7 - Se contador de falhas etiver zerado e mais de uma associaï¿½ï¿½o com sucesso tiver sido feita, entï¿½o libera observaï¿½ï¿½o.
+	 * 8 - Se contador de falhas estiver em 3, entï¿½o resseta tudo, limpando o buffer de parede associada.
 	 */
 	private AbstractDoubleMatrix H = new DoubleMatrix(DIMENSION, 3);
 //	private AbstractDoubleMatrix Hcovar = new DoubleMatrix(2, 3);
@@ -502,7 +502,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 //	////////////////////////////////////////////////////////////////////////////////
 //	////////////////////////////////////////////////////////////////////////////////
-//	/// Método internos
+//	/// Mï¿½todo internos
 	
 	private void changeArrayWallSize(int sizeNew)
 	{
@@ -517,7 +517,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 
 	/**
-	 *  1- Faz update quando uma nova observação vai ser tratada.
+	 *  1- Faz update quando uma nova observaï¿½ï¿½o vai ser tratada.
 	 */
 	protected boolean prepareForNewObservation(AbstractDoubleVector vectReadings, AbstractDoubleSquareMatrix sensorCovariance, AbstractDoubleVector statePredicted, AbstractDoubleSquareMatrix stateCovar)
 	{
@@ -556,7 +556,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		}
 		else
 		{
-			// Determina se deve ou não coletar mais pontos, e se já tem o suficiente.
+			// Determina se deve ou nï¿½o coletar mais pontos, e se jï¿½ tem o suficiente.
 
 			int diff = FunctionsZ.diffCircular(currentIdx, firstIdx, arrayReadings.length) + 1;
 			if (logModel.isDebugEnabled())
@@ -589,15 +589,15 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 
 	/**
-	 * 2 - Verifica se com a última medição é possível gerar algum resultado.
+	 * 2 - Verifica se com a ï¿½ltima mediï¿½ï¿½o ï¿½ possï¿½vel gerar algum resultado.
 	 */
 	protected boolean validateDate()
 	{
 		if (logModel.isDebugEnabled())
 			logModel.debug(uniqueId + ":(validateDate)testing arrayReadings[currentIdx]: " + arrayReadings[currentIdx] + ", arrayReadings[currentIdx] != -1: " + (arrayReadings[currentIdx] != -1) + ", idxSonar = " + idxSonar);
 
-		// Testa para ver se o robo não rodou.
-		// Precisa levar em conta a distância percorrida (ou não?).
+		// Testa para ver se o robo nï¿½o rodou.
+		// Precisa levar em conta a distï¿½ncia percorrida (ou nï¿½o?).
 
 		double dThetaPrevious = arrayPoses[0][firstIdx][2], dThetaCurrent = arrayPoses[0][currentIdx][2];
 		double dX = arrayPoses[0][(currentIdx - 1 + arrayReadings.length)%arrayReadings.length][0] - arrayPoses[0][currentIdx][0];
@@ -616,7 +616,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		if (rotDist*rotDist > d2Dist*thetaError4mm*thetaError4mm*rotRejectionValue2)
 		{
 			if (logModel.isDebugEnabled())
-				logModel.debug("não valido");
+				logModel.debug("nï¿½o valido");
 			bResetObsSet = true;
 			for (int i = 0; i < assocWall.length; i++)
 				assocWall[i] = null;
@@ -624,11 +624,11 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 			return false;
 		}
 
-		// Verifica se a leitura é de alguma coisa
+		// Verifica se a leitura ï¿½ de alguma coisa
 		if (sns.isOutOfRange(arrayReadings[currentIdx]))
 			return false;
 		
-		// Verifica se tem um número mínimo de leituras válidas
+		// Verifica se tem um nï¿½mero mï¿½nimo de leituras vï¿½lidas
 		if (logModel.isDebugEnabled())
 			logModel.debug(uniqueId + ":");
 		int countValid = 0;
@@ -649,7 +649,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		if (logModel.isDebugEnabled())
 			logModel.debug(uniqueId + ":diff: " + diff + ", countValid: " + countValid + ", perc: " + perc + ", currentIdx: " + currentIdx + ", firstIdx: " + firstIdx + ", perc_min_accept: " + perc_min_accept);
 
-		// Se tem um número mínimo de leituras, verifica se elas podem corresponder a 
+		// Se tem um nï¿½mero mï¿½nimo de leituras, verifica se elas podem corresponder a 
 		// uma parede.
 		if (perc > perc_min_accept && diff >= k_min_readings)
 			return this.testForWall();
@@ -771,7 +771,8 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		AbstractDoubleSquareMatrix eqCovar = new DoubleSquareMatrix(2);
 		eqCovar.setElement(0, 0, s2d); eqCovar.setElement(0, 1, s2d*sinAlpha);
 		eqCovar.setElement(1, 0, s2d*sinAlpha); eqCovar.setElement(1, 1, 2*s2r + s2d*sinAlpha);
-		
+
+                // vetor F da tese (pÃ¡g 53)
 		AbstractDoubleVector fDeriv = new DoubleVector(2);
 		fDeriv.setComponent(0, -diff*1.0*dr/(d*d));
 		fDeriv.setComponent(1, diff*1.0/d);
@@ -896,7 +897,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 				logModel.debug(uniqueId + ":chiStatCut: " + chiStatCut + ", wallRejectionValue2: " + wallRejectionValue2);
 			}
 
-			// Se aprovado no segundo teste, não valida o teste, mas não limpa a referência associada.
+			// Se aprovado no segundo teste, nï¿½o valida o teste, mas nï¿½o limpa a referï¿½ncia associada.
 			if (chiStatCut < chi03Cut) //wallRejectionValue2) // (<teste de hiptese>)
 			{
 				logModel.debug("aprovado em chiStatCut < wallRejectionValue2");
@@ -916,9 +917,9 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 
 	/**
-	 * 3. Associação. Associa uma paredeàs observações.
-	 * Retorna falso caso a associaçãonão ocorra ou as últimas observações 
-	 * não observam a parede.
+	 * 3. Associaï¿½ï¿½o. Associa uma paredeï¿½s observaï¿½ï¿½es.
+	 * Retorna falso caso a associaï¿½ï¿½onï¿½o ocorra ou as ï¿½ltimas observaï¿½ï¿½es 
+	 * nï¿½o observam a parede.
 	 */
 	private boolean processProduceResults(AbstractDoubleVector state, double sigmaX2, double sigmaY2, double sigmaTheta2, int idxParticle)
 	{
@@ -929,7 +930,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		}
 		double sigmaPosition2 = sigmaX2 + sigmaY2, sigmaReading2 = obsCovariance.getElement(0, 0);
 
-		// Verifica se uma parede já assciada continua sendo observada.
+		// Verifica se uma parede jï¿½ assciada continua sendo observada.
 		if (assocWall[idxParticle] != null)
 		{
 			if (logModel.isDebugEnabled())
@@ -942,7 +943,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		}
 
 		// Procura associar uma parede caso nenhuma esteja associada ou se a antiga associada
-		// já caducou.
+		// jï¿½ caducou.
 		if (assocWall[idxParticle] == null)
 		{
 			if (logModel.isDebugEnabled())
@@ -970,9 +971,9 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 	/**
 	 *
-	 * 1 - Prucura todas a paredes com inclinação dentro da zona de busca de inclinações.
-	 * 2 - Seleciona as paredes que possuem distância a x dentro da faixa de erro.
-	 * 3 - seleciona a parede com centor de massa mais próximo do sonar.
+	 * 1 - Prucura todas a paredes com inclinaï¿½ï¿½o dentro da zona de busca de inclinaï¿½ï¿½es.
+	 * 2 - Seleciona as paredes que possuem distï¿½ncia a x dentro da faixa de erro.
+	 * 3 - seleciona a parede com centor de massa mais prï¿½ximo do sonar.
 	 *
 	 * @param double xR
 	 * @param double yR
@@ -1024,8 +1025,8 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		double thetaS = thetaMean + sns.getThetaS(idxSonar);
 		if (!bJustCheck)
 		{
-			// Primeiro filtro: pela inclinação da parede e pela posição do robô na últmia posição
-			// (se está na frente ou atras da parede).
+			// Primeiro filtro: pela inclinaï¿½ï¿½o da parede e pela posiï¿½ï¿½o do robï¿½ na ï¿½ltmia posiï¿½ï¿½o
+			// (se estï¿½ na frente ou atras da parede).
 			List listWalls = map.findWalls(thetaMin, thetaMax, xSA_last, ySA_last);
 			if (logModel.isDebugEnabled())
 				logModel.debug(uniqueId + ":findWall:listWalls:" + listWalls);
@@ -1058,14 +1059,14 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 				if (logModel.isDebugEnabled())
 					logModel.debug("testing wall:    " + wall);
 
-				// Segundo filtro: Se a primeira e última observações intersectam a parede.
+				// Segundo filtro: Se a primeira e ï¿½ltima observaï¿½ï¿½es intersectam a parede.
 				if (GeomOperations.intersect(xSide_first, ySide_first, xOtherSide_first, yOtherSide_first, 
 											 wall.getX1(), wall.getY1(), wall.getX2(), wall.getY2()) &&
 					GeomOperations.intersect(xSide_last, ySide_last, xOtherSide_last, yOtherSide_last, 
 											 wall.getX1(), wall.getY1(), wall.getX2(), wall.getY2()))
 				{			
 
-					// Terceiro filtro: Se a primeira, penultima e última observações correspondem a parede.
+					// Terceiro filtro: Se a primeira, penultima e ï¿½ltima observaï¿½ï¿½es correspondem a parede.
 					double dWall_first = xSA_first*wall.getCosTheta() + ySA_first*wall.getSinTheta();
 					double dWall_bef_last = xSA_bef_last*wall.getCosTheta() + ySA_bef_last*wall.getSinTheta();
 					double dWall_last = xSA_last*wall.getCosTheta() + ySA_last*wall.getSinTheta();
@@ -1135,7 +1136,7 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 		}
 		else
 		{
-			// Terceiro filtro: Se a primeira, penultima e última observações correspondem a parede.
+			// Terceiro filtro: Se a primeira, penultima e ï¿½ltima observaï¿½ï¿½es correspondem a parede.
 			double dWall_first = xSA_first*assocWall[idxParticle].getCosTheta() + ySA_first*assocWall[idxParticle].getSinTheta();
 			double dWall_bef_last = xSA_bef_last*assocWall[idxParticle].getCosTheta() + ySA_bef_last*assocWall[idxParticle].getSinTheta();
 			double dWall_last = xSA_last*assocWall[idxParticle].getCosTheta() + ySA_last*assocWall[idxParticle].getSinTheta();
@@ -1179,9 +1180,9 @@ public class SonarModel implements SensorModel, Configurable, MapDependent, Doub
 
 	/**
 	 *
-	 * 1 - Prucura todas a paredes com inclinação dentro da zona de busca de inclinações.
-	 * 2 - Seleciona as paredes que possuem distância a x dentro da faixa de erro.
-	 * 3 - seleciona a parede com centor de massa mais próximo do sonar.
+	 * 1 - Prucura todas a paredes com inclinaï¿½ï¿½o dentro da zona de busca de inclinaï¿½ï¿½es.
+	 * 2 - Seleciona as paredes que possuem distï¿½ncia a x dentro da faixa de erro.
+	 * 3 - seleciona a parede com centor de massa mais prï¿½ximo do sonar.
 	 *
 	 * @param double xR
 	 * @param double yR
