@@ -186,3 +186,7 @@ k<sub>min</sub> = 4
 limite de rejeição) = 0,5
 
 g² = 3,2
+
+== Implementação do Barra ==
+
+A classe que realiza os cálculos mencionados aqui é a [http://code.google.com/p/tccsauron/source/browse/trunk/Barra/fusao_framework/sources/src/br/com/r4j/robosim/model/SonarModel.java SonarModel]
