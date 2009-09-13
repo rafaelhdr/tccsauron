@@ -12,17 +12,28 @@ import br.com.r4j.robosim.estimator.Sensor;
 
 public abstract class BaseSonarSensor implements Sensor, Configurable
 {
+        // matriz 8x8 onde todos os elementos valem readingSigma ^ 2
 	private AbstractDoubleSquareMatrix covar = null;
+        // alcance do sonar (pode ser configurado)
 	private double maxRange = 3000;
+        // valor padrão de readingSigma, pode ser configurado
 	private double readingSigma = 50;
+        // ângulo de abertura do cone do sonar, em radianos (pode ser configurado)
 	private double beta = 30*Math.PI/180;
+        // número de sonares
+	protected int sonarCount = 8;
 
-	protected int sonarCount = 8; 
+        // o ângulo dos sonares, em relação à base do robô
 	protected double [] arrayThetaS = null;
+        // o cosseno dos ângulos dos sonares
 	protected double [] arrayCosThetaS = null;
+        // o seno dos ângulos dos sonares
 	protected double [] arraySinThetaS = null;
+        // as distâncias de cada sonar à base do robô
 	protected double [] arrayDS = null;
+        // a coordenada x de cada sonar em relação à base do robô
 	protected double [] arrayXS = null;
+        // a coordenada y de cada sonar em relação à base do robô
 	protected double [] arrayYS = null;
 
 
@@ -89,11 +100,11 @@ public abstract class BaseSonarSensor implements Sensor, Configurable
 
 
 	/** 
-	 * M�todo invocado quando os dados estiverem dispon�veis.
+	 * M�todo invocado quando os dados estiverem dispon�veis.
 	 */
 	public void dataAvailable()
 	{
-		// n�o precisa fazer nada ...
+		// n�o precisa fazer nada ...
 	}
 
 
