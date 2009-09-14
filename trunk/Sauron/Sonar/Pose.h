@@ -4,7 +4,7 @@
 
 namespace sauron
 {
-	class Pose : public Point2D
+	class Pose : public Point2D<float>
 	{
 	public:
 		Pose(void) : m_theta(0){

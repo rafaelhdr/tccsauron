@@ -29,8 +29,8 @@ class DiscretizedLine
         float getAngle() const;   // In radians
         float getTangent() const;
 
-        // DEBUG ONLY - WILL BE REMOVED
-        std::string name;
+        uint getMeanX() const;
+        uint getMeanY() const;
 
     private:
         std::vector< Point2DInt > m_points;        

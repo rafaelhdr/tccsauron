@@ -20,14 +20,12 @@ static bool horizontalPoint2DIntCmp( Point2DInt a, Point2DInt b )
 
 DiscretizedLine::DiscretizedLine()
 {
-    name = "";
 }
 
 
 DiscretizedLine::DiscretizedLine( const DiscretizedLine &other )
 {
     m_points = other.m_points;
-    name = other.name;
 }
 
 
@@ -92,6 +90,28 @@ float DiscretizedLine::getTangent() const
 float DiscretizedLine::getAngle() const
 {
     return atan( getTangent() );
+}
+
+
+uint DiscretizedLine::getMeanX() const 
+{
+    uint mean = 0;
+    std::vector< Point2DInt >::const_iterator it;
+    for ( it = m_points.begin(); it != m_points.end(); ++it )
+        mean += it->X();
+
+    return mean / m_points.size();
+}
+
+
+uint DiscretizedLine::getMeanY() const
+{
+    uint mean = 0;
+    std::vector< Point2DInt >::const_iterator it;
+    for ( it = m_points.begin(); it != m_points.end(); ++it )
+        mean += it->Y();
+
+    return mean / m_points.size();
 }
 
 

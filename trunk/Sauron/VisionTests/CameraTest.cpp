@@ -24,19 +24,27 @@ void drawProjection( sauron::Image &im, const sauron::Projection &proj, CvFont &
     std::stringstream ss;
     if ( txt.size() )
         ss << txt;
-    cvPutText( im, ss.str().c_str(), cvPoint( point.X() + 3, point.Y() ), &font, CV_RGB( r, g, b ) );
+    cvPutText( im, ss.str().c_str(), cvPoint( point.X() + 3, point.Y() + 10 ), &font, CV_RGB( r, g, b ) );
 }
 
 
 int testCamera()
 {
-    sauron::Camera camera;
-    camera.setSize( 640, 480 );
+    const sauron::uint imageScale  = 1;
+    const sauron::uint imageWidth  = 320;
+    const sauron::uint imageHeight = 240;
+    const sauron::uint finalImageWidth  = imageWidth  * imageScale;
+    const sauron::uint finalImageHeight = imageHeight * imageScale;
 
-    sauron::Image image( 640, 480, 8, sauron::Pixel::PF_RGB );
+    sauron::Camera camera;
+    camera.setSize( finalImageWidth, finalImageHeight );
+
+    sauron::Image image( finalImageWidth, finalImageHeight, 8, sauron::Pixel::PF_RGB );
     sauron::Image original( image );
 
-    cvNamedWindow( "Sobel", CV_WINDOW_AUTOSIZE );
+    sauron::Image fixed( "SingleLine.bmp" );
+
+    //cvNamedWindow( "Sobel", CV_WINDOW_AUTOSIZE );
     cvNamedWindow( "Final", CV_WINDOW_AUTOSIZE );
 
     CvFont font;
@@ -73,7 +81,7 @@ int testCamera()
         conv.convolve( image );
         sobelMeanTime += clock() - sobelStartTime;
 
-        cvShowImage( "Sobel", image );
+        //cvShowImage( "Sobel", image );
 
         image.convertToGray();
         
@@ -115,7 +123,9 @@ int testCamera()
 
         
         cvShowImage( "Final", original );
-        key = (char)cvWaitKey( 1 );     
+        key = (char)cvWaitKey( 1 );
+
+        //std::cin.get();
     }
 
     cvDestroyAllWindows();

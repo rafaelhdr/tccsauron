@@ -22,7 +22,16 @@ class ProjectionTracker
     private:
         typedef uint trackid_t;
         typedef uint time_t;
+        
+        struct AssociationPair
+        {
+            float correlation;
+            const Projection *projection;
 
+            bool operator < ( const AssociationPair &other )    { return correlation < other.correlation; }
+        };
+
+    private:
         void startTrackingNewProjection( const Projection &proj );
         void trackProjection( trackid_t id, const Projection &proj );
         void stopTrackingProjection( trackid_t id );
@@ -30,6 +39,9 @@ class ProjectionTracker
         void retrieveValidTrackedProjections( ProjectionVector &tracked ) const;
 
         void removeOldObservations();
+
+        void associateProjections( std::map< trackid_t, std::vector<AssociationPair> > &associationsMap, 
+                                   std::list< const Projection * > &notMatchedList );
 
     private:
         time_t    m_iterationCount;

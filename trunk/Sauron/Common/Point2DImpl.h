@@ -116,6 +116,18 @@ template <typename T> Point2D<T> &Point2D<T>::operator /= ( const T &value )
     
     return (*this);
 }
+
+
+template <typename T> double Point2D<T>::getDistance( const Point2D<T> &other ) const
+{
+    double diff_x2 = m_x - other.m_x;
+    diff_x2 *= diff_x2;
+
+    double diff_y2 = m_y - other.m_y; 
+    diff_y2 *= diff_y2;
+
+	return sqrt(diff_x2 + diff_y2);
+}
     
 }; // namespace sauron
 

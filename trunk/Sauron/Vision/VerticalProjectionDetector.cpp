@@ -80,7 +80,6 @@ void VerticalProjectionDetector::detect( const Image &colorImage, const Image &c
             if ( localMaxImage( i, j ).Gray() < startThreshold )
                 continue;
 
-           uint belowThreshold = 0;
            DiscretizedLine possibleNewLine;
 
            possibleNewLine.addPoint( Point2DInt( i, j ) );
@@ -174,36 +173,6 @@ void VerticalProjectionDetector::detect( const Image &colorImage, const Image &c
            }
         }
     }
-
-    //std::vector< DiscretizedLine > modifiedLines;
-    //for ( register uint i = 0; i < linesVec.size(); ++i )
-    //    modifiedLines.push_back( recalculateLine( linesVec[i] ) );
-
-    //Image out( imageWidth, imageHeight, 32, Pixel::PF_RGB );
-    //std::vector< DiscretizedLine >::iterator it;
-    //int colorNum = 0;
-    //for ( it = linesVec.begin(); it != linesVec.end(); ++it )
-    ////for ( it = modifiedLines.begin(); it != modifiedLines.end(); ++it )
-    //{           
-    //    /*std::cout << "DiscretizedLine " << colorNum << std::endl;
-    //    std::cout << "\tAngle: " << (*it).getAngle() / 3.1415259 * 180.0 << std::endl;*/
-    //    for ( register uint i = 0; i < (*it).getNumPoints(); ++i )
-    //    {   
-    //        Point2DInt point = (*it).getPoint( i );
-    //        //std::cout << "\tPoint(" << point.X() << "," << point.Y() << ")" << std::endl;
-    //        if ( colorNum % 4 == 0)
-    //            out( point.X(), point.Y() ).set( 255, 0, 0);
-    //        else if ( colorNum % 4 == 1 )
-    //            out( point.X(), point.Y() ).set( 0, 255, 0);
-    //        else if ( colorNum % 4 == 2 )
-    //            out( point.X(), point.Y() ).set( 255, 255, 0);
-    //        else
-    //            out( point.X(), point.Y() ).set( 0, 255, 255 );
-    //    }
-    //    ++colorNum;
-    //}
-
-    //im = out;
 }
 
 
