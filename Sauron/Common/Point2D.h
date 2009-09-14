@@ -37,7 +37,10 @@ template <typename T> class Point2D
         inline Point2D<T> operator / ( const Point2D<T> &other ) const;
         inline Point2D<T> operator / ( const T &value ) const;
         inline Point2D<T> &operator /= ( const T &value );
-        //*******************    
+        //*******************
+
+        double getDistance( const Point2D<T> &other ) const;
+
     
     private:
         T   m_x;

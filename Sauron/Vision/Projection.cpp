@@ -5,7 +5,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define PROJECTION_DEFAULT_COLOR_PROFILE_SIZE   6
+#define PROJECTION_DEFAULT_COLOR_PROFILE_SIZE   7
 #define PROJECTION_DEFAULT_COLOR_PROFILE_VAR    20
 #define PROJECTION_DEFAULT_LINE_LENGHT_VAR      5
 #define PROJECTION_DEFAULT_LINE_ANGLE_VAR       M_PI / 2.1    
@@ -44,25 +44,31 @@ const DiscretizedLine &Projection::getDiscretizedLine() const
 }
 
 
-bool Projection::equals( const Projection &other ) const
+float Projection::compare( const Projection &other ) const
 {
-    if ( !m_colorProfile.equals( other.m_colorProfile, PROJECTION_DEFAULT_COLOR_PROFILE_VAR ) )
-        return false;
-
-    //uint numPoints = m_discretizedLine.getNumPoints();
-    //if ( abs( (long)(numPoints - other.m_discretizedLine.getNumPoints()) ) > (int)(numPoints >> 3) )
-    //    return false;
-
-    if ( abs( m_discretizedLine.getAngle() - other.m_discretizedLine.getAngle() ) > PROJECTION_DEFAULT_LINE_ANGLE_VAR )
-        return false;
-
-    return true;
+    return m_colorProfile.compare( other.m_colorProfile );
 }
 
 
-bool Projection::operator ==( const sauron::Projection &other ) const
-{
-    return equals( other );
-}
+//bool Projection::equals( const Projection &other ) const
+//{
+//    if ( !m_colorProfile.equals( other.m_colorProfile, PROJECTION_DEFAULT_COLOR_PROFILE_VAR ) )
+//        return false;
+//
+//    //uint numPoints = m_discretizedLine.getNumPoints();
+//    //if ( abs( (long)(numPoints - other.m_discretizedLine.getNumPoints()) ) > (int)(numPoints >> 3) )
+//    //    return false;
+//
+//    //if ( abs( m_discretizedLine.getAngle() - other.m_discretizedLine.getAngle() ) > PROJECTION_DEFAULT_LINE_ANGLE_VAR )
+//    //    return false;
+//
+//    return true;
+//}
+
+
+//bool Projection::operator ==( const sauron::Projection &other ) const
+//{
+//    return equals( other );
+//}
 
 }   // namespace sauron

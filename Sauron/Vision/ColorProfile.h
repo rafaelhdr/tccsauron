@@ -15,18 +15,14 @@ class ColorProfile
         ColorProfile( const ColorProfile &other );
         ~ColorProfile();
 
-        bool operator == ( const ColorProfile &other ) const;
-        bool equals( const ColorProfile &other, byte var ) const;
+        float compare( const ColorProfile &other ) const;
 
     private:
         void calculate( const Image &im, const DiscretizedLine &line, uint size );
 
     private:
-        byte    *m_red;
-        byte    *m_green;
-        byte    *m_blue;
-
-        uint    m_size;
+        byte   m_left[3];
+        byte   m_right[3];
 };
 
 }   // namespace sauron

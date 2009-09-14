@@ -106,7 +106,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\Common;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -195,10 +195,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\BaseTypes.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Camera.h"
 				>
 			</File>
@@ -228,14 +224,6 @@
 			</File>
 			<File
 				RelativePath=".\PixelImpl.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Point2D.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Point2DImpl.h"
 				>
 			</File>
 			<File

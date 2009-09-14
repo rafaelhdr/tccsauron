@@ -61,9 +61,9 @@ void VerticalLineConvolutionOperator::convolve( Image &im )
     const uint imageWidth   = im.getWidth()  - matrixCenterWidth;
     const uint imageHeight  = im.getHeight() - matrixCenterHeight;
 
-    const float scale = 0.1f;
+    const float scale = 0.5f;
 
-    cvScale( im, im, 0.5 );
+    cvScale( im, im, scale );
 
 #if !VERTICAL_SOBEL_USE_COLORS
     im.convertToGray();
@@ -92,9 +92,9 @@ void VerticalLineConvolutionOperator::convolve( Image &im )
                     int kernelValue = kernelValues[ unfinishedIndex + c];
                     Pixel pixel = buffer(i - matrixCenterWidth + c, j - matrixCenterHeight + r);
 #if VERTICAL_SOBEL_USE_COLORS
-                    sumR += (pixel.R()) * kernelValue * scale;
-                    sumG += (pixel.G()) * kernelValue * scale;
-                    sumB += (pixel.B()) * kernelValue * scale;
+                    sumR += (pixel.R()) * kernelValue; //* scale;
+                    sumG += (pixel.G()) * kernelValue; // * scale;
+                    sumB += (pixel.B()) * kernelValue; // * scale;
 #else
                     sumGray += pixel.Gray() * kernelValue; //* scale;
 #endif

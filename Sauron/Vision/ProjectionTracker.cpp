@@ -1,14 +1,31 @@
 #include "ProjectionTracker.h"
+
+#include <algorithm>
+#undef min
+#include <limits>
 #include <utility>
+
+
+#include <iostream>
+
+
+#define PROJECTION_TRACKER_CORRELATION_THRESHOLD    0.8f
+
 
 namespace sauron
 {
 
+bool CompareAssociationPair( std::pair< float, const Projection * > p1, std::pair< float, const Projection * > p2 )
+{
+    return p1.first < p2.first;
+}
+
+
 ProjectionTracker::ProjectionTracker()
     : m_iterationCount( 0 ),
       m_uniqueIDReference( 0 ),
-      m_maxTimeBetweenObservations( 8 ),
-      m_minObservations( 5 )
+      m_maxTimeBetweenObservations( 6 ),
+      m_minObservations( 3 )
 {
 }
 
@@ -103,63 +120,104 @@ void ProjectionTracker::track( const ProjectionVector &projs, ProjectionVector &
     {
         std::map< trackid_t, Projection > copyLastSeen = m_lastProjectionSeen;
 
-        std::vector< bool > notMatchedVec( projs.size() );
-        std::fill( notMatchedVec.begin(), notMatchedVec.end(), true );
+        std::list< const Projection * > notMatchedList( projs.size() );
+        for ( register uint i = 0; i < projs.size(); ++i )
+            notMatchedList.push_back( &projs[i] );
+
+        std::map< trackid_t, std::vector<AssociationPair> > associationsMap;
 
         std::map< trackid_t, Projection >::const_iterator lastSeenIt;
         ProjectionVector::const_iterator newProjsIt;
 
         for ( lastSeenIt = copyLastSeen.begin() ; lastSeenIt != copyLastSeen.end(); ++lastSeenIt )
         {
-            unsigned int index = 0;
-            for ( newProjsIt = projs.begin(); newProjsIt != projs.end(); ++newProjsIt, ++index )
-            {
-                if ( lastSeenIt->second == *newProjsIt )
+            for ( newProjsIt = projs.begin(); newProjsIt != projs.end(); ++newProjsIt )
+            { 
+                const float correlation = lastSeenIt->second.compare( *newProjsIt );
+                if ( correlation > PROJECTION_TRACKER_CORRELATION_THRESHOLD )
                 {
-                    trackProjection( lastSeenIt->first, *newProjsIt );
-                    notMatchedVec[ index ] = false;
-                    break;
+                    AssociationPair newPossibleAssociation;
+                    newPossibleAssociation.projection  = &(*newProjsIt);
+                    newPossibleAssociation.correlation = correlation;
+
+                    associationsMap[ lastSeenIt->first ].push_back( newPossibleAssociation );
                 }
             }
         }
 
-        const uint size = notMatchedVec.size();
-        for ( register unsigned int i = 0; i < size; ++i )
-            if ( notMatchedVec[i] )
-                startTrackingNewProjection( projs[i] );
+        associateProjections( associationsMap, notMatchedList );
 
+        std::list< const Projection * >::iterator notMatchedIt;
+        for ( notMatchedIt = notMatchedList.begin(); notMatchedIt != notMatchedList.end(); ++notMatchedIt )
+            if ( *notMatchedIt )
+                startTrackingNewProjection( *(*notMatchedIt) );
 
         retrieveValidTrackedProjections( trackedProjs );
         removeOldObservations();
     }
 
     ++m_iterationCount;
+}
 
-    /*ProjectionVector previousProjections;
-    if ( m_buffer.filteredPop( previousProjections ) )
+
+void ProjectionTracker::associateProjections( std::map< trackid_t, std::vector<AssociationPair> > &associationsMap, 
+                                              std::list< const Projection * > &notMatchedList )
+{
+    std::map< trackid_t, std::vector<AssociationPair> >::iterator mapIt;
+    std::vector<AssociationPair>::iterator vecIt;
+
+    std::pair< trackid_t, Projection * > selected;
+    float maxSimilarity;
+
+    while ( associationsMap.size() )
     {
-        ProjectionVector::iterator currentProjsIt;
-        ProjectionVector::iterator previousProjsIt;
-        for ( currentProjsIt = projs.begin(); currentProjsIt != projs.end(); ++currentProjsIt )
+        selected = std::make_pair( 0, (Projection *)NULL );
+        maxSimilarity = -999999.9f;
+        for ( mapIt = associationsMap.begin(); mapIt != associationsMap.end(); ++mapIt )
         {
-            for ( previousProjsIt = previousProjections.begin(); previousProjsIt != previousProjections.end(); ++previousProjsIt )
+            std::sort<std::vector<AssociationPair>::iterator>( mapIt->second.begin(), mapIt->second.end() );
+
+            float similarity = std::numeric_limits<float>::min();
+            if ( mapIt->second.size() > 1 )
+                similarity = fabs( mapIt->second[0].correlation * ( mapIt->second[0].correlation - mapIt->second[1].correlation ) );
+            else if ( mapIt->second.size() == 1 )
+                similarity = fabs( mapIt->second[0].correlation * ( mapIt->second[0].correlation - PROJECTION_TRACKER_CORRELATION_THRESHOLD ) );
+            else
+                continue;
+
+            if ( similarity > maxSimilarity )
             {
-                previousProjsIt->equals( *currentProjsIt );
+                selected = std::make_pair( mapIt->first, (Projection *)mapIt->second[0].projection );
+                maxSimilarity = similarity;
             }
         }
 
-        m_buffer.push( projs );
-        m_buffer.filteredPop( trackedProjs );
+        
+
+        if ( selected.second )
+        {
+            trackProjection( selected.first, *selected.second );
+            notMatchedList.remove( selected.second );
+
+            associationsMap.erase( selected.first );
+
+            for ( mapIt = associationsMap.begin(); mapIt != associationsMap.end(); ++mapIt )
+            {
+                if ( mapIt->second.size() )
+                {
+                    for ( vecIt = mapIt->second.begin(); vecIt != mapIt->second.end(); )
+                    {
+                        if ( vecIt->projection == selected.second )
+                            vecIt = mapIt->second.erase( vecIt );
+                        else
+                            ++vecIt;
+                    }
+                }
+            }
+        }
+        else
+            break;
     }
-    else
-    {
-        m_buffer.push( projs );
-        ProjectionVector allProjs;
-        m_buffer.pop( allProjs );
-
-
-        trackedProjs.clear();
-    }*/
 }
 
 
@@ -177,88 +235,5 @@ std::vector< uint > ProjectionTracker::debug_getTrackedIDs() const
 
     return ret;
 }
-
-
-
-//
-//LineTracker::LineTracker()
-//{
-//}
-//
-//LineTracker::~LineTracker()
-//{
-//}
-//
-//void LineTracker::track( std::vector<DiscretizedLine> &previous, std::vector<DiscretizedLine> &current, sauron::Image &im )
-//{
-//    uint previousNumLines = previous.size();
-//    uint currentNumLines  = current.size();
-//
-//    if ( !previousNumLines )
-//        return;
-//
-//    std::vector < ColorProfile > previousCP;
-//    std::vector < ColorProfile > currentCP;
-//
-//    const uint size = 5;
-//
-//    for ( register uint i = 0; i < previousNumLines; ++i )
-//    {
-//        ColorProfile profile( im, previous[i], size );
-//        previousCP.push_back( profile );
-//        //previousCP.push_back( ColorProfile( im, previous[i], size ) );
-//    }
-//
-//    for ( register uint i = 0; i < currentNumLines; ++i )
-//    {
-//        ColorProfile profile( im, current[i], size );
-//        currentCP.push_back( profile );
-//        //currentCP.push_back( ColorProfile( im, current[i], size ) );
-//    }
-//
-//    bool *currentMatched  = new bool [ currentNumLines ];
-//    bool *previousMatched = new bool [ previousNumLines ];
-//    std::fill( currentMatched, currentMatched + currentNumLines, false );
-//    std::fill( previousMatched, previousMatched + previousNumLines, false );
-//
-//    static char name = 'A';
-//    CvFont font;
-//    cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0 );
-//
-//    for ( register uint i = 0; i < currentNumLines; ++i )
-//    {
-//        if ( currentMatched[i] )
-//            continue;
-//
-//        for ( register uint j = 0; j < previousNumLines; ++j )
-//        {
-//            if ( previousMatched[i] )
-//                continue;
-//
-//            if ( currentCP[i] == previousCP[i] )
-//            {
-//                currentMatched[i]  = true;
-//                previousMatched[i] = true;
-//
-//                if ( previous[i].name == "" )
-//                    current[i].name.push_back( name++ );
-//                else
-//                    current[i].name = previous[i].name;
-//
-//                if ( name > 'Z' )
-//                    name = 'A';
-//       
-//
-//                for ( register uint k = 0; k < current[i].getNumPoints(); ++k )
-//                {   
-//                    Point2DInt point = current[i].getPoint( k );
-//                    im( point.X(), point.Y() ).set( 255, 255, 255 );
-//                }
-//                Point2DInt point = current[i].getPoint( 0 );
-//                cvPutText( im, current[i].name.c_str(), cvPoint( point.X() + 3, point.Y() ), &font, CV_RGB( 255, 255, 255 ) );
-//            }
-//        }
-//    }
-//}
 
 }   // namespace sauron

@@ -18,8 +18,10 @@ class Projection
         const ColorProfile &getColorProfile() const;
         const DiscretizedLine &getDiscretizedLine() const;
 
-        bool equals( const Projection &other ) const;
-        bool operator == ( const Projection &other ) const;
+        float compare( const Projection &other ) const;
+
+        //bool equals( const Projection &other ) const;
+        //bool operator == ( const Projection &other ) const;
 
     private:
         ColorProfile    m_colorProfile;
