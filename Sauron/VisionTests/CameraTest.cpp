@@ -42,8 +42,6 @@ int testCamera()
     sauron::Image image( finalImageWidth, finalImageHeight, 8, sauron::Pixel::PF_RGB );
     sauron::Image original( image );
 
-    sauron::Image fixed( "SingleLine.bmp" );
-
     //cvNamedWindow( "Sobel", CV_WINDOW_AUTOSIZE );
     cvNamedWindow( "Final", CV_WINDOW_AUTOSIZE );
 
