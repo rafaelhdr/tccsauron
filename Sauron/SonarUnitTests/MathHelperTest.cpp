@@ -1,6 +1,6 @@
 #include <vector>
 #include "MathHelper.h"
-
+#include <boost/array.hpp>
 using namespace System;
 using namespace System::Text;
 using namespace System::Collections::Generic;
@@ -60,6 +60,14 @@ namespace SonarUnitTests
 			vec.push_back(1); vec.push_back(2); vec.push_back(5);
 			Assert::IsTrue(sauron::floating_point::isEqual(
 				8.0 / 3, sauron::array_math::mean(vec)));
+		};
+		
+		[TestMethod]
+		void MeanWithArray()
+		{
+			boost::array<double, 6> vec = { 0.5, 3, 7, 0, 0.5 };
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				11.0 / 6, sauron::array_math::mean(vec)));
 		};
 
 		[TestMethod]
