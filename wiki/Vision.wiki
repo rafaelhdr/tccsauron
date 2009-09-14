@@ -53,7 +53,17 @@ O perfil de cor segue a hipótese que a distribuição de cores ao redor das ret
 
 Ele considera uma região da imagem centrada na seqüência de pixels que pertencem a uma projeção identificada, estendendo-se por uma faixa de _n_ pixels para a direita e para a esquerda de cada pixel da projeção.
 
-É representada como um conjunto de três vetores, um para cada componente de cor da imagem. Eles tem o mesmo tamanho da largura da região considerada (sempre tamanho ímpar para permitir a centralização). Cada elemento de cada vetor recebe o valor médio, da cor correpondente, dos pixels que estão à mesma distância do centro e estão do mesmo lado. No caso do elemento central, este recebe o valor médio dos pixels pertencentes à projeção.
+~~É representada como um conjunto de três vetores, um para cada componente de cor da imagem. Eles tem o mesmo tamanho da largura da região considerada (sempre tamanho ímpar para permitir a centralização). Cada elemento de cada vetor recebe o valor médio, da cor correpondente, dos pixels que estão à mesma distância do centro e estão do mesmo lado. No caso do elemento central, este recebe o valor médio dos pixels pertencentes à projeção.~~
+
+As informações que se mostraram relevantes sobre o perfil de cor são os valores médios, para cada componente de cor, dos lados esquerdo e direito em relação ao centro da região. 
+
+A comparação de dois perfis de cor, logo, de duas projeções, resulta num fator de correlação normalizado que indica quão semelhantes são os perfis. O cálculo desse fator segue a seguinte equação:
+
+[http://img132.imageshack.us/img132/4593/eqcp.png]
+
+onde δ é a maior diferença esperada entre os componentes. Essa equação não é a usada originalmente pelo Barra, pois a dele obteve resultados muito ruins nos testes realizados. O motivo de tal resultado parece decorrer do fato da equação dele utilizar diferenças entre os valores de cada lado, e empregar médias dessas diferenças. Os testes revelaram que isso levava vários perfis diferentes a possuírem valores próximos, e, consequentemente, a várias falsas correlações.
+
+Esta nova equação foi escrita visando considerar diferenças de um mesmo lado da região, para cada componente de cor, aumentando o valor do fator de correlação quando as cores de cada lados dos perfis comparados são próximos.
 
 = Rastreamento =
 
