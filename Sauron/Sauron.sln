@@ -8,7 +8,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "VisionTests", "VisionTests\
 		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49} = {2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sonar", "Sonar\Sonar.vcproj", "{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SonarUnitTests", "SonarUnitTests\SonarUnitTests.vcproj", "{DFD0E956-5DF1-41E5-A71C-C70186D4C898}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4172383A-757B-4651-B955-E8314703975C}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Sauron.vsmdi = Sauron.vsmdi
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Sauron.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
@@ -22,6 +35,14 @@ Global
 		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Debug|Win32.Build.0 = Debug|Win32
 		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Release|Win32.ActiveCfg = Release|Win32
 		{8A289A9B-0037-4F70-8145-922EC4A2F7A3}.Release|Win32.Build.0 = Release|Win32
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}.Debug|Win32.Build.0 = Debug|Win32
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}.Release|Win32.ActiveCfg = Release|Win32
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}.Release|Win32.Build.0 = Release|Win32
+		{DFD0E956-5DF1-41E5-A71C-C70186D4C898}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DFD0E956-5DF1-41E5-A71C-C70186D4C898}.Debug|Win32.Build.0 = Debug|Win32
+		{DFD0E956-5DF1-41E5-A71C-C70186D4C898}.Release|Win32.ActiveCfg = Release|Win32
+		{DFD0E956-5DF1-41E5-A71C-C70186D4C898}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
