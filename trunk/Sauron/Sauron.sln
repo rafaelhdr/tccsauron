@@ -11,6 +11,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sonar", "Sonar\Sonar.vcproj", "{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SonarUnitTests", "SonarUnitTests\SonarUnitTests.vcproj", "{DFD0E956-5DF1-41E5-A71C-C70186D4C898}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE} = {8BDE01B1-0125-41C1-A1BC-1D416596FBFE}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4172383A-757B-4651-B955-E8314703975C}"
 	ProjectSection(SolutionItems) = preProject

@@ -13,10 +13,10 @@ namespace sauron
 	}
 	namespace array_math
 	{
-		template<typename T>
-		double mean(const std::vector<T>& data) {
+		template<typename container_t>
+		double mean(const container_t& data) {
 			double total = 0;
-			for(std::vector<T>::const_iterator it = data.begin(); it != data.end(); it++) {
+			for(container_t::const_iterator it = data.begin(); it != data.end(); it++) {
 				total += *it;
 			}
 			return total / data.size();
