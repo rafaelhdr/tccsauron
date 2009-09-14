@@ -164,14 +164,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MathHelper.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Pose.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Sonar.h"
 				>
 			</File>

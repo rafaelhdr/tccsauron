@@ -24,8 +24,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91A629FA-8772-4B73-9941-FF6449B3E91E}"
 	ProjectSection(SolutionItems) = preProject
 		Common\BaseTypes.h = Common\BaseTypes.h
+		Common\MathHelper.h = Common\MathHelper.h
 		Common\Point2D.h = Common\Point2D.h
 		Common\Point2DImpl.h = Common\Point2DImpl.h
+		Common\Pose.h = Common\Pose.h
 	EndProjectSection
 EndProject
 Global
