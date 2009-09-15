@@ -23,6 +23,12 @@ namespace sauron
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;
 
 		std::vector<double> getGammas();
+		double getObsMediaVariance();
+		double getSinAlpha();
+		double getS2_D();
+		double getS2_R();
+		double getD_Robot();
+		double getD_Sonar();
 
 		struct ReadingAndPose {
 			ReadingAndPose(const SonarReading& _reading, const Pose& _estimatedPose)
@@ -32,6 +38,12 @@ namespace sauron
 		};
 
 		std::vector<ReadingAndPose> m_readings;
+		ReadingAndPose& getLatestReading() {
+			return *m_readings.end();
+		}
+		ReadingAndPose& getOldestReading() {
+			return *m_readings.begin();
+		}
 	};
 
 }

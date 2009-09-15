@@ -1,6 +1,8 @@
 #include <vector>
 #include "MathHelper.h"
 #include <boost/array.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+
 using namespace System;
 using namespace System::Text;
 using namespace System::Collections::Generic;
@@ -59,7 +61,7 @@ namespace SonarUnitTests
 			std::vector<int> vec;
 			vec.push_back(1); vec.push_back(2); vec.push_back(5);
 			Assert::IsTrue(sauron::floating_point::isEqual(
-				8.0 / 3, sauron::array_math::mean(vec)));
+				8.0 / 3, sauron::statistics::mean(vec)));
 		};
 		
 		[TestMethod]
@@ -67,7 +69,7 @@ namespace SonarUnitTests
 		{
 			boost::array<double, 6> vec = { 0.5, 3, 7, 0, 0.5 };
 			Assert::IsTrue(sauron::floating_point::isEqual(
-				11.0 / 6, sauron::array_math::mean(vec)));
+				11.0 / 6, sauron::statistics::mean(vec)));
 		};
 
 		[TestMethod]
@@ -77,7 +79,46 @@ namespace SonarUnitTests
 			float y = 0.05F + 0.05F;
 			Assert::IsFalse(x == y);
 			Assert::IsTrue(sauron::floating_point::isEqual(x, y));
+		}
 
+		[TestMethod]
+		void SampleVariance()
+		{
+			using namespace sauron;
+			boost::array<int, 2> vec = {1, 0};
+			Assert::IsTrue(floating_point::isEqual(0.5, statistics::sample_variance(vec)));
+		}
+
+		[TestMethod]
+		void SampleVariance2()
+		{
+			using namespace sauron;
+			boost::array<int, 5> vec = {1, 3, 7, 0, 2};
+			double mean = sauron::statistics::mean(vec);
+			Assert::IsTrue(floating_point::isEqual(7.3, statistics::sample_variance(vec)));
+		}
+
+		[TestMethod]
+		void ScalarProductTest()
+		{
+			using namespace boost::numeric::ublas;		
+			vector<int> v1(3);
+			vector<int> v2(3);
+			v1(0) = 1; v1(1) = 3; v1(2) = -5;
+			v2(0) = 4; v2(1) = -2; v2(2) = -1;
+			Assert::AreEqual(3, sauron::algelin::scalarProduct(v1, v2));
+			Assert::AreEqual(3, sauron::algelin::scalarProduct(v2, v1));
+		}
+
+		[TestMethod]
+		void ChiSquareTest()
+		{
+			// http://www.itl.nist.gov/div898/handbook/prc/section2/prc23.htm
+			unsigned int N = 10;
+			double exp_s2 = 10.0 * 10.0;
+			double sample_s2 = 13.97 * 13.97;
+			Assert::IsFalse(sauron::statistics::chiSquareNormalDistributionTest(
+				N, sample_s2, exp_s2, 0.05));
 		}
 	};
 }
