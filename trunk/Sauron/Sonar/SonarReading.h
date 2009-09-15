@@ -11,11 +11,11 @@ namespace sauron
 		SonarReading(reading_t reading) : m_reading(reading) {
 		}
 
-		reading_t getStdDeviationMm2() {
-			return configs::sonarReadingStandardDeviationMm2;
+		reading_t getStdDeviationMm() const {
+			return configs::sonarReadingStandardDeviationMm;
 		}
 
-		reading_t getReading() {
+		reading_t getReading() const {
 			return m_reading;
 		}
 

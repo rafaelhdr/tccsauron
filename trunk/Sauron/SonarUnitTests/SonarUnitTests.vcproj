@@ -199,6 +199,10 @@
 				RelativePath=".\MathHelperTest.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\uBLASTest.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
