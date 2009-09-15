@@ -1,10 +1,4 @@
 #include "ColorProfile.h"
-#include <algorithm>
-
-#include <iostream>
-
-#define COLOR_PROFILE_DEFAULT_EQUAL_VAR 5
-#define COLOR_PROFILE_MISS_RATIO  0.05
 
 namespace sauron
 {
