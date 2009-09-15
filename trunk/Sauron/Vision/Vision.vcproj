@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MarkAssociator.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Pixel.cpp"
 				>
 			</File>
@@ -216,6 +220,14 @@
 			</File>
 			<File
 				RelativePath=".\ImageImpl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Mark.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MarkAssociator.h"
 				>
 			</File>
 			<File

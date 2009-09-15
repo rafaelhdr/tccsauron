@@ -73,7 +73,7 @@ float DiscretizedLine::getTangent() const
     if ( !getNumPoints() )
         return 0.0f;
 
-    // FAZER COM QUE OS PONTOS FIQUEM ORDENADOS NA INSERÇÃO
+    // TODO Force points to be ordered at insertion
     //sortVertical();
     max = getPoint( 0 );
     min = getPoint( getNumPoints() - 1 );

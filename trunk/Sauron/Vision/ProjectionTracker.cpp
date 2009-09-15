@@ -1,13 +1,7 @@
 #include "ProjectionTracker.h"
 
 #include <algorithm>
-#undef min
-#include <limits>
 #include <utility>
-
-
-#include <iostream>
-
 
 #define PROJECTION_TRACKER_CORRELATION_THRESHOLD    0.8f
 
@@ -177,7 +171,7 @@ void ProjectionTracker::associateProjections( std::map< trackid_t, std::vector<A
         {
             std::sort<std::vector<AssociationPair>::iterator>( mapIt->second.begin(), mapIt->second.end() );
 
-            float similarity = std::numeric_limits<float>::min();
+            float similarity = -1.0f;
             if ( mapIt->second.size() > 1 )
                 similarity = fabs( mapIt->second[0].correlation * ( mapIt->second[0].correlation - mapIt->second[1].correlation ) );
             else if ( mapIt->second.size() == 1 )
