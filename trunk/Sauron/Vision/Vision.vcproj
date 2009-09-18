@@ -169,7 +169,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Mark.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MarkAssociator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MarkPersistenceManager.cpp"
 				>
 			</File>
 			<File
@@ -228,6 +236,10 @@
 			</File>
 			<File
 				RelativePath=".\MarkAssociator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MarkPersistenceManager.h"
 				>
 			</File>
 			<File

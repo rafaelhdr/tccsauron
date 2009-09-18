@@ -3,6 +3,13 @@
 namespace sauron
 {
 
+ColorProfile::ColorProfile()
+{
+    memset( m_left, 0, 3 );
+    memset( m_right, 0, 3 );
+}
+
+
 ColorProfile::ColorProfile( const Image &im, const DiscretizedLine &line, uint size )
 {
     calculate( im, line, size );
@@ -83,6 +90,25 @@ float ColorProfile::compare( const ColorProfile &other ) const
                1.0f / 6.0f * ( maxVar - abs( m_right[i] - other.m_right[i] ) );
 
     return ret / maxVar;
+}
+
+
+void ColorProfile::persist( const ColorProfile &colorProfile, std::ostream &stream ) 
+{
+    // TODO Insert check for valid output stream
+    stream.write( (const char *)colorProfile.m_left, 3 );
+    stream.write( (const char *)colorProfile.m_right, 3 );
+}
+
+
+ColorProfile ColorProfile::restore( std::istream &stream )
+{
+    ColorProfile colorProfile;
+    // TODO Insert check for each byte read
+    stream.read( (char *)colorProfile.m_left, 3 );
+    stream.read( (char *)colorProfile.m_right, 3 );
+
+    return colorProfile;
 }
 
 }   // namespace sauron

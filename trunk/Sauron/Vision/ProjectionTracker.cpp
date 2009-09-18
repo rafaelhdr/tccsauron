@@ -9,12 +9,6 @@
 namespace sauron
 {
 
-bool CompareAssociationPair( std::pair< float, const Projection * > p1, std::pair< float, const Projection * > p2 )
-{
-    return p1.first < p2.first;
-}
-
-
 ProjectionTracker::ProjectionTracker()
     : m_iterationCount( 0 ),
       m_uniqueIDReference( 0 ),

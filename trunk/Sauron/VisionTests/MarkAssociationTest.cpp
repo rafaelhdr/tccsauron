@@ -9,10 +9,13 @@
 #include "../Vision/VerticalProjectionDetector.h"
 #include "../Vision/Camera.h"
 #include "../Vision/ProjectionTracker.h"
+#include "../Vision/Mark.h"
+#include "../Vision/MarkPersistenceManager.h"
+#include "../Vision/MarkAssociator.h"
 
 extern void drawProjection( sauron::Image &im, const sauron::Projection &proj, CvFont &font, byte r, byte g, byte b, std::string txt = "" );
 
-int testCamera()
+int testMarkAssociation()
 {
     const sauron::uint imageScale  = 1;
     const sauron::uint imageWidth  = 320;
@@ -26,7 +29,6 @@ int testCamera()
     sauron::Image image( finalImageWidth, finalImageHeight, 8, sauron::Pixel::PF_RGB );
     sauron::Image original( image );
 
-    //cvNamedWindow( "Sobel", CV_WINDOW_AUTOSIZE );
     cvNamedWindow( "Final", CV_WINDOW_AUTOSIZE );
 
     CvFont font;
@@ -35,10 +37,12 @@ int testCamera()
     clock_t sobelStartTime;
     clock_t lineStartTime;
     clock_t trackStartTime;
+    clock_t associationStartTime;
 
     clock_t sobelMeanTime = 0;
     clock_t lineMeanTime  = 0;
     clock_t trackMeanTime = 0;
+    clock_t associationMeanTime = 0;
 
     clock_t fpsStartTime = clock();
 
@@ -48,9 +52,15 @@ int testCamera()
     sauron::ProjectionTracker               tracker;
     sauron::VerticalProjectionDetector      detector;
     sauron::VerticalLineConvolutionOperator conv;
+    sauron::MarkAssociator                  associator;
 
     sauron::ProjectionVector projections;
     sauron::ProjectionVector projectionsTracked;
+    sauron::MarkVector       marksAssociated;
+    
+    sauron::MarkVector       marks;
+    sauron::MarkPersistenceManager::loadFromFile( "marks.map", marks );
+    associator.loadMarks( marks );
 
     char key = 0;
     while ( key != 'q' && key != 'Q' && key != 27 )
@@ -62,8 +72,6 @@ int testCamera()
         sobelStartTime = clock();
         conv.convolve( image );
         sobelMeanTime += clock() - sobelStartTime;
-
-        //cvShowImage( "Sobel", image );
 
         image.convertToGray();
         
@@ -78,26 +86,31 @@ int testCamera()
         tracker.track( projections, projectionsTracked );
         trackMeanTime += clock() - trackStartTime;
 
-        std::vector< sauron::uint > ids = tracker.debug_getTrackedIDs();
+        associationStartTime = clock();
+        associator.associateMarks( projectionsTracked, marksAssociated, projections );
+        associationMeanTime += clock() - associationStartTime;
 
-        for ( register unsigned int i = 0; i < projectionsTracked.size(); ++i )
+        //std::vector< sauron::uint > ids = tracker.debug_getTrackedIDs();
+
+        for ( register unsigned int i = 0; i < marksAssociated.size(); ++i )
         {
-            std::stringstream ss;
-            ss << ids[i];
-            drawProjection( original, projectionsTracked[ i ], font, 255, 255, 255, ss.str() );
+            drawProjection( original, projections[ i ], font, 255, 255, 255, marksAssociated[i].getDescription() );
+            //std::cout << "Mark[ "<< framesCount << "]: " << marksAssociated[i].getDescription() << std::endl;
         }
+        std::cout << std::endl;
 
         ++meanCount;
         if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
         {
-            double total = (double)(sobelMeanTime + lineMeanTime + trackMeanTime) / meanCount;
+            double total = (double)(sobelMeanTime + lineMeanTime + trackMeanTime + associationMeanTime) / meanCount;
 
-            std::cout << "\r";
+            /*std::cout << "\r";
             std::cout << "Sobel: "   << (double)sobelMeanTime / meanCount;
             std::cout << "  Lines: " << (double)lineMeanTime  / meanCount;
             std::cout << "  Track: " << (double)trackMeanTime / meanCount;
+            std::cout << "  Marks: " << (double)associationMeanTime / meanCount;
             std::cout << "  Total: " << total;
-            std::cout << "  FPS: " << 1000.0 / total;
+            std::cout << "  FPS: " << 1000.0 / total;*/
             fpsStartTime = clock();
         }
         else
