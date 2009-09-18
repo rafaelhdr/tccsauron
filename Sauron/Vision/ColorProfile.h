@@ -17,7 +17,12 @@ class ColorProfile
 
         float compare( const ColorProfile &other ) const;
 
+        static void persist( const ColorProfile &colorProfile, std::ostream &stream );
+        static ColorProfile restore( std::istream &stream );
+
     private:
+        ColorProfile();
+
         void calculate( const Image &im, const DiscretizedLine &line, uint size );
 
     private:

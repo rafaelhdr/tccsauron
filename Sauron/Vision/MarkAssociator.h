@@ -12,11 +12,11 @@ class MarkAssociator
 {
     public:
         MarkAssociator();
+        MarkAssociator( const MarkVector &marks );
         ~MarkAssociator();
 
-        void loadMarks( const std::string &filename );
-
-        void associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks ) const;
+        void loadMarks( const MarkVector &marks );
+        void associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks, ProjectionVector &associatedProjs ) const;
 
     private:
         MarkVector m_marks; 
