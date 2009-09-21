@@ -11,4 +11,7 @@ public:
 	  }
 	  AREXPORT virtual void help(void) {
 	  }
+
+	  AREXPORT virtual void userTask(void) {
+	  }
 };
