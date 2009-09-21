@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include"
+				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ARIA_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -64,7 +64,7 @@
 				LinkLibraryDependencies="false"
 				AdditionalDependencies="AriaStaticDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
+				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\boost\lib"
 				GenerateDebugInformation="true"
 				AssemblyDebug="0"
 				SubSystem="1"
@@ -119,7 +119,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include"
+				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -182,6 +182,10 @@
 				RelativePath=".\Main.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\SauronArRobot.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -190,6 +194,18 @@
 			>
 			<File
 				RelativePath=".\ArSilentTelop.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ArSimStat.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SauronArRobot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarDataLogger.h"
 				>
 			</File>
 		</Filter>

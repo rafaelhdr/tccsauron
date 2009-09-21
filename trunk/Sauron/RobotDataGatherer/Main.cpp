@@ -24,8 +24,11 @@ MobileRobots Inc, 10 Columbia Drive, Amherst, NH 03031; 800-639-9481
 */
 #include "Aria.h"
 #include <iostream>
+#include <boost/scoped_ptr.hpp>
 
+#include "SonarDataLogger.h"
 #include "ArSilentTelop.h"
+#include "SauronArRobot.h"
 
 /** @example demo.cpp General purpose testing and demo program, using ArMode
  *    classes to provide keyboard control of various robot functions.
@@ -39,14 +42,26 @@ MobileRobots Inc, 10 Columbia Drive, Amherst, NH 03031; 800-639-9481
  *  focus on individual areas.
  */
 
-void testeCallback() {
-	std::cout << std::endl << "Ola, mundo" << std::endl;
+std::string getLogFilename() {
+	std::cout << "Digite o nome do arquivo de log do sonar, ou aperte enter para"
+		" sauron.log: " << std::endl;
+	std::string filename;
+	std::getline(std::cin, filename);
+	if(filename == "")
+		filename = "sauron.log";
+	return filename;
+
+}
+
+void toggleLogging(SonarDataLogger* logger) {
+	logger->toggle();
 }
 
 int main(int argc, char** argv)
 {
   // Initialize some global data
   Aria::init();
+  ArLog::init(ArLog::StdErr, ArLog::Terse);
 
   // If you want ArLog to print "Verbose" level messages uncomment this:
   //ArLog::init(ArLog::StdOut, ArLog::Verbose);
@@ -60,7 +75,7 @@ int main(int argc, char** argv)
 
   // Central object that is an interface to the robot and its integrated
   // devices, and which manages control of the robot by the rest of the program.
-  ArRobot robot;
+  sauron::SauronArRobot robot;
 
   // Object that connects to the robot or simulator using program options
   ArRobotConnector robotConnector(&parser, &robot);
@@ -98,15 +113,18 @@ int main(int argc, char** argv)
   
   // Used to perform actions when keyboard keys are pressed
   ArKeyHandler keyHandler;
-  ArGlobalFunctor teste(&testeCallback);
-  keyHandler.addKeyHandler('s', &teste); 
+  std::string logFilename = getLogFilename();
+  std::ofstream logfile(logFilename.c_str());
+  SonarDataLogger logger(&robot, logfile);
+  ArGlobalFunctor1<SonarDataLogger*> functor(&toggleLogging, &logger);
+  keyHandler.addKeyHandler('s', &functor); 
+  std::cout << "Aperte 's' para comecar o log, e 's' novamente para para-lo" << std::endl;
   Aria::setKeyHandler(&keyHandler);
 
   // ArRobot contains an exit action for the Escape key. It also 
   // stores a pointer to the keyhandler so that other parts of the program can
   // use the same keyhandler.
   robot.attachKeyHandler(&keyHandler);
-  printf("You may press escape to exit\n");
 
   // Attach sonarDev to the robot so it gets data from it.
   robot.addRangeDevice(&sonarDev);
