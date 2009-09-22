@@ -54,7 +54,7 @@ private:
 	std::string getReadings(int numOfSonars) {
 		std::stringstream ss;
 		for(int i = 0; i < numOfSonars; i++) {
-			ss << robot.getSonarRange(i) << ";";
+			ss << robot.getSonarRange(i) << " ";
 		}
 		return ss.str();
 	}
@@ -62,11 +62,11 @@ private:
 	std::string getPose() {
 		std::stringstream ss;
 		ArPose truePose = robot.getBestPose();
-		ss << truePose.getX() / 1000.0 << ";" << truePose.getY() / 1000.0 << ";" << truePose.getTh();
+		ss << truePose.getX()<< " " << truePose.getY()<< " " << truePose.getTh();
 		if(robot.hasTruePose())
-			ss << "; (TRUE)";
+			ss << " (TRUE)";
 		else
-			ss << "; (ESTIMATED)";
+			ss << " (ESTIMATED)";
 		return ss.str();
 	}
 }; 

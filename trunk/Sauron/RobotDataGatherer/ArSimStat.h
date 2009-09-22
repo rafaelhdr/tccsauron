@@ -38,7 +38,7 @@ public:
 	int getRealX() { return m_realX; }
 	/// Posição real em Y (mm)
 	int getRealY() { return m_realY; }
-	/// Posição real em Z (mm) (?!)
+	/// Posição real em Z (?!) (mm) 
 	int getRealZ() { return m_realZ; }
 	/// Posição real angular (em graus)
 	int getRealTh() { return m_realTh; }

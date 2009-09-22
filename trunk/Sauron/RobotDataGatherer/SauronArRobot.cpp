@@ -1,5 +1,6 @@
 #include "SauronArRobot.h"
 #include "ArSimStat.h"
+#include "MathHelper.h"
 
 namespace sauron
 {
@@ -25,9 +26,9 @@ bool SauronArRobot::simStatPacketHandler(ArRobotPacket* pkt) {
 		  return false;
 
 	  ArSimStat simStat(pkt);
-	  m_truePose.setX(simStat.getRealX());
-	  m_truePose.setY(simStat.getRealY());
-	  m_truePose.setTh(simStat.getRealTh());
+	  m_truePose.setX(simStat.getRealX() / 10.0 );
+	  m_truePose.setY(simStat.getRealY() / 10.0 );
+	  m_truePose.setTh(sauron::trigonometry::degrees2rads(simStat.getRealTh()));
 
 	  m_truePoseAvailable = true;
 	  return true;

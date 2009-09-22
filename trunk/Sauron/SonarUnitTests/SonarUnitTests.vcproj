@@ -22,7 +22,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			ManagedExtensions="1"
 			>
 			<Tool
@@ -200,6 +200,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SonarReadingsLogParser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarTest.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\uBLASTest.cpp"
 				>
 			</File>
@@ -207,6 +215,22 @@
 		<Filter
 			Name="Header Files"
 			>
+		</Filter>
+		<Filter
+			Name="Logs"
+			>
+			<File
+				RelativePath=".\Logs\validateReadings_MobileSim_StraightLine.log"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\AuthoringTests.txt"

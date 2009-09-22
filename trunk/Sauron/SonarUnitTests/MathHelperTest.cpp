@@ -120,5 +120,48 @@ namespace SonarUnitTests
 			Assert::IsFalse(sauron::statistics::chiSquareNormalDistributionTest(
 				N, sample_s2, exp_s2, 0.05));
 		}
+
+		[TestMethod]
+		void TrigTest_Deg2Rad()
+		{	
+			int degrees = 180;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				sauron::trigonometry::PI,
+				sauron::trigonometry::degrees2rads(degrees)));
+
+			degrees = 90;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				sauron::trigonometry::PI / 2,
+				sauron::trigonometry::degrees2rads(degrees)));
+
+			degrees = 30;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				sauron::trigonometry::PI / 6,
+				sauron::trigonometry::degrees2rads(degrees)));
+
+			degrees = 270;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				sauron::trigonometry::PI * 3.0 / 2.0,
+				sauron::trigonometry::degrees2rads(degrees)));
+		}
+
+		[TestMethod]
+		void TrigTest_Rad2Deg()
+		{	
+			double rads = sauron::trigonometry::PI;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				180,
+				sauron::trigonometry::rads2degrees(rads)));
+
+			rads = sauron::trigonometry::PI / 6;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				30,
+				sauron::trigonometry::rads2degrees(rads)));
+
+			rads = sauron::trigonometry::PI / 4;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				45,
+				sauron::trigonometry::rads2degrees(rads)));
+		}
 	};
 }

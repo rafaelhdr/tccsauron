@@ -7,6 +7,15 @@
 
 namespace sauron
 {
+
+	void Sonar::addReading(const SonarReading& reading, const Pose& estimatedPose) {
+			ReadingAndPose rnp(reading, estimatedPose);
+			if(isReadingMeaningful(rnp)) {
+				m_readings.push_back(rnp);
+			}
+		}
+
+
 	bool Sonar::validateReadings()
 	{
 		/**
@@ -44,9 +53,9 @@ namespace sauron
 		std::vector<double> gammas(k-1);
 		// começa em 1 mesmo, porque fazemos m_readings[i] - m_readings[i-1]
 		for(int i = 1; i < k; i++) {
-			float diff_readings = m_readings[i].reading - m_readings[i-1].reading;
+			reading_t diff_readings = m_readings[i].reading - m_readings[i-1].reading;
 			double diff_pose = m_readings[i].estimatedPose.getDistance(m_readings[i-1].estimatedPose);
-			gammas.push_back(diff_readings / diff_pose);
+			gammas.at(i-1) = diff_readings / diff_pose;
 		}
 		return gammas;
 	}
@@ -76,12 +85,12 @@ namespace sauron
 	}
 
 	double Sonar::getSinAlpha() {
-		// sin(alpha) = d_robot / d_sonar, onde
+		// sin(alpha) = 1 / (d_robot / d_sonar), onde
 		//	d_robot = distância percorrida pelo robô = 
 		//		dist_euclideana(última_posição_estimada,primeira_posição_estimada)
 		//	d_sonar = última_leitura_sonar - primeira_leitura_sonar
 		// Note que o significado de "último" aqui é "mais recente" (o oposto à tese).
-		return getD_Robot() / getD_Sonar();
+		return getD_Sonar() / getD_Robot();
 	}
 
 	double Sonar::getD_Robot() {
