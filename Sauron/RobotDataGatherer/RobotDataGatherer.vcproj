@@ -41,14 +41,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\"
+				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\;..\Common;&quot;D:\Users\Pedro\Documents\Poli\TCC\svn tcc\Sauron\Sonar&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ARIA_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="4"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,9 +62,10 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="AriaStaticDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib"
+				AdditionalDependencies="AriaStaticDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib Sonar.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\boost\lib"
+				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\boost\lib;&quot;D:\Users\Pedro\Documents\Poli\TCC\svn tcc\Sauron\Debug&quot;"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				AssemblyDebug="0"
 				SubSystem="1"
@@ -119,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\"
+				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\include;..\..\;..\Common"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

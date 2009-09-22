@@ -2,6 +2,6 @@
 
 namespace sauron
 {
-	typedef float reading_t;
-	typedef float pose_t;
+	typedef int reading_t;
+	typedef double pose_t;
 }

@@ -18,8 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4172383A-757B-4651-B955-E8314703975C}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-		Sauron.vsmdi = Sauron.vsmdi
-		Sauron1.vsmdi = Sauron1.vsmdi
+		Sauron2.vsmdi = Sauron2.vsmdi
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91A629FA-8772-4B73-9941-FF6449B3E91E}"
@@ -32,10 +31,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91A629
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotDataGatherer", "RobotDataGatherer\RobotDataGatherer.vcproj", "{26503FBF-85A0-4123-96A8-4DC530D61FE3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8BDE01B1-0125-41C1-A1BC-1D416596FBFE} = {8BDE01B1-0125-41C1-A1BC-1D416596FBFE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Sauron1.vsmdi
+		CategoryFile = Sauron2.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
