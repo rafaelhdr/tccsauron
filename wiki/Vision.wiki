@@ -65,13 +65,25 @@ onde δ é a maior diferença esperada entre os componentes. Essa equação não
 
 Esta nova equação foi escrita visando considerar diferenças de um mesmo lado da região, para cada componente de cor, aumentando o valor do fator de correlação quando as cores de cada lados dos perfis comparados são próximos.
 
-= Rastreamento =
+= Rastreamento e Associação =
 
-*TODO*
+A associação de projeções à marcos foi dividida em duas etapas: rastrear projeções em seqüências contínuas de quadros e relacionar projeções rastreadas à marcos descritos no mapa. Essa abordagem não é a mesma seguida por Barra, que busca a melhor associação aos marcos usando todas as projeções observadas em um dado instante. Maiores detalhes sobre os motivos da divisão serão citados abaixo.
+
+O rastreamento de projeções é responsável por identificar projeções em diferentes quadros que são, na verdade, a mesma projeção vista em um momento e/ou posição diferente. A importância dessa etapa é que ela realiza uma filtragem pelas projeções que têm maior probabilidade de serem marcos. Isso decorre das características desejadas em marcos: altamente visíveis e identificáveis. Se uma mesma projeção pode ser vista por muito tempo, ela pode ser um marco. Dessa forma, o rastreamento também age como o buffer adotado por Barra.
+
+A implementação do rastreamento é iniciada com a comparação de todas as projeções que estão sendo rastreadas com todas as que acabaram de ser detectadas do último _frame_ obtido da câmera. Essa comparação, baseada no perfil de cor, resulta num valor de correlação, conforme explanado na seção anterior. Somente os valores acima de um dado limiar, determinado empiricamente, são aceitos. Em seguida, os valores são agrupados de acordo com a projeção rastreada que foi usada para gerá-lo, e ordenados, em ordem decrescente. Para cada grupo, calcula-se um fator de similaridade. O grupo que tiver o maior valor de similaridade, terá o direito de utilizar a projeção recém-observada, associada ao maior valor de correlação, para relacionar à sua projeção rastreada. Após isso, o grupo com maior similaridade é removido, assim como todos os valores de correlação, dos demais grupos, associados à projeção recém-observada que foi usada. O cáluclo de similaridade e a busca pelos grupos é repetida até que todas as projeções rastredas sejam relacionadas ou que ou o maior valor de similaridade encontrado esteja abaixo de um limiar.
+
+O efeito de buffer se deve ao fato do rastreador poder ser configurado para considerar que uma dada projeção só está sendo devidamente rastreada se ela for vista pelos _n_ vezes nos últimos _i_ quadros, sendo _n_ e _i_ facilmente ajustáveis.
+
+A associação de marcos é feita entre projeções rastreadas e marcos descritos num arquivo. Um marco foi modelado como um perfil de cor que se encontra em uma determinada coordenada do mundo real. O algoritmo de associação de marcos, segue, em essência, as mesmas idéias aplicadas no rastreamento de projeções, existindo apenas diferenças em estruturas de dados empregadas internamente. 
+
 
 = Próximos Passos =
 
-*TODO*
+A prioridade do componente de visão é a implementação do estimador que alimentará o Filtro de Kalman. Como o filtro ainda está para ser desenvolvido, decidiu-se aguardar até que sua interface esteja consolidada o suficiente para que se faça o estimador, evitando-se desperdício de esforço, numa eventual mudança nos planos.
+
+Dentre melhorias a serem feitas, há a inclusão de um algoritmo que auxilia na associação de marcos por meio de estimativas da posição que um determinado marco deveria ocupar num frame, conhecendo a postura atual do robô (posição e orientação).
+
 
 = Glossário =
 
