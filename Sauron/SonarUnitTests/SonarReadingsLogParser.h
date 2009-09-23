@@ -45,7 +45,7 @@ private:
 				std::stringstream ss;
 				ss << sonarLine;
 				LogLine logLine;
-				int sonarReading;
+				sauron::reading_t sonarReading;
 				while(!ss.eof()) {
 					ss >> sonarReading;
 					if(!ss.fail())

@@ -65,7 +65,7 @@ namespace sauron
 		using namespace boost::numeric;
 
 		double sin_alpha = getSinAlpha();
-		assert(!(sin_alpha > 1.0));
+		assert(!(sin_alpha > 1.0 || sin_alpha < -1.0));
 		double s2_d = getS2_D();
 		double s2_r = getS2_R();
 
@@ -90,7 +90,18 @@ namespace sauron
 		//		dist_euclideana(última_posição_estimada,primeira_posição_estimada)
 		//	d_sonar = última_leitura_sonar - primeira_leitura_sonar
 		// Note que o significado de "último" aqui é "mais recente" (o oposto à tese).
-		return getD_Sonar() / getD_Robot();
+		double d_sonar = getD_Sonar();// * ::cos(this->m_sonarTheta);
+		double d_robot = getD_Robot();
+
+		// cosine law
+		double x = ::sqrt(d_sonar * d_sonar + d_robot * d_robot - 
+			2 * d_sonar * d_robot * ::cos(this->m_sonarTheta));
+		// sine law
+		double sinAlpha = d_sonar * ::sin(this->m_sonarTheta) / x;
+
+		return trigonometry::correctImprecisions(sinAlpha);
+
+		//return trigonometry::correctImprecisions(d_sonar / d_robot);
 	}
 
 	double Sonar::getD_Robot() {
@@ -99,8 +110,8 @@ namespace sauron
 	}
 
 	double Sonar::getD_Sonar() {
-		return getLatestReading().reading.getReading() -
-			getOldestReading().reading.getReading();
+		return  getOldestReading().reading.getReading() -
+			getLatestReading().reading.getReading();
 	}
 
 	double Sonar::getS2_D() {
