@@ -3,12 +3,17 @@
 #include "SonarReading.h"
 #include "Pose.h"
 
+namespace SonarUnitTests{
+ref class SonarTest;
+}
+
 namespace sauron
 {
 
 	class Sonar
 	{
 	public:
+		friend ref class SonarUnitTests::SonarTest;
 		Sonar(const sauron::Pose& sonarPose)
 			: m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),

@@ -52,13 +52,106 @@ namespace SonarUnitTests
 		//
 		#pragma endregion 
 
+		void assertSinAlpha(const SonarReadingsLogParser& parser, int sonarNumber, double
+			expectedAngleDegrees) {
+			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
+			Assert::AreEqual(::sin(sauron::trigonometry::degrees2rads(expectedAngleDegrees)),
+				sonar.getSinAlpha(), 0.05);
+		}
+
+		void assertValidateReadings(const SonarReadingsLogParser& parser, int sonarNumber) {
+			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
+			Assert::IsTrue(sonar.validateReadings());
+		}
+
+		[TestMethod]
+		void GetSinAlpha_StraightLine()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_StraightLine.log");
+			assertSinAlpha(parser, 0, 0);
+			assertSinAlpha(parser, 1, 0);
+			assertSinAlpha(parser, 2, 0);			
+		};
+
 		[TestMethod]
 		void ValidateReadingsTest_StraightLine()
 		{
-			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(0));
 			SonarReadingsLogParser parser("validateReadings_MobileSim_StraightLine.log");
-			parser.addAllReadingsOfOneSonar(0, sonar);
-			Assert::IsTrue(sonar.validateReadings());
+			assertValidateReadings(parser, 0);
+			assertValidateReadings(parser, 1);
+			assertValidateReadings(parser, 2);
+		};
+
+		[TestMethod]
+		void GetSinAlpha_90deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_90deg.log");
+			assertSinAlpha(parser, 2, 90);
+			assertSinAlpha(parser, 3, 90);
+		};
+
+		[TestMethod]
+		void ValidateReadingsTest_90deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_90deg.log");
+			assertValidateReadings(parser, 2);
+			assertValidateReadings(parser, 3);
+		};
+
+		[TestMethod]
+		void GetSinAlpha_45deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_45deg.log");
+			assertSinAlpha(parser, 1, 45);
+			assertSinAlpha(parser, 2, 45);
+			assertSinAlpha(parser, 3, 45);
+		};
+
+		[TestMethod]
+		void ValidateReadingsTest_45deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_45deg.log");
+			assertValidateReadings(parser, 1);
+			assertValidateReadings(parser, 2);
+			assertValidateReadings(parser, 3);
+		};
+
+		[TestMethod]
+		void GetSinAlpha_60deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_60deg.log");
+			assertSinAlpha(parser, 2, 60);
+			assertSinAlpha(parser, 3, 60);
+		};
+
+		[TestMethod]
+		void ValidateReadingsTest_60deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_60deg.log");
+			assertValidateReadings(parser, 2);
+			assertValidateReadings(parser, 3);
+		};
+
+		[TestMethod]
+		void GetSinAlpha_minus27deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_-27deg.log");
+			assertSinAlpha(parser, 4, -27);
+			assertSinAlpha(parser, 5, -27);
+			assertSinAlpha(parser, 6, -27);
+			assertSinAlpha(parser, 7, -27);
+		};
+
+		[TestMethod]
+		void ValidateReadingsTest_minus27deg()
+		{
+			SonarReadingsLogParser parser("validateReadings_MobileSim_-27deg.log");
+			assertValidateReadings(parser, 4);
+			assertValidateReadings(parser, 5);
+			assertValidateReadings(parser, 6);
+			assertValidateReadings(parser, 7);
 		};
 	};
 }

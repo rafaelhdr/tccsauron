@@ -143,6 +143,16 @@ namespace SonarUnitTests
 			Assert::IsTrue(sauron::floating_point::isEqual(
 				sauron::trigonometry::PI * 3.0 / 2.0,
 				sauron::trigonometry::degrees2rads(degrees)));
+
+			degrees = 45;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				sauron::trigonometry::PI / 4,
+				sauron::trigonometry::degrees2rads(degrees)));
+
+			degrees = -30;
+			Assert::IsTrue(sauron::floating_point::isEqual(
+				-1.0 * sauron::trigonometry::PI / 6,
+				sauron::trigonometry::degrees2rads(degrees)));
 		}
 
 		[TestMethod]

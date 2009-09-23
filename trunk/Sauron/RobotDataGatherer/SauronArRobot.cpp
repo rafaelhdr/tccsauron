@@ -28,7 +28,7 @@ bool SauronArRobot::simStatPacketHandler(ArRobotPacket* pkt) {
 	  ArSimStat simStat(pkt);
 	  m_truePose.setX(simStat.getRealX() / 10.0 );
 	  m_truePose.setY(simStat.getRealY() / 10.0 );
-	  m_truePose.setTh(sauron::trigonometry::degrees2rads(simStat.getRealTh()));
+	  m_truePose.setTh(simStat.getRealTh());
 
 	  m_truePoseAvailable = true;
 	  return true;

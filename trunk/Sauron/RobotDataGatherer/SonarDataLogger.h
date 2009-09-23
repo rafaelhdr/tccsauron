@@ -1,6 +1,7 @@
 #pragma once
 #include "Aria.h"
 #include "SauronArRobot.h"
+#include "MathHelper.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -54,7 +55,7 @@ private:
 	std::string getReadings(int numOfSonars) {
 		std::stringstream ss;
 		for(int i = 0; i < numOfSonars; i++) {
-			ss << robot.getSonarRange(i) << " ";
+			ss << robot.getSonarRange(i) / 10.0 << " ";
 		}
 		return ss.str();
 	}
@@ -62,7 +63,8 @@ private:
 	std::string getPose() {
 		std::stringstream ss;
 		ArPose truePose = robot.getBestPose();
-		ss << truePose.getX()<< " " << truePose.getY()<< " " << truePose.getTh();
+		ss << truePose.getX()<< " " << truePose.getY()<< " " <<
+			truePose.getThRad();
 		if(robot.hasTruePose())
 			ss << " (TRUE)";
 		else
@@ -70,49 +72,3 @@ private:
 		return ss.str();
 	}
 }; 
-
-	/*
-public:
-	SonarDataLogger(const ArRobot& robot, const std::string& filename)
-		: m_robot(robot), m_filename(filename), m_isLogging(false),
-		m_loggerThread(0), m_logger(0), m_logfile(filename.c_str(), std::ios::out | std::ios::trunc){
-			if(!m_logfile.is_open()) {
-				throw std::invalid_argument("não foi possível abrir " + filename);
-			}
-	}
-	~SonarDataLogger(void) {
-		m_logfile.close();
-	}
-
-	void startLogging();
-	void stopLogging();
-	void toggleLogging();
-
-private:
-	bool m_isLogging;
-	const ArRobot& m_robot;
-	std::string m_filename;
-	std::ofstream m_logfile;
-	boost::scoped_ptr<boost::thread> m_loggerThread;
-
-	class LoggerThread {
-	public:
-		LoggerThread(const ArRobot& _robot, std::ofstream& _logfile)
-			: stop(false), robot(_robot), logfile(_logfile) {
-				if(!logfile.is_open()) {
-					throw std::invalid_argument("logfile");
-				}
-		}
-		void operator()();
-		void logReadings();
-		std::string getReadings(int numOfSonars);
-		std::string getPose();
-		bool stop;
-		const ArRobot& robot;
-		std::ofstream& logfile;
-	};
-
-
-	boost::scoped_ptr<LoggerThread> m_logger;
-};
-*/

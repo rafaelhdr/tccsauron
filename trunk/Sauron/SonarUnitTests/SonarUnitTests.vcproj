@@ -220,6 +220,14 @@
 			Name="Logs"
 			>
 			<File
+				RelativePath=".\Logs\validateReadings_MobileSim_60deg.log"
+				>
+			</File>
+			<File
+				RelativePath=".\Logs\validateReadings_MobileSim_90deg.log"
+				>
+			</File>
+			<File
 				RelativePath=".\Logs\validateReadings_MobileSim_StraightLine.log"
 				>
 				<FileConfiguration
