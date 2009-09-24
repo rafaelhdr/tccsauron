@@ -1,0 +1,8 @@
+#summary Lembretes de coisas que precisamos falar na monografia.
+
+Lembretes de coisas que precisamos falar na monografia.
+
+= Sonar =
+
+  * Modelo de observação do sonar leva em conta theta do sonar (função Sonar::getSinAlpha)
+  * Correção da equação 5.9, pag 80 do pdf do barra, trocando sin por cos.
