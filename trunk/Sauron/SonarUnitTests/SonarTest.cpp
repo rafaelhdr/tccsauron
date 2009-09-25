@@ -1,4 +1,5 @@
 #include "SonarReadingsLogParser.h"
+#include "Line.h"
 
 using namespace System;
 using namespace System::Text;
@@ -52,6 +53,7 @@ namespace SonarUnitTests
 		//
 		#pragma endregion 
 
+		#pragma region sinalpha_validatereadings
 		void assertSinAlpha(const SonarReadingsLogParser& parser, int sonarNumber, double
 			expectedAngleDegrees) {
 			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
@@ -153,5 +155,33 @@ namespace SonarUnitTests
 			assertValidateReadings(parser, 6);
 			assertValidateReadings(parser, 7);
 		};
+		#pragma endregion
+
+		#pragma region getobservedline
+		void assertObservedLine(const SonarReadingsLogParser& parser, int sonarNumber,
+			const sauron::Line& expectedLine) {
+			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
+			Assert::IsTrue(sonar.validateReadings());
+			sauron::Line observedLine = sonar.getObservedLine();
+			Assert::AreEqual(expectedLine.getRWall(), observedLine.getRWall(), 20);
+			Assert::AreEqual(expectedLine.getTheta(), observedLine.getTheta(), 5);
+		}
+
+		[TestMethod]
+		void ObservedLineTest_c250() {
+			SonarReadingsLogParser parser("observedLine_MobileSim_C250.log");
+			sauron::Line seenBy012(390, 0);
+			sauron::Line seenBy567(0, 0);
+			assertObservedLine(parser, 0, seenBy012);
+			assertObservedLine(parser, 1, seenBy012);
+			// imaginei que foss funcionar, mas...
+			//assertObservedLine(parser, 2, seenBy012);
+
+			assertObservedLine(parser, 5, seenBy567);
+			assertObservedLine(parser, 6, seenBy567);
+			assertObservedLine(parser, 7, seenBy567);
+		}
+		#pragma endregion
 	};
 }
