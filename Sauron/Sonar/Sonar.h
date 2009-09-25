@@ -3,12 +3,14 @@
 #include "SonarReading.h"
 #include "Pose.h"
 
+
 namespace SonarUnitTests{
 ref class SonarTest;
 }
 
 namespace sauron
 {
+	class Line;
 
 	class Sonar
 	{
@@ -25,8 +27,9 @@ namespace sauron
 		}
 
 		void addReading(const SonarReading& reading, const Pose& estimatedPose);
+		Line getObservedLine();
 		bool validateReadings();
-
+		Pose getSonarGlobalPose(const Pose& robotGlobalPose);
 	private:
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;
 

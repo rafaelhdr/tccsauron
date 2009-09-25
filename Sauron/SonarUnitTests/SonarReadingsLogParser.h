@@ -40,27 +40,30 @@ private:
 			std::string sonarLine, poseLine;
 			// a primeira linha contém a leitura dos sonares
 			std::getline(m_log, sonarLine);
-			if(!m_log.eof()) {
-				std::getline(m_log, poseLine);
-				std::stringstream ss;
-				ss << sonarLine;
-				LogLine logLine;
-				sauron::reading_t sonarReading;
-				while(!ss.eof()) {
-					ss >> sonarReading;
-					if(!ss.fail())
-						logLine.readings.push_back(sauron::SonarReading(sonarReading));
-				}
-				// a segunda tem a posição do robô
-				sauron::pose_t x, y, th;
-				ss.clear();
-				ss.str(poseLine);
-				ss >> x >> y >> th;
-				logLine.pose.X() = x;
-				logLine.pose.Y() = y;
-				logLine.pose.setTheta(th);
+			// ignora linhas que comecem com '#'
+			if(sonarLine.length() > 0 && sonarLine.at(0) != '#') {
+				if(!m_log.eof()) {
+					std::getline(m_log, poseLine);
+					std::stringstream ss;
+					ss << sonarLine;
+					LogLine logLine;
+					sauron::reading_t sonarReading;
+					while(!ss.eof()) {
+						ss >> sonarReading;
+						if(!ss.fail())
+							logLine.readings.push_back(sauron::SonarReading(sonarReading));
+					}
+					// a segunda tem a posição do robô
+					sauron::pose_t x, y, th;
+					ss.clear();
+					ss.str(poseLine);
+					ss >> x >> y >> th;
+					logLine.pose.X() = x;
+					logLine.pose.Y() = y;
+					logLine.pose.setTheta(th);
 
-				m_readings.push_back(logLine);
+					m_readings.push_back(logLine);
+				}
 			}
 		}
 

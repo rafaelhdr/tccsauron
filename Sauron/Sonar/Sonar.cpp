@@ -4,17 +4,30 @@
 #include <boost/numeric/ublas/matrix.hpp>
 
 #include "MathHelper.h"
+#include "Line.h"
 
 namespace sauron
 {
 
 	void Sonar::addReading(const SonarReading& reading, const Pose& estimatedPose) {
-			ReadingAndPose rnp(reading, estimatedPose);
-			if(isReadingMeaningful(rnp)) {
-				m_readings.push_back(rnp);
-			}
+		ReadingAndPose rnp(reading, estimatedPose);
+		if(isReadingMeaningful(rnp)) {
+			m_readings.push_back(rnp);
 		}
+	}
 
+	Line Sonar::getObservedLine() {
+		double alpha_rads = ::asin(getSinAlpha());
+		pose_t thetaWall_rads = getLatestReading().estimatedPose.getTheta() + alpha_rads;
+		Pose sonarPose = getSonarGlobalPose(getLatestReading().estimatedPose);
+
+		// DEBUG
+		double reading = getLatestReading().reading * ::sin(sonarPose.getTheta());
+		double x_times_sin = sonarPose.X() * ::sin(thetaWall_rads);
+		double y_times_cos = sonarPose.Y() * ::cos(thetaWall_rads);
+		pose_t rWall = reading + x_times_sin + y_times_cos ;
+		return Line(rWall, thetaWall_rads);
+	}
 
 	bool Sonar::validateReadings()
 	{
@@ -34,12 +47,12 @@ namespace sauron
 		}
 
 		/* gamma (pág 49 da tese do barra) é a razão entre a diferença do resultado
-		   dos sonares em duas leituras consecutivas e a distância percorrida entre
-		   essas leituras. Idealmente, esse valor se mantém constante no caso de obser-
-		   varmos um movimento retilíneo.
-		   
-		   como há k leituras, haverá k-1 gammas.
-		   */
+		dos sonares em duas leituras consecutivas e a distância percorrida entre
+		essas leituras. Idealmente, esse valor se mantém constante no caso de obser-
+		varmos um movimento retilíneo.
+
+		como há k leituras, haverá k-1 gammas.
+		*/
 		const std::vector<double> gammas = getGammas();
 		double gamma_mean = statistics::mean(gammas);
 		double gamma_variance = statistics::sample_variance(gammas, gamma_mean);
@@ -104,6 +117,8 @@ namespace sauron
 		//return trigonometry::correctImprecisions(d_sonar / d_robot);
 	}
 
+
+
 	double Sonar::getD_Robot() {
 		return getLatestReading().estimatedPose.getDistance(
 			getOldestReading().estimatedPose);
@@ -123,5 +138,16 @@ namespace sauron
 	double Sonar::getS2_R() {
 		double s_r = getLatestReading().reading.getStdDeviationMm();
 		return s_r * s_r;
+	}
+
+	Pose Sonar::getSonarGlobalPose(const Pose& robotPose) {
+		pose_t globalSonarX, globalSonarY, globalSonarTh;
+		globalSonarX = robotPose.X() +
+			(m_sonarX * ::cos(robotPose.getTheta()) - m_sonarY * ::sin(robotPose.getTheta()));
+		globalSonarY = robotPose.Y() +
+			(m_sonarX * ::sin(robotPose.getTheta()) + m_sonarY * ::cos(robotPose.getTheta()));
+		globalSonarTh = robotPose.getTheta() + m_sonarTheta;
+
+		return Pose(globalSonarX, globalSonarY, globalSonarTh);
 	}
 }
