@@ -13,6 +13,7 @@ namespace sauron
 		{
 			 Pose nova_posicao(calculaX(nova_medida), calculaY(nova_medida), calculaTheta(nova_medida));
 			 posicao_anterior = nova_posicao;
+			 medida_anterior = nova_medida;
 			 return nova_posicao;
 		}
 		
