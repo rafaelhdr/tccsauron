@@ -20,6 +20,9 @@ namespace sauron
 			ModeloDinamica(Pose posicao_inicial)
 				: posicao_anterior(posicao_inicial), medida_anterior(0, 0){
 			}
+			ModeloDinamica(Pose posicao_inicial, MedidaOdometro medida_inicial)
+				: posicao_anterior(posicao_inicial), medida_anterior(medida_inicial){
+			}
 
 			Pose getNovaPosicao(const MedidaOdometro nova_medida); 
 
