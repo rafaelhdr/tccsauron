@@ -15,17 +15,17 @@ public:
 			makeAxis();
 	}
 
-	inline ArLine getBorder1() { return m_border1; }
-	inline ArLine getBorder2() { return m_border2; }
+    inline ArLine getBorder1() { return *m_border1.getLine(); }
+	inline ArLine getBorder2() { return *m_border2.getLine(); }
 
 	bool intersectsSegment(const LineSegment& segment) {
 		/*if(segment.isInLine(m_border1) || segment.isInLine(m_border2)) {
 			return true;
 		}*/
-		const ArLine* line = segment.getLine();
+		//const ArLine* line = segment.getLine();
 		ArPose intersectionBorder1, intersectionBorder2;
-		bool intersectsBorder1 = m_border1.intersects(line, &intersectionBorder1);
-		bool intersectsBorder2 = m_border2.intersects(line, &intersectionBorder2);
+		bool intersectsBorder1 = m_border1.intersects((ArLineSegment *)&segment, &intersectionBorder1);
+		bool intersectsBorder2 = m_border2.intersects((ArLineSegment *)&segment, &intersectionBorder2);
 
 		if(intersectsBorder1 && intersectsBorder2 && (intersectionBorder1 == intersectionBorder2))
 			intersectsBorder2 = false;
@@ -68,8 +68,11 @@ private:
 		Point2DDouble point2 = getBorderPoint(m_vertex, m_axisAngleRads + m_apertureAngleRads / 2);
 
 		// agora criamos as linhas
-		m_border1.newParametersFromEndpoints(m_vertex.X(), m_vertex.Y(), point1.X(), point1.Y());
-		m_border2.newParametersFromEndpoints(m_vertex.X(), m_vertex.Y(), point2.X(), point2.Y());
+		/*m_border1.newParametersFromEndpoints(m_vertex.X(), m_vertex.Y(), point1.X(), point1.Y());
+		m_border2.newParametersFromEndpoints(m_vertex.X(), m_vertex.Y(), point2.X(), point2.Y());*/
+
+        m_border1 = LineSegment(m_vertex.X(), m_vertex.Y(), point1.X(), point1.Y());
+		m_border2 = LineSegment(m_vertex.X(), m_vertex.Y(), point2.X(), point2.Y());
 
 	}
 
@@ -79,18 +82,22 @@ private:
 	}
 
 	Point2DDouble getBorderPoint(const Point2DDouble& vertex, double lineAngle_rads) {
+
+        const double deltaX = 1e20;
+
 		if(!floating_point::isEqual(lineAngle_rads, trigonometry::PI / 2)) {
-			double deltaX = 5;
+			
 			double deltaY = deltaX * ::tan(lineAngle_rads);
 			return Point2DDouble(m_vertex.X() + deltaX,  m_vertex.Y() + deltaY);
 		} else {
-			return Point2DDouble(m_vertex.X(),  m_vertex.Y() + 5);
+			return Point2DDouble(m_vertex.X(),  m_vertex.Y() + deltaX);
 		}
 	}
 
 private:
 	Point2DDouble m_vertex;
-	ArLine m_border1, m_border2, m_axis;
+	LineSegment m_border1, m_border2;
+    ArLine m_axis;
 	double m_axisAngleRads;
 	double m_apertureAngleRads;
 	 
