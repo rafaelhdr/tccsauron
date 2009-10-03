@@ -1,5 +1,4 @@
 #pragma once
-
 namespace sauron
 {
 class Line
@@ -9,8 +8,8 @@ public:
 		: m_rWall(rWall), m_theta(theta){
 	}
 
-	double getRWall() const { return m_rWall; }
-	double getTheta() const { return m_theta; }
+	inline double getRWall() const { return m_rWall; }
+	inline double getTheta() const { return m_theta; }
 
 private:
 	double m_rWall, m_theta;

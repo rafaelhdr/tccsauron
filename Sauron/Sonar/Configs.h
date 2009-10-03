@@ -11,7 +11,8 @@ namespace sauron
 		const int kMin = 4;
 		const double phoErrorFront4mm = 0.05;
 		const double readingValidationAlpha = 0.5;
-
+		const double wallRejectionValue2 = 2.7060;
+		const double maximalSonarToLineDistance = 550;
 		namespace sonars
 		{
 			// distância mínima que deve ser percorrida pelo robô para que uma leitura

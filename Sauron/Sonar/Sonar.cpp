@@ -5,6 +5,7 @@
 
 #include "MathHelper.h"
 #include "Line.h"
+#include "Cone.h"
 
 namespace sauron
 {
@@ -16,17 +17,35 @@ namespace sauron
 		}
 	}
 
-	Line Sonar::getObservedLine() {
-		double alpha_rads = ::asin(getSinAlpha());
-		pose_t thetaWall_rads = getLatestReading().estimatedPose.getTheta() + alpha_rads;
-		Pose sonarPose = getSonarGlobalPose(getLatestReading().estimatedPose);
+	double Sonar::getSonarAngleOfIncidence() 
+	{
+		return this->m_sonarTheta + ::asin(getSinAlpha());
+	}
 
-		// DEBUG
-		double reading = getLatestReading().reading * ::sin(sonarPose.getTheta());
-		double x_times_sin = sonarPose.X() * ::sin(thetaWall_rads);
-		double y_times_cos = sonarPose.Y() * ::cos(thetaWall_rads);
-		pose_t rWall = reading + x_times_sin + y_times_cos ;
+	Line Sonar::getObservedLine() {
+		double beta_rads = getSonarAngleOfIncidence();
+
+		Pose sonarPose = getSonarGlobalPose(getLatestReading().estimatedPose);
+		pose_t thetaWall_rads = trigonometry::PI / 2 - beta_rads + sonarPose.getTheta() ;
+
+		double reading = getLatestReading().reading * ::sin(beta_rads);
+		double x_times_cos = sonarPose.X() * ::cos(thetaWall_rads);
+		double y_times_sin = sonarPose.Y() * ::sin(thetaWall_rads);
+		pose_t rWall = reading + x_times_cos + y_times_sin ;
 		return Line(rWall, thetaWall_rads);
+	}
+
+	SonarReading Sonar::getExpectedReadingByMapLine(const LineSegment& lineSegment)
+	{
+		sauron::Line line = lineSegment.getSauronLine();
+		sauron::Pose sonarPose = this->getSonarGlobalPose(this->getLatestReading().estimatedPose);
+		
+		double beta_rads = getSonarAngleOfIncidence();
+
+		double x_times_cos = sonarPose.X() * ::cos(line.getTheta());
+		double y_times_sin = sonarPose.Y() * ::sin(line.getTheta());
+		// expectedReading = (R_wall - X_sonar * cos Th_wall - Y_sonar * sin Th_wall) / sin Beta
+		return (line.getRWall() - x_times_cos - y_times_sin) / ::sin(beta_rads);
 	}
 
 	bool Sonar::validateReadings()
@@ -115,6 +134,74 @@ namespace sauron
 		return trigonometry::correctImprecisions(sinAlpha);
 
 		//return trigonometry::correctImprecisions(d_sonar / d_robot);
+	}
+
+
+	bool Sonar::tryGetMatchingMapLine(Map& map, LineSegment* matchedMapLine,
+		SonarReading* expectedReading, double sigmaError2)
+	{
+		std::vector<LineSegment>* pLines = map.getLines();	
+
+		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
+			getLatestReading().estimatedPose);
+		
+		std::vector<LineSegment> matchedLines;
+		SonarReading latestReading = getLatestReading().reading;
+		for(std::vector<LineSegment>::const_iterator it = mapLines.begin();
+			it != mapLines.end(); it++) {
+				if(matchMapLineWithReading(latestReading, *it, sigmaError2)) {
+					matchedLines.push_back(*it);
+				}
+		}
+
+		if(matchedLines.size() == 1) {
+			*matchedMapLine = matchedLines[0];
+			*expectedReading = getExpectedReadingByMapLine(matchedLines[0]);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	std::vector<LineSegment> Sonar::filterFarAwayLines(std::vector<LineSegment>& mapLines,
+		const Pose& pose) {
+			std::vector<LineSegment> closeEnoughLines;
+			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
+				it++) {
+					 double distanceToPose = it->getDistToLine(pose);
+					 if(floating_point::equalOrLess(distanceToPose, configs::maximalSonarToLineDistance))
+					 {
+						 closeEnoughLines.push_back(*it);
+					 }
+			}
+			return closeEnoughLines;
+	}
+
+	std::vector<LineSegment> Sonar::filterBySonarAngle(std::vector<LineSegment>& mapLines,
+		const Pose& robotPose) {
+			std::vector<LineSegment> reachableLines;
+			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
+				it++) {
+					 double distanceToPose = it->getDistToLine(robotPose);
+					 if(floating_point::equalOrLess(distanceToPose, configs::maximalSonarToLineDistance))
+					 {
+						 reachableLines.push_back(*it);
+					 }
+			}
+			return reachableLines;
+	}
+
+	bool Sonar::matchMapLineWithReading(const SonarReading &reading,
+		const LineSegment &mapLine, double sigmaError2) {
+			if(floating_point::isEqual(mapLine.getSauronLine().getRWall(), 390)) {
+				int a = 42;
+			}
+			double expectedReading =  getExpectedReadingByMapLine(mapLine);
+			double v_2 = reading.getReading() - expectedReading;
+			v_2 *= v_2;
+			double s_2 = sigmaError2;
+
+			return v_2 / s_2 < configs::wallRejectionValue2;
 	}
 
 

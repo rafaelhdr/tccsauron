@@ -2,7 +2,8 @@
 #include <vector>
 #include "SonarReading.h"
 #include "Pose.h"
-
+#include "Map.h"
+#include "LineSegment.h"
 
 namespace SonarUnitTests{
 ref class SonarTest;
@@ -30,6 +31,8 @@ namespace sauron
 		Line getObservedLine();
 		bool validateReadings();
 		Pose getSonarGlobalPose(const Pose& robotGlobalPose);
+		bool tryGetMatchingMapLine(Map& map, /*out */ LineSegment* matchedMapLine,
+			/* out */ SonarReading* expectedReading, double sigmaError2);
 	private:
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;
 
@@ -40,6 +43,12 @@ namespace sauron
 		double getS2_R();
 		double getD_Robot();
 		double getD_Sonar();
+		double getSonarAngleOfIncidence();
+		std::vector<LineSegment> filterFarAwayLines(std::vector<LineSegment>& mapLines, const Pose& robotPose);
+		std::vector<LineSegment> filterBySonarAngle(std::vector<LineSegment>& mapLines, const Pose& robotPose);
+		SonarReading getExpectedReadingByMapLine(const LineSegment& lineSegment);
+		bool matchMapLineWithReading(const SonarReading& reading, const LineSegment& mapLine,
+			double sigmaError2);
 		struct ReadingAndPose {
 			ReadingAndPose(const SonarReading& _reading, const Pose& _estimatedPose)
 				: reading(_reading), estimatedPose(_estimatedPose) { }

@@ -165,17 +165,17 @@ namespace SonarUnitTests
 			Assert::IsTrue(sonar.validateReadings());
 			sauron::Line observedLine = sonar.getObservedLine();
 			Assert::AreEqual(expectedLine.getRWall(), observedLine.getRWall(), 20);
-			Assert::AreEqual(expectedLine.getTheta(), observedLine.getTheta(), 5);
+			Assert::AreEqual(expectedLine.getTheta(), observedLine.getTheta(), 0.087);
 		}
 
 		[TestMethod]
 		void ObservedLineTest_c250() {
 			SonarReadingsLogParser parser("observedLine_MobileSim_C250.log");
-			sauron::Line seenBy012(390, 0);
-			sauron::Line seenBy567(0, 0);
+			sauron::Line seenBy012(390, sauron::trigonometry::PI / 2);
+			sauron::Line seenBy567(0, sauron::trigonometry::PI / 2);
 			assertObservedLine(parser, 0, seenBy012);
 			assertObservedLine(parser, 1, seenBy012);
-			// imaginei que foss funcionar, mas...
+			// imaginei que fosse funcionar, mas...
 			//assertObservedLine(parser, 2, seenBy012);
 
 			assertObservedLine(parser, 5, seenBy567);
