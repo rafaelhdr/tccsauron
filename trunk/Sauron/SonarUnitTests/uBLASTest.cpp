@@ -1,4 +1,15 @@
+ #define BOOST_UBLAS_TYPE_CHECK 0 
+
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/triangular.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+#include <boost/numeric/ublas/io.hpp>
+
+
+namespace ublas = boost::numeric::ublas;
+
 
 using namespace System;
 using namespace System::Text;
@@ -118,5 +129,66 @@ namespace SonarUnitTests
 			Assert::AreEqual(C(1,0), 3);
 			Assert::AreEqual(C(1,1), 8);
 		}
+
+		[TestMethod]
+		void InversionTest()
+		{
+			using namespace boost::numeric::ublas;
+			matrix<int> A(3,3);
+			A(0,0) = -2;
+			A(0,1) = 1;
+			A(0,2) = 2;
+			A(1,0) = -4;
+			A(1,1) = 3;
+			A(1,2) = 2;
+			A(2,0) = -5;
+			A(2,1) = 1;
+			A(2,2) = 5;
+
+			matrix<int> C(3,3);
+			InvertMatrix( A, C);
+
+			Assert::AreEqual(C(0,0), 2);
+			Assert::AreEqual(C(0,1), 0);
+			Assert::AreEqual(C(0,2), 0);
+			Assert::AreEqual(C(1,0), 1);
+			Assert::AreEqual(C(1,1), 0);
+			Assert::AreEqual(C(1,2), 0);
+			Assert::AreEqual(C(2,0), 1);
+			Assert::AreEqual(C(2,1), 0);
+			Assert::AreEqual(C(2,2), 0);
+		}
+
+
+		/* Matrix inversion routine.
+		Uses lu_factorize and lu_substitute in uBLAS to invert a matrix */
+		template<class T>
+		bool InvertMatrix (const ublas::matrix<T>& input, ublas::matrix<T>& inverse) {
+			using namespace boost::numeric::ublas;
+			
+			typedef permutation_matrix<std::size_t> pmatrix;
+			
+			// create a working copy of the input
+			matrix<T> A(input);
+			// create a permutation matrix for the LU-factorization
+			pmatrix pm(A.size1());
+
+
+			// perform LU-factorization
+			int res = lu_factorize(A,pm);
+			if( res != 0 ) return false;
+
+
+			// create identity matrix of "inverse"
+			inverse.assign(ublas::identity_matrix<T>(A.size1()));
+
+
+			// backsubstitute to get the inverse
+			lu_substitute(A, pm, inverse);
+
+
+			return true;
+		}
 	};
 }
+

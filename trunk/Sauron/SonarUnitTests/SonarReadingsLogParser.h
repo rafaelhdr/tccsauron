@@ -31,7 +31,6 @@ public:
 		}
 	}
 
-private:
 	std::ifstream m_log;
 	std::vector<LogLine> m_readings;
 
