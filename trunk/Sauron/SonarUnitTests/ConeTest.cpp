@@ -305,7 +305,7 @@ namespace SonarUnitTests
 			Assert::IsTrue(cone.intersectsSegment(segment4));
 		};
 
-				[TestMethod]
+		[TestMethod]
 		void IntersectsLineTest_20()
 		{
 			using namespace sauron;
@@ -314,6 +314,18 @@ namespace SonarUnitTests
 				trigonometry::degrees2rads(90));
 
 			ArLineSegment segment(-5, -3, 5, 3);
+			Assert::IsTrue(cone.intersectsSegment(segment));
+		};
+
+		[TestMethod]
+		void IntersectsLineTest_21()
+		{
+			using namespace sauron;
+			sauron::Cone cone(Point2DDouble(0,0),
+				trigonometry::degrees2rads(90),
+				trigonometry::degrees2rads(90));
+
+			ArLineSegment segment(5, -1, 5, 1);
 			Assert::IsTrue(cone.intersectsSegment(segment));
 		};
 
