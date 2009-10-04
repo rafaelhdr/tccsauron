@@ -1,6 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 \usepackage{graphicx}
 \usepackage[brazilian]{babel}
+\usepackage[pdftex,bookmarks=true]{hyperref}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fullpage}
@@ -12,18 +13,12 @@
 
 \begin{document}
 
-\begin{figure}[!t]
-\centering 
-\includegraphics[width=15.5cm]{imagens/logo.pdf}
-\end{figure}
 
-\maketitle
-\tableofcontents
-
-
-\input{introducao}
-\input{sonarnl}
-\input{visao}
-\input{modelodinamica}
+\include{capa}
+\include{sumario}
+\include{introducao}
+\include{sonarnl}
+\include{visao}
+\include{modelodinamica}
 
 \end{document}
