@@ -1,3 +1,12 @@
+\begin{comment}
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\begin{document}
+\end{comment}
 
 \section{Testes com a biblioteca SonARNL}
 
@@ -7,7 +16,7 @@ A empresa MobileRobots, fabricante do robô Pioneer P2DX utilizado no projeto, di
 Os testes foram realizados no prédio da Engenharia Elétrica da Escola Politécnica, mais especificamente no corredor das salas C2. Esse local foi escolhido por representar desafios comuns a todo o ambiente, em especial, alta simetria entre as duas paredes do corredor.
 
 Testamos o robô em duas ocasiões. No primeiro dia, montamos um circuito assimétrico e pequeno, que ia da sala C2-50 ao corredor que termina nas escadas. Para aumentar a assimetria, modificamos o ambiente original. A Figura~\ref{mapa:testesonarnl1} representa o ambiente de testes.
-\begin{figure}%
+\begin{figure}[h]%
 \begin{center}
 \includegraphics[width=.5\columnwidth]{imagens/mapa.png}
 \caption{Mapa do primeiro dia de testes}%
@@ -43,3 +52,4 @@ Os resultados dos testes foram ruins, já que a biblioteca de localização do robô
 Chegamos, finalmente, a um estágio em que não poder examinar o código-fonte da biblioteca foi limitador. Para que pudéssemos analisar com mais detalhes as razões do fracasso da localização, precisaríamos entrar mais fundo nas engrenagens no código. Como isso não era possível, tomamos a decisão de abandonar a biblioteca de localização do SonARNL.
 
 
+%\end{document}
