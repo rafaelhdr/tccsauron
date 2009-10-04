@@ -1360,6 +1360,13 @@ public:
   /// Internal function for seeing if a point on our line is within our segment
   bool linePointIsInSegment(ArPose *pose) const
     {
+		/// SAURON
+		if((fabs(pose->getX() - myX1) <= 0.0001 &&
+			fabs(pose->getY() - myY1) <= 0.0001) ||
+			(fabs(pose->getX() - myX2) <= 0.0001 &&
+			fabs(pose->getY() - myY2) <= 0.0001)) {
+				return true;
+		}
       return (((myX1 == myX2) || 
 	             (pose->getX() >= myX1 && pose->getX() <= myX2) || 
 	             (pose->getX() <= myX1 && pose->getX() >= myX2)) &&
