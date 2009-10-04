@@ -1,0 +1,24 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+
+\begin{document}
+\section{Testes com a biblioteca SonARNL}
+
+A empresa MobileRobots, fabricante do robô Pioneer P2DX utilizado no projeto, disponibiliza a seus clientes uma biblioteca chamada SonARNL, que provê funções de localização e navegação robóticas. O código-fonte da biblioteca é fechado, e alguns exemplos em C++ distribuídos no pacote ensinam como utilizá-la.
+
+\subsection{Ambiente de testes}
+Os testes foram realizados no prédio da Engenharia Elétrica da Escola Politécnica, mais especificamente no corredor das salas C2. Esse local foi escolhido por representar desafios comuns a todo o ambiente, em especial, alta simetria entre as duas paredes do corredor.
+
+A primeira etapa na realização dos testes é o mapeamento do ambiente. Obtivemos uma planta, no formato AutoCAD, de todo o prédio, que havia sido construída por ex-alunos da Prof. Anna. Convertemos parte dessa planta para o formato entendido pela biblioteca SonARNL, e verificamos manualmente a correção das medidas. Localizamos algumas imprecisões (por vezes grosseiras), que foram corrigidas. À medida que os testes progrediram, o mapa foi refinado cada vez mais.
+
+\subsection{Resultado dos testes}
+Testamos o robô em duas ocasiões. No primeiro dia, montamos um circuito assimétrico e pequeno, que ia da sala C2-50 ao corredor que termina nas escadas. O robô foi capaz de se deslocar com sucesso no circuito, atingindo os objetivos selecionados. Para aferir a precisão do robô, marcamos 20 pontos no ambiente. O robô foi instruído a se dirigir a cada um deles e, quando a biblioteca informava ter atingido seu destino, medíamos o erro entre a posição real e a crença do robô.
+
+Foram realizadas três baterias de testes. Nas duas primeiras, o robô encontrou um ambiente perfeitamente estático e o erro médio foi de 30,18 centímetros. No último teste, tentamos atrapalhá-lo, ficando na frente dos sonares. A diferença nos resultados foi perceptível. 
+
+
+\end{document}
