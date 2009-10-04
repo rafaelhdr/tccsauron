@@ -269,7 +269,6 @@ namespace SonarUnitTests
 			ArLineSegment segment(-1, 2, 5, 5);
 			Assert::IsTrue(cone.intersectsSegment(segment));
 		};
-
 		
 		[TestMethod]
 		void IntersectsLineTest_17()
@@ -282,6 +281,7 @@ namespace SonarUnitTests
 			ArLineSegment segment2(-1, -2, -5, -5);
 			Assert::IsFalse(cone.intersectsSegment(segment2));
 		};
+
 		[TestMethod]
 		void IntersectsLineTest_18()
 		{
@@ -293,6 +293,7 @@ namespace SonarUnitTests
 			ArLineSegment segment3(0, 70, 0, 90);
 			Assert::IsTrue(cone.intersectsSegment(segment3));
 		};
+
 		[TestMethod]
 		void IntersectsLineTest_19()
 		{
