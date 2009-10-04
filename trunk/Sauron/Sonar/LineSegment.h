@@ -49,15 +49,5 @@ namespace sauron
 			return linePointIsInSegment(&segment.getEndPoint1()) &&
 				linePointIsInSegment(&segment.getEndPoint2());
 		}
-
-		bool isInLine(const ArLine& line) const {
-			return isPointInLine(getEndPoint1().getX(), getEndPoint1().getY(), line)
-			&& isPointInLine(getEndPoint2().getX(), getEndPoint2().getY(), line);
-		}
-	private:
-		bool isPointInLine(double x, double y, const ArLine& line) const {
-			//ax + by + c = 0
-			return floating_point::isEqual(line.getA() * x + line.getB() * y + line.getC(), 0);
-		}
 	};
 }
