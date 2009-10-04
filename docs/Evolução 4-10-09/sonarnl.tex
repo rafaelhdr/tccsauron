@@ -1,11 +1,13 @@
+\begin{comment}
 \documentclass[a4paper,11pt]{article}
 \usepackage{graphicx}
 \usepackage[brazilian]{babel}
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fullpage}
-
 \begin{document}
+\end{comment}
+
 \section{Testes com a biblioteca SonARNL}
 
 A empresa MobileRobots, fabricante do robô Pioneer P2DX utilizado no projeto, disponibiliza a seus clientes uma biblioteca chamada SonARNL, que provê funções de localização e navegação robóticas. O código-fonte da biblioteca é fechado, e alguns exemplos em C++ distribuídos no pacote ensinam como utilizá-la.
@@ -13,14 +15,40 @@ A empresa MobileRobots, fabricante do robô Pioneer P2DX utilizado no projeto, di
 \subsection{Ambiente de testes}
 Os testes foram realizados no prédio da Engenharia Elétrica da Escola Politécnica, mais especificamente no corredor das salas C2. Esse local foi escolhido por representar desafios comuns a todo o ambiente, em especial, alta simetria entre as duas paredes do corredor.
 
-A primeira etapa na realização dos testes é o mapeamento do ambiente. Obtivemos uma planta, no formato AutoCAD, de todo o prédio, que havia sido construída por ex-alunos da Prof. Anna. Convertemos parte dessa planta para o formato entendido pela biblioteca SonARNL, e verificamos manualmente a correção das medidas. Localizamos algumas imprecisões (por vezes grosseiras), que foram corrigidas. À medida que os testes progrediram, o mapa foi refinado cada vez mais.
+Testamos o robô em duas ocasiões. No primeiro dia, montamos um circuito assimétrico e pequeno, que ia da sala C2-50 ao corredor que termina nas escadas. Para aumentar a assimetria, modificamos o ambiente original. A Figura~\ref{mapa:testesonarnl1} representa o ambiente de testes.
+\begin{figure}%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{mapa.png}
+\caption{Mapa do primeiro dia de testes}%
+\label{mapa:testesonarnl1}%
+\end{center}
+\end{figure}
+
+No segundo dia, testamos a capacidade do robô de se deslocar por todo o pavimento superior do bloco C, local escolhido por representar desafios comuns a todo o ambiente, em especial, alta simetria entre as duas paredes do corredor. Para mapearmos o ambiente, obtivemos uma planta, no formato AutoCAD, de todo o prédio, que havia sido construída por ex-alunos da Prof. Anna. O resultado está ilustrado na Figura~\ref{mapa:testesonarnl2}. Convertemos a parte dessa planta que nos interessava para o formato entendido pela biblioteca SonARNL, e verificamos manualmente a correção das medidas. Localizamos algumas imprecisões (por vezes grosseiras), que foram corrigidas. À medida que os testes progrediram, o mapa foi refinado cada vez mais.
+
+\begin{figure}%
+\begin{center}
+\includegraphics[width=\columnwidth]{mapa2.jpeg}
+\caption{Mapa do segundo dia de testes, com os pontos de interesse. As linhas laranjas representam ``zonas proibidas'', linhas invisíveis aos sensores do robô mas que devem ser evitadas.}%
+\label{mapa:testesonarnl2}%
+\end{center}
+\end{figure}
 
 \subsection{Resultado dos testes}
-Testamos o robô em duas ocasiões. No primeiro dia, montamos um circuito assimétrico e pequeno, que ia da sala C2-50 ao corredor que termina nas escadas. Para aumentar a assimetria, modificamos o ambiente original. O robô foi capaz de se deslocar com sucesso no circuito, atingindo os objetivos selecionados. Para aferir a precisão do robô, marcamos 20 pontos no ambiente. O robô foi instruído a se dirigir a cada um deles e, quando a biblioteca informava ter atingido seu destino, medíamos o erro entre a posição real e a crença do robô.
+O robô foi capaz de se deslocar com sucesso no circuito, atingindo os objetivos selecionados. Para aferir a precisão do robô, marcamos 20 pontos no ambiente. O robô foi instruído a se dirigir a cada um deles e, quando a biblioteca informava ter atingido seu destino, medíamos o erro entre a posição real e a crença do robô.
 
 Foram realizadas três baterias de testes. Nas duas primeiras, o robô encontrou um ambiente perfeitamente estático e o erro médio foi de 30,18 centímetros. No último teste, tentamos atrapalhá-lo, ficando na frente dos sonares. A diferença nos resultados foi perceptível: o erro médio subiu para 90,62 centímetros, e por quatro vezes o robô colidiu com pessoas ou paredes.
 
-No segundo dia de testes, o pavimento superior inteiro foi utilizado como mapa. O ambiente, bastante simétrico, não foi modificado, o que aumentou a dificuldade de localização. Nessas novas condições, a biblioteca SonARNL falhou
+No segundo dia de testes, o pavimento superior inteiro foi utilizado como mapa. O ambiente, bastante simétrico, não foi modificado, o que aumentou a dificuldade de localização. Nessas novas condições, a biblioteca SonARNL não foi capaz de atingir os destinos. De fato, ele não foi capaz de se locomover em linha reta da sala C2-50 à C2-13. Na tentavia de compreender os motivos do erro, tentamos alterar alguns parâmetros (por exemplo, número de amostras do algoritmo Monte Carlo), sem sucesso. Detectamos um padrão interessante: na maior parte das vezes em que se perdeu, o robô acreditava estar no lado errado do corredor. Por exemplo, ele achava estar próximo à parede da sala C2-30, quando na verdade estava encostado à rampa oposta.
 
+Tampouco foram raros os acidentes. Os sonares garantem proteção contra colisões frontais, mas muitas vezes o robô, acreditando estar no lado oposto do corredor, efetuou um giro de 360º quando estava encostado à parede, raspando a alça traseira e o notebook embarcado.
+
+Notamos que à medida que o mapa era refinado, havia alguma melhora no desempenho do robô, mas não conseguimos um comportamento consistente em hora alguma: se às vezes ele chegava a ultrapassar o cruzamento dos corredores, no teste seguinte ele poderia muito bem se perder antes da primeira porta de vidro.
+
+\subsection{Avaliação dos resultados}
+
+Os resultados dos testes foram ruins, já que a biblioteca de localização do robô se mostrou incapaz de atingir seu objetivo básico. Pior ainda, não conseguimos discernir exatamente \emph{o quê} causava essa imprecisão. Na tentativa de isolar as causas do erro, realizamos um terceiro dia de testes. Tentamos diminuir a assimetria do ambiente, melhorar a precisão do mapa e modificar os mais diversos parâmetros do algoritmo, mas não notamos melhoras no desempenho do robô.\footnote{Uma grande dificuldade em realizar esses testes é a grande variação nos resultados. Não há um determinismo claro nas ações do robô. Por exemplo, se em um determinado teste o robô se perdeu perto da sala C2-46, no próximo teste, com condições idênticas, a perda de localização poderia ocorrer muito antes ou depois, sem nenhum motivo aparente. Seria necessário um número muito grande de medidas para eliminar as variações aleatórias e determinar o efeito das mudanças de parâmetros.}
+
+Chegamos, finalmente, a um estágio em que não poder examinar o código-fonte da biblioteca foi limitador. Para que pudéssemos analisar com mais detalhes as razões do fracasso da localização, precisaríamos entrar mais fundo nas engrenagens no código. Como isso não era possível, tomamos a decisão de abandonar a biblioteca de localização do SonARNL.
 
 \end{document}
