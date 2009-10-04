@@ -252,10 +252,6 @@
 				</FileConfiguration>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\AuthoringTests.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
