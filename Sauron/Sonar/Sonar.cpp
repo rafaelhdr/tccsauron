@@ -180,11 +180,11 @@ namespace sauron
 	std::vector<LineSegment> Sonar::filterBySonarAngle(std::vector<LineSegment>& mapLines,
 		const Pose& robotPose) {
 			std::vector<LineSegment> reachableLines;
+			Pose sonarPose = getSonarGlobalPose(robotPose);
+			Cone sonarCone(sonarPose, sonarPose.getTheta(), configs::sonars::sonarApertureAngleRads);
 			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
 				it++) {
-					 double distanceToPose = it->getDistToLine(robotPose);
-					 if(floating_point::equalOrLess(distanceToPose, configs::maximalSonarToLineDistance))
-					 {
+					if(sonarCone.intersectsSegment(*it)) {
 						 reachableLines.push_back(*it);
 					 }
 			}

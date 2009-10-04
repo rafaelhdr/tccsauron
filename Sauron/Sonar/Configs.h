@@ -15,6 +15,8 @@ namespace sauron
 		const double maximalSonarToLineDistance = 550;
 		namespace sonars
 		{
+			// abertura do cone do sonar
+			const double sonarApertureAngleRads = 0.48; // 27.5 graus
 			// distância mínima que deve ser percorrida pelo robô para que uma leitura
 			// seja considerada interessante
 			const double minimalRobotDistance = 5;
