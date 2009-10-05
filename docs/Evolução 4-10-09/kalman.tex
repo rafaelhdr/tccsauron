@@ -69,3 +69,86 @@ E as seguintes definições:
 \begin{displaymath}
 	G_{k}=\int^{t_{k+1}}_{t_{k}}e^{A(t_{k+1}-\tau)}B(\tau)d\tau
 \end{displaymath}
+A equação previamente fornecida é reescrita como:
+\begin{displaymath}
+	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}w(\tau)d\tau
+\end{displaymath}
+Obtendo a média da equação acima, lembrando que o ruído possui média nula, obtemos finalmente:
+\begin{displaymath}
+	\bar{x}_{k}=F_{k-1}\bar{x}_{k-1}+G_{k-1}u_{k-1}
+\end{displaymath}
+A propagação da matriz de covariâncias é dada pela seguinte fórmula:
+\begin{displaymath}
+	P_{k}=E[(x_{k}-\bar{x}_{k})(x_{k}-\bar{x}_{k})^{T}]
+\end{displaymath}
+Utilizando a equação anterior e assumindo como hipótese que \begin{math}w(t)\end{math} é um ruído branco de covariância \begin{math}Q_{c}(t)\end{math} chegamos após alguma manipulação matemática na sequinte equação:
+\begin{displaymath}
+	P_{k}=F_{k-1}P_{k-1}F^{T}_{k-1}+Q_{k-1}
+\end{displaymath}
+Onde \begin{math}Q_{k-1}\end{math} pode ser aproximado por
+\begin{displaymath}
+	Q_{k-1}\approx Q_{c}(t_{k})\Delta t
+\end{displaymath}
+e \begin{math}Q_{c}\end{math} é a covariância do ruído branco \begin{math}w(t)\end{math}.
+
+\subsection{Filtro de Kalman discreto}
+Finalmente, de posse da base teórica acima, podemos descrever o filtro de kalman, que opera propagando o estado e a covariância no tempo e atualizando-os com os valores medidos, usando-se para isso o método dos mínimos quadrados. Em suma:
+\begin{itemize}
+	\item Uma descrição matemárica do problema para os quais a estimação dos estados são necessárias é realizada.
+	\item Usamos as equações descritas anteriormente de propagação de estado e covariância.
+	\item Toda vez que uma medida é obtida, a estimativa do estado e a covariância são atualizadas de forma a considerar o novo valor.
+\end{itemize}
+Vamos inicialmente modelar nosso sistema com a seguinte equação linear:
+\begin{displaymath}
+	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1}
+\end{displaymath}
+\begin{displaymath}
+	y_{k}=H_{k}x_{k}+v_{k}
+\end{displaymath}
+Onde os ruídos \begin{math}w_{k}\end{math} e \begin{math}v_{k}\end{math} são brancos, centrados no zero, não correlatos e possuem matrizes de covariância \begin{math}Q\end{math} e \begin{math}R\end{math} respectivamente.\\
+Para estimar o valor de \begin{math}x_{k}\end{math}, que é nosso objetivo final, vamos primeiramente subdividir \begin{math}x_{k}\end{math} em dois valores distintos, \begin{math}\hat{x}_{k}^{-}\end{math} e \begin{math}\hat{x}_{k}^{+}\end{math}, onde o primeiro corresponde a um valor antes de uma medida e o segundo após uma medida, i.e., \begin{math}\hat{x}_{k}^{-}\end{math} corresponde ao valor estimado baseado na dinâmica do sistema em um instante k instantâneamente antes de uma medição ser realizada, enquanto que \begin{math}\hat{x}_{k}^{+}\end{math} corresponde ao valor estimado no mesmo instante k após a obtenção de uma estimativa \begin{math}y_{k}\end{math}. De forma semelhante, definimos \begin{math}P_{k}^{-}\end{math} e \begin{math}P_{k}^{+}\end{math} como o valor da covariância antes e depois de uma medida.\\
+Tendo definido estes estados e de posse da teoria previamente discutida, podemos descrever o processo de estimação através do filtro de kalman com o seguinte processo:
+\begin{itemize}
+	\item Descrevemos matematicamente o sistema:
+		\begin{displaymath}
+			x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1}
+		\end{displaymath}
+		\begin{displaymath}
+			y_{k}=H_{k}x_{k}+v_{k}
+		\end{displaymath}
+		\begin{displaymath}
+			E(w_{k}w^{T}_{j})=Q_{k}\delta_{k-j}
+		\end{displaymath}
+		\begin{displaymath}
+			E(v_{k}v^{T}_{j})=R_{k}\delta_{k-j}
+		\end{displaymath}	
+		\begin{displaymath}
+			E(w_{k}v^{T}_{j})=0
+		\end{displaymath}	
+	\item Inicializamos o filtro:
+		\begin{displaymath}
+			\hat{x}^{+}_{0}=E(x_{0})
+		\end{displaymath}	
+		\begin{displaymath}
+			P^{+}_{0}=E[(x_{0}-\hat{x}^{+}_{0})(x_{0}-\hat{x}^{+}_{0})^{T}]
+		\end{displaymath}
+	\item Iteramos o filtro para cada uma das seguintes equações:
+		\begin{displaymath}
+			P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1}
+		\end{displaymath}
+		\begin{displaymath}
+			\hat{x}^{-}_{k}=F_{k-1}\hat{x}^{+}_{k-1}+G_{k-1}u_{k-1}
+		\end{displaymath}
+		\begin{displaymath}
+			K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1}
+		\end{displaymath}
+		\begin{displaymath}
+			\hat{x}^{+}_{k}=\hat{x}^{-}_{k}+K_{k}(y_{k}-H_{k}\hat{x}^{-}_{k})
+		\end{displaymath}
+		\begin{displaymath}
+			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k}(I-K_{k}H_{k})^{T}+K_{k}R_{k}K^{T}_{k}
+		\end{displaymath}
+\end{itemize}
+Ou seja, iniciamos estimando um estado. Se temos certeza do mesmo,\begin{math}P_{0}^{+}=0\end{math}. A partir daí, propagamos o sistema no tempo até o momento da primeira medição, obtendo \begin{math}P_{k}^{-}\end{math} e \begin{math}\hat{x}_{k}^{-}\end{math}. Após isto, usamos a medida \begin{math}y_{k}\end{math} para atualizar a estimativa e covariância para \begin{math}P_{k}^{+}\end{math} e \begin{math}\hat{x}_{k}^{+}\end{math}.\\
+Um ponto importante a ser considerado é a diferença de fórmulas desta usada aqui e a derivada anteriormente para o método dos mínimos quadrados.\\
+Quando derivamos a equação para estimar o estado a partir das diversas medições, fizemos a suposição de que já possuísse-mos todas as medições, o que no caso do robô é completamente falso. Em nossa formulação final do filtro de kalman, usamos como forma de atualização do filtro um método conhecido como método dos mínimos quadrados recursivo, de forma a atualizar nossa estimativa de acordo com a entrada das medições. A teoria por trás desta, baseada em nosso desevolvimento, pode ser encontrada facilmente em diversas fontes.
