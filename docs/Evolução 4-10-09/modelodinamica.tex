@@ -2,17 +2,68 @@
 \section{Modelo de Dinâmica}
 
 \subsection{Definição}
-O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman, utilizando para isso os valores do odômetro.
+O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman. Nosso Modelo de Dinâmica utilizará os dados do odômetro para conseguir realizar tal predição. Realizar a predição significa obter uma nova postura (i.e., coordenadas (x,y) e ângulo $\theta$ )  com os dados do odômetro e da última estimativa.
 
-\subsection{Detecção de Projeções Verticais}
-The quick brown fox jumps over the lazy dog.
+O Modelo de Dinâmica é talvez uma das partes mais fáceis a ser realizada dentro do Módulo de Localização, por isso ele foi delegado a um dos dois integrantes do grupo que não tinha experiência com a linguagem C++ utilizada para 
 
-\subsection{Perfil de Cor}
-The quick brown fox jumps over the lazy dog.
+\subsection{Modelagem}
 
-\subsection{Rastreamento e Associação}
-The quick brown fox jumps over the lazy dog.
+A plataforma-robô Pionner P2DX foi modelada de acordo com a figura~\ref{figura:modelorobo} abaixo.
+
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/modelorobo.jpg}
+\caption{Arquitetura do Sistema completo.}%
+\label{figura:modelorobo}%
+\end{center}
+\end{figure}
+
+As equações para se obter a postura estimada do robô, a partir da última estimativa estão descritas abaixo:
+
+\begin{gather}
+	x(n)=x(n-1)+dt_{m}(n)cos(\theta(n))\\
+	y(n)=y(n-1)+dt_{m}(n)sen(\theta(n))\\
+	\theta(n)=\theta(n-1)+\delta\theta(n)
+\end{gather}
+
+Para completar o modelo de dinâmica também é preciso encontrar as fórmulas de incerteza, que estão começando a ser tratadas na atual fase de implementação.
+
+\subsection{Exemplo}
+
+Abaixo a classe mais genérica do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
+
+\begin{lstlisting}[language=C++]
+Pose ModeloDinamica::getNovaPosicao(const MedidaOdometro nova_medida)
+{
+ Pose nova_posicao(calculaX(nova_medida), calculaY(nova_medida),
+ calculaTheta(nova_medida));
+ posicao_anterior = nova_posicao;
+ medida_anterior = nova_medida;
+ return nova_posicao;
+}
+		
+pose_t ModeloDinamica::calculaX(const MedidaOdometro nova_medida)
+{
+ /* x(n-1) + delta distancia * cos (teta médio) */
+ return posicao_anterior.X() + 
+ nova_medida.minus(medida_anterior).getDistance()*
+ ::cos(medida_anterior.getTheta());
+}
+
+pose_t ModeloDinamica::calculaY(const MedidaOdometro nova_medida)
+{
+ return posicao_anterior.Y() + 
+ nova_medida.minus(medida_anterior).getDistance()*
+ ::sin(medida_anterior.getTheta());
+}
+
+pose_t ModeloDinamica::calculaTheta(const MedidaOdometro nova_medida)
+{
+ return nova_medida.getTheta();
+}
+\end{lstlisting}
+
+
 
 \subsection{Próximos Passos}
-The quick brown fox jumps over the lazy dog.
-
+Os próximos passos do Modelo de Dinâmica consistem em encontrar as equações da incerteza e implementá-las. Como nos demais modelos são realizados testes para se encontrar as constantes 
