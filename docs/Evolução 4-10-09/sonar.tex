@@ -30,6 +30,7 @@ A descrição detalhada de cada etapa está fora do escopo deste documento de acomp
 
 \subsection{Refinamentos do modelo}
 
+
 Para determinar se as útlimas \textit{k} observações correspondem a uma parede, o modelo original calcula a relação entre a diferença entre observações sucessivas e a distância percorrida pelo robô entre elas. A Figura~\ref{barra_modelosonar} ilustra um robô se dirigindo à parede com ângulo $\alpha$. Note que os raios dos sonares incidem sempre perpendicularmente à parede, uma suposição inverossímel. Na realidade, os raios dos sonares refletirão na parede com um determinado ângulo, que depende de cada sonar ($\theta_{sonar}$).\footnote{Essa é uma aproximação. Um modelo mais preciso para o comportamento dos sonares é um cone de ângulo $\gamma$, cujo eixo central está a $\theta_{sonar}$ da origem.}
 
 \begin{figure}
@@ -66,10 +67,19 @@ Nas equações acima, $\Delta_{sonar}$ é a diferença entre as leituras do sonar na
 
 \begin{figure}
 	\centering
-		\includegraphics{imagens/retas.pdf}
+	\includegraphics[width=.3\columnwidth]{imagens/retas.pdf}
 	\caption{Ilustração do modelo adotado para paredes do mapa.}
 	\label{fig:retas}
 \end{figure}
 
 Note que a divisão por $\sin\beta$ não é problemática, pois $\beta$ é o ângulo de incidência do raio do sonar.
+
+\subsection{Implementação}
+
+Como o resto do projeto, o modelo dos sonares está sendo escrito em C++, e compilado com o Visual C++ 2008, da Microsoft. A implementação está em seus estágios finais. Já há código pronto para as três etapas, mas a segunda etapa, associação da parede observada com uma no mapa, ainda precisa de refinamentos. Especificamente, o esforço de desenvolvimento atualmente se concentra em encontrar filtros adequados que permitam aumentar a confiança de que encontramos a parede certa no mapa.
+
+Para garantir a qualidade do código, cada módulo novo é fartamente testado. Dos 57 testes unitários que foram preparados só para o sonar, 55 passam. Muitos dos testes precisam de dados do robô, pois seria muito trabalhoso criá-los manualmente. Para esse fim, desenvolvemos um programa que captura as leituras dos sonares, junto com a postura estimada\footnote{Quando esse capturador de dados percebe que está lidando com o simulador, e não com o robô real, ele utiliza comandos especiais que obtêm a postura real.} e as salva em um arquivo texto. 
+
+\subsection{Próximos passos}
+A primeira tarefa a ser realizada é terminar a implementação, e testá-la com sucesso usando dados do simulador. Após isso, devemos recolher dados reais do robô e observar o comportamento do modelo. Por fim, a integração com os outros módulos do sistema precisará ser realizada. Isso será um desafio significativo, pois a adequação do código às interfaces de controle e sensoreamento do robô não é uma tarefa trivial.
 %\end{document}
