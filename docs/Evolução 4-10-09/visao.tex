@@ -93,7 +93,12 @@ O rastreamento é feito a partir da comparação dos perfis de cor entre as projeçõ
 
 A associação de marcos é feita entre projeções rastreadas e marcos descritos num arquivo. Um marco foi modelado como um perfil de cor que se encontra em uma determinada coordenada $\left(x, y\right)$ do mundo real. O algoritmo de associação de marcos, segue, em essência, as mesmas idéias aplicadas no rastreamento de projeções, existindo apenas diferenças quanto as estruturas de dados empregadas na implementação do algoritmo. 
 
+\subsection{Implementação}
+Todos as etapas descritas acima já foram implementadas e testadas em situações reais, mas de menor escala, tendo resultados bastante satisfatórios, revelando, apenas, a necessidade de pequenos refinamentos. Infelizmente, não é possível automatizar os testes do módulo de visão dada a dificuldade em criar um mecanismo de avaliação dos resultados, o que seria algo tão trabalhoso quanto o próprio desenvolvimento do módulo.
+
+Atualmente, o módulo de visão se encontra em \textsl{stand-by}, até que a possa ser feita a integração com o filtro de Kalman.
+
 \subsection{Próximos Passos}
 A prioridade do componente de visão é a implementação do estimador que alimentará o Filtro de Kalman. Como o filtro ainda está para ser desenvolvido, decidiu-se aguardar até que sua interface esteja consolidada o suficiente para que se faça o estimador, evitando-se desperdício de esforço, numa eventual mudança nos planos.
 
-Dentre melhorias a serem feitas, há a inclusão de um algoritmo que auxilia na associação de marcos por meio de estimativas da posição que um determinado marco deveria ocupar num frame, conhecendo a postura atual do robô (posição e orientação). 
+Dentre melhorias a serem feitas, há a inclusão de um algoritmo que auxilia na associação de marcos por meio de estimativas da posição que um determinado marco deveria ocupar num frame, conhecendo a postura atual do robô (posição e orientação). Entretanto, isso só pode ser realizado em um estágio mais avançado, devido as dependências que esta melhoria tem como outro módulos do projeto.
