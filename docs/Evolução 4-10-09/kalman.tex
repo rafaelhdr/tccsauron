@@ -1,0 +1,71 @@
+\begin{comment}
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\begin{document}
+\end{comment}
+
+\section{Filtro de kalman}
+A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: O método dos mínimos quadrados e a propagação de estados e covariâncias.
+
+\subsection{Método dos mínimos quadrados}
+Suponha que temos posse de um conjunto de medições sobre uma determinada constante, mas que estas medições foram adquiridas com um equipamento ruidoso. Cada medida é adquirida de forma independente e possui variâncias distintas.
+Podemos modelar o problema como:
+\begin{displaymath}
+	y = Hx + v
+\end{displaymath}
+Onde y é um vetor com as medições, x é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e v é o ruído da medição.
+Como supomos que as medições são independentes e com média nula, a matriz da covariância fica com a forma:
+\begin{displaymath}
+  R = 
+	\left[
+  \begin{array}{ccc}
+	  \sigma^{2}_{1} & \cdots & 0 \\
+	  \vdots & \ddots & \vdots \\
+	  0 & \cdots & \sigma^{2}_{k} \\
+	\end{array}
+	\right]
+\end{displaymath}
+Considerando que o erro de cada medida é:
+\begin{displaymath}
+	\epsilon_{y}=y-H\widehat{x}
+\end{displaymath}
+Também em forma vetorial. Assim, o método dos mínimos quadrados consiste na minimização da seguinte função de custo:
+\begin{displaymath}
+	J=\frac{\epsilon^{2}_{y1}}{\sigma^{2}_{1}}+\cdots+\frac{\epsilon^{2}_{yk}}{\sigma^{2}_{k}}
+\end{displaymath}
+Como a própria modelagem do sistema nos informa, o método dos mínimos quadrados é a forma ótima de minimizar os erros provenientes de medições imprecisas, como é o problema que possuímos.
+No entanto, resta uma questão. Como estimar o estado e o erro do sistema entre duas medidas, sabendo-se que nosso robô estará em movimento.
+
+\subsection{Propagação de estados e covariâncias}
+Para obter uma estimativa correta do estado e da covariância após um determinado intervalo de tempo decorrido, iniciamos descrevendo um sistema contínuo gernérico:
+\begin{displaymath}
+	\dot{x}=Ax+Bu+w
+\end{displaymath}
+Onde \begin{math}x\end{math} é o estado do sistema, \begin{math}u\end{math} é uma variável de controle e \begin{math}w\end{math} é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo \begin{math}t_{k}\end{math} é:
+\begin{displaymath}
+	x(t_{k})=e^{A(t_{k}-t_{k-1})}x(t_{k-1})+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}[B(\tau)u(\tau)+w(\tau)]d\tau
+\end{displaymath}
+Agora fazendo a seguinte hipótese:
+\begin{displaymath}
+	u(t)=u_{k}, t \in [t_{k-1},t_{k}]
+\end{displaymath}
+E as seguintes definições:
+\begin{displaymath}
+	\Delta t=t_{k}-t_{k-1}
+\end{displaymath}
+\begin{displaymath}
+	x_{k}=x(t_{k})
+\end{displaymath}
+\begin{displaymath}
+	u_{k}=u(t_{k})
+\end{displaymath}
+\begin{displaymath}
+	F_{k}=e^{A\Delta t}
+\end{displaymath}
+\begin{displaymath}
+	G_{k}=\int^{t_{k+1}}_{t_{k}}e^{A(t_{k+1}-\tau)}B(\tau)d\tau
+\end{displaymath}
