@@ -15,8 +15,6 @@ A empresa MobileRobots, fabricante do robô Pioneer P2DX utilizado no projeto, di
 A primeira abordagem em busca da realização do módulo de Localização foi a tentativa de incorporar a biblioteca SonARNL dentro de nosso sistema, o que nos economizaria muito tempo de desenvolvimento.
 
 \subsection{Ambiente de testes}
-Os testes foram realizados no prédio da Engenharia Elétrica da Escola Politécnica, mais especificamente no corredor das salas C2. Esse local foi escolhido por representar desafios comuns a todo o ambiente, em especial, alta simetria entre as duas paredes do corredor.
-
 Testamos o robô em duas ocasiões. No primeiro dia, montamos um circuito assimétrico e pequeno, que ia da sala C2-50 ao corredor que termina nas escadas. Para aumentar a assimetria, modificamos o ambiente original. A Figura~\ref{mapa:testesonarnl1} representa o ambiente de testes.
 \begin{figure}[h]%
 \begin{center}
@@ -37,7 +35,7 @@ No segundo dia, testamos a capacidade do robô de se deslocar por todo o paviment
 \end{figure}
 
 \subsection{Resultado dos testes}
-O robô foi capaz de se deslocar com sucesso no circuito, atingindo os objetivos selecionados. Para aferir a precisão do robô, marcamos 20 pontos no ambiente. O robô foi instruído a se dirigir a cada um deles e, quando a biblioteca informava ter atingido seu destino, medíamos o erro entre a posição real e a crença do robô.
+No primeiro dia de testes, o robô foi capaz de se deslocar com sucesso no circuito, atingindo os objetivos selecionados. Para aferir a precisão do robô, marcamos 20 pontos no ambiente. O robô foi instruído a se dirigir a cada um deles e, quando a biblioteca informava ter atingido seu destino, medíamos o erro entre a posição real e a crença do robô.
 
 Foram realizadas três baterias de testes. Nas duas primeiras, o robô encontrou um ambiente perfeitamente estático e o erro médio foi de 30,18 centímetros. No último teste, tentamos atrapalhá-lo, ficando na frente dos sonares. A diferença nos resultados foi perceptível: o erro médio subiu para 90,62 centímetros, e por quatro vezes o robô colidiu com pessoas ou paredes.
 
@@ -51,7 +49,7 @@ Notamos que à medida que o mapa era refinado, havia alguma melhora no desempenho
 
 Os resultados dos testes foram ruins, já que a biblioteca de localização do robô se mostrou incapaz de atingir seu objetivo básico. Pior ainda, não conseguimos discernir exatamente \emph{o quê} causava essa imprecisão. Na tentativa de isolar as causas do erro, realizamos um terceiro dia de testes. Tentamos diminuir a assimetria do ambiente, melhorar a precisão do mapa e modificar os mais diversos parâmetros do algoritmo, mas não notamos melhoras no desempenho do robô.\footnote{Uma grande dificuldade em realizar esses testes é a grande variação nos resultados. Não há um determinismo claro nas ações do robô. Por exemplo, se em um determinado teste o robô se perdeu perto da sala C2-46, no próximo teste, com condições idênticas, a perda de localização poderia ocorrer muito antes ou depois, sem nenhum motivo aparente. Seria necessário um número muito grande de medidas para eliminar as variações aleatórias e determinar o efeito das mudanças de parâmetros.}
 
-Chegamos, finalmente, a um estágio em que não poder examinar o código-fonte da biblioteca foi limitador. Para que pudéssemos analisar com mais detalhes as razões do fracasso da localização, precisaríamos entrar mais fundo nas engrenagens no código. Como isso não era possível, tomamos a decisão de abandonar a biblioteca de localização do SonARNL.
+Chegamos, finalmente, a um estágio em que não poder examinar o código-fonte da biblioteca foi limitante. Para que pudéssemos analisar com mais detalhes as razões do fracasso da localização, precisaríamos entrar mais fundo nas engrenagens no código. Como isso não era possível, tomamos a decisão de abandonar a biblioteca de localização do SonARNL.
 
 
 %\end{document}
