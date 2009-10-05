@@ -39,6 +39,14 @@ Neste novo estado, supoe-se que o pixel acima do limiar é um ponto de um nova pr
 
 Após a detecção de uma projeção ter sido considerada finalizada, ela passa por algumas verificações que incluem o tamanho da projeção, eliminando, assim, projeções muito pequenas, e a inclinação, descartando aquelas que não se encontram dentro do intervalos de aceitação definidos para esses parâmetros.
 
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=.6\columnwidth]{imagens/projections.jpg}
+	\caption{Projeções detectadas na Figura ~\ref{visao:original}}
+	\label{visao:projecoes}
+\end{figure}
+
+
 \subsection{Perfil de Cor}
 O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
 
