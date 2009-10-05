@@ -1,7 +1,7 @@
 
 \section{Modelo de Dinâmica}
 
-\subsection{Definição}
+\subsection{Visão Geral}
 O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman. Nosso Modelo de Dinâmica utilizará os dados do odômetro para conseguir realizar tal predição. Realizar a predição significa obter uma nova postura (i.e., coordenadas (x,y) e ângulo $\theta$ )  com os dados do odômetro e da última estimativa.
 
 O Modelo de Dinâmica é talvez uma das partes mais fáceis a ser realizada dentro do Módulo de Localização, por isso ele foi delegado a um dos dois integrantes do grupo que não tinha experiência com a linguagem C++ utilizada para 
@@ -28,7 +28,7 @@ As equações para se obter a postura estimada do robô, a partir da última estimat
 
 Para completar o modelo de dinâmica também é preciso encontrar as fórmulas de incerteza, que estão começando a ser tratadas na atual fase de implementação.
 
-\subsection{Exemplo}
+\subsection{Exemplo de Implementação}
 
 Abaixo a classe mais genérica do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
 
@@ -64,6 +64,5 @@ pose_t ModeloDinamica::calculaTheta(const MedidaOdometro nova_medida)
 \end{lstlisting}
 
 
-
 \subsection{Próximos Passos}
-Os próximos passos do Modelo de Dinâmica consistem em encontrar as equações da incerteza e implementá-las. Como nos demais modelos são realizados testes para se encontrar as constantes 
+Os próximos passos do Modelo de Dinâmica consistem em encontrar as equações da incerteza e implementá-las. Como nos demais modelos são realizados testes para se encontrar as constantes a serem usadas.
