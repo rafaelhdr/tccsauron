@@ -14,7 +14,7 @@ extern void drawProjection( sauron::Image &im, const sauron::Projection &proj, C
 
 int testCamera()
 {
-    const sauron::uint imageScale  = 1;
+    const sauron::uint imageScale  = 2;
     const sauron::uint imageWidth  = 320;
     const sauron::uint imageHeight = 240;
     const sauron::uint finalImageWidth  = imageWidth  * imageScale;
@@ -52,10 +52,13 @@ int testCamera()
     sauron::ProjectionVector projections;
     sauron::ProjectionVector projectionsTracked;
 
+    sauron::Image fromfile( "0_step_0.bmp" );
+
     char key = 0;
     while ( key != 'q' && key != 'Q' && key != 27 )
     {
-        camera.getFrame( image );
+        //camera.getFrame( image );
+        image = fromfile;
         original = image;
         image.convertToGray();
 
@@ -73,6 +76,8 @@ int testCamera()
 
         for ( register unsigned int i = 0; i < projections.size(); ++i )
             drawProjection( original, projections[ i ], font, 255, 0, 0 );
+
+        original.save( "projections.jpg" );
 
         trackStartTime = clock();
         tracker.track( projections, projectionsTracked );

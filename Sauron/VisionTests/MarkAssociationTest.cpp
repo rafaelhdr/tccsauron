@@ -104,13 +104,13 @@ int testMarkAssociation()
         {
             double total = (double)(sobelMeanTime + lineMeanTime + trackMeanTime + associationMeanTime) / meanCount;
 
-            /*std::cout << "\r";
-            std::cout << "Sobel: "   << (double)sobelMeanTime / meanCount;
-            std::cout << "  Lines: " << (double)lineMeanTime  / meanCount;
-            std::cout << "  Track: " << (double)trackMeanTime / meanCount;
-            std::cout << "  Marks: " << (double)associationMeanTime / meanCount;
-            std::cout << "  Total: " << total;
-            std::cout << "  FPS: " << 1000.0 / total;*/
+            std::system( "cls" );
+            std::cout << "Sobel: "   << (double)sobelMeanTime / meanCount << std::endl;
+            std::cout << "Lines: " << (double)lineMeanTime  / meanCount << std::endl;
+            std::cout << "Track: " << (double)trackMeanTime / meanCount << std::endl;
+            std::cout << "Marks: " << (double)associationMeanTime / meanCount << std::endl;
+            std::cout << "Total: " << total << std::endl;
+            std::cout << "FPS: " << 1000.0 / total << std::endl;
             fpsStartTime = clock();
         }
         else

@@ -9,9 +9,9 @@ extern int testMarkAssociation();
 int main( int argc, char *argv[] )
 {
     //testBasicImage();
-    //testCamera();
+    testCamera();
     //testMarkMapper();
-    testMarkAssociation();
+    //testMarkAssociation();
     
     return 0;
 }

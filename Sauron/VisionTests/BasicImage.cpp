@@ -5,7 +5,7 @@
 
 int testBasicImage()
 {
-    char *filename = "0_step_0.bmp";
+    char *filename = "0_step_0_320x240.bmp";
 
     sauron::Image image( filename );
     

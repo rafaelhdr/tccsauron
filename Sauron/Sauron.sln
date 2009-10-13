@@ -38,10 +38,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotDataGatherer", "RobotD
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModeloDinamica", "ModeloDinamica\ModeloDinamica.vcproj", "{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Kalman", "Kalman\Kalman.vcproj", "{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}"
+EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Sauron3.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
@@ -71,6 +70,10 @@ Global
 		{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}.Debug|Win32.Build.0 = Debug|Win32
 		{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}.Release|Win32.ActiveCfg = Release|Win32
 		{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}.Release|Win32.Build.0 = Release|Win32
+		{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}.Debug|Win32.Build.0 = Debug|Win32
+		{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}.Release|Win32.ActiveCfg = Release|Win32
+		{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

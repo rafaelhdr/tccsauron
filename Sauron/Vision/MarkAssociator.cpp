@@ -56,8 +56,6 @@ void MarkAssociator::associateMarks( const ProjectionVector &projections, MarkVe
         correlationsVec.push_back( corrs );
     }
 
-    uint loopCount = 0;
-
     while ( correlationsVec.size() )
     {
         float maxCorr = -1.0f;
