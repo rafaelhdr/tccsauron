@@ -12,9 +12,9 @@ namespace sauron
 		private:
 			MedidaOdometro medida_anterior;
 			Pose posicao_anterior;
-			pose_t CalculaX(const MedidaOdometro nova_medida);
-			pose_t CalculaY(const MedidaOdometro nova_medida);
-			pose_t CalculaTheta(const MedidaOdometro nova_medida);
+			pose_t calculaX(const MedidaOdometro nova_medida);
+			pose_t calculaY(const MedidaOdometro nova_medida);
+			pose_t calculaTheta(const MedidaOdometro nova_medida);
 
 		public:
 			ModeloDinamica(Pose posicao_inicial)
@@ -24,8 +24,8 @@ namespace sauron
 				: posicao_anterior(posicao_inicial), medida_anterior(medida_inicial){
 			}
 
-			Pose GetNovaPosicao(const MedidaOdometro nova_medida);
-			void AtualizaPosicao(Pose nova_posicao);
+			Pose getNovaPosicao(const MedidaOdometro nova_medida);
+			void atualizaPosicao(Pose nova_posicao);
 
 		};
 
