@@ -7,12 +7,12 @@ namespace sauron
 	{
 
 
-		pose_t MedidaOdometro::getDistance()
+		pose_t MedidaOdometro::getDistance() const
 		{
 			return distance;
 		}
 
-		pose_t MedidaOdometro::getTheta()
+		pose_t MedidaOdometro::getTheta() const
 		{
 			return theta;
 		}

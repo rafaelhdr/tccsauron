@@ -17,8 +17,8 @@ namespace sauron
 				: distance(_distance), theta(_theta){
 
 			}
-			pose_t getDistance();
-			pose_t getTheta();
+			pose_t getDistance() const;
+			pose_t getTheta() const;
 			MedidaOdometro minus(const MedidaOdometro other) const;
 
 			/* nos dois métodos abaixo,
