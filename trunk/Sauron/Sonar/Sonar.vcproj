@@ -173,10 +173,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\CustomTypes.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Line.h"
 				>
 			</File>

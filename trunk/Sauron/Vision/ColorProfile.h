@@ -26,8 +26,11 @@ class ColorProfile
         void calculate( const Image &im, const DiscretizedLine &line, uint size );
 
     private:
-        byte   m_left[3];
-        byte   m_right[3];
+        byte m_left[3];
+        byte m_right[3];
+
+        byte m_meanLeft;
+        byte m_meanRight;
 };
 
 }   // namespace sauron

@@ -1,4 +1,5 @@
 #pragma once
+#include "BaseTypes.h"
 #include "CustomTypes.h"
 #include "Point2D.h"
 

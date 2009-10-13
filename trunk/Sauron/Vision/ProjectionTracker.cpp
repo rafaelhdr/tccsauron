@@ -12,8 +12,8 @@ namespace sauron
 ProjectionTracker::ProjectionTracker()
     : m_iterationCount( 0 ),
       m_uniqueIDReference( 0 ),
-      m_maxTimeBetweenObservations( 6 ),
-      m_minObservations( 3 )
+      m_maxTimeBetweenObservations( 8 ),
+      m_minObservations( 10 )
 {
 }
 

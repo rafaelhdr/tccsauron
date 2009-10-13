@@ -4,6 +4,8 @@ namespace sauron
 {
 
 ColorProfile::ColorProfile()
+    : m_meanLeft( 0 ),
+      m_meanRight( 0 )
 {
     memset( m_left, 0, 3 );
     memset( m_right, 0, 3 );
@@ -20,6 +22,9 @@ ColorProfile::ColorProfile( const ColorProfile &other )
 {
     memcpy( m_left, other.m_left, 3 );
     memcpy( m_right, other.m_right, 3 );
+
+    m_meanLeft  = other.m_meanLeft;
+    m_meanRight = other.m_meanRight;
 }
 
 
@@ -32,6 +37,9 @@ void ColorProfile::calculate( const Image &im, const DiscretizedLine &line, uint
 {
     int tempLeft[3]  = { 0 };
     int tempRight[3] = { 0 };
+
+    int tempMeanLeft  = 0;
+    int tempMeanRight = 0;
 
     uint lineLenght = line.getNumPoints();
     uint imageWidth = im.getWidth();
@@ -58,6 +66,8 @@ void ColorProfile::calculate( const Image &im, const DiscretizedLine &line, uint
                     tempLeft[1] += pixel.G();
                     tempLeft[2] += pixel.B();
 
+                    tempMeanLeft += pixel.R() + pixel.G() + pixel.B();
+
                     ++countLeft;
                 }
                 else if ( j > 0 )
@@ -65,6 +75,8 @@ void ColorProfile::calculate( const Image &im, const DiscretizedLine &line, uint
                     tempRight[0] += pixel.R();
                     tempRight[1] += pixel.G();
                     tempRight[2] += pixel.B();
+
+                    tempMeanRight += pixel.R() + pixel.G() + pixel.B();
 
                     ++countRight;
                 }
@@ -77,19 +89,28 @@ void ColorProfile::calculate( const Image &im, const DiscretizedLine &line, uint
         m_left[i]  = (byte)(tempLeft[i]  / countLeft);
         m_right[i] = (byte)(tempRight[i] / countRight);
     }
+
+    m_meanLeft  = (byte)(tempMeanLeft  / countLeft);
+    m_meanRight = (byte)(tempMeanRight / countRight);
 }
 
 
 float ColorProfile::compare( const ColorProfile &other ) const
 {
     const float maxVar = 30.0f;
+    const float maxMeanVar = 50.0f;
+
+    const float colorProportion = 0.8f;
+    const float meanProportion  = 1.0f - colorProportion;
 
     float ret = 0.0f;
     for ( register uint i = 0; i < 3; ++i )
-        ret += 1.0f / 6.0f * ( maxVar - abs( m_left[i]  - other.m_left[i] ) ) +
-               1.0f / 6.0f * ( maxVar - abs( m_right[i] - other.m_right[i] ) );
+        ret += colorProportion / 6.0f * ( maxVar - abs( m_left[i]  - other.m_left[i] ) ) +
+               colorProportion / 6.0f * ( maxVar - abs( m_right[i] - other.m_right[i] ) ) +
+               meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanLeft - other.m_meanLeft ) ) +
+               meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanRight - other.m_meanRight ) );
 
-    return ret / maxVar;
+    return ret / ( colorProportion * maxVar + meanProportion * maxMeanVar );
 }
 
 
