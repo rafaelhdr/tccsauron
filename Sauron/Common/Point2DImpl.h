@@ -1,6 +1,8 @@
 #ifndef __POINT_2D_IMPLEMENTATION_H__
 #define __POINT_2D_IMPLEMENTATION_H__
 
+#include <cmath>
+
 namespace sauron
 {
     

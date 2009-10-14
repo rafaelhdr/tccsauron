@@ -13,6 +13,7 @@ class Kalman
 {
     public:
         Kalman();
+        ~Kalman();
 
         void setStateTransisitionModel( const Matrix &A );
         /*void setControlMode( const Matrix &B );*/
@@ -20,11 +21,13 @@ class Kalman
         void setProcessNoise( double noise );
         void setMeasureNoise( double noise );
 
-        void predict( Pose &pose );
-        void correct( Pose &pose /*Measure goes here*/ );
+        void predict( Pose &preliminar );
+        void correct( const Measure &mes, Pose &final );
 
     private:
         CvKalman *m_kalman;
+        CvMat    *m_auxiliarMatrix;
+        CvMat    *m_auxiliarMatrix2;
 };
 
 }   // namespace sauron
