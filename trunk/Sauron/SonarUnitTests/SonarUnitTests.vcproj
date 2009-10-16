@@ -220,6 +220,18 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SonarTest3.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarTestHelper.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarTestHelper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uBLASTest.cpp"
 				>
 			</File>

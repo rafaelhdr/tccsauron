@@ -13,12 +13,14 @@ namespace sauron
 		}
 
 		LineSegment(const ArLineSegment& segment) :
-		  ArLineSegment(segment) { }
+		ArLineSegment(segment.getX1() / 10, segment.getY1() / 10,
+			segment.getX2() / 10, segment.getY2() / 10)
+		{ }
 		  LineSegment(double x1, double y1, double x2, double y2) :
 		  ArLineSegment(x1, y1, x2, y2) { }
 		Line getSauronLine() const
 		{
-			double rWall = this->getLine()->getPerpDist(ArPose(0,0)) / 10.0;
+			double rWall = this->getLine()->getPerpDist(ArPose(0,0));
 			ArPose endpoint1 = getEndPoint1();
 			ArPose endpoint2  = getEndPoint2();
 			double deltaX = endpoint1.getX() - endpoint2.getX();
@@ -33,14 +35,14 @@ namespace sauron
 		}
 
 		double getDistToLine(const Pose& pose) {
-			ArPose arPose(pose.X() * 10, pose.Y() * 10);
+			ArPose arPose(pose.X(), pose.Y());
 			arPose.setThRad(pose.getTheta());
-			return ArLineSegment::getDistToLine(arPose) / 10;
+			return ArLineSegment::getDistToLine(arPose);
 		}
 
 		bool contains(const LineSegment& segment) const {
 			if(floating_point::isEqual(myX1, myX2) &&
-				floating_point::isEqual(myY2, myY2)) {
+				floating_point::isEqual(myY1, myY2)) {
 					return floating_point::isEqual(segment.getX1(), segment.getX2())
 						&& floating_point::isEqual(segment.getY1(), segment.getY2())
 						&& floating_point::isEqual(segment.getX1(), myX1)

@@ -18,15 +18,16 @@ namespace sauron
 	}
 
 	Point2DDouble Cone::getBorderPoint(const Point2DDouble& vertex, double lineAngle_rads) {
+		const double delta = 5000;
 		double deltaX = 0;
 		double cosLineAngle = ::cos(lineAngle_rads);
 		if(!floating_point::isEqual(cosLineAngle, 0)) {
 			if(cosLineAngle > 0) {
 				// aumenta X
-				deltaX = 1e20;
+				deltaX = delta;
 			} else if(cosLineAngle < 0) {
 				// diminui X
-				deltaX = -1e20;
+				deltaX = -delta;
 			}
 			double deltaY = deltaX * ::tan(lineAngle_rads);
 			return Point2DDouble(m_vertex.X() + deltaX,  m_vertex.Y() + deltaY);
@@ -36,9 +37,9 @@ namespace sauron
 			double sinLineAngle = ::sin(lineAngle_rads);
 			if(sinLineAngle > 0) {
 				// aumenta Y
-				deltaY = 1e20;
+				deltaY = delta;
 			} else {
-				deltaY = -1e20;
+				deltaY = -delta;
 			}
 			return Point2DDouble(m_vertex.X(),  m_vertex.Y() + deltaY);
 		}

@@ -57,12 +57,7 @@ namespace sauron
 		};
 
 		bool isReadingMeaningful(const ReadingAndPose& readingAndPose) {
-			if(m_readings.size() == 0) {
-				return true;
-			} else {
-				return getLatestReading().estimatedPose.getDistance(
-					readingAndPose.estimatedPose) > configs::sonars::minimalRobotDistance;
-			}
+			return readingAndPose.reading.getReading() < configs::sonars::invalidReading;
 		}
 
 

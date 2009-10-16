@@ -130,34 +130,34 @@ namespace SonarUnitTests
 			Assert::AreEqual(C(1,1), 8);
 		}
 
-		[TestMethod]
-		void InversionTest()
-		{
-			using namespace boost::numeric::ublas;
-			matrix<int> A(3,3);
-			A(0,0) = -2;
-			A(0,1) = 1;
-			A(0,2) = 2;
-			A(1,0) = -4;
-			A(1,1) = 3;
-			A(1,2) = 2;
-			A(2,0) = -5;
-			A(2,1) = 1;
-			A(2,2) = 5;
+		//[TestMethod]
+		//void InversionTest()
+		//{
+		//	using namespace boost::numeric::ublas;
+		//	matrix<int> A(3,3);
+		//	A(0,0) = -2;
+		//	A(0,1) = 1;
+		//	A(0,2) = 2;
+		//	A(1,0) = -4;
+		//	A(1,1) = 3;
+		//	A(1,2) = 2;
+		//	A(2,0) = -5;
+		//	A(2,1) = 1;
+		//	A(2,2) = 5;
 
-			matrix<int> C(3,3);
-			InvertMatrix( A, C);
+		//	matrix<int> C(3,3);
+		//	InvertMatrix( A, C);
 
-			Assert::AreEqual(C(0,0), 2);
-			Assert::AreEqual(C(0,1), 0);
-			Assert::AreEqual(C(0,2), 0);
-			Assert::AreEqual(C(1,0), 1);
-			Assert::AreEqual(C(1,1), 0);
-			Assert::AreEqual(C(1,2), 0);
-			Assert::AreEqual(C(2,0), 1);
-			Assert::AreEqual(C(2,1), 0);
-			Assert::AreEqual(C(2,2), 0);
-		}
+		//	Assert::AreEqual(C(0,0), 2);
+		//	Assert::AreEqual(C(0,1), 0);
+		//	Assert::AreEqual(C(0,2), 0);
+		//	Assert::AreEqual(C(1,0), 1);
+		//	Assert::AreEqual(C(1,1), 0);
+		//	Assert::AreEqual(C(1,2), 0);
+		//	Assert::AreEqual(C(2,0), 1);
+		//	Assert::AreEqual(C(2,1), 0);
+		//	Assert::AreEqual(C(2,2), 0);
+		//}
 
 
 		/* Matrix inversion routine.

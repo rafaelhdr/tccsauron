@@ -31,7 +31,7 @@ namespace sauron
 			return posicao_anterior.Y() + nova_medida.minus(medida_anterior).getDistance()*::sin(medida_anterior.getTheta());
 		}
 
-		pose_t ModeloDinamica::calculaTheta(const MedidaOdometro nova_medida)
+		pose_t ModeloDinamica::calculaTheta(MedidaOdometro nova_medida)
 		{
 			/* odometro traz o delta do theta ou ele acumula o resultado ? 
 			 acho que ele acumula, então basta retornar
