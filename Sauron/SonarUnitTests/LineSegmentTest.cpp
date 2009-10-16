@@ -101,5 +101,14 @@ namespace SonarUnitTests
 			sauron::LineSegment segmentInside(0, 5, 21, 0);
 			Assert::IsFalse(lineSegment.contains(segmentInside));
 		};
+
+		[TestMethod]
+		void TestContains_4()
+		{
+			// construtor do ArLineSegment em mm
+			sauron::LineSegment lineSegment(0, 0, 0, 20);
+			sauron::LineSegment segmentInside(0, 5, 0, 10);
+			Assert::IsTrue(lineSegment.contains(segmentInside));
+		};
 	};
 }
