@@ -13,13 +13,12 @@ namespace sauron
 			pose_t theta;
 
 		public:
-			MedidaOdometro(pose_t _distance, pose_t _theta)
-				: distance(_distance), theta(_theta){
-
-			}
-			pose_t getDistance() const;
-			pose_t getTheta() const;
-			MedidaOdometro minus(const MedidaOdometro other) const;
+			MedidaOdometro(){ distance = theta = 0; };
+			MedidaOdometro(pose_t _distance, pose_t _theta);
+			
+			pose_t getDistance();
+			pose_t getTheta();
+			MedidaOdometro minus(MedidaOdometro other);
 
 			/* nos dois métodos abaixo,
 			a MedidaOdometro fica responsável por converter as unidades que ela usa para as unidades do pose_t 
