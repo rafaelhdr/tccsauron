@@ -1,5 +1,5 @@
-#ifndef __SENSOR_H__
-#define __SENSOR_H__
+#ifndef __SENSOR_MODEL_H__
+#define __SENSOR_MODEL_H__
 
 #include "Matrix.h"
 #include "Pose.h"
@@ -7,7 +7,7 @@
 namespace sauron
 {
 
-class Sensor
+class ISensorModel
 {
     public:
         virtual void getEstimate( const Pose &last, Matrix &measure, Matrix &obsModel, Matrix &noise ) = 0;
@@ -18,4 +18,4 @@ class Sensor
 
 }   // namespace sauron
 
-#endif  // __SENSOR_H__
+#endif  // __SENSOR_MODEL_H__

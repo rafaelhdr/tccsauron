@@ -1,12 +1,12 @@
 #ifndef __SENSOR_SONAR_H__
 #define __SENSOR_SONAR_H__
 
-#include "Sensor.h"
+#include "ISensorModel.h"
 
 namespace sauron
 {
 
-class SensorSonar : public Sensor
+class SensorSonar : public ISensorModel
 {
     public:
         SensorSonar();

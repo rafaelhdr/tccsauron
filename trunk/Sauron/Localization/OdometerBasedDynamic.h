@@ -1,16 +1,16 @@
 #ifndef __ODOMETER_BASED_DYNAMIC_H__
 #define __ODOMETER_BASED_DYNAMIC_H__
 
-#include "Dynamic.h"
+#include "IDynamicModel.h"
 
 namespace sauron
 {
 
-class OdometerBasedDynamic : public Dynamic
+class OdometerBasedDynamic : public IDynamicModel
 {
     public:
-        OdometerBasedDynamic(void);
-        ~OdometerBasedDynamic(void);
+        OdometerBasedDynamic();
+        ~OdometerBasedDynamic();
 
         void updateModel( const Pose &last, 
                           Matrix &dynModel, Matrix &dynNoise );
