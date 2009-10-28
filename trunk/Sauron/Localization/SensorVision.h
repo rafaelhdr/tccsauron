@@ -12,7 +12,8 @@ class SensorVision : public ISensorModel
         SensorVision();
         ~SensorVision();
 
-        void getEstimate( const Pose &last, Matrix &measure, Matrix &obsModel, Matrix &noise );
+        void getEstimate( const Pose &last, 
+                          Measure &z, Model &H, Covariance &R );
 
         // Not sure - depends on the final architecture
         bool checkNewEstimateAvailable();

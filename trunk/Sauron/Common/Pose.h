@@ -39,8 +39,6 @@ namespace sauron
 		    
 	};
 
-    typedef Pose Measure;
-
 }   // namespace sauron
 
 #endif  // _POSE_H_

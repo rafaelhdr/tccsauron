@@ -7,6 +7,9 @@ namespace sauron
 class ILocalizationManager
 {
     public:
+        virtual void setInitialPose( const Pose &initial ) = 0;
+        virtual void getEstimate( Pose &pose ) = 0;
+        virtual void update() = 0;
 };
 
 

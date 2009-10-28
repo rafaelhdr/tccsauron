@@ -1,46 +1,16 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <cv.h>
-#include <cxcore.h>
-#include "Pose.h"
+#include <boost/numeric/ublas/matrix.hpp>
+#include "CustomTypes.h"
 
 namespace sauron
 {
 
-class Matrix
-{
-    public:
-        Matrix( uint r, uint c );
-        Matrix( const Matrix &other );
-        Matrix( const Pose &pose );
-        ~Matrix();
-
-        inline double get( uint r, uint c ) const;
-        inline void set( uint r, uint c, double value );
-
-        inline uint getNumRows() const;
-        inline uint getNumCols() const;
-
-        inline double &operator () ( uint r, uint c );
-        inline Matrix &operator = ( const Matrix &other );
-
-        inline Matrix operator + ( const Matrix &other ) const;
-        inline Matrix &operator += ( const Matrix &other );
-
-        inline Matrix operator - ( const Matrix &other ) const;
-        inline Matrix &operator -= ( const Matrix &other );
-
-        inline Matrix operator * ( const Matrix &other ) const;
-        inline Matrix operator * ( const double &value ) const;
-        inline Matrix &operator *= ( const Matrix &other );
-        inline Matrix &operator *= ( const double &value );
-};
-
-//***********************
-// or
-// typedef boost:matrix Matrix
-//***********************
+typedef boost::numeric::ublas::matrix< pose_t > Matrix;
+typedef Matrix Model;
+typedef Matrix Measure;
+typedef Matrix Covariance;
 
 }   // namespace sauron
 

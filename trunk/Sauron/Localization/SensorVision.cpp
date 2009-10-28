@@ -5,16 +5,18 @@ namespace sauron
 
 SensorVision::SensorVision()
 {
+    // TODO
 }
 
 
 SensorVision::~SensorVision()
 {
+    // TODO
 }
 
 
 void SensorVision::getEstimate( const Pose &last, 
-                                Matrix &measure, Matrix &obsModel, Matrix &noise )
+                                Measure &z, Model &H, Covariance &R )
 {
     // TODO
 }
