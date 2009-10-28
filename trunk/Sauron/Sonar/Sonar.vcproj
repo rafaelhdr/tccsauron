@@ -155,7 +155,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sonar.cpp"
+				RelativePath=".\PhysicalSonar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarModel.cpp"
 				>
 			</File>
 		</Filter>
@@ -185,7 +189,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Sonar.h"
+				RelativePath=".\PhysicalSonar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarModel.h"
 				>
 			</File>
 			<File

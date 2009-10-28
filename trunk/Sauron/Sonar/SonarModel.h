@@ -13,17 +13,17 @@ namespace sauron
 {
 	class Line;
 
-	class Sonar
+	class SonarModel
 	{
 	public:
 		friend ref class SonarUnitTests::SonarTest;
-		Sonar(const sauron::Pose& sonarPose)
+		SonarModel(const sauron::Pose& sonarPose)
 			: m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),
 			m_sonarTheta(sonarPose.getTheta()) {
 		}
 
-		Sonar(pose_t x, pose_t y, pose_t theta)
+		SonarModel(pose_t x, pose_t y, pose_t theta)
 			: m_sonarX(x), m_sonarY(y), m_sonarTheta(theta) {
 		}
 

@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SonarTest4.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SonarTestHelper.cpp"
 				>
 			</File>
