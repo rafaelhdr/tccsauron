@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Kalman"
-	ProjectGUID="{776D03E9-1E47-41DD-81DD-BD3ACFDD158A}"
-	RootNamespace="Kalman"
+	Name="Localization"
+	ProjectGUID="{BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D}"
+	RootNamespace="Localization"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -151,7 +151,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Kalman.cpp"
+				RelativePath=".\OdometerBasedDynamic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SensorSonar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SensorVision.cpp"
 				>
 			</File>
 		</Filter>
@@ -161,7 +169,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\Dynamic.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Kalman.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Localization.h"
 				>
 			</File>
 			<File
@@ -169,7 +185,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MatrixImpl.h"
+				RelativePath=".\OdometerBasedDynamic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sensor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SensorSonar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SensorVision.h"
 				>
 			</File>
 		</Filter>
