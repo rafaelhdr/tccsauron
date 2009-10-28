@@ -1,5 +1,13 @@
 #pragma once
 #include <vector>
+
+// A definição _CLR_ é ativada quando o projeto está sendo compilado
+// para testes unitários. Por algum motivo cósmico, a mera inclusão do
+// header do mutex do Boost faz com que os testes não carreguem.
+#ifndef _CLR_
+#include <boost/thread/recursive_mutex.hpp>
+#endif
+
 #include "SonarReading.h"
 #include "Pose.h"
 #include "Map.h"
@@ -37,6 +45,7 @@ namespace sauron
 		Pose getSonarGlobalPose(const Pose& robotGlobalPose);
 		bool tryGetMatchingMapLine(Map& map, /*out */ LineSegment* matchedMapLine,
 			/* out */ SonarReading* expectedReading, double sigmaError2);
+		inline int getReadingsBufferCount() { return m_readings.size(); }
 	private:
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;
 
@@ -53,6 +62,7 @@ namespace sauron
 		SonarReading getExpectedReadingByMapLine(const LineSegment& lineSegment);
 		bool matchMapLineWithReading(const SonarReading& reading, const LineSegment& mapLine,
 			double sigmaError2);
+		bool robotHasTurned(const Pose& latestPose);
 		struct ReadingAndPose {
 			ReadingAndPose(const SonarReading& _reading, const Pose& _estimatedPose)
 				: reading(_reading), estimatedPose(_estimatedPose) { }
@@ -64,8 +74,11 @@ namespace sauron
 			return readingAndPose.reading.getReading() < configs::sonars::invalidReading;
 		}
 
-
 		std::vector<ReadingAndPose> m_readings;
+#ifndef _CLR_
+		// mutex que protege acesso a m_readings;
+		boost::recursive_mutex m_readingsMutex;
+#endif
 		ReadingAndPose& getLatestReading() {
 			return m_readings.back();
 		}
