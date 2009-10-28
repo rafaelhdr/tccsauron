@@ -5,9 +5,11 @@
 #include "Map.h"
 #include "LineSegment.h"
 
+#ifdef _CLR_
 namespace SonarUnitTests{
 ref class SonarTest;
 }
+#endif
 
 namespace sauron
 {
@@ -16,7 +18,9 @@ namespace sauron
 	class SonarModel
 	{
 	public:
+#ifdef _CLR_
 		friend ref class SonarUnitTests::SonarTest;
+#endif
 		SonarModel(const sauron::Pose& sonarPose)
 			: m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),

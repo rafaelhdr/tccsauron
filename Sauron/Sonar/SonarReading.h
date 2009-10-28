@@ -8,6 +8,7 @@ namespace sauron
 	{
 
 	public:
+		SonarReading() : m_reading(-1){ }
 		SonarReading(reading_t reading) : m_reading(reading) {
 		}
 
