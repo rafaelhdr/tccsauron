@@ -169,15 +169,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Dynamic.h"
+				RelativePath=".\IDynamicModel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Kalman.h"
+				RelativePath=".\IKalmanFilter.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Localization.h"
+				RelativePath=".\ILocalizationManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ISensorModel.h"
 				>
 			</File>
 			<File
@@ -186,10 +190,6 @@
 			</File>
 			<File
 				RelativePath=".\OdometerBasedDynamic.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Sensor.h"
 				>
 			</File>
 			<File

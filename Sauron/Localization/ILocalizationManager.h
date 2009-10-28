@@ -4,10 +4,9 @@
 namespace sauron
 {
 
-class Localization
+class ILocalizationManager
 {
     public:
-
 };
 
 

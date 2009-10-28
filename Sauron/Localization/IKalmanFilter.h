@@ -1,5 +1,5 @@
-#ifndef __KALMAN_H__
-#define __KALMAN_H__
+#ifndef __KALMAN_FILTER_H__
+#define __KALMAN_FILTER_H__
 
 #include "Pose.h"
 #include "Matrix.h"
@@ -7,7 +7,7 @@
 namespace sauron
 {
 
-class Kalman
+class IKalmanFilter
 {
     public:
         virtual void getPrioriEstimate( const Matrix &F, const Matrix &Q, 
@@ -19,4 +19,4 @@ class Kalman
 
 }   // namespace sauron
 
-#endif // __KALMAN_H__
+#endif // __KALMAN_FILTER_H__

@@ -7,7 +7,7 @@
 namespace sauron
 {
 
-class Dynamic
+class IDynamicModel
 {
     public:
         virtual void updateModel( const Pose &last, 

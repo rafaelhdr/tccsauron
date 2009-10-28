@@ -3,6 +3,7 @@
 
 #include <cv.h>
 #include <cxcore.h>
+#include "Pose.h"
 
 namespace sauron
 {
@@ -36,9 +37,11 @@ class Matrix
         inline Matrix &operator *= ( const double &value );
 };
 
+//***********************
+// or
+// typedef boost:matrix Matrix
+//***********************
 
 }   // namespace sauron
-
-//#include "MatrixImpl.h"
 
 #endif // _MATRIX_H_
