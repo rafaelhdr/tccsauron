@@ -1,5 +1,5 @@
 #pragma once
-#include "Sonar.h"
+#include "SonarModel.h"
 #include "SonarReading.h"
 #include "CustomTypes.h"
 #include <cassert>
@@ -24,7 +24,7 @@ public:
 		parse();
 	}
 
-	void addAllReadingsOfOneSonar(int sonarIndex, sauron::Sonar& sonar) const {
+	void addAllReadingsOfOneSonar(int sonarIndex, sauron::SonarModel& sonar) const {
 		for(std::vector<LogLine>::const_iterator it = m_readings.begin();
 			it != m_readings.end(); it++) {
 				sonar.addReading(it->readings.at(sonarIndex), it->pose);

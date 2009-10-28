@@ -9,7 +9,7 @@ namespace SonarTestHelper {
 void assertExpectedReading(ArMap& map, const SonarReadingsLogParser& parser,
 						   int sonarNumber, const sauron::Line& seenLine, double alpha_rads) {
 	sauron::Pose sonarRelativePose = sauron::configs::sonars::getSonarPose(sonarNumber);
-	sauron::Sonar sonar(sonarRelativePose);
+	sauron::SonarModel sonar(sonarRelativePose);
 	parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
 
 	double beta_rads = sonarRelativePose.getTheta() + alpha_rads;

@@ -56,14 +56,14 @@ namespace SonarUnitTests
 		#pragma region sinalpha_validatereadings
 		void assertSinAlpha(const SonarReadingsLogParser& parser, int sonarNumber, double
 			expectedAngleDegrees) {
-			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			sauron::SonarModel sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
 			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
 			Assert::AreEqual(::sin(sauron::trigonometry::degrees2rads(expectedAngleDegrees)),
 				sonar.getSinAlpha(), 0.05);
 		}
 
 		void assertValidateReadings(const SonarReadingsLogParser& parser, int sonarNumber) {
-			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			sauron::SonarModel sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
 			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
 			Assert::IsTrue(sonar.validateReadings());
 		}
@@ -160,7 +160,7 @@ namespace SonarUnitTests
 		#pragma region getobservedline
 		void assertObservedLine(const SonarReadingsLogParser& parser, int sonarNumber,
 			const sauron::Line& expectedLine) {
-			sauron::Sonar sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
+			sauron::SonarModel sonar(sauron::configs::sonars::getSonarPose(sonarNumber));
 			parser.addAllReadingsOfOneSonar(sonarNumber, sonar);
 			Assert::IsTrue(sonar.validateReadings());
 			sauron::Line observedLine = sonar.getObservedLine();

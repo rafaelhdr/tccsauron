@@ -1,4 +1,4 @@
-#include "Sonar.h"
+#include "SonarModel.h"
 
 #include <cassert>
 #include <boost/numeric/ublas/matrix.hpp>
@@ -10,19 +10,19 @@
 namespace sauron
 {
 
-	void Sonar::addReading(const SonarReading& reading, const Pose& estimatedPose) {
+	void SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
 		ReadingAndPose rnp(reading, estimatedPose);
 		if(isReadingMeaningful(rnp)) {
 			m_readings.push_back(rnp);
 		}
 	}
 
-	double Sonar::getSonarAngleOfIncidence() 
+	double SonarModel::getSonarAngleOfIncidence() 
 	{
 		return this->m_sonarTheta + ::asin(getSinAlpha());
 	}
 
-	Line Sonar::getObservedLine() {
+	Line SonarModel::getObservedLine() {
 		double beta_rads = getSonarAngleOfIncidence();
 
 		Pose sonarPose = getSonarGlobalPose(getLatestReading().estimatedPose);
@@ -35,7 +35,7 @@ namespace sauron
 		return Line(rWall, thetaWall_rads);
 	}
 
-	SonarReading Sonar::getExpectedReadingByMapLine(const LineSegment& lineSegment)
+	SonarReading SonarModel::getExpectedReadingByMapLine(const LineSegment& lineSegment)
 	{
 		sauron::Line line = lineSegment.getSauronLine();
 		sauron::Pose sonarPose = this->getSonarGlobalPose(this->getLatestReading().estimatedPose);
@@ -51,7 +51,7 @@ namespace sauron
 		return expectedReading > 0 ? expectedReading : -expectedReading;
 	}
 
-	bool Sonar::validateReadings()
+	bool SonarModel::validateReadings()
 	{
 		/**
 		* Algoritmo:
@@ -83,7 +83,7 @@ namespace sauron
 			gammas.size(), gamma_variance, obsmedia_variance, configs::readingValidationAlpha);
 	}
 
-	std::vector<double> Sonar::getGammas() {
+	std::vector<double> SonarModel::getGammas() {
 		int k = m_readings.size();
 		std::vector<double> gammas(k-1);
 		// começa em 1 mesmo, porque fazemos m_readings[i] - m_readings[i-1]
@@ -96,7 +96,7 @@ namespace sauron
 	}
 
 	/** Página 50 da tese **/
-	double Sonar::getObsMediaVariance() {
+	double SonarModel::getObsMediaVariance() {
 		using namespace boost::numeric;
 
 		double sin_alpha = getSinAlpha();
@@ -119,7 +119,7 @@ namespace sauron
 		return algelin::scalarProduct(prod, F);
 	}
 
-	double Sonar::getSinAlpha() {
+	double SonarModel::getSinAlpha() {
 		// sin(alpha) = 1 / (d_robot / d_sonar), onde
 		//	d_robot = distância percorrida pelo robô = 
 		//		dist_euclideana(última_posição_estimada,primeira_posição_estimada)
@@ -135,12 +135,10 @@ namespace sauron
 		double sinAlpha = d_sonar * ::sin(this->m_sonarTheta) / x;
 
 		return trigonometry::correctImprecisions(sinAlpha);
-
-		//return trigonometry::correctImprecisions(d_sonar / d_robot);
 	}
 
 
-	bool Sonar::tryGetMatchingMapLine(Map& map, LineSegment* matchedMapLine,
+	bool SonarModel::tryGetMatchingMapLine(Map& map, LineSegment* matchedMapLine,
 		SonarReading* expectedReading, double sigmaError2)
 	{
 		std::vector<LineSegment>* pLines = map.getLines();	
@@ -167,7 +165,7 @@ namespace sauron
 		}
 	}
 
-	std::vector<LineSegment> Sonar::filterFarAwayLines(std::vector<LineSegment>& mapLines,
+	std::vector<LineSegment> SonarModel::filterFarAwayLines(std::vector<LineSegment>& mapLines,
 		const Pose& pose) {
 			std::vector<LineSegment> closeEnoughLines;
 			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
@@ -181,7 +179,7 @@ namespace sauron
 			return closeEnoughLines;
 	}
 
-	std::vector<LineSegment> Sonar::filterBySonarAngle(std::vector<LineSegment>& mapLines,
+	std::vector<LineSegment> SonarModel::filterBySonarAngle(std::vector<LineSegment>& mapLines,
 		const Pose& robotPose) {
 			std::vector<LineSegment> reachableLines;
 			Pose sonarPose = getSonarGlobalPose(robotPose);
@@ -203,7 +201,7 @@ namespace sauron
 			return reachableLines;
 	}
 
-	bool Sonar::matchMapLineWithReading(const SonarReading &reading,
+	bool SonarModel::matchMapLineWithReading(const SonarReading &reading,
 		const LineSegment &mapLine, double sigmaError2) {
 			double expectedReading =  getExpectedReadingByMapLine(mapLine);
 			double v_2 = reading.getReading() - expectedReading;
@@ -215,28 +213,28 @@ namespace sauron
 
 
 
-	double Sonar::getD_Robot() {
+	double SonarModel::getD_Robot() {
 		return getLatestReading().estimatedPose.getDistance(
 			getOldestReading().estimatedPose);
 	}
 
-	double Sonar::getD_Sonar() {
+	double SonarModel::getD_Sonar() {
 		return  getOldestReading().reading.getReading() -
 			getLatestReading().reading.getReading();
 	}
 
-	double Sonar::getS2_D() {
+	double SonarModel::getS2_D() {
 		double d_robot = getD_Robot();
 		double s_d = d_robot * configs::phoErrorFront4mm / (m_readings.size() - 1);
 		return s_d * s_d;
 	}
 
-	double Sonar::getS2_R() {
+	double SonarModel::getS2_R() {
 		double s_r = getLatestReading().reading.getStdDeviationMm();
 		return s_r * s_r;
 	}
 
-	Pose Sonar::getSonarGlobalPose(const Pose& robotPose) {
+	Pose SonarModel::getSonarGlobalPose(const Pose& robotPose) {
 		pose_t globalSonarX, globalSonarY, globalSonarTh;
 		globalSonarX = robotPose.X() +
 			(m_sonarX * ::cos(robotPose.getTheta()) - m_sonarY * ::sin(robotPose.getTheta()));
