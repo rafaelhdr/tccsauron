@@ -62,7 +62,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="..\..\boost\lib"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -225,6 +225,10 @@
 			</File>
 			<File
 				RelativePath=".\SonarTest4.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarTestCurve.cpp"
 				>
 			</File>
 			<File

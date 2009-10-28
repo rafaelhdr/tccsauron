@@ -7,21 +7,24 @@ namespace sauron
 {
 	namespace configs
 	{
-		const reading_t sonarReadingStandardDeviationMm =  25;
-		const int kMin = 4;
-		const double phoErrorFront4mm = 0.05;
-		const double readingValidationAlpha = 0.5;
-		const double wallRejectionValue2 = 2.7060;
-		const double maximalSonarToLineDistance = 550;
 		namespace sonars
 		{
+			const reading_t sonarReadingStandardDeviationMm =  25;
+			const int kMin = 4;
+			const double phoErrorFront4mm = 0.05;
+			const double readingValidationAlpha = 0.5;
+			const double wallRejectionValue2 = 2.7060;
+			const double maximumSonarToLineDistance = 550;
+			// variação mínima em radianos para que o sistema considere que o robô fez
+			// uma curva
+			const double minimumRobotTurnAngle = 0.174; // 10 graus
 			// valor de "não achei nada" do sonar
 			const double invalidReading = 500; // (cm)
 			// abertura do cone do sonar
 			const double sonarApertureAngleRads = 0.48; // 27.5 graus
 			// distância mínima que deve ser percorrida pelo robô para que uma leitura
 			// seja considerada interessante
-			const double minimalRobotDistance = 5;
+			const double minimumRobotDistance = 5;
 			inline Pose getSonarPose(int sonarNumber) {
 				switch(sonarNumber) 
 				{

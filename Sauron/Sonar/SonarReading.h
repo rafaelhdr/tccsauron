@@ -13,7 +13,7 @@ namespace sauron
 		}
 
 		reading_t getStdDeviationMm() const {
-			return configs::sonarReadingStandardDeviationMm;
+			return configs::sonars::sonarReadingStandardDeviationMm;
 		}
 
 		reading_t getReading() const {

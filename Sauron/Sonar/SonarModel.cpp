@@ -2,18 +2,42 @@
 
 #include <cassert>
 #include <boost/numeric/ublas/matrix.hpp>
-
 #include "MathHelper.h"
 #include "Line.h"
 #include "Cone.h"
+
+// A definição _CLR_ é ativada quando o projeto está sendo compilado
+// para testes unitários. Por algum motivo cósmico, a mera inclusão do
+// header do mutex do Boost faz com que os testes não carreguem.
+#ifndef _CLR_
+#define SCOPED_READINGS_LOCK() boost::recursive_mutex::scoped_lock(m_readingsMutex)
+#else
+#define SCOPED_READINGS_LOCK()
+#endif
 
 namespace sauron
 {
 
 	void SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
+		SCOPED_READINGS_LOCK();
+		if(robotHasTurned(estimatedPose)) {
+			m_readings.clear();
+		}
 		ReadingAndPose rnp(reading, estimatedPose);
 		if(isReadingMeaningful(rnp)) {
 			m_readings.push_back(rnp);
+		}
+	}
+
+	bool SonarModel::robotHasTurned(const Pose& latestPose) {
+		SCOPED_READINGS_LOCK();
+		if(m_readings.size() > 0) {
+			return trigonometry::angularDistance(
+				latestPose.Theta(),
+				getOldestReading().estimatedPose.Theta()) >
+				configs::sonars::minimumRobotTurnAngle;
+		} else {
+			return false;
 		}
 	}
 
@@ -23,6 +47,7 @@ namespace sauron
 	}
 
 	Line SonarModel::getObservedLine() {
+		SCOPED_READINGS_LOCK();
 		double beta_rads = getSonarAngleOfIncidence();
 
 		Pose sonarPose = getSonarGlobalPose(getLatestReading().estimatedPose);
@@ -37,6 +62,7 @@ namespace sauron
 
 	SonarReading SonarModel::getExpectedReadingByMapLine(const LineSegment& lineSegment)
 	{
+		SCOPED_READINGS_LOCK();
 		sauron::Line line = lineSegment.getSauronLine();
 		sauron::Pose sonarPose = this->getSonarGlobalPose(this->getLatestReading().estimatedPose);
 		
@@ -53,6 +79,7 @@ namespace sauron
 
 	bool SonarModel::validateReadings()
 	{
+		SCOPED_READINGS_LOCK();
 		/**
 		* Algoritmo:
 		* - verificar se o número de leituras, k, é >= a k_min
@@ -64,7 +91,7 @@ namespace sauron
 		* - obtém thetaWall e rWall
 		**/
 		int k = m_readings.size();
-		if(k < configs::kMin) {
+		if(k < configs::sonars::kMin) {
 			return false;
 		}
 
@@ -80,10 +107,12 @@ namespace sauron
 		double gamma_variance = statistics::sample_variance(gammas, gamma_mean);
 		double obsmedia_variance = getObsMediaVariance();
 		return statistics::chiSquareNormalDistributionTest(
-			gammas.size(), gamma_variance, obsmedia_variance, configs::readingValidationAlpha);
+			gammas.size(), gamma_variance, obsmedia_variance,
+			configs::sonars::readingValidationAlpha);
 	}
 
 	std::vector<double> SonarModel::getGammas() {
+		SCOPED_READINGS_LOCK();
 		int k = m_readings.size();
 		std::vector<double> gammas(k-1);
 		// começa em 1 mesmo, porque fazemos m_readings[i] - m_readings[i-1]
@@ -98,7 +127,7 @@ namespace sauron
 	/** Página 50 da tese **/
 	double SonarModel::getObsMediaVariance() {
 		using namespace boost::numeric;
-
+		SCOPED_READINGS_LOCK();
 		double sin_alpha = getSinAlpha();
 		assert(!(sin_alpha > 1.0 || sin_alpha < -1.0));
 		double s2_d = getS2_D();
@@ -120,6 +149,7 @@ namespace sauron
 	}
 
 	double SonarModel::getSinAlpha() {
+		SCOPED_READINGS_LOCK();
 		// sin(alpha) = 1 / (d_robot / d_sonar), onde
 		//	d_robot = distância percorrida pelo robô = 
 		//		dist_euclideana(última_posição_estimada,primeira_posição_estimada)
@@ -141,6 +171,7 @@ namespace sauron
 	bool SonarModel::tryGetMatchingMapLine(Map& map, LineSegment* matchedMapLine,
 		SonarReading* expectedReading, double sigmaError2)
 	{
+		SCOPED_READINGS_LOCK();
 		std::vector<LineSegment>* pLines = map.getLines();	
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
@@ -171,7 +202,8 @@ namespace sauron
 			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
 				it++) {
 					 double distanceToPose = it->getDistToLine(pose);
-					 if(floating_point::equalOrLess(distanceToPose, configs::maximalSonarToLineDistance))
+					 if(floating_point::equalOrLess(distanceToPose,
+						 configs::sonars::maximumSonarToLineDistance))
 					 {
 						 closeEnoughLines.push_back(*it);
 					 }
@@ -208,28 +240,32 @@ namespace sauron
 			v_2 *= v_2;
 			double s_2 = sigmaError2;
 
-			return v_2 / s_2 < configs::wallRejectionValue2;
+			return v_2 / s_2 < configs::sonars::wallRejectionValue2;
 	}
 
 
 
 	double SonarModel::getD_Robot() {
+		SCOPED_READINGS_LOCK();
 		return getLatestReading().estimatedPose.getDistance(
 			getOldestReading().estimatedPose);
 	}
 
 	double SonarModel::getD_Sonar() {
+		SCOPED_READINGS_LOCK();
 		return  getOldestReading().reading.getReading() -
 			getLatestReading().reading.getReading();
 	}
 
 	double SonarModel::getS2_D() {
+		SCOPED_READINGS_LOCK();
 		double d_robot = getD_Robot();
-		double s_d = d_robot * configs::phoErrorFront4mm / (m_readings.size() - 1);
+		double s_d = d_robot * configs::sonars::phoErrorFront4mm / (m_readings.size() - 1);
 		return s_d * s_d;
 	}
 
 	double SonarModel::getS2_R() {
+		SCOPED_READINGS_LOCK();
 		double s_r = getLatestReading().reading.getStdDeviationMm();
 		return s_r * s_r;
 	}
