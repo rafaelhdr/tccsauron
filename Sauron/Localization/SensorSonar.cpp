@@ -5,14 +5,16 @@ namespace sauron
 
 SensorSonar::SensorSonar()
 {
+    // TODO
 }
 
 SensorSonar::~SensorSonar()
 {
+    // TODO
 }
 
 void SensorSonar::getEstimate( const Pose &last, 
-                               Matrix &measure, Matrix &obsModel, Matrix &noise )
+                               Measure &z, Model &H, Covariance &R )
 {
     // TODO
 }
