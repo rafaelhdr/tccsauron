@@ -1,0 +1,2 @@
+#define PHYSICAL_SONARS_TEST 1
+

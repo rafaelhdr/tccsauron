@@ -2,9 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="ModeloDinamica"
-	ProjectGUID="{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}"
-	RootNamespace="ModeloDinamica"
+	Name="SonarTests"
+	ProjectGUID="{57E76DFA-827A-4B3E-9877-ABA59BBA8493}"
+	RootNamespace="SonarTests"
+	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -19,8 +20,8 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
-			CharacterSet="2"
+			ConfigurationType="1"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,10 +41,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
+				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include;..\Sonar"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ARIA_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -57,10 +60,20 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
+				Name="VCLinkerTool"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				GenerateDebugInformation="true"
+				SubSystem="1"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -72,6 +85,9 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -80,7 +96,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -102,9 +118,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="2"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -119,7 +136,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkIncremental="1"
 				GenerateDebugInformation="true"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -156,12 +175,32 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\ModeloDinamica\MedidaOdometro.cpp"
+				RelativePath=".\PhysicalSonarsTest.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ModeloDinamica\ModeloDinamica.cpp"
+				RelativePath=".\SonarTests.h"
 				>
+			</File>
+			<File
+				RelativePath=".\stdafx.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
@@ -170,15 +209,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\ModeloDinamica\CustomTypes.h"
+				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath="..\ModeloDinamica\MedidaOdometro.h"
-				>
-			</File>
-			<File
-				RelativePath="..\ModeloDinamica\ModeloDinamica.h"
+				RelativePath=".\targetver.h"
 				>
 			</File>
 		</Filter>
