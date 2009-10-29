@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\Common;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui;..\.."
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -200,6 +200,10 @@
 				RelativePath=".\VerticalProjectionDetector.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\VisionModel.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -264,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\VerticalProjectionDetector.h"
+				>
+			</File>
+			<File
+				RelativePath=".\VisionModel.h"
 				>
 			</File>
 		</Filter>
