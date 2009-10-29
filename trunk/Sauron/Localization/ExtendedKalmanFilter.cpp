@@ -17,7 +17,7 @@ namespace sauron
 	}
 
 
-	void ExtendedKalmanFilter::getPrioriEstimate( const Model &F, const Covariance &Q, 
+	void ExtendedKalmanFilter::getPrioriEstimate( const pose_t &fValue, const Model &F, const Covariance &Q, 
 		Pose &estimate,  Covariance &P )
 	{
 		using namespace boost::numeric::ublas;
@@ -35,7 +35,7 @@ namespace sauron
 	}
 
 
-	void ExtendedKalmanFilter::getPosterioriEstimate( const Measure &z, const Model &H, const Covariance &R, 
+	void ExtendedKalmanFilter::getPosterioriEstimate( const Measure &z, const pose_t &hValue, const Model &H, const Covariance &R, 
 		Pose &estimate, Covariance &P )
 	{
 		using namespace boost::numeric::ublas;

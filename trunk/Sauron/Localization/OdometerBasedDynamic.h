@@ -13,7 +13,7 @@ class OdometerBasedDynamic : public IDynamicModel
         ~OdometerBasedDynamic();
 
         void updateModel( const Pose &last, 
-                          Model &dynModel, Covariance &dynNoise );
+                          pose_t &fValue, Model &dynModel, Covariance &dynNoise );
 };
 
 }   // namespace sauron

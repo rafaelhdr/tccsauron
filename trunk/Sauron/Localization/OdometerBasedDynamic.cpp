@@ -15,7 +15,7 @@ OdometerBasedDynamic::~OdometerBasedDynamic()
 
 
 void OdometerBasedDynamic::updateModel( const Pose &last, 
-                                        Model &dynModel, Covariance &dynNoise )
+                                        pose_t &fValue, Model &dynModel, Covariance &dynNoise )
 {
     // TODO
 }
