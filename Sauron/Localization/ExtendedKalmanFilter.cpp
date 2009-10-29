@@ -23,15 +23,26 @@ namespace sauron
 		using namespace boost::numeric::ublas;
 
 		Matrix temp1(3,3);
+		Matrix xhat(3,1);
+
+		// xhat = estimate
+		xhat(0,0) = estimate.X();
+		xhat(1,0) = estimate.Y();
+		xhat(2,0) = estimate.getTheta();		
 
 		// Pk = F*P*F'+Q
 		temp1 = prod(F,P);
-		temp1 = prod(temp1, trans(F)); // F*P*F'
+		temp1 = prod(temp1, boost::numeric::ublas::trans(F));
 
 		P = temp1 + Q;
 
 		// xhat = f(x, u, 0)
+		xhat = fValue * xhat;
+
 		//estimate = prod(F,estimate);
+		estimate.X() = xhat(0,0)
+		estimate.Y() = xhat(1,0);
+		estimate.setTheta(xhat(2,0));
 	}
 
 
@@ -43,11 +54,11 @@ namespace sauron
 		Matrix K(3,3);
 
 		Matrix temp1(3,3);
-		Matrix temp2(3,3);
+		Matrix yTemp(3,1);
 
 		// Kk = P*C'*inv(H*P*H' + R)
 		temp1 = prod(H,P);
-		temp1 = prod(temp1, trans(H));
+		temp1 = prod(temp1, boost::numeric::ublas::trans(H));
 		temp1 = temp1 + R;
 
 		algelin::InvertMatrix(temp1, temp2);// temp2 = inv(H*P*H' + R)
@@ -56,8 +67,11 @@ namespace sauron
 		K = prod(temp1,temp2);
 
 		// xk = x + K*(y - hk(xk,0))
-		// temp1 = z - h;
-		// estimate = estimate + prod(K, temp1);
+		yTemp = z - hValue;
+		yTemp = prod(K, yTemp);
+		estimate.X() = estimate.X() + yTemp(0,0);
+		estimate.Y() = estimate.Y() + yTemp(1,0);
+		estimate.setTheta(estimate.getTheta() + yTemp(2,0));
 
 		// Pk = (I - K*H)*P
 		identity_matrix<double> I (3);
