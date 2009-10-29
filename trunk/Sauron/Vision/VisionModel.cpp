@@ -9,8 +9,12 @@ VisionModel::VisionModel()
       m_thread( boost::ref( *this ) ),
       m_updateFreq( 24 )
 {
-    m_horizontalFocalDistance = 1.0f;   //  TODO
     m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
+
+    // Empirical values
+    m_horizontalFocalDistance = 1.0f;
+    m_sigmaVert = 1.0f;
+    
 }
 
 VisionModel::~VisionModel()
@@ -170,6 +174,12 @@ double VisionModel::getHorizontalFocalDistance()
 double VisionModel::getProjectionPlaneHorizontalCenter()
 {
     return m_projectionPlaneHorizontalCenter;
+}
+
+
+double VisionModel::getSigma()
+{
+    return m_sigmaVert;
 }
 
 }   // namespace sauron

@@ -25,8 +25,10 @@ class VisionModel
         void loadMarks( const std::string &filename );
         void getAssociatedMarks( const Pose &last, MarkVector &marks );
 
+        // Parameters getters
         double getHorizontalFocalDistance();
         double getProjectionPlaneHorizontalCenter();
+        double getSigma();
 
         // Frame getters - debug or visual info for final application
         void getLastFrame( Image &frame );
@@ -79,6 +81,7 @@ class VisionModel
         // Model constants
         double m_horizontalFocalDistance;
         double m_projectionPlaneHorizontalCenter;
+        double m_sigmaVert;
 };
 
 }   // namespace sauron

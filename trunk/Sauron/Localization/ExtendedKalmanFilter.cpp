@@ -17,7 +17,7 @@ namespace sauron
 	}
 
 
-	void ExtendedKalmanFilter::getPrioriEstimate( const pose_t &fValue, const Model &F, const Covariance &Q, 
+	void ExtendedKalmanFilter::getPrioriEstimate( const Matrix &fValue, const Model &F, const Covariance &Q, 
 		Pose &estimate,  Covariance &P )
 	{
 		using namespace boost::numeric::ublas;
@@ -40,7 +40,7 @@ namespace sauron
 		xhat = fValue * xhat;
 
 		//estimate = prod(F,estimate);
-		estimate.X() = xhat(0,0)
+		estimate.X() = xhat(0,0);
 		estimate.Y() = xhat(1,0);
 		estimate.setTheta(xhat(2,0));
 	}
