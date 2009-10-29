@@ -25,14 +25,16 @@ bool SensorVision::getEstimate( const Pose &last,
 
         z.resize( numMarks, 1 );
         H.resize( numMarks, 3 );
-        R.resize( numMarks, numMarks );
+        R = boost::numeric::ublas::identity_matrix<double>( numMarks );
         hValue.resize( numMarks, 1 );
 
-        double v;
-        double z;
+        double aux_v;
+        double aux_z;
+        double aux_z2;
 
-        double fu = m_visionModel.getHorizontalFocalDistance();
-        double u0 = m_visionModel.getProjectionPlaneHorizontalCenter();
+        double fu    = m_visionModel.getHorizontalFocalDistance();
+        double u0    = m_visionModel.getProjectionPlaneHorizontalCenter();
+        double sigma = m_visionModel.getSigma();
 
         double sinTheta;
         double cosTheta;
@@ -51,14 +53,17 @@ bool SensorVision::getEstimate( const Pose &last,
             diffX = markPos.X() - last.X();
             diffY = markPos.Y() - last.Y();
 
-            v = cosTheta * diffY - sinTheta * diffX;
-            z = cosTheta * diffX + sinTheta * diffY;
+            aux_v  = cosTheta * diffY - sinTheta * diffX;
+            aux_z  = cosTheta * diffX + sinTheta * diffY;
+            aux_z2 = aux_z * aux_z;
 
-            hValue( index, 0 ) = fu * v / z + u0;
+            hValue( index, 0 ) = fu * aux_v / aux_z + u0;
 
-            H( index, 0 ) = -fu * (sinTheta * z + cosTheta * v) / (z * z);
-            H( index, 1 ) =  fu * (cosTheta * z - sinTheta * v) / (z * z);
-            H( index, 2 ) =  fu * ( (v * v) / (z * z) + 1 );
+            H( index, 0 ) = -fu * (sinTheta * aux_z + cosTheta * aux_v) / aux_z2;
+            H( index, 1 ) =  fu * (cosTheta * aux_z - sinTheta * aux_v) / aux_z2;
+            H( index, 2 ) =  fu * ( (aux_v * aux_v) / aux_z2 + 1 );
+
+            R( index, index ) = sigma;
         }
     }
 
