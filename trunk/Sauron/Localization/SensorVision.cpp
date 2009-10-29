@@ -65,6 +65,8 @@ bool SensorVision::getEstimate( const Pose &last,
 
             R( index, index ) = sigma;
         }
+        
+        return true;
     }
 
     return false;
