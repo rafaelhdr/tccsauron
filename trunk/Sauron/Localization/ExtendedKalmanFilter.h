@@ -15,7 +15,7 @@ class ExtendedKalmanFilter : public IKalmanFilter
         void getPrioriEstimate( const pose_t &fValue, const Model &F, const Covariance &Q, 
                                 Pose &estimate,  Covariance &P );
 
-        void getPosterioriEstimate( const Measure &z, const pose_t &hValue, const Model &H, const Covariance &R, 
+        void getPosterioriEstimate( const Measure &z, const Matrix &hValue, const Model &H, const Covariance &R, 
                                     Pose &estimate, Covariance &P );
 };
 

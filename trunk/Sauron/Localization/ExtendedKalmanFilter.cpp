@@ -46,7 +46,7 @@ namespace sauron
 	}
 
 
-	void ExtendedKalmanFilter::getPosterioriEstimate( const Measure &z, const pose_t &hValue, const Model &H, const Covariance &R, 
+	void ExtendedKalmanFilter::getPosterioriEstimate( const Measure &z, const Matrix &hValue, const Model &H, const Covariance &R, 
 		Pose &estimate, Covariance &P )
 	{
 		using namespace boost::numeric::ublas;

@@ -2,6 +2,7 @@
 #define __SENSOR_VISION_H__
 
 #include "ISensorModel.h"
+#include "Vision/VisionModel.h"
 
 namespace sauron
 {
@@ -12,11 +13,17 @@ class SensorVision : public ISensorModel
         SensorVision();
         ~SensorVision();
 
-        void getEstimate( const Pose &last, 
-                          pose_t &hValue, Measure &z, Model &H, Covariance &R );
+        bool getEstimate( const Pose &last, 
+                          Matrix &hValue, Measure &z, Model &H, Covariance &R );
 
-        // Not sure - depends on the final architecture
+        // DEPRECATED - getEstimate now returns a bool that indicates if there is available estimate
+        //              who implements getEstimate() has to do this check, to avoid unnecessary processing
         bool checkNewEstimateAvailable();
+
+    private:
+        VisionModel  m_visionModel;
+        MarkVector   m_associatedMarks;
+
 };
 
 }   // namespace sauron

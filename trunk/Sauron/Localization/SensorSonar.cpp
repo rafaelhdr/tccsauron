@@ -13,10 +13,11 @@ SensorSonar::~SensorSonar()
     // TODO
 }
 
-void SensorSonar::getEstimate( const Pose &last, 
-                               pose_t &hValue, Measure &z, Model &H, Covariance &R )
+bool SensorSonar::getEstimate( const Pose &last, 
+                               Matrix &hValue, Measure &z, Model &H, Covariance &R )
 {
     // TODO
+    return false;
 }
 
 
