@@ -10,6 +10,7 @@ namespace sauron
 		namespace sonars
 		{
 			const reading_t sonarReadingStandardDeviationMm =  25;
+			const int validationGateSigma2 = 625;
 			const int kMin = 4;
 			const double phoErrorFront4mm = 0.05;
 			const double readingValidationAlpha = 0.5;

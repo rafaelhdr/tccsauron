@@ -5,9 +5,10 @@
 // para testes unitários. Por algum motivo cósmico, a mera inclusão do
 // header do mutex do Boost faz com que os testes não carreguem.
 #ifndef _CLR_
-#include <boost/thread/recursive_mutex.hpp>
+# include <boost/thread/recursive_mutex.hpp>
 #endif
 
+#include "ISonarModel.h"
 #include "SonarReading.h"
 #include "Pose.h"
 #include "Map.h"
@@ -23,7 +24,7 @@ namespace sauron
 {
 	class Line;
 
-	class SonarModel
+	class SonarModel : public ISonarModel
 	{
 	public:
 #ifdef _CLR_
@@ -39,12 +40,21 @@ namespace sauron
 			: m_sonarX(x), m_sonarY(y), m_sonarTheta(theta) {
 		}
 
+		/** ISonarModel **/
 		void addReading(const SonarReading& reading, const Pose& estimatedPose);
-		Line getObservedLine();
 		bool validateReadings();
+
+		bool tryGetMatchingMapLine(
+			Map& map, // o mapa do ambiente
+			double sigmaError2, // o erro utilizado no portão de validação
+			/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
+			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
+			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
+		);
+		/** ISonarModel **/
+
 		Pose getSonarGlobalPose(const Pose& robotGlobalPose);
-		bool tryGetMatchingMapLine(Map& map, /*out */ LineSegment* matchedMapLine,
-			/* out */ SonarReading* expectedReading, double sigmaError2);
+		Line getObservedLine();
 		inline int getReadingsBufferCount() { return m_readings.size(); }
 	private:
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;

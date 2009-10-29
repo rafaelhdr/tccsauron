@@ -11,7 +11,10 @@ class ISensorModel
 {
     public:
 		virtual bool getEstimate( const Pose &last, 
-								  Matrix &hValue, Measure &z, Model &H, Covariance &R ) = 0;
+								  /*out*/Matrix &hValue,
+								  /*out*/Measure &z,
+								  /*out*/Model &H,
+								  /*out*/Covariance &R ) = 0;
 
         // Not sure - depends on the final architecture
         virtual bool checkNewEstimateAvailable() = 0;

@@ -208,6 +208,10 @@
 				RelativePath=".\SensorVision.h"
 				>
 			</File>
+			<File
+				RelativePath=".\SonarSet.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

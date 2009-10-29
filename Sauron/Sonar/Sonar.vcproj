@@ -241,6 +241,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ISonarDataAsyncProvider.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ISonarModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Line.h"
 				>
 			</File>

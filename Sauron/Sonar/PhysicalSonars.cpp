@@ -1,5 +1,7 @@
 #include "PhysicalSonars.h"
 #include "SonarReading.h"
+#include "ArRobot.h"
+
 namespace sauron {
 
 PhysicalSonars::PhysicalSonars(ArRobot* robot)
@@ -9,7 +11,7 @@ PhysicalSonars::PhysicalSonars(ArRobot* robot)
 }
 
 void PhysicalSonars::setAddReadingCallback(int sonarNumber,
-										   ArFunctor1<SonarReading>* pCallback)
+										   AddReadingCallback* pCallback)
 {
 	m_addReadingCallbacks[sonarNumber] = pCallback;
 }
@@ -24,16 +26,16 @@ void PhysicalSonars::removeAllCallbacks() {
 
 void PhysicalSonars::getReading()
 {
-	for(std::map<int,ArFunctor1<SonarReading>*>::const_iterator it =
+	for(std::map<int,AddReadingCallback*>::const_iterator it =
 		m_addReadingCallbacks.begin(); it != m_addReadingCallbacks.end(); it++) {
 			int sonarNumber = it->first;
-			ArFunctor1<SonarReading>* pCallback  = it->second;
+			AddReadingCallback* pCallback  = it->second;
 			if(pCallback != 0) {
 				ArSensorReading* pReading = mp_robot->getSonarReading(sonarNumber);
 				if(pReading != 0) {
 					if(pReading->isNew(mp_robot->getCounter()) &&
 						!pReading->getIgnoreThisReading()) {
-						pCallback->invoke(SonarReading(pReading->getRange()));
+						pCallback->invoke(sonarNumber, SonarReading(pReading->getRange()));
 					}
 				}
 			}
