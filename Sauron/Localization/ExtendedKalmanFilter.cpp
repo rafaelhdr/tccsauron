@@ -37,7 +37,7 @@ namespace sauron
 		P = temp1 + Q;
 
 		// xhat = f(x, u, 0)
-		xhat = fValue * xhat;
+		xhat = prod(fValue,xhat);
 
 		//estimate = prod(F,estimate);
 		estimate.X() = xhat(0,0);
@@ -53,7 +53,8 @@ namespace sauron
 
 		Matrix K(3,3);
 
-		Matrix temp1(3,3);
+		Matrix temp1(H.size1,H.size2);
+		Matrix temp2(H.size1,H.size2);
 		Matrix yTemp(3,1);
 
 		// Kk = P*C'*inv(H*P*H' + R)
