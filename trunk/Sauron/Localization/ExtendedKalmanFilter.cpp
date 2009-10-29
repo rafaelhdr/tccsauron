@@ -22,21 +22,13 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		Matrix A(3,3); // Passado como parâmetro pelo modelo de dinâmica - dF/dx|xk-1
-		Matrix L(3,3); // Passado como parâmetro pelo modelo de dinâmica - dF/dw|xk-1
-
 		Matrix temp1(3,3);
-		Matrix temp2(3,3);
 
+		// Pk = F*P*F'+Q
+		temp1 = prod(F,P);
+		temp1 = prod(temp1, trans(F)); // F*P*F'
 
-		// Pk = F*P*F'+L*Q*L'
-		temp1 = prod(A,P);
-		temp1 = prod(temp1, trans(A)); // F*P*F'
-
-		temp2 = prod(L,Q);
-		temp2 = prod(temp2, trans(L)); // L*Q*L'
-
-		P = temp1 + temp2;
+		P = temp1 + Q;
 
 		// xhat = f(x, u, 0)
 		//estimate = prod(F,estimate);
@@ -48,34 +40,28 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		Matrix C(3,3); // Passado como parâmetro pelo modelo de dinâmica - dh/dx|xk
-		Matrix M(3,3); // Passado como parâmetro pelo modelo de dinâmica - dh/dv|xk
-
 		Matrix K(3,3);
 
 		Matrix temp1(3,3);
 		Matrix temp2(3,3);
 
-		// Kk = P*C'*inv(C*P*C' + C*R*C')
-		temp1 = prod(C,P);
-		temp1 = prod(temp1, trans(C)); // F*P*F'
+		// Kk = P*C'*inv(H*P*H' + R)
+		temp1 = prod(H,P);
+		temp1 = prod(temp1, trans(H));
+		temp1 = temp1 + R;
 
-		temp2 = prod(M,R);
-		temp2 = prod(temp2, trans(M)); // L*Q*L'
-		
-		temp1 = temp1 + temp2;
-		algelin::InvertMatrix(temp1, temp2);// temp2 = inv(C*P*C' + C*R*C')
+		algelin::InvertMatrix(temp1, temp2);// temp2 = inv(H*P*H' + R)
 
-		temp1 = prod(P, trans(C));
+		temp1 = prod(P, trans(H));
 		K = prod(temp1,temp2);
 
 		// xk = x + K*(y - hk(xk,0))
-		temp1 = z - H;
-		//estimate = estimate + prod(K, temp1);
+		// temp1 = z - h;
+		// estimate = estimate + prod(K, temp1);
 
-		// Pk = (I - K*C)*P
+		// Pk = (I - K*H)*P
 		identity_matrix<double> I (3);
-		temp1 = prod(K,C);
+		temp1 = prod(K,H);
 		temp1 = I - temp1;
 		P = prod(temp1,P);
 	}
