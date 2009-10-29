@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "SonarTests.h"
 #ifdef PHYSICAL_SONARS_TEST
-void sonar1Callback(sauron::SonarReading reading) {
+void sonar1Callback(int sonarNumber, sauron::SonarReading reading) {
 	std::cout << "SONAR1: " << reading.getReading() << std::endl;
 }
 
-void sonar6Callback(sauron::SonarReading reading) {
+void sonar6Callback(int sonarNumber, sauron::SonarReading reading) {
 	std::cout << "SONAR6: " << reading.getReading() << std::endl;
 }
 
@@ -69,8 +69,8 @@ int main(int argc, char** argv)
 #pragma endregion
   
   sauron::PhysicalSonars sonars(&robot);
-  ArGlobalFunctor1<sauron::SonarReading> functorSonar1(&sonar1Callback);
-  ArGlobalFunctor1<sauron::SonarReading> functorSonar6(&sonar6Callback);
+  ArGlobalFunctor2<int, sauron::SonarReading> functorSonar1(&sonar1Callback);
+  ArGlobalFunctor2<int, sauron::SonarReading> functorSonar6(&sonar6Callback);
   sonars.setAddReadingCallback(1, &functorSonar1);
   sonars.setAddReadingCallback(6, &functorSonar6);
 

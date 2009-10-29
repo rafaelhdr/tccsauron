@@ -168,8 +168,9 @@ namespace sauron
 	}
 
 
-	bool SonarModel::tryGetMatchingMapLine(Map& map, LineSegment* matchedMapLine,
-		SonarReading* expectedReading, double sigmaError2)
+	bool SonarModel::tryGetMatchingMapLine(Map& map, double sigmaError2,
+		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
+		actualReading)
 	{
 		SCOPED_READINGS_LOCK();
 		std::vector<LineSegment>* pLines = map.getLines();	
@@ -188,8 +189,12 @@ namespace sauron
 		}
 
 		if(matchedLines.size() == 1) {
-			*matchedMapLine = matchedLines[0];
-			*expectedReading = getExpectedReadingByMapLine(matchedLines[0]);
+			if(matchedMapLine != NULL)
+				*matchedMapLine = matchedLines[0];
+			if(expectedReading != NULL)
+				*expectedReading = getExpectedReadingByMapLine(matchedLines[0]);
+			if(actualReading != NULL)
+				*actualReading = getLatestReading().reading;
 			return true;
 		} else {
 			return false;

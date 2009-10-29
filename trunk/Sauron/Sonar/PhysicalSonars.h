@@ -1,16 +1,19 @@
 #pragma once
 #include <map>
-#include "ArRobot.h"
 #include "ArFunctor.h"
+
+#include "ISonarDataAsyncProvider.h"
+
+class ArRobot;
 
 namespace sauron
 {
 class SonarReading;
-class PhysicalSonars
+class PhysicalSonars : public ISonarDataAsyncProvider
 {
 public:
 	PhysicalSonars(ArRobot* robot);
-	void setAddReadingCallback(int sonarNumber, ArFunctor1<SonarReading>* p_callback);
+	void setAddReadingCallback(int sonarNumber, AddReadingCallback* p_callback);
 	void removeCallback(int sonarNumber);
 	void removeAllCallbacks();
 	~PhysicalSonars(void);
@@ -22,6 +25,6 @@ private:
 	struct SonarFunctor {
 		int sonarNumber; ArFunctor1<SonarReading>* p_functor;
 	};
-	std::map<int,ArFunctor1<SonarReading>*> m_addReadingCallbacks;
+	std::map<int, AddReadingCallback*> m_addReadingCallbacks;
 };
 }

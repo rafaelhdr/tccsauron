@@ -24,8 +24,10 @@ void assertExpectedReading(ArMap& map, const SonarReadingsLogParser& parser,
 
 	sauron::LineSegment matchedLineSegment;
 	sauron::SonarReading actualExpectedReading(-1);
-	if(sonar.tryGetMatchingMapLine(sauron::Map(map), &matchedLineSegment, &actualExpectedReading,
-		actualExpectedReading.getStdDeviationMm() * actualExpectedReading.getStdDeviationMm())) {
+	sauron::SonarReading actualReading(-1);
+	if(sonar.tryGetMatchingMapLine(sauron::Map(map), actualExpectedReading.getStdDeviationMm() * actualExpectedReading.getStdDeviationMm(),
+		&matchedLineSegment, &actualExpectedReading, &actualReading)) {
+			Assert::AreNotEqual(-1, actualReading.getReading());
 			sauron::Line matchedLine = matchedLineSegment.getSauronLine();
 			Assert::AreEqual(seenLine.getRWall(), matchedLine.getRWall(), 0.0001);
 			Assert::AreEqual(seenLine.getTheta(), matchedLine.getTheta(), 0.0001);
