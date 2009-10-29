@@ -12,8 +12,8 @@ class SensorSonar : public ISensorModel
         SensorSonar();
         ~SensorSonar();
 
-        void getEstimate( const Pose &last, 
-                          pose_t &hValue, Measure &z, Model &H, Covariance &R );
+        bool getEstimate( const Pose &last, 
+                          Matrix &hValue, Measure &z, Model &H, Covariance &R );
 
         // Not sure - depends on the final architecture
         bool checkNewEstimateAvailable();

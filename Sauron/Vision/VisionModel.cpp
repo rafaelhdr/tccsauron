@@ -6,8 +6,11 @@ namespace sauron
 VisionModel::VisionModel()
     : m_lastFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
-      m_thread( boost::ref( *this ) )
+      m_thread( boost::ref( *this ) ),
+      m_updateFreq( 24 )
 {
+    m_horizontalFocalDistance = 1.0f;   //  TODO
+    m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
 }
 
 VisionModel::~VisionModel()
@@ -149,12 +152,24 @@ void VisionModel::pause()
 }
 
 
-void VisionModel::getAssociatedMarks( /*const Pose &current*/ MarkVector &marks )
+void VisionModel::getAssociatedMarks( const Pose &current, MarkVector &marks )
 {
     boost::mutex::scoped_lock lock( m_mutexProjectionsTracked );
     m_associator.associateMarks( m_projectionsTracked, m_marksAssociated, m_marksAssociatedProjections );
     marks = m_marksAssociated;
     m_lastMarksFrame = m_lastFrame;
+}
+
+
+double VisionModel::getHorizontalFocalDistance()
+{
+    return m_horizontalFocalDistance;
+}
+
+
+double VisionModel::getProjectionPlaneHorizontalCenter()
+{
+    return m_projectionPlaneHorizontalCenter;
 }
 
 }   // namespace sauron

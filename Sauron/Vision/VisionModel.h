@@ -11,6 +11,7 @@
 #include "Mark.h"
 #include "MarkPersistenceManager.h"
 #include "MarkAssociator.h"
+#include "Pose.h"
 
 namespace sauron
 {
@@ -22,7 +23,10 @@ class VisionModel
         ~VisionModel();
 
         void loadMarks( const std::string &filename );
-        void getAssociatedMarks( MarkVector &marks );
+        void getAssociatedMarks( const Pose &last, MarkVector &marks );
+
+        double getHorizontalFocalDistance();
+        double getProjectionPlaneHorizontalCenter();
 
         // Frame getters - debug or visual info for final application
         void getLastFrame( Image &frame );
@@ -72,7 +76,9 @@ class VisionModel
         bool m_threadRunning;
         bool m_threadPause;
 
-        
+        // Model constants
+        double m_horizontalFocalDistance;
+        double m_projectionPlaneHorizontalCenter;
 };
 
 }   // namespace sauron

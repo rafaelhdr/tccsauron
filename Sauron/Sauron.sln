@@ -41,6 +41,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModeloDinamica", "ModeloDinamica\ModeloDinamica.vcproj", "{1A5C0BF3-901C-4B78-B7B9-6062C157EAA7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Localization", "Localization\Localization.vcproj", "{BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E9868D1-19F7-4DE8-B820-7AEDA3F04C49} = {2E9868D1-19F7-4DE8-B820-7AEDA3F04C49}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SonarTests", "SonarTests\SonarTests.vcproj", "{57E76DFA-827A-4B3E-9877-ABA59BBA8493}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -48,9 +51,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SonarTests", "SonarTests\So
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Sauron5.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
