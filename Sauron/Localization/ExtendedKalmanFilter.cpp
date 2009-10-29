@@ -51,11 +51,11 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		Matrix K(3,3);
+		Matrix K( H.size2(), H.size1() ); // é nessa ordem mesmo ( 2 -> 1 )
 
-		Matrix temp1(H.size1,H.size2);
-		Matrix temp2(H.size1,H.size2);
-		Matrix yTemp(3,1);
+		Matrix temp1( H.size1(), H.size2() );
+		Matrix temp2( H.size1(), H.size2() );
+		Matrix yTemp( 3, 1 );
 
 		// Kk = P*C'*inv(H*P*H' + R)
 		temp1 = prod(H,P);
