@@ -13,10 +13,10 @@ class IKalmanFilter
         // Is there any problem calling PrioriEstimate many more times than PosterioriEstimate
         // If yes, then ILocalizationManager should be responsible to save the last valid priori,
         // so he can provide the value to the entity who needs (Sensor or Dynamic)
-        virtual void getPrioriEstimate( const Model &F, const Covariance &Q, 
+        virtual void getPrioriEstimate( const pose_t &fValue, const Model &F, const Covariance &Q, 
                                         Pose &estimate,  Covariance &P ) = 0;
 
-        virtual void getPosterioriEstimate( const Measure &z, const Model &H, const Covariance &R, 
+        virtual void getPosterioriEstimate( const Measure &z, const pose_t &hValue, const Model &H, const Covariance &R, 
                                             Pose &estimate, Covariance &P ) = 0;
 };
 

@@ -16,7 +16,7 @@ SensorVision::~SensorVision()
 
 
 void SensorVision::getEstimate( const Pose &last, 
-                                Measure &z, Model &H, Covariance &R )
+                                pose_t &hValue, Measure &z, Model &H, Covariance &R )
 {
     // TODO
 }

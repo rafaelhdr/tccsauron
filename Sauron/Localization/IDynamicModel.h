@@ -11,7 +11,7 @@ class IDynamicModel
 {
     public:
         virtual void updateModel( const Pose &last, 
-                                  Model &dynModel, Covariance &dynNoise ) = 0;
+                                  pose_t &fValue, Model &dynModel, Covariance &dynNoise ) = 0;
 };
 
 }   // namespace sauron
