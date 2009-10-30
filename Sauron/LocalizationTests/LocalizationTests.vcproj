@@ -40,6 +40,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm112"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ARIA_STATIC"

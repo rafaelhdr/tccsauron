@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 
 #include "ILocalizationManager.h"
 #include "ISensorModel.h"
@@ -28,11 +29,10 @@ public:
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial){ mp_ekf->setLatestEstimate(initial); }
-	void startAsync(){ }
-	void stopAsync() { }
+	void startAsync();
+	void stopAsync();
 	Pose getPose() { return mp_ekf->getLatestEstimate(); }
 	Map getMap() { return m_map; }
-	void mainLoop();
 private:
 	ArRobot* mp_robot;
 	Map m_map;
@@ -43,11 +43,15 @@ private:
 
     std::string m_visionMarksFilename;
 
+	bool localize;
+	boost::thread m_localizationThread;
+	void mainLoop();
+
+	boost::mutex m_ekfMutex;
+
 	void buildDefaultSensors();
 	void buildDefaultSonars();
 	void buildDefaultVision();
-	
-	bool localize;
 
 	ISonarDataAsyncProvider* buildDefaultSonarDataProvider();
 	IDynamicModel* buildDefaultDynamic();
