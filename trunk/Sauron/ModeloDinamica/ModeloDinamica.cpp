@@ -3,8 +3,7 @@
 #include "ModeloDinamica.h"
 #include "MathHelper.h"
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
+
 
 
 
@@ -14,85 +13,54 @@ namespace sauron
 	namespace modeloDinamica
 	{
 
-
-			ModeloDinamica::ModeloDinamica(Pose posicao_inicial)
+	
+			ModeloDinamica::ModeloDinamica(ArRobot& robot) : medidaOdometro(robot)
 			{
 				init();
-				posicao_estimada = posicao_inicial;
-			    medida_anterior = nova_medida = MedidaOdometro(0 ,0); // medida_anterior(0, 0, 0);
 			}
 
-			ModeloDinamica::ModeloDinamica(Pose posicao_inicial, MedidaOdometro medida_inicial)
+			ModeloDinamica::ModeloDinamica(Pose posicaoEstimada, ArRobot& robot) : medidaOdometro(robot), posicaoEstimada(posicaoEstimada)
 			{
 				init();
-				posicao_estimada = posicao_inicial; // qual a diferença para isto: posicao_anterior(posicao_inicial);
-				medida_anterior = nova_medida = medida_inicial; // medida_anterior(medida_inicial);
 			}
-
-
-
-		Pose ModeloDinamica::getNovaPosicao(MedidaOdometro nova_medida)
-		{
-			 medida_anterior = this->nova_medida;
-			 this->nova_medida = nova_medida;
-			 posicao_estimada = Pose(calculaX(), calculaY(), calculaTheta());
-			 
-			 return posicao_estimada;
-		}
-		
-
 
 		pose_t ModeloDinamica::calculaX()
 		{
 			/* x(n-1) + delta distancia * cos (teta médio)
 			/* dúvida: teta médio anterior ou atual ? */
-			return posicao_estimada.X() + nova_medida.minus(medida_anterior).getDistance()*::cos(medida_anterior.getTheta());
+			return posicaoEstimada.X() + medidaOdometro.getDeltaDistance()*::cos(posicaoEstimada.Theta());
 		}
 
 		pose_t ModeloDinamica::calculaY()
 		{
-			return posicao_estimada.Y() + nova_medida.minus(medida_anterior).getDistance()*::sin(medida_anterior.getTheta());
+			return posicaoEstimada.Y() + medidaOdometro.getDeltaDistance()*::sin(posicaoEstimada.Theta());
 		}
 
 		pose_t ModeloDinamica::calculaTheta()
 		{
-			/*
-			TODO: testar se vem o theta acumulado
-			odometro traz o delta do theta ou ele acumula o resultado ? 
-			 acho que ele acumula, então basta retornar
-             se não, o theta médio passa a ser: medida_anterior.getTheta() + nova_medida.getTheta();
-			*/
-			return nova_medida.getTheta();
-
+			return posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta();
 		}
 
-		void ModeloDinamica::atualizaPosicao(Pose posicao_estimada)
-		{
-			this->posicao_estimada = posicao_estimada;
-		}
-
+		
 
 
 		double ModeloDinamica::getVarianciaLinear()
 		{
-			double dm = nova_medida.minus(medida_anterior).getDistance();
-			double thetaM = nova_medida.getTheta();
+			double dm = medidaOdometro.getDeltaDistance();
+			double thetaM = medidaOdometro.getDeltaTheta();
 			return (dm*influLinearLinear)*(dm*influLinearLinear) + (thetaM*influAngularLinear)*(thetaM*influAngularLinear);
 		}
 		
 		double ModeloDinamica::getVarianciaAngular()
 		{
-			double dm = nova_medida.minus(medida_anterior).getDistance();
-			double thetaM = nova_medida.getTheta();
+			double dm = medidaOdometro.getDeltaDistance();
+			double thetaM = medidaOdometro.getDeltaTheta();
 			return (thetaM*influAngularAngular)*(thetaM*influAngularAngular) + (dm*influLinearAngular)*(dm*influLinearAngular);
 		}
 
 			
-		boost::numeric::ublas::matrix<double> ModeloDinamica::getQ()
+		void ModeloDinamica::atualizaCovariancia(Covariance &dynNoise)
 		{
-
-			using namespace boost::numeric::ublas;
-
 
 			/*
 										(X)T = transposta de X 
@@ -100,25 +68,75 @@ namespace sauron
 			
 			*/
 
-			double cosTheta = ::cos(posicao_estimada.getTheta());
-			double senTheta = ::sin(posicao_estimada.getTheta());
+			double cosTheta = ::cos(posicaoEstimada.Theta());
+			double senTheta = ::sin(posicaoEstimada.Theta());
 			double varLinear = getVarianciaLinear();
 			double varAngular = getVarianciaAngular();
 
-			matrix<double> Q(3, 3);
-			Q(0,0) = varLinear*cosTheta*cosTheta;
-			Q(0,1) = varLinear*cosTheta*senTheta;
-			Q(0,2) = 0;
+			/* primeira linha */
+			dynNoise(0,0) = varLinear*cosTheta*cosTheta;
+			dynNoise(0,1) = varLinear*cosTheta*senTheta;
+			dynNoise(0,2) = 0;
 
-			Q(1,0) = Q(0,1);
-			Q(1,1) = varLinear*senTheta*senTheta;
-			Q(1,2) = 0;
+			/* segunda linha */
+			dynNoise(1,0) = dynNoise(0,1);
+			dynNoise(1,1) = varLinear*senTheta*senTheta;
+			dynNoise(1,2) = 0;
 
-			Q(2,0) = 0;
-			Q(2,1) = 0;
-			Q(2,2) = varAngular;
+			/* terceira linha */
+			dynNoise(2,0) = 0;
+			dynNoise(2,1) = 0;
+			dynNoise(2,2) = varAngular;
 			
-			return Q;
+			
+		}
+
+		void ModeloDinamica::atualizaModel(Model &dynModel)
+		{
+			/* primeira linha */
+			dynModel(0, 0) = 1;
+			dynModel(0, 1) = 0;
+			dynModel(0, 2) =  -medidaOdometro.getDeltaDistance()*::sin(posicaoEstimada.Theta());
+
+			/* segunda linha */
+			dynModel(1, 0) = 0;
+			dynModel(1, 1) = 1;
+			dynModel(1, 2) =  medidaOdometro.getDeltaDistance()*::cos(posicaoEstimada.Theta());
+
+			/* terceira linha */
+			dynModel(2, 0) = 0;
+			dynModel(2, 1) = 0;
+			dynModel(2, 2) =  1;
+
+		}
+
+		void ModeloDinamica::atualizaFValue(Matrix &fValue)
+		{
+			/* uma unica coluna */
+			fValue(0, 0) = calculaX();
+			fValue(1, 0) = calculaY();
+			fValue(2, 0) = calculaTheta();
+
+		}
+
+		void ModeloDinamica::updateModel( const Pose &last, 
+                                  Matrix &fValue, Model &dynModel, Covariance &dynNoise )
+		{
+			
+			// atualizaPose
+			posicaoEstimada = last;
+
+			medidaOdometro.atualizaMedida();
+			
+			// calcula fValue
+			atualizaFValue(fValue);
+			
+			// calcula F
+			atualizaModel(dynModel);
+
+			// atualiza Q
+			atualizaCovariancia(dynNoise);
+
 		}
 
 		

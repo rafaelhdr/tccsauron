@@ -1,4 +1,5 @@
 #include "Pose.h"
+#include <Aria.h>
 
 namespace sauron 
 {
@@ -9,17 +10,22 @@ namespace sauron
 		class MedidaOdometro
 		{
 		private:
-			pose_t distance;
-			pose_t theta;
+			pose_t oldDistance;
+			pose_t deltaDistance;
 
+			pose_t oldTheta;
+			pose_t deltaTheta;
+
+			ArRobot& robot;
+	
 		public:
-			MedidaOdometro(){ distance = theta = 0; };
-			MedidaOdometro(pose_t _distance, pose_t _theta);
 			
-			pose_t getDistance();
-			pose_t getTheta();
-			MedidaOdometro minus(MedidaOdometro other);
-
+			MedidaOdometro(ArRobot&   robot);
+			
+			pose_t getDeltaDistance();
+			pose_t getDeltaTheta();
+			void atualizaMedida();
+			
 			/* nos dois métodos abaixo,
 			a MedidaOdometro fica responsável por converter as unidades que ela usa para as unidades do pose_t 
 			
