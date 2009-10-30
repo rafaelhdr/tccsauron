@@ -1,3 +1,4 @@
+#pragma once
 #include "MedidaOdometro.h"
 #include "Pose.h"
 #include "IDynamicModel.h"

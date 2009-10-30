@@ -27,12 +27,12 @@ public:
     LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &markFile, const Pose& initialPose);
 	~LocalizationManager();
 
-	void setInitialPose(const Pose& initial);
-	void startAsync();
-	void stopAsync();
-	Pose getPose();
+	void setInitialPose(const Pose& initial){ mp_ekf->setLatestEstimate(initial); }
+	void startAsync(){ }
+	void stopAsync() { }
+	Pose getPose() { return mp_ekf->getLatestEstimate(); }
 	Map getMap() { return m_map; }
-
+	void mainLoop();
 private:
 	ArRobot* mp_robot;
 	Map m_map;
@@ -48,10 +48,10 @@ private:
 	void buildDefaultVision();
 	
 	bool localize;
-	void mainLoop();
 
 	ISonarDataAsyncProvider* buildDefaultSonarDataProvider();
 	IDynamicModel* buildDefaultDynamic();
+	IDynamicModel* buildDefaultDynamic(const Pose&);
 	IKalmanFilter* buildDefaultEKF();
 
 };

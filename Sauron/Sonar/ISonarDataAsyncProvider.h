@@ -1,5 +1,5 @@
 #pragma once
-template<typename T> class ArFunctor1;
+template<typename T, typename U> class ArFunctor2;
 namespace sauron
 {
 class SonarReading;

@@ -10,13 +10,7 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		Matrix temp1(3,3);
-		Matrix xhat(3,1);
-
-		// xhat = estimate
-		xhat(0,0) = m_latestEstimate.X();
-		xhat(1,0) = m_latestEstimate.Y();
-		xhat(2,0) = m_latestEstimate.getTheta();		
+		Matrix temp1(3,3);	
 
 		// Pk = F*P*F'+Q
 		temp1 = prod(F,m_latestCovariance);
@@ -24,13 +18,10 @@ namespace sauron
 
 		m_latestCovariance = temp1 + Q;
 
-		// xhat = f(x, u, 0)
-		xhat = prod(fValue,xhat);
-
 		//estimate = prod(F,estimate);
-		m_latestEstimate.X() = xhat(0,0);
-		m_latestEstimate.Y() = xhat(1,0);
-		m_latestEstimate.setTheta(xhat(2,0));
+		m_latestEstimate.X() = fValue(0,0);
+		m_latestEstimate.Y() = fValue(1,0);
+		m_latestEstimate.setTheta(fValue(2,0));
 	}
 
 
