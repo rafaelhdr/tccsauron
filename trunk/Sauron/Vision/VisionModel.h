@@ -23,7 +23,7 @@ class VisionModel
         ~VisionModel();
 
         void loadMarks( const std::string &filename );
-        void getAssociatedMarks( const Pose &last, MarkVector &marks );
+        void getAssociatedMarks( const Pose &last, MarkVector &marks, ProjectionVector &projs );
 
         // Parameters getters
         double getHorizontalFocalDistance();

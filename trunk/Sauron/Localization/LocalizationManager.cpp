@@ -4,23 +4,31 @@
 #include "Pose.h"
 #include "ModeloDinamica/ModeloDinamica.h"
 #include "SensorSonar.h"
+#include "SensorVision.h"
 #include "Sonar/PhysicalSonars.h"
 
 #include <iostream>
 
 namespace sauron
 {
-	LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map)
-		: mp_robot(robot),  m_map(map), mp_dynamic(buildDefaultDynamic()), 
-		mp_ekf(buildDefaultEKF()), mp_sonarDataProvider(buildDefaultSonarDataProvider())
+    LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile )
+		: mp_robot(robot),  
+          m_map(map), 
+          mp_dynamic(buildDefaultDynamic()), 
+		  mp_ekf(buildDefaultEKF()), 
+          mp_sonarDataProvider(buildDefaultSonarDataProvider()),
+          m_visionMarksFilename( marksFile )
 	{
 		buildDefaultSensors();
 	}
 
-	LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map,
-		const Pose& initialPose)
-		: mp_robot(robot),  m_map(map), mp_dynamic(buildDefaultDynamic()), 
-		mp_ekf(buildDefaultEKF()), mp_sonarDataProvider(buildDefaultSonarDataProvider())
+    LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile, const Pose& initialPose)
+		: mp_robot(robot),  
+          m_map(map), 
+          mp_dynamic(buildDefaultDynamic()), 
+		  mp_ekf(buildDefaultEKF()), 
+          mp_sonarDataProvider(buildDefaultSonarDataProvider()),
+          m_visionMarksFilename( marksFile )
 	{
 		buildDefaultSensors();
 		setInitialPose(initialPose);
@@ -56,7 +64,7 @@ namespace sauron
 
 	void LocalizationManager::buildDefaultVision()
 	{
-		// TODO
+        m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
 	void LocalizationManager::mainLoop()

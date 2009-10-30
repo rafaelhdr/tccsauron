@@ -4,8 +4,9 @@
 namespace sauron
 {
 
-SensorVision::SensorVision()
+SensorVision::SensorVision( const std::string &marksFile )
 {
+    m_visionModel.loadMarks( marksFile );
 }
 
 
@@ -17,7 +18,10 @@ SensorVision::~SensorVision()
 bool SensorVision::getEstimate( const Pose &last, 
                                 Matrix &hValue, Measure &z, Model &H, Covariance &R )
 {
-    m_visionModel.getAssociatedMarks( last, m_associatedMarks );
+    MarkVector       m_associatedMarks;
+    ProjectionVector m_associatedProjections;
+
+    m_visionModel.getAssociatedMarks( last, m_associatedMarks, m_associatedProjections );
 
     if ( m_associatedMarks.size() > 0 )
     {
@@ -41,11 +45,14 @@ bool SensorVision::getEstimate( const Pose &last,
         double diffX;
         double diffY;
 
-        MarkVector::iterator it;
         int index = 0;
-        for ( it = m_associatedMarks.begin(); it != m_associatedMarks.end(); ++it, ++index )
+
+        MarkVector::iterator       itM = m_associatedMarks.begin();
+        ProjectionVector::iterator itP = m_associatedProjections.begin(); 
+        
+        for ( ; itM != m_associatedMarks.end(); ++itM, ++itP, ++index )
         {
-            const Point2DFloat markPos = it->getPosition();
+            const Point2DFloat markPos = itM->getPosition();
 
             sinTheta = sin( last.Theta() );
             cosTheta = cos( last.Theta() );
@@ -64,6 +71,8 @@ bool SensorVision::getEstimate( const Pose &last,
             H( index, 2 ) =  fu * ( (aux_v * aux_v) / aux_z2 + 1 );
 
             R( index, index ) = sigma;
+
+            z( index, 0 ) = itP->getDiscretizedLine().getMeanX();
         }
         
         return true;
