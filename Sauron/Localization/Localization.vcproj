@@ -159,10 +159,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OdometerBasedDynamic.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\SensorSonar.cpp"
 				>
 			</File>
