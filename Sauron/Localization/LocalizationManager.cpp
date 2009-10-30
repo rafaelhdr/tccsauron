@@ -92,13 +92,17 @@ namespace sauron
 			// predict
 			Matrix fValue(3,1); Model dynModel(3,3);	Covariance dynNoise(3,3);
 			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
-			mp_ekf->predict(fValue, dynModel, dynNoise);
-			// update
+			{
+				boost::unique_lock<boost::mutex>(m_ekfMutex);
+				mp_ekf->predict(fValue, dynModel, dynNoise);
+			}
 
+			// update
 			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin();
 				it != m_sensors.end(); it++) {
 					Matrix hValue(1,3); Measure z(1,1); Model H(1,3); Covariance R(3,3);
 					if((*it)->getEstimate(this->getPose(), hValue, z, H, R)) {
+						boost::unique_lock<boost::mutex>(m_ekfMutex);
 						mp_ekf->update(z, hValue, H, R);
 					}
 			}
@@ -107,6 +111,12 @@ namespace sauron
 				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
 			::Sleep(1000);
 		}
+	}
+
+	Pose LocalizationManager::getPose()
+	{
+		boost::unique_lock<boost::mutex>(m_ekfMutex);
+		return mp_ekf->getLatestEstimate();
 	}
 
 	LocalizationManager::~LocalizationManager(void)

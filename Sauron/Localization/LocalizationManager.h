@@ -31,7 +31,7 @@ public:
 	void setInitialPose(const Pose& initial){ mp_ekf->setLatestEstimate(initial); }
 	void startAsync();
 	void stopAsync();
-	Pose getPose() { return mp_ekf->getLatestEstimate(); }
+	Pose getPose();
 	Map getMap() { return m_map; }
 private:
 	ArRobot* mp_robot;
