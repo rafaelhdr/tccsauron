@@ -10,9 +10,10 @@
 namespace sauron
 {
 	SensorSonar::SensorSonar(int sonarNumber, ILocalizationManager& localizationManager,
-		ISonarDataAsyncProvider& readingsProvider, ISonarModel& sonarModel)
-		: m_sonarNumber(sonarNumber), m_dataProvider(readingsProvider),  m_model(sonarModel),
-		m_localization(localizationManager), m_callback(this, &SensorSonar::addReadingToModel)
+		ISonarDataAsyncProvider& readingsProvider)
+		: m_sonarNumber(sonarNumber), m_dataProvider(readingsProvider),
+		m_localization(localizationManager), m_callback(this, &SensorSonar::addReadingToModel),
+		m_model(configs::sonars::getSonarPose(sonarNumber))
 	{
 		if(sonarNumber < 0 ||sonarNumber > 8) {
 			throw std::invalid_argument("Numero invalido de sonar");
@@ -29,36 +30,41 @@ namespace sauron
 	{
 		SonarReading expectedReading, actualReading;
 		LineSegment matchedLineSegment;
-		if(m_model.tryGetMatchingMapLine(m_localization.getMap(), configs::sonars::validationGateSigma2,
-			&matchedLineSegment, &expectedReading, &actualReading)) {
+		if(m_model.validateReadings()) {
+			if(m_model.tryGetMatchingMapLine(m_localization.getMap(),
+				configs::sonars::validationGateSigma2,
+				&matchedLineSegment, &expectedReading, &actualReading)) {
 
-				hValue(0,0) = expectedReading;
+					hValue(0,0) = expectedReading;
 
-				z(0,0) = actualReading;
+					z(0,0) = actualReading;
 
-				R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
-				R(1,1) = configs::sonars::sonarReadingStandardDeviationMm;
-				R(2,2) = configs::sonars::sonarReadingStandardDeviationMm;
+					R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
+					R(1,1) = configs::sonars::sonarReadingStandardDeviationMm;
+					R(2,2) = configs::sonars::sonarReadingStandardDeviationMm;
 
-				Line matchedLine = matchedLineSegment.getSauronLine();
-				H(0,0) = -1.0 * ::cos(matchedLine.getTheta());
-				H(0,1) = -1.0 * ::sin(matchedLine.getTheta());
-				// H(0,2) = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
-				double theta_diff = last.Theta() - matchedLine.getTheta();
-				Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
-				pose_t x_sonar = sonarRelativePose.X();
-				pose_t y_sonar = sonarRelativePose.Y();
-				H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
-				return true;
-		} else {
-			return false;
+					Line matchedLine = matchedLineSegment.getSauronLine();
+					H(0,0) = -1.0 * ::cos(matchedLine.getTheta());
+					H(0,1) = -1.0 * ::sin(matchedLine.getTheta());
+					// H(0,2) = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
+					double theta_diff = last.Theta() - matchedLine.getTheta();
+					Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
+					pose_t x_sonar = sonarRelativePose.X();
+					pose_t y_sonar = sonarRelativePose.Y();
+					H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
+					return true;
+			}
 		}
+		return false;
 	}
 
 	bool SensorSonar::checkNewEstimateAvailable()
 	{
-		return m_model.tryGetMatchingMapLine(m_localization.getMap(), configs::sonars::validationGateSigma2,
+		if(m_model.validateReadings())
+			return m_model.tryGetMatchingMapLine(m_localization.getMap(), configs::sonars::validationGateSigma2,
 			NULL, NULL, NULL);
+		else
+			return false;
 	}
 
 	void SensorSonar::setupAsyncDataFeed()

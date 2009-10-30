@@ -7,6 +7,7 @@
 #include "ISensorModel.h"
 #include "Sonar/Map.h"
 #include "Sonar/ISonarDataAsyncProvider.h"
+#include "Sonar/SonarModel.h"
 #include "Sonar/SonarReading.h"
 
 namespace sauron
@@ -18,7 +19,7 @@ class SensorSonar : public ISensorModel
 {
     public:
         SensorSonar(int sonarNumber, ILocalizationManager& localizationManager,
-			ISonarDataAsyncProvider& readingsProvider, ISonarModel& sonarModel);
+			ISonarDataAsyncProvider& readingsProvider);
         ~SensorSonar();
 
         bool getEstimate( const Pose &last, 
@@ -32,7 +33,7 @@ private:
 	int m_sonarNumber;
 	ISonarDataAsyncProvider& m_dataProvider;
 	ILocalizationManager& m_localization;
-	ISonarModel& m_model;
+	SonarModel m_model;
 	ArFunctor2C<SensorSonar, int, SonarReading> m_callback;
 };
 

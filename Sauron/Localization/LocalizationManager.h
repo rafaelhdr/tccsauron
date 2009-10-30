@@ -6,8 +6,10 @@
 #include "ISensorModel.h"
 #include "IDynamicModel.h"
 #include "IKalmanFilter.h"
-#include "Sonar/ISonarModel.h"
+#include "Sonar/ISonarDataAsyncProvider.h"
 #include "Sonar/Map.h"
+
+class ArRobot;
 
 namespace sauron
 {
@@ -15,14 +17,13 @@ namespace sauron
 typedef boost::shared_ptr<ISensorModel> ISensorModelPtr;
 typedef boost::shared_ptr<IDynamicModel> IDynamicModelPtr;
 typedef boost::shared_ptr<IKalmanFilter> IKalmanFilterPtr;
-// HACK não gosto disso, mas agora não vou mudar (Pedro)
-typedef boost::shared_ptr<ISonarModel> ISonarModelPtr;
+typedef boost::shared_ptr<ISonarDataAsyncProvider> ISonarDataProviderPtr;
 
 class LocalizationManager : public ILocalizationManager
 {
 public:
-	LocalizationManager(const Map& map);
-	LocalizationManager(const Map& map, const Pose& initialPose);
+	LocalizationManager(ArRobot* p_robot, const Map& map);
+	LocalizationManager(ArRobot* p_robot, const Map& map, const Pose& initialPose);
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial);
@@ -32,16 +33,21 @@ public:
 	Map getMap() { return m_map; }
 
 private:
+	ArRobot* mp_robot;
 	Map m_map;
 	IKalmanFilterPtr mp_ekf;
 	std::vector<ISensorModelPtr> m_sensors;
-	// HACK
-	std::vector<ISonarModelPtr> m_sonarModels;
+	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
 
 	void buildDefaultSensors();
 	void buildDefaultSonars();
 	void buildDefaultVision();
+	
+	bool localize;
+	void mainLoop();
+
+	ISonarDataAsyncProvider* buildDefaultSonarDataProvider();
 	IDynamicModel* buildDefaultDynamic();
 	IKalmanFilter* buildDefaultEKF();
 
