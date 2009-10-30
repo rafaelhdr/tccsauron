@@ -82,17 +82,17 @@ int main(int argc, char** argv)
 
 
   // activate the default mode
-  //teleop.activate();
+  teleop.activate();
 
   // turn on the motors
   robot.comInt(ArCommands::ENABLE, 1);
 #pragma endregion
   robot.unlock();
-  robot.setVel(50);
-  robot.setRotVel(30);
+  //robot.setVel(50);
+  //robot.setRotVel(30);
   sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""),
 	  sauron::Pose(592, 276, 3.14159));
-  locManager.mainLoop();
+  locManager.startAsync();
 
 
   // Block execution of the main thread here and wait for the robot's task loop

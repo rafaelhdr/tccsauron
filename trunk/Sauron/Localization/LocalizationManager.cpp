@@ -73,6 +73,19 @@ namespace sauron
         m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
+	void LocalizationManager::startAsync()
+	{
+		if(m_localizationThread.get_id() == boost::thread::id()) { // true se a thread não foi iniciada
+			localize = true;
+			m_localizationThread = boost::thread(&LocalizationManager::mainLoop, this);
+		}
+	}
+
+	void LocalizationManager::stopAsync()
+	{
+		localize = false;
+	}
+
 	void LocalizationManager::mainLoop()
 	{
 		while(localize) {
@@ -90,7 +103,7 @@ namespace sauron
 					}
 			}
 			Pose pose = getPose();
-			std::cout << "Predição: (" << pose.X() << ", " <<
+			std::cout << "Predicao: (" << pose.X() << ", " <<
 				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
 			::Sleep(1000);
 		}
