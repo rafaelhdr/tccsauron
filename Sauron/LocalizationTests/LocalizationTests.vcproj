@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib"
+				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

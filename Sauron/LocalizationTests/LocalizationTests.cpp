@@ -90,7 +90,7 @@ int main(int argc, char** argv)
   robot.unlock();
   robot.setVel(50);
   robot.setRotVel(30);
-  sauron::LocalizationManager locManager(&robot, ArMap(),
+  sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""),
 	  sauron::Pose(592, 276, 3.14159));
   locManager.mainLoop();
 
