@@ -1,9 +1,12 @@
 #include "Aria.h"
 #include "LocalizationManager.h"
 #include "ExtendedKalmanFilter.h"
+#include "Pose.h"
 #include "ModeloDinamica/ModeloDinamica.h"
 #include "SensorSonar.h"
 #include "Sonar/PhysicalSonars.h"
+
+#include <iostream>
 
 namespace sauron
 {
@@ -64,6 +67,7 @@ namespace sauron
 			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
 			mp_ekf->predict(fValue, dynModel, dynNoise);
 			// update
+			/*
 			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin();
 				it != m_sensors.end(); it++) {
 					Matrix hValue; Measure z; Model H; Covariance R;
@@ -71,6 +75,11 @@ namespace sauron
 						mp_ekf->update(z, hValue, H, R);
 					}
 			}
+			*/
+			Pose pose = getPose();
+			std::cout << "Predição: (" << pose.X() << ", " <<
+				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
+			::Sleep(1000);
 		}
 	}
 
