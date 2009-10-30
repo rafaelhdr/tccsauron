@@ -25,7 +25,7 @@ VisionModel::~VisionModel()
 void VisionModel::loadMarks( const std::string &filename )
 {
     MarkVector marksLoaded;
-    //MarkPersistenceManager.loadFromFile( filename, marksLoaded );
+    MarkPersistenceManager::loadFromFile( filename, marksLoaded );
     m_associator.loadMarks( marksLoaded );
 }
 
@@ -156,11 +156,12 @@ void VisionModel::pause()
 }
 
 
-void VisionModel::getAssociatedMarks( const Pose &current, MarkVector &marks )
+void VisionModel::getAssociatedMarks( const Pose &current, MarkVector &marks, ProjectionVector &projs )
 {
     boost::mutex::scoped_lock lock( m_mutexProjectionsTracked );
     m_associator.associateMarks( m_projectionsTracked, m_marksAssociated, m_marksAssociatedProjections );
     marks = m_marksAssociated;
+    projs = m_marksAssociatedProjections;
     m_lastMarksFrame = m_lastFrame;
 }
 

@@ -10,7 +10,7 @@ namespace sauron
 class SensorVision : public ISensorModel
 {
     public:
-        SensorVision();
+        SensorVision( const std::string &marksFile );
         ~SensorVision();
 
         bool getEstimate( const Pose &last, 
@@ -22,7 +22,6 @@ class SensorVision : public ISensorModel
 
     private:
         VisionModel  m_visionModel;
-        MarkVector   m_associatedMarks;
 
 };
 

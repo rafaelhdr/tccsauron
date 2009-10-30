@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include <boost/shared_ptr.hpp>
 
 #include "ILocalizationManager.h"
@@ -22,8 +23,8 @@ typedef boost::shared_ptr<ISonarDataAsyncProvider> ISonarDataProviderPtr;
 class LocalizationManager : public ILocalizationManager
 {
 public:
-	LocalizationManager(ArRobot* p_robot, const Map& map);
-	LocalizationManager(ArRobot* p_robot, const Map& map, const Pose& initialPose);
+    LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &marksFile );
+    LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &markFile, const Pose& initialPose);
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial);
@@ -39,6 +40,8 @@ private:
 	std::vector<ISensorModelPtr> m_sensors;
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
+
+    std::string m_visionMarksFilename;
 
 	void buildDefaultSensors();
 	void buildDefaultSonars();
