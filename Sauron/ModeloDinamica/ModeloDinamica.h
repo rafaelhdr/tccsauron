@@ -1,7 +1,8 @@
 #include "MedidaOdometro.h"
 #include "Pose.h"
-
+#include "IDynamicModel.h"
 #include <boost/numeric/ublas/matrix.hpp>
+#include <Aria.h>
 
 
 namespace sauron 
@@ -10,13 +11,16 @@ namespace sauron
 	namespace modeloDinamica
 	{
 		
-		class ModeloDinamica
+		class ModeloDinamica : IDynamicModel
 		{
 			private:
-				MedidaOdometro medida_anterior;
-				MedidaOdometro nova_medida;
-				Pose posicao_estimada;
-
+				
+				
+				
+				MedidaOdometro medidaOdometro;
+				
+				Pose posicaoEstimada;
+				
 				pose_t calculaX();
 				pose_t calculaY();
 				pose_t calculaTheta();
@@ -37,19 +41,24 @@ namespace sauron
 					influAngularAngular = 0.035;
 				}
 
-			
+			    void atualizaCovariancia(Covariance &dynNoise);
+
+				void atualizaModel(Model &dynModel);
+
+				void atualizaFValue(Matrix &fValue);
 
 
 			public:
-				ModeloDinamica(Pose posicao_inicial);
+				ModeloDinamica(ArRobot& robot);
+				ModeloDinamica(Pose posicaoEstimada, ArRobot& robot);
+				
+				
+				
+				void updateModel( const Pose &last, 
+                                  Matrix &fValue, Model &dynModel, Covariance &dynNoise );
 
-				ModeloDinamica(Pose posicao_inicial, MedidaOdometro medida_inicial);
 
-				Pose getNovaPosicao(MedidaOdometro nova_medida);
-				void atualizaPosicao(Pose nova_estimada);
-
-				boost::numeric::ublas::matrix<double> getQ();
-
+				
 
 		};
 

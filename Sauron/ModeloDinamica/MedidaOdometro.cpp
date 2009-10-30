@@ -1,4 +1,5 @@
 #include "MedidaOdometro.h"
+#include <cmath>
 
 namespace sauron 
 {
@@ -6,27 +7,38 @@ namespace sauron
 	namespace modeloDinamica
 	{
 
-		MedidaOdometro::MedidaOdometro(pose_t _distance, pose_t _theta)
+		
+
+		MedidaOdometro::MedidaOdometro(ArRobot&   robot) : robot(robot)
 		{
-			distance = _distance;
-			theta = _theta;
+			oldDistance = robot.getOdometerDistance()*1000;
+			oldTheta = robot.getOdometerDegrees()*M_PI/(double)180;
+			atualizaMedida();
 		}
 
-		pose_t MedidaOdometro::getDistance()
+		pose_t MedidaOdometro::getDeltaDistance()
 		{
-			return distance;
+			return deltaDistance;
 		}
 
-		pose_t MedidaOdometro::getTheta()
+		pose_t MedidaOdometro::getDeltaTheta()
 		{
-			return theta;
+			return deltaTheta;
 		}
 
-		MedidaOdometro MedidaOdometro::minus (MedidaOdometro other)
+		void MedidaOdometro::atualizaMedida()
 		{
-			return MedidaOdometro(distance - other.distance, theta - other.theta);
+			double newDistance = robot.getOdometerDistance()*1000;
+			deltaDistance = newDistance - oldDistance;
+			oldDistance = newDistance;
+
+			double newTheta = robot.getOdometerDegrees()*M_PI/(double)180;
+			deltaTheta = newTheta - oldTheta;
+			oldTheta = newTheta;
 
 		}
+
+		
 
 		
 	}
