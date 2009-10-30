@@ -14,11 +14,13 @@ VisionModel::VisionModel()
     // Empirical values
     m_horizontalFocalDistance = 1.0f;
     m_sigmaVert = 1.0f;
-    
+
+    m_thread.join();    
 }
 
 VisionModel::~VisionModel()
 {
+    stop();
 }
 
 
