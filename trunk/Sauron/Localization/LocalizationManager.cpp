@@ -25,7 +25,7 @@ namespace sauron
     LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile, const Pose& initialPose)
 		: mp_robot(robot),  
           m_map(map), 
-          mp_dynamic(buildDefaultDynamic()), 
+          mp_dynamic(buildDefaultDynamic(initialPose)), 
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
           m_visionMarksFilename( marksFile )
@@ -39,6 +39,11 @@ namespace sauron
 		return new modeloDinamica::ModeloDinamica(*mp_robot);
 	}
 
+	IDynamicModel* LocalizationManager::buildDefaultDynamic(const Pose& initialPose)
+	{
+		return new modeloDinamica::ModeloDinamica(initialPose, *mp_robot);
+	}
+
 	IKalmanFilter* LocalizationManager::buildDefaultEKF()
 	{
 		return new ExtendedKalmanFilter();
@@ -46,13 +51,14 @@ namespace sauron
 
 	ISonarDataAsyncProvider* LocalizationManager::buildDefaultSonarDataProvider()
 	{
-		return new PhysicalSonars(mp_robot);
+		//return new PhysicalSonars(mp_robot);
+		return 0;
 	}
 
 	void LocalizationManager::buildDefaultSensors()
 	{
-		buildDefaultSonars();
-		buildDefaultVision();
+		//buildDefaultSonars();
+		//buildDefaultVision();
 	}
 
 	void LocalizationManager::buildDefaultSonars()
@@ -71,19 +77,18 @@ namespace sauron
 	{
 		while(localize) {
 			// predict
-			Matrix fValue; Model dynModel;	Covariance dynNoise;
+			Matrix fValue(3,1); Model dynModel(3,3);	Covariance dynNoise(3,3);
 			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
 			mp_ekf->predict(fValue, dynModel, dynNoise);
 			// update
-			/*
+
 			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin();
 				it != m_sensors.end(); it++) {
-					Matrix hValue; Measure z; Model H; Covariance R;
+					Matrix hValue(1,3); Measure z(1,1); Model H(1,3); Covariance R(3,3);
 					if((*it)->getEstimate(this->getPose(), hValue, z, H, R)) {
 						mp_ekf->update(z, hValue, H, R);
 					}
 			}
-			*/
 			Pose pose = getPose();
 			std::cout << "Predição: (" << pose.X() << ", " <<
 				pose.Y() << ", " << pose.Theta() << ")" << std::endl;

@@ -10,10 +10,11 @@ class ExtendedKalmanFilter : public IKalmanFilter
 {
     public:
 
-		ExtendedKalmanFilter() { 
+		ExtendedKalmanFilter()
+			: m_latestCovariance(3,3){ 
 		}
-		ExtendedKalmanFilter(const Pose& initialPose) :
-		m_latestEstimate(initialPose){
+		ExtendedKalmanFilter(const Pose& initialPose) 
+		: m_latestCovariance(3,3),m_latestEstimate(initialPose){
 		}
 
 		ExtendedKalmanFilter(const Pose& initialPose, const Covariance& initialCovariance) :

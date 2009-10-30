@@ -9,7 +9,7 @@ namespace sauron
 	{
 		MedidaOdometro::MedidaOdometro(ArRobot&   robot) : robot(robot)
 		{
-			oldDistance = robot.getOdometerDistance()*10;
+			oldDistance = robot.getOdometerDistance()/10;
 			oldTheta = trigonometry::degrees2rads(robot.getOdometerDegrees());
 			atualizaMedida();
 		}
@@ -26,7 +26,7 @@ namespace sauron
 
 		void MedidaOdometro::atualizaMedida()
 		{
-			double newDistance = robot.getOdometerDistance()*10;
+			double newDistance = robot.getOdometerDistance()/10;
 			deltaDistance = newDistance - oldDistance;
 			oldDistance = newDistance;
 
