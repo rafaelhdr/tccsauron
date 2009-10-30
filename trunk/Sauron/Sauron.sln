@@ -54,6 +54,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SonarTests", "SonarTests\So
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModeloDinamicaTests", "ModeloDinamicaTests\ModeloDinamicaTests.vcproj", "{E424CD7E-D849-4142-A6B6-62484A39B50F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LocalizationTests", "LocalizationTests\LocalizationTests.vcproj", "{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Sauron6.vsmdi
@@ -115,6 +117,12 @@ Global
 		{E424CD7E-D849-4142-A6B6-62484A39B50F}.Release|Win32.Build.0 = Release|Win32
 		{E424CD7E-D849-4142-A6B6-62484A39B50F}.UnitTest|Win32.ActiveCfg = Release|Win32
 		{E424CD7E-D849-4142-A6B6-62484A39B50F}.UnitTest|Win32.Build.0 = Release|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.Debug|Win32.Build.0 = Debug|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.Release|Win32.ActiveCfg = Release|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.Release|Win32.Build.0 = Release|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.UnitTest|Win32.ActiveCfg = Release|Win32
+		{4323B59A-77ED-4CE9-96EE-E6DEE08FD5FB}.UnitTest|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
