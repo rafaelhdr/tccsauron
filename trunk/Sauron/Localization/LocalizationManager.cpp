@@ -1,7 +1,7 @@
 #include "Aria.h"
 #include "LocalizationManager.h"
 #include "ExtendedKalmanFilter.h"
-#include "OdometerBasedDynamic.h"
+#include "ModeloDinamica/ModeloDinamica.h"
 #include "SensorSonar.h"
 #include "Sonar/PhysicalSonars.h"
 
@@ -25,7 +25,7 @@ namespace sauron
 
 	IDynamicModel* LocalizationManager::buildDefaultDynamic()
 	{
-		return new OdometerBasedDynamic();
+		return new modeloDinamica::ModeloDinamica(*mp_robot);
 	}
 
 	IKalmanFilter* LocalizationManager::buildDefaultEKF()
