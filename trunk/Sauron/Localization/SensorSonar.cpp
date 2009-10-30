@@ -69,7 +69,7 @@ namespace sauron
 	void SensorSonar::addReadingToModel(int sonarNumber, SonarReading reading)
 	{
 		if(sonarNumber == m_sonarNumber) {
-			Pose currentEstimatedPose = m_localization.getEstimate();
+			Pose currentEstimatedPose = m_localization.getPose();
 			m_model.addReading(reading, currentEstimatedPose);
 		} else {
 			throw std::invalid_argument("addReadingToModel: sonarNumber invalido");

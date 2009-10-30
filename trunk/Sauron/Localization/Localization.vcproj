@@ -155,6 +155,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LocalizationManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OdometerBasedDynamic.cpp"
 				>
 			</File>
@@ -190,6 +194,10 @@
 			</File>
 			<File
 				RelativePath=".\ISensorModel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LocalizationManager.h"
 				>
 			</File>
 			<File
