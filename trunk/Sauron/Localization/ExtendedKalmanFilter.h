@@ -15,8 +15,14 @@ class ExtendedKalmanFilter : public IKalmanFilter
         void getPrioriEstimate( const Matrix &fValue, const Model &F, const Covariance &Q, 
                                 Pose &estimate,  Covariance &P );
 
-        void getPosterioriEstimate( const Measure &z, const Matrix &hValue, const Model &H, const Covariance &R, 
-                                    Pose &estimate, Covariance &P );
+        void getPosterioriEstimate( const Measure &z,		// a medida obtida
+									const Matrix &hValue,	// a medida esperada
+									const Model &H,			// matriz de observação
+									const Covariance &R,	// covariância
+                                    Pose &estimate,			// in: a estimativa a priori da posição
+															// out: a estimativa a posteriori
+									Covariance &P);			// in: a covariância a priori
+															// out: a covariãncia a posteriori
 };
 
 }   //  namespace sauron
