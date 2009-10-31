@@ -103,11 +103,11 @@ int main(int argc, char** argv)
   locManager.startAsync();
 
 std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
-<< "Digite a letra (maiuscula) referente a opcao desejada:" << std::endl;
+<< "Digite a letra referente a opcao desejada:" << std::endl;
 
   char c = 'A';
 
-  while(c != 'S')
+  while(c != 'S' && c != 's')
   {
 	  
 	  std::cout << "Escolha a opção:"  << std::endl 
@@ -120,6 +120,7 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 		
 	  
 	  switch(c){
+		case 'm':
 		case 'M':
 			{
 			sauron::Pose pose = locManager.getPose();
@@ -127,7 +128,7 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
 			}
 			break;
-
+		case 'p':
 		case 'P':
 			std::cout << "Digite na ordem: x y theta e aperte ENTER:"  << std::endl; 
 			double x;
@@ -139,6 +140,7 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 			std::cin >> theta;
 			locManager.setInitialPose(sauron::Pose(x, y, theta));
 			break;
+		case 'v':
 		case 'V':
 			std::cout << "Digite na ordem: velocidade velocidaRotacional e aperte ENTER:"  << std::endl;
 			double vel;
@@ -150,10 +152,11 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 			robot.setVel(vel);
 			robot.setRotVel(rotVel);
 			break;
+		case 's':
 		case 'S':
 			break;
 		default:
-			std::cout << "Ops... nao encontrei a opcao. Lembre-se de utilizar maiusculas!" << std::endl;
+			std::cout << "Ops... nao encontrei a opcao. Voce sabe ler instrucoes, seu macaco?" << std::endl;
 
 	  }
 
