@@ -1,4 +1,6 @@
-﻿#include "stdafx.h"
+﻿#pragma once
+#include "stdafx.h"
+#include "MathHelper.h"
 
 using namespace System;
 using namespace System::Text;
@@ -55,9 +57,17 @@ namespace ModeloDinamicaTests
 		[TestMethod]
 		void TestMethod1()
 		{
-			//
-			// TODO: Add test logic	here
-			//
+			double const PI = 3.14159265358979323846;
+			double angulo = 65;
+			double normalized = sauron::trigonometry::normalizeAngle(angulo);
+
+			Assert::IsTrue(normalized <= PI && normalized >= -PI);  
+			Assert::AreEqual(::cos(angulo), ::cos(normalized));
+			Assert::AreEqual(::sin(angulo), ::sin(normalized));
+			
+
+			
+
 		};
 	};
 }

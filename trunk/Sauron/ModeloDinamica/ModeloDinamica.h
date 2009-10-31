@@ -40,6 +40,8 @@ namespace sauron
 			double influAngularLinear;
 			double influAngularAngular;
 
+			double normalizaTheta(double valor);
+
 			void init()
 			{
 				influLinearLinear = 0.033;

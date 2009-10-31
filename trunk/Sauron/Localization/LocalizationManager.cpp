@@ -88,13 +88,29 @@ namespace sauron
 
 	void LocalizationManager::mainLoop()
 	{
+
+		/* TODO:
+			conversando com o Silva achamos q isso precisa ser reestruturado...
+			do jeito atual, vc eh obrigado a pegar uma atualização de cada sensor
+
+			o ideal eh cada sensor dar a sua atualização na hora em q ele a tiver... 
+
+			ou então o predict e os updates são disparados em threads distintas... cada uma processando no seu ritmo
+
+		*/
+
 		while(localize) {
 			// predict
 			Matrix fValue(3,1); Model dynModel(3,3);	Covariance dynNoise(3,3);
 			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
 			{
-				boost::unique_lock<boost::mutex>(m_ekfMutex);
+				/* fiz essa alteração pq o setInitial Pose não estava funcionando.... agora eu dou lock e unlock
+				e o setInitialPose faz a mesma coisa, assim, se um estiver alterando, o outro vai esperar */
+
+				//boost::unique_lock<boost::mutex>(m_ekfMutex);
+				m_ekfMutex.lock();
 				mp_ekf->predict(fValue, dynModel, dynNoise);
+				m_ekfMutex.unlock();
 			}
 
 			// update
@@ -102,20 +118,19 @@ namespace sauron
 				it != m_sensors.end(); it++) {
 					Matrix hValue(1,3); Measure z(1,1); Model H(1,3); Covariance R(3,3);
 					if((*it)->getEstimate(this->getPose(), hValue, z, H, R)) {
-						boost::unique_lock<boost::mutex>(m_ekfMutex);
+						//boost::unique_lock<boost::mutex>(m_ekfMutex);
+						m_ekfMutex.lock();
 						mp_ekf->update(z, hValue, H, R);
+						m_ekfMutex.unlock();
 					}
 			}
-			Pose pose = getPose();
-			std::cout << "Predicao: (" << pose.X() << ", " <<
-				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
-			::Sleep(1000);
+			
 		}
 	}
 
 	Pose LocalizationManager::getPose()
 	{
-		boost::unique_lock<boost::mutex>(m_ekfMutex);
+		//boost::unique_lock<boost::mutex>(m_ekfMutex);
 		return mp_ekf->getLatestEstimate();
 	}
 

@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include "Pose.h"
 #include <iostream>
 #include "Aria.h"
 #include "ArSilentTelop.h"
