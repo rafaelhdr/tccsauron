@@ -88,17 +88,85 @@ int main(int argc, char** argv)
   robot.comInt(ArCommands::ENABLE, 1);
 #pragma endregion
   robot.unlock();
-  //robot.setVel(50);
-  //robot.setRotVel(30);
-  sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""),
-	  sauron::Pose(592, 276, 3.14159));
+
+  
+
+
+
+ 
+
+
+
+
+  
+  sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""));
   locManager.startAsync();
 
+std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
+<< "Digite a letra (maiuscula) referente a opcao desejada:" << std::endl;
+
+  char c = 'A';
+
+  while(c != 'S')
+  {
+	  
+	  std::cout << "Escolha a opção:"  << std::endl 
+		  << "1. (M) Mostrar Posicao;" << std::endl
+		  << "2. (P) Setar a Posição Inicial;" << std::endl
+		  << "2. (V) Setar Velocidades;" << std::endl
+		  << "2. (S) Sair;"            << std::endl;
+
+	  std::cin >> c;
+		
+	  
+	  switch(c){
+		case 'M':
+			{
+			sauron::Pose pose = locManager.getPose();
+			std::cout << "Predicao: (" << pose.X() << ", " <<
+				pose.Y() << ", " << pose.Theta() << ")" << std::endl;
+			}
+			break;
+
+		case 'P':
+			std::cout << "Digite na ordem: x y theta e aperte ENTER:"  << std::endl; 
+			double x;
+			double y;
+			double theta;
+
+			std::cin >> x;
+			std::cin >> y;
+			std::cin >> theta;
+			locManager.setInitialPose(sauron::Pose(x, y, theta));
+			break;
+		case 'V':
+			std::cout << "Digite na ordem: velocidade velocidaRotacional e aperte ENTER:"  << std::endl;
+			double vel;
+			double rotVel;
+
+			std::cin >> vel;
+			std::cin >> rotVel;
+
+			robot.setVel(vel);
+			robot.setRotVel(rotVel);
+			break;
+		case 'S':
+			break;
+		default:
+			std::cout << "Ops... nao encontrei a opcao. Lembre-se de utilizar maiusculas!" << std::endl;
+
+	  }
+
+	 
+
+  }
+
+  std::cout << "Ciao!";
 
   // Block execution of the main thread here and wait for the robot's task loop
   // thread to exit (e.g. by robot disconnecting, escape key pressed, or OS
   // signal)
-  robot.waitForRunExit();
+  //robot.waitForRunExit();
 
   Aria::exit(0);
 

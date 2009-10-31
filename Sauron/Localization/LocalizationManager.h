@@ -28,7 +28,11 @@ public:
     LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &markFile, const Pose& initialPose);
 	~LocalizationManager();
 
-	void setInitialPose(const Pose& initial){ mp_ekf->setLatestEstimate(initial); }
+	void setInitialPose(const Pose& initial){
+		m_ekfMutex.lock();
+		mp_ekf->setLatestEstimate(initial);
+		m_ekfMutex.unlock();
+	}
 	void startAsync();
 	void stopAsync();
 	Pose getPose();

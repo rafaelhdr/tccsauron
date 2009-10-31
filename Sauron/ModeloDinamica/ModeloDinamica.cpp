@@ -1,5 +1,6 @@
 // ModeloDinamica.cpp : Defines the exported functions for the DLL application.
 //
+#pragma once
 #include "ModeloDinamica.h"
 #include "MathHelper.h"
 
@@ -38,9 +39,10 @@ namespace sauron
 
 		pose_t ModeloDinamica::calculaTheta()
 		{
-			return posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta();
+			return sauron::trigonometry::normalizeAngle((posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta()));
 		}
 
+		
 		
 
 
