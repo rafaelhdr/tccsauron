@@ -1,13 +1,14 @@
 #include "VisionModel.h"
 
+#include <iostream>
+
 namespace sauron
 {
 
 VisionModel::VisionModel()
     : m_lastFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
-      m_thread( boost::ref( *this ) ),
-      m_updateFreq( 24 )
+      m_updateFreq( 10 )
 {
     m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
 
@@ -15,7 +16,13 @@ VisionModel::VisionModel()
     m_horizontalFocalDistance = 1.0f;
     m_sigmaVert = 1.0f;
 
-    m_thread.join();    
+    m_camera.setSize( 320, 240 );
+
+    m_thread = boost::thread( boost::ref( *this ) );
+    m_threadRunning = true;
+    m_threadPause = false;
+
+    
 }
 
 VisionModel::~VisionModel()
@@ -124,9 +131,14 @@ void VisionModel::operator() ()
             boost::xtime_get( &afterTime, boost::TIME_UTC );
             boost::xtime_get( &sleepTime, boost::TIME_UTC );
             m_mutexUpdateFreq.lock();
-            sleepTime.nsec += 1000000000 - (afterTime.nsec - time.nsec) / m_updateFreq;
+            
+            sleepTime.nsec += (boost::xtime::xtime_nsec_t(1000000000) - (afterTime.nsec - time.nsec)) / m_updateFreq;
+
+            std::cout << "Thread: " << afterTime.nsec << " <=> " << (afterTime.nsec - time.nsec)  << " <=> " << sleepTime.nsec << std::endl;
+
             m_mutexUpdateFreq.unlock();
-            boost::thread::sleep( sleepTime );
+            m_thread.sleep( sleepTime );
+            /*boost::thread::sleep( sleepTime );           */
         }
     }
 }
