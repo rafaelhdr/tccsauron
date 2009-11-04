@@ -8,7 +8,7 @@ namespace sauron
 VisionModel::VisionModel()
     : m_lastFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
-      m_updateFreq( 10 )
+      m_updateFreq( 60 )
 {
     m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
 
@@ -41,15 +41,18 @@ void VisionModel::loadMarks( const std::string &filename )
 
 void VisionModel::getLastFrame( sauron::Image &frame )
 {
-    boost::mutex::scoped_lock lock( m_mutexLastFrame );
-    frame = m_lastFrame;
+    m_mutexLastFrame.lock();
+    frame = m_lastMarksFrame;
+    m_mutexLastFrame.unlock();
 }
 
 
 void VisionModel::getLastFrameWithMarks( sauron::Image &frame )
 {
-    boost::mutex::scoped_lock lock( m_mutexLastFrame );
+    m_mutexLastFrame.lock();
     frame = m_lastMarksFrame;
+    m_mutexLastFrame.unlock();
+
     for ( register uint i = 0; i < m_marksAssociatedProjections.size(); ++i )
         drawProjection( frame, m_marksAssociatedProjections[i], 255, 255, 0 );
 }
@@ -57,21 +60,27 @@ void VisionModel::getLastFrameWithMarks( sauron::Image &frame )
 
 void VisionModel::getLastFrameWithProjections( sauron::Image &frame )
 {
-    boost::mutex::scoped_lock lock( m_mutexLastFrame );
-    boost::mutex::scoped_lock lock2( m_mutexProjectionsSeen );
+    m_mutexLastFrame.lock();
     frame = m_lastFrame;
+    m_mutexLastFrame.unlock();
+
+    m_mutexProjectionsSeen.lock();
     for ( register uint i = 0; i < m_projectionsSeen.size(); ++i )
         drawProjection( frame, m_projectionsSeen[i], 255, 0, 0 );
+    m_mutexProjectionsSeen.unlock();
 }
 
 
 void VisionModel::getLastFrameWithTrackedProjections( sauron::Image &frame )
 {
-    boost::mutex::scoped_lock lock( m_mutexLastFrame );
-    boost::mutex::scoped_lock lock2( m_mutexProjectionsTracked );
+    m_mutexLastFrame.lock();
     frame = m_lastFrame;
+    m_mutexLastFrame.unlock();
+
+    m_mutexProjectionsTracked.lock();
     for ( register uint i = 0; i < m_projectionsTracked.size(); ++i )
         drawProjection( frame, m_projectionsTracked[i], 0, 255, 0 );
+    m_mutexProjectionsTracked.unlock();
 }
 
 
@@ -91,24 +100,43 @@ void VisionModel::updateCaptureDetectTrack()
     static Image frame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
     static Image grayFrame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
 
-    m_camera.getFrame( frame );
-    grayFrame = frame;
-    
-    m_convolutor.convolve( grayFrame );
-    grayFrame.convertToGray();
+    clock_t allStart = clock();
 
+    clock_t start = clock();
+    m_camera.getFrame( frame );
+    std::cout << " Get Frame:" << clock() - start;
+    
+    start = clock();
+    grayFrame = frame;
+    std::cout << "\tCopy Frame:" << clock() - start;
+
+    
+    start = clock();
+    m_convolutor.convolve( grayFrame );
+    std::cout << "\tConvolve:" << clock() - start;
+
+    start = clock();
+    grayFrame.convertToGray();
+    std::cout << "\tTo Gray:" << clock() - start;
+
+    start = clock();
     m_mutexProjectionsSeen.lock();
     m_detector.detect( frame, grayFrame, m_projectionsSeen );
+    std::cout << "\nDetect:" << clock() - start;
 
+    start = clock();
     m_mutexProjectionsTracked.lock();
     m_tracker.track( m_projectionsSeen, m_projectionsTracked );
+    std::cout << "\tTrack:" << clock() - start;
 
     m_mutexProjectionsSeen.unlock();
     m_mutexProjectionsTracked.unlock();
     
+    start = clock();
     m_mutexLastFrame.lock();
     m_lastFrame = frame;
     m_mutexLastFrame.unlock();
+    std::cout << "\tCopy Final:" << clock() - start << "\tTOTAL: " << clock() - allStart << std::endl;
 }
 
 
@@ -117,6 +145,9 @@ void VisionModel::operator() ()
     boost::xtime time;
     boost::xtime afterTime;
     boost::xtime sleepTime;
+
+    clock_t fpsStartTime = clock();
+    unsigned int framesCount = 0;
 
     while ( m_threadRunning )
     {
@@ -128,17 +159,24 @@ void VisionModel::operator() ()
         {
             boost::xtime_get( &time, boost::TIME_UTC );
             this->updateCaptureDetectTrack();
-            boost::xtime_get( &afterTime, boost::TIME_UTC );
             boost::xtime_get( &sleepTime, boost::TIME_UTC );
             m_mutexUpdateFreq.lock();
-            
+            boost::xtime_get( &afterTime, boost::TIME_UTC );
             sleepTime.nsec += (boost::xtime::xtime_nsec_t(1000000000) - (afterTime.nsec - time.nsec)) / m_updateFreq;
-
-            std::cout << "Thread: " << afterTime.nsec << " <=> " << (afterTime.nsec - time.nsec)  << " <=> " << sleepTime.nsec << std::endl;
-
             m_mutexUpdateFreq.unlock();
-            m_thread.sleep( sleepTime );
-            /*boost::thread::sleep( sleepTime );           */
+
+            // DEBUG
+            if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
+            {
+                std::cout << "Thread: " << (double)framesCount * CLOCKS_PER_SEC / (double)(clock() - fpsStartTime) << " <=> " << framesCount <<  std::endl;
+                framesCount = 0;
+                fpsStartTime = clock();
+            }
+            else
+                ++framesCount;
+
+            
+            //m_thread.sleep( sleepTime );
         }
     }
 }

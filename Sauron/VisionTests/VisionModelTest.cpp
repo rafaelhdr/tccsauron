@@ -16,7 +16,7 @@ int testVisionModel()
     CvFont font;
     cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0 );
 
-    cvNamedWindow( "Frame", -1 );
+    cvNamedWindow( "Frame", CV_WINDOW_AUTOSIZE );
 
     clock_t fpsStartTime = clock();
     unsigned int framesCount = 0;
