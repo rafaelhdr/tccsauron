@@ -2,6 +2,26 @@
 //
 
 #include "stdafx.h"
+#include "ConsoleLogger.h"
+void printEstimatedPoseLoop(sauron::LocalizationManager* plocManager, CConsoleLogger& console)
+{
+	int i = 0;
+	while(true)
+	{
+		sauron::Pose currentPose = plocManager->getPose();
+		console.printf("%.3f %.3f %.3f", currentPose.X(), currentPose.Y(), currentPose.Theta());
+		console.print("\r");
+		::Sleep(300);
+	}
+}
+
+void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
+{
+	CConsoleLogger console;
+	console.Create("Posicao atual");
+	boost::thread printThread(&printEstimatedPoseLoop, &locManager, console);
+}
+
 
 
 int main(int argc, char** argv)
@@ -88,19 +108,11 @@ int main(int argc, char** argv)
   robot.comInt(ArCommands::ENABLE, 1);
 #pragma endregion
   robot.unlock();
-
-  
-
-
-
- 
-
-
-
-
   
   sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""));
   locManager.startAsync();
+
+  startEstimatedPoseConsole(locManager);
 
 std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
 << "Digite a letra referente a opcao desejada:" << std::endl;

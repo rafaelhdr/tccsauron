@@ -29,15 +29,16 @@ public:
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial){
-		m_ekfMutex.lock();
+		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
 		mp_ekf->setLatestEstimate(initial);
-		m_ekfMutex.unlock();
 	}
+
 	void startAsync();
 	void stopAsync();
 	Pose getPose();
 	Map getMap() { return m_map; }
 private:
+	LocalizationManager(LocalizationManager& original);
 	ArRobot* mp_robot;
 	Map m_map;
 	IKalmanFilterPtr mp_ekf;
