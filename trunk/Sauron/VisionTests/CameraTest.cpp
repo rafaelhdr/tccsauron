@@ -35,10 +35,12 @@ int testCamera()
     clock_t sobelStartTime;
     clock_t lineStartTime;
     clock_t trackStartTime;
+    clock_t cameraStartTime;
 
     clock_t sobelMeanTime = 0;
     clock_t lineMeanTime  = 0;
     clock_t trackMeanTime = 0;
+    clock_t cameraMeanTime = 0;
 
     clock_t fpsStartTime = clock();
 
@@ -57,7 +59,10 @@ int testCamera()
     char key = 0;
     while ( key != 'q' && key != 'Q' && key != 27 )
     {
-        //camera.getFrame( image );
+        cameraStartTime = clock();
+        camera.getFrame( image );
+        cameraMeanTime += clock() - cameraStartTime;
+        
         image = fromfile;
         original = image;
         image.convertToGray();
