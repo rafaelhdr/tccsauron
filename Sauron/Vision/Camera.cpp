@@ -8,6 +8,9 @@ Camera::Camera()
     : m_capture( NULL )
 {
     m_capture = cvCaptureFromCAM( CV_CAP_ANY );
+
+    // Ensures that the camera is initialized before exit the constructor
+    while ( !cvGrabFrame( m_capture ) );
 }
 
 Camera::~Camera(void)

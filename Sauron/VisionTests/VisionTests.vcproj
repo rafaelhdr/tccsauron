@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\Common;..\..;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\OpenCV\lib"
+				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\boost\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -118,7 +118,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="0"
-				AdditionalIncludeDirectories="..\Common;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\Common;..\..;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -140,7 +140,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\OpenCV\lib"
+				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\boost\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -201,6 +201,17 @@
 			<File
 				RelativePath=".\MarkMapper.cpp"
 				>
+			</File>
+			<File
+				RelativePath=".\VisionModelTest.cpp"
+				>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter
