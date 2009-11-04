@@ -89,12 +89,8 @@ namespace sauron
 		// mutex que protege acesso a m_readings;
 		boost::recursive_mutex m_readingsMutex;
 #endif
-		ReadingAndPose& getLatestReading() {
-			return m_readings.back();
-		}
-		ReadingAndPose& getOldestReading() {
-			return *m_readings.begin();
-		}
+		ReadingAndPose& getLatestReading();
+		ReadingAndPose& getOldestReading();
 	};
 
 }

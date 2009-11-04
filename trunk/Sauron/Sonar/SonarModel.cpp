@@ -10,7 +10,7 @@
 // para testes unitários. Por algum motivo cósmico, a mera inclusão do
 // header do mutex do Boost faz com que os testes não carreguem.
 #ifndef _CLR_
-#define SCOPED_READINGS_LOCK() boost::recursive_mutex::scoped_lock(m_readingsMutex)
+#define SCOPED_READINGS_LOCK() boost::recursive_mutex::scoped_lock __lock__(m_readingsMutex)
 #else
 #define SCOPED_READINGS_LOCK()
 #endif
@@ -284,5 +284,14 @@ namespace sauron
 		globalSonarTh = robotPose.getTheta() + m_sonarTheta;
 
 		return Pose(globalSonarX, globalSonarY, globalSonarTh);
+	}
+
+	SonarModel::ReadingAndPose& SonarModel::getLatestReading() {
+			SCOPED_READINGS_LOCK();
+			return m_readings.back();
+	}
+	SonarModel::ReadingAndPose& SonarModel::getOldestReading() {
+			SCOPED_READINGS_LOCK();
+			return *m_readings.begin();
 	}
 }

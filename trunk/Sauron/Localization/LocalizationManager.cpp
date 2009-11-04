@@ -51,13 +51,13 @@ namespace sauron
 
 	ISonarDataAsyncProvider* LocalizationManager::buildDefaultSonarDataProvider()
 	{
-		//return new PhysicalSonars(mp_robot);
-		return 0;
+		return new PhysicalSonars(mp_robot);
+		//return 0;
 	}
 
 	void LocalizationManager::buildDefaultSensors()
 	{
-		//buildDefaultSonars();
+		buildDefaultSonars();
 		//buildDefaultVision();
 	}
 
