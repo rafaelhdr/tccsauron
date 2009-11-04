@@ -107,10 +107,8 @@ namespace sauron
 				/* fiz essa alteração pq o setInitial Pose não estava funcionando.... agora eu dou lock e unlock
 				e o setInitialPose faz a mesma coisa, assim, se um estiver alterando, o outro vai esperar */
 
-				//boost::unique_lock<boost::mutex>(m_ekfMutex);
-				m_ekfMutex.lock();
+				boost::unique_lock<boost::mutex> lock(m_ekfMutex);
 				mp_ekf->predict(fValue, dynModel, dynNoise);
-				m_ekfMutex.unlock();
 			}
 
 			// update
@@ -118,10 +116,8 @@ namespace sauron
 				it != m_sensors.end(); it++) {
 					Matrix hValue(1,3); Measure z(1,1); Model H(1,3); Covariance R(3,3);
 					if((*it)->getEstimate(this->getPose(), hValue, z, H, R)) {
-						//boost::unique_lock<boost::mutex>(m_ekfMutex);
-						m_ekfMutex.lock();
+						boost::unique_lock<boost::mutex> lock(m_ekfMutex);
 						mp_ekf->update(z, hValue, H, R);
-						m_ekfMutex.unlock();
 					}
 			}
 			
@@ -130,7 +126,7 @@ namespace sauron
 
 	Pose LocalizationManager::getPose()
 	{
-		//boost::unique_lock<boost::mutex>(m_ekfMutex);
+		boost::unique_lock<boost::mutex>(m_ekfMutex);
 		return mp_ekf->getLatestEstimate();
 	}
 
