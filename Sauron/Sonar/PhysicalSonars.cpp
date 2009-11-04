@@ -35,7 +35,7 @@ void PhysicalSonars::getReading()
 				if(pReading != 0) {
 					if(pReading->isNew(mp_robot->getCounter()) &&
 						!pReading->getIgnoreThisReading()) {
-						pCallback->invoke(sonarNumber, SonarReading(pReading->getRange()));
+						pCallback->invoke(sonarNumber, SonarReading(pReading->getRange() / 10));
 					}
 				}
 			}

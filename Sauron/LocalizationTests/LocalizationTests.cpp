@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "ConsoleLogger.h"
+#include <stdexcept>
 void printEstimatedPoseLoop(sauron::LocalizationManager* plocManager, CConsoleLogger& console)
 {
 	int i = 0;
@@ -22,10 +23,9 @@ void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
 	boost::thread printThread(&printEstimatedPoseLoop, &locManager, console);
 }
 
-
-
-int main(int argc, char** argv)
+int principal(int argc, char** argv)
 {
+
 #pragma region boiler1
   // Initialize some global data
   Aria::init();
@@ -86,7 +86,7 @@ int main(int argc, char** argv)
   // connection the task loop stops and the thread exits.
   robot.runAsync(true);
 
-  
+ 
   // Sleep for a second so some messages from the initial responses
   // from robots and cameras and such can catch up
   ArUtil::sleep(1000);
@@ -108,8 +108,14 @@ int main(int argc, char** argv)
   robot.comInt(ArCommands::ENABLE, 1);
 #pragma endregion
   robot.unlock();
-  
-  sauron::LocalizationManager locManager(&robot, ArMap(), std::string(""));
+
+  ArMap map;
+  if(!map.readFile("corredorfake.map")) {
+	  robot.disconnect(); // sem isso dá pau (pure virtual call)
+	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
+  }
+
+  sauron::LocalizationManager locManager(&robot, map, std::string(""));
   locManager.startAsync();
 
   startEstimatedPoseConsole(locManager);
@@ -184,8 +190,20 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
   //robot.waitForRunExit();
 
   Aria::exit(0);
-
-
+  return 0;
 }
+
+int main(int argc, char** argv)
+{
+	try
+	{
+		return principal(argc, argv);
+	} catch(std::exception& e)
+	{
+		std::cerr << "std::exception: " << e.what() << std::endl;
+		return -1;
+	}
+}
+
 
 
