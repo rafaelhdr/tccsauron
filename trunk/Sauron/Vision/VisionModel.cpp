@@ -8,7 +8,7 @@ namespace sauron
 VisionModel::VisionModel()
     : m_lastFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
-      m_updateFreq( 60 )
+      m_updateFreq( 30 )
 {
     m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
 
@@ -21,8 +21,6 @@ VisionModel::VisionModel()
     m_thread = boost::thread( boost::ref( *this ) );
     m_threadRunning = true;
     m_threadPause = false;
-
-    
 }
 
 VisionModel::~VisionModel()
@@ -100,84 +98,78 @@ void VisionModel::updateCaptureDetectTrack()
     static Image frame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
     static Image grayFrame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
 
-    clock_t allStart = clock();
-
-    clock_t start = clock();
-    m_camera.getFrame( frame );
-    std::cout << " Get Frame:" << clock() - start;
-    
-    start = clock();
+    m_camera.getFrame( frame );   
     grayFrame = frame;
-    std::cout << "\tCopy Frame:" << clock() - start;
 
-    
-    start = clock();
     m_convolutor.convolve( grayFrame );
-    std::cout << "\tConvolve:" << clock() - start;
-
-    start = clock();
     grayFrame.convertToGray();
-    std::cout << "\tTo Gray:" << clock() - start;
 
-    start = clock();
     m_mutexProjectionsSeen.lock();
     m_detector.detect( frame, grayFrame, m_projectionsSeen );
-    std::cout << "\nDetect:" << clock() - start;
 
-    start = clock();
     m_mutexProjectionsTracked.lock();
     m_tracker.track( m_projectionsSeen, m_projectionsTracked );
-    std::cout << "\tTrack:" << clock() - start;
 
     m_mutexProjectionsSeen.unlock();
     m_mutexProjectionsTracked.unlock();
     
-    start = clock();
     m_mutexLastFrame.lock();
     m_lastFrame = frame;
     m_mutexLastFrame.unlock();
-    std::cout << "\tCopy Final:" << clock() - start << "\tTOTAL: " << clock() - allStart << std::endl;
 }
 
 
 void VisionModel::operator() () 
 {
     boost::xtime time;
-    boost::xtime afterTime;
+    boost::xtime lastTime;
     boost::xtime sleepTime;
-
-    clock_t fpsStartTime = clock();
+    boost::xtime sleepDeltaTime;
+    
+    clock_t fpsStartTime = 0;
     unsigned int framesCount = 0;
+    
+    sleepDeltaTime.nsec = 0;
+
 
     while ( m_threadRunning )
     {
         if ( m_threadPause )
         {
-            m_thread.yield();
+            boost::xtime_get( &sleepTime, boost::TIME_UTC );
+            sleepTime.nsec += 250000000;
+            m_thread.sleep( sleepTime );
         }
         else
         {
-            boost::xtime_get( &time, boost::TIME_UTC );
-            this->updateCaptureDetectTrack();
-            boost::xtime_get( &sleepTime, boost::TIME_UTC );
-            m_mutexUpdateFreq.lock();
-            boost::xtime_get( &afterTime, boost::TIME_UTC );
-            sleepTime.nsec += (boost::xtime::xtime_nsec_t(1000000000) - (afterTime.nsec - time.nsec)) / m_updateFreq;
-            m_mutexUpdateFreq.unlock();
-
-            // DEBUG
             if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
             {
                 std::cout << "Thread: " << (double)framesCount * CLOCKS_PER_SEC / (double)(clock() - fpsStartTime) << " <=> " << framesCount <<  std::endl;
-                framesCount = 0;
+                framesCount = 1;
+
+                boost::xtime_get( &lastTime, boost::TIME_UTC );
+                this->updateCaptureDetectTrack();
+                boost::xtime_get( &time, boost::TIME_UTC );
+    
+                m_mutexUpdateFreq.lock();
+                sleepDeltaTime.nsec = ( boost::xtime::xtime_nsec_t( 1000000000 ) - m_updateFreq * (time.nsec - lastTime.nsec) ) / m_updateFreq;
+                m_mutexUpdateFreq.unlock();
+
                 fpsStartTime = clock();
             }
             else
-                ++framesCount;
+            {
+                this->updateCaptureDetectTrack();
 
-            
-            //m_thread.sleep( sleepTime );
+                ++framesCount;
+            }
+
+            boost::xtime_get( &sleepTime, boost::TIME_UTC );
+            sleepTime.nsec += sleepDeltaTime.nsec;
+
+            m_thread.sleep( sleepTime );
         }
+
     }
 }
 

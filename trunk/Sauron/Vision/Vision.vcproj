@@ -61,6 +61,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="videoInputDebug.lib"
+				AdditionalLibraryDirectories="..\..\VideoInput\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -126,6 +128,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="videoInput.lib"
+				AdditionalLibraryDirectories="..\..\VideoInput\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
