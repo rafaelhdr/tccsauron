@@ -99,9 +99,17 @@ namespace sauron
 
 		*/
 
-		while(localize) {
+        Matrix          fValue( 1,1 ); 
+        Model           dynModel( 3,3 );	
+        Covariance      dynNoise( 3,3 );
+        Matrix          hValue(1,3 ); 
+        Measure         z( 1,1 ); 
+        Model           H( 1,3 ); 
+        Covariance      R( 3,3 );
+
+		while(localize) 
+        {
 			// predict
-			Matrix fValue(3,1); Model dynModel(3,3);	Covariance dynNoise(3,3);
 			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
 			{
 				/* fiz essa alteração pq o setInitial Pose não estava funcionando.... agora eu dou lock e unlock
@@ -112,10 +120,10 @@ namespace sauron
 			}
 
 			// update
-			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin();
-				it != m_sensors.end(); it++) {
-					Matrix hValue(1,3); Measure z(1,1); Model H(1,3); Covariance R(3,3);
-					if((*it)->getEstimate(this->getPose(), hValue, z, H, R)) {
+			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin(); it != m_sensors.end(); it++) 
+            {
+					if( (*it)->getEstimate(this->getPose(), hValue, z, H, R) ) 
+                    {
 						boost::unique_lock<boost::mutex> lock(m_ekfMutex);
 						mp_ekf->update(z, hValue, H, R);
 					}

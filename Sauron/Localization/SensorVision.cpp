@@ -32,6 +32,10 @@ bool SensorVision::getEstimate( const Pose &last,
         R = boost::numeric::ublas::identity_matrix<double>( numMarks );
         hValue.resize( numMarks, 1 );
 
+        z.clear();
+        H.clear();
+        hValue.clear();
+
         double aux_v;
         double aux_z;
         double aux_z2;
