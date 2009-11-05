@@ -64,6 +64,7 @@
 				AdditionalDependencies="cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\boost\lib"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -141,6 +142,7 @@
 				AdditionalDependencies="cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\boost\lib"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -205,13 +207,6 @@
 			<File
 				RelativePath=".\VisionModelTest.cpp"
 				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

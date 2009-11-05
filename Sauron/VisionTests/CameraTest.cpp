@@ -56,6 +56,8 @@ int testCamera()
 
     sauron::Image fromfile( "0_step_0.bmp" );
 
+    //camera.setSize( 320, 240 );
+
     char key = 0;
     while ( key != 'q' && key != 'Q' && key != 27 )
     {
@@ -63,7 +65,7 @@ int testCamera()
         camera.getFrame( image );
         cameraMeanTime += clock() - cameraStartTime;
         
-        image = fromfile;
+        /*image = fromfile;*/
         original = image;
         image.convertToGray();
 
@@ -100,10 +102,11 @@ int testCamera()
         ++meanCount;
         if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
         {
-            double total = (double)(sobelMeanTime + lineMeanTime + trackMeanTime) / meanCount;
+            double total = (double)(sobelMeanTime + lineMeanTime + trackMeanTime + cameraMeanTime) / meanCount;
 
             std::cout << "\r";
-            std::cout << "Sobel: "   << (double)sobelMeanTime / meanCount;
+            std::cout << "Camera: "  << (double)cameraMeanTime / meanCount;
+            std::cout << "  Sobel: " << (double)sobelMeanTime / meanCount;
             std::cout << "  Lines: " << (double)lineMeanTime  / meanCount;
             std::cout << "  Track: " << (double)trackMeanTime / meanCount;
             std::cout << "  Total: " << total;
