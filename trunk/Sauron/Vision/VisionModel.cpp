@@ -8,7 +8,7 @@ namespace sauron
 VisionModel::VisionModel()
     : m_lastFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB ),
-      m_updateFreq( 30 )
+      m_updateFreq( 15 )
 {
     m_projectionPlaneHorizontalCenter = m_camera.getWidth() / 2.0;
 
@@ -131,7 +131,6 @@ void VisionModel::operator() ()
     
     sleepDeltaTime.nsec = 0;
 
-
     while ( m_threadRunning )
     {
         if ( m_threadPause )
@@ -169,7 +168,6 @@ void VisionModel::operator() ()
 
             m_thread.sleep( sleepTime );
         }
-
     }
 }
 
