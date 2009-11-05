@@ -7,6 +7,8 @@ namespace sauron
 #if _USE_DSHOW
 Camera::Camera()
 {
+    m_videoInput.setVerbose( false );
+
     int numDevices = m_videoInput.listDevices();
     m_videoInput.setupDevice( 0 );
 
