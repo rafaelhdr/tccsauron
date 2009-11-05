@@ -35,14 +35,22 @@ namespace sauron
 				configs::sonars::validationGateSigma2,
 				&matchedLineSegment, &expectedReading, &actualReading)) {
 
+                    z.resize( 1, 1 );
+                    R.resize( 1, 1 );
+                    H.resize( 1, 3 );
+                    hValue.resize( 1, 3 );
+
+                    z.clear();
+                    R.clear();
+                    H.clear();
+                    hValue.clear();
+
 					hValue(0,0) = expectedReading;
 
 					z(0,0) = actualReading;
 
 					R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
-					R(1,1) = configs::sonars::sonarReadingStandardDeviationMm;
-					R(2,2) = configs::sonars::sonarReadingStandardDeviationMm;
-
+					
 					Line matchedLine = matchedLineSegment.getSauronLine();
 					H(0,0) = -1.0 * ::cos(matchedLine.getTheta());
 					H(0,1) = -1.0 * ::sin(matchedLine.getTheta());

@@ -75,6 +75,9 @@ namespace sauron
 			double varLinear = getVarianciaLinear();
 			double varAngular = getVarianciaAngular();
 
+            dynNoise.resize( 3, 3 );
+            dynNoise.clear();
+
 			/* primeira linha */
 			dynNoise(0,0) = varLinear*cosTheta*cosTheta;
 			dynNoise(0,1) = varLinear*cosTheta*senTheta;
@@ -95,6 +98,9 @@ namespace sauron
 
 		void ModeloDinamica::atualizaModel(Model &dynModel)
 		{
+            dynModel.resize( 3, 3 );
+            dynModel.clear();
+
 			/* primeira linha */
 			dynModel(0, 0) = 1;
 			dynModel(0, 1) = 0;
@@ -108,12 +114,15 @@ namespace sauron
 			/* terceira linha */
 			dynModel(2, 0) = 0;
 			dynModel(2, 1) = 0;
-			dynModel(2, 2) =  1;
+			dynModel(2, 2) = 1;
 
 		}
 
 		void ModeloDinamica::atualizaFValue(Matrix &fValue)
 		{
+            fValue.resize( 3, 1 );
+            fValue.clear();
+
 			/* uma unica coluna */
 			fValue(0, 0) = calculaX();
 			fValue(1, 0) = calculaY();
@@ -122,7 +131,7 @@ namespace sauron
 		}
 
 		void ModeloDinamica::updateModel( const Pose &last, 
-                                  Matrix &fValue, Model &dynModel, Covariance &dynNoise )
+                                          Matrix &fValue, Model &dynModel, Covariance &dynNoise )
 		{
 			
 			// atualizaPose
