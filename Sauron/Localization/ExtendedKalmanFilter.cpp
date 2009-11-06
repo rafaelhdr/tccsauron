@@ -13,6 +13,9 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
+		PREDICT_LOG(logDEBUG3) << "fValue = " << fValue;
+		PREDICT_LOG(logDEBUG3) << "F = " << F;
+		PREDICT_LOG(logDEBUG3) << "Q = " << Q;
 		Matrix temp1(3,3);	
 
 		// Pk = F*P*F'+Q
@@ -26,6 +29,7 @@ namespace sauron
 		m_latestEstimate.Y() = fValue(1,0);
 		m_latestEstimate.setTheta(fValue(2,0));
 		PREDICT_LOG(logDEBUG1) << "estimativa: " << m_latestEstimate;
+		PREDICT_LOG(logDEBUG1) << "covariância: " << m_latestCovariance;
 	}
 
 
@@ -49,18 +53,29 @@ namespace sauron
 
 		// Kk = P*C'*inv(H*P*H' + R)
 		Matrix temp1 = prod(H,m_latestCovariance);
+		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance = " << temp1;
 		temp1 = prod(temp1, boost::numeric::ublas::trans(H));
+		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance * H' = " << temp1;
 		temp1 = temp1 + R;
+		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance * H' + R = " << temp1;
 
 		Matrix temp2(temp1.size1(), temp1.size2());
 		algelin::InvertMatrix(temp1, temp2);// temp2 = inv(H*P*H' + R)
+		UPDATE_LOG(logDEBUG3) << "inv(H * m_latestCovariance * H' + R) = " << temp2;
 
 		temp1 = prod(m_latestCovariance, trans(H));
+		UPDATE_LOG(logDEBUG3) << "m_latestCovariance * H' = " << temp1;
 		K = prod(temp1,temp2);
+		
+		UPDATE_LOG(logDEBUG3) << "K = m_latestCovariance * H' * inv(H * m_latestCovariance * H' + R)" << K;
 
 		// xk = x + K*(y - hk(xk,0))
 		yTemp = z - hValue;
+		UPDATE_LOG(logDEBUG3) << "z - hValue" << yTemp;
 		yTemp = prod(K, yTemp);
+
+		UPDATE_LOG(logDEBUG3) << "K * (z - hValue) = " << yTemp;
+
 		m_latestEstimate.X() = m_latestEstimate.X() + yTemp(0,0);
 		m_latestEstimate.Y() = m_latestEstimate.Y() + yTemp(1,0);
 		m_latestEstimate.Theta() = m_latestEstimate.Theta() + yTemp(2,0);
