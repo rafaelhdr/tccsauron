@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <boost/numeric/ublas/matrix.hpp>
+
 #include "MathHelper.h"
 #include "Line.h"
 #include "Cone.h"
@@ -36,6 +37,19 @@ namespace sauron
 				latestPose.Theta(),
 				getOldestReading().estimatedPose.Theta()) >
 				configs::sonars::minimumRobotTurnAngle;
+		} else {
+			return false;
+		}
+	}
+
+	bool SonarModel::isReadingMeaningful(const ReadingAndPose& readingAndPose) {
+		if(readingAndPose.reading.getReading() < configs::sonars::invalidReading) {
+			if(m_readings.size() > 0) {
+			pose_t distMoved = readingAndPose.estimatedPose.getDistance(getLatestReading().estimatedPose);
+			return distMoved > configs::sonars::minimumRobotDistance;
+			} else {
+				return true;
+			}
 		} else {
 			return false;
 		}

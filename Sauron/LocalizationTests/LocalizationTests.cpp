@@ -134,7 +134,8 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 		  << "1. (M) Mostrar Posicao;" << std::endl
 		  << "2. (P) Setar a Posição Inicial;" << std::endl
 		  << "3. (V) Setar Velocidades;" << std::endl
-		  << "4. (S) Sair;"            << std::endl;
+		  << "4. (T) Modo teleoperação;" << std::endl
+		  << "5. (S) Sair;"            << std::endl;
 
 	  std::cin >> c;
 		
@@ -171,6 +172,10 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 
 			robot.setVel(vel);
 			robot.setRotVel(rotVel);
+			break;
+		case 't':
+		case 'T':
+			robot.waitForRunExit();
 			break;
 		case 's':
 		case 'S':

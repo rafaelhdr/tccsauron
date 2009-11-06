@@ -4,6 +4,7 @@
 // A definição _CLR_ é ativada quando o projeto está sendo compilado
 // para testes unitários. Por algum motivo cósmico, a mera inclusão do
 // header do mutex do Boost faz com que os testes não carreguem.
+#include <boost/circular_buffer.hpp>
 #ifndef _CLR_
 # include <boost/thread/recursive_mutex.hpp>
 #endif
@@ -33,11 +34,12 @@ namespace sauron
 		SonarModel(const sauron::Pose& sonarPose)
 			: m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),
-			m_sonarTheta(sonarPose.getTheta()) {
+			m_sonarTheta(sonarPose.getTheta()),
+			m_readings(20) {
 		}
 
 		SonarModel(pose_t x, pose_t y, pose_t theta)
-			: m_sonarX(x), m_sonarY(y), m_sonarTheta(theta) {
+			: m_sonarX(x), m_sonarY(y), m_sonarTheta(theta), m_readings(5) {
 		}
 
 		/** ISonarModel **/
@@ -80,11 +82,10 @@ namespace sauron
 			Pose estimatedPose;
 		};
 
-		bool isReadingMeaningful(const ReadingAndPose& readingAndPose) {
-			return readingAndPose.reading.getReading() < configs::sonars::invalidReading;
-		}
+		bool isReadingMeaningful(const ReadingAndPose& readingAndPose);
 
-		std::vector<ReadingAndPose> m_readings;
+
+		boost::circular_buffer<ReadingAndPose> m_readings;
 #ifndef _CLR_
 		// mutex que protege acesso a m_readings;
 		boost::recursive_mutex m_readingsMutex;
