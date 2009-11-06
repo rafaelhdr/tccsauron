@@ -25,6 +25,13 @@ class ExtendedKalmanFilter : public IKalmanFilter
 
         void predict( const Matrix &fValue, const Model &F, const Covariance &Q);
 
+		// Atualiza as estimativas com os dados de um sensor.
+		// As seguintes restrições quanto as tamanhos das matrizes devem ser obedecidos:
+		// H.size2() == 3
+		// R.size1() == R.size2() == H.size1()
+		// z.size1() == hValue.size1()
+		// z.size2() == hValue.size2()
+		// z.size1() == H.size1()
         void update( const Measure &z,		// a medida obtida
 					 const Matrix &hValue,	// a medida esperada
 					 const Model &H,		// matriz de observação

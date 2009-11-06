@@ -20,6 +20,8 @@
 #include "Aria.h"
 #include "ArSilentTelop.h"
 
+#include "log.h"
+
 #include <boost/thread.hpp>
 
 #include <stdio.h>

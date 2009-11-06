@@ -5,6 +5,8 @@
 #include "CustomTypes.h"
 #include "Point2D.h"
 
+#include <ostream>
+
 namespace sauron
 {
 	class Pose 
@@ -36,7 +38,12 @@ namespace sauron
 	    private:
             pose_t            m_theta;
             Point2D< pose_t > m_position;
-		    
+
+			friend std::ostream& operator<<(std::ostream& os, const Pose& p)
+			{
+				return os << '('<< p.X() << ", " << p.Y() << ", " << p.Theta() << ')';
+			}
+
 	};
 
 }   // namespace sauron

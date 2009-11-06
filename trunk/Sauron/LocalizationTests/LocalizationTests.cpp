@@ -115,6 +115,8 @@ int principal(int argc, char** argv)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
 
+
+  FILE_LOG(logINFO) << "ois";
   sauron::LocalizationManager locManager(&robot, map, std::string(""));
   locManager.startAsync();
 
@@ -131,8 +133,8 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 	  std::cout << "Escolha a opção:"  << std::endl 
 		  << "1. (M) Mostrar Posicao;" << std::endl
 		  << "2. (P) Setar a Posição Inicial;" << std::endl
-		  << "2. (V) Setar Velocidades;" << std::endl
-		  << "2. (S) Sair;"            << std::endl;
+		  << "3. (V) Setar Velocidades;" << std::endl
+		  << "4. (S) Sair;"            << std::endl;
 
 	  std::cin >> c;
 		
@@ -197,6 +199,9 @@ int main(int argc, char** argv)
 {
 	try
 	{
+		Output2FILE::Stream() = fopen("sonar_log.log", "w");
+		FILELog::ReportingLevel() = logDEBUG3;
+
 		return principal(argc, argv);
 	} catch(std::exception& e)
 	{

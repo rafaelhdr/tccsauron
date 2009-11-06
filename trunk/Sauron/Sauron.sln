@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{91A629
 	ProjectSection(SolutionItems) = preProject
 		Common\ArSilentTelop.h = Common\ArSilentTelop.h
 		Common\BaseTypes.h = Common\BaseTypes.h
+		Common\log.h = Common\log.h
 		Common\MathHelper.h = Common\MathHelper.h
 		Common\Point2D.h = Common\Point2D.h
 		Common\Point2DImpl.h = Common\Point2DImpl.h

@@ -63,9 +63,10 @@ namespace sauron
 
 	void LocalizationManager::buildDefaultSonars()
 	{
-		for(int i = 0; i < 8; i++) {
+		m_sensors.push_back(ISensorModelPtr(new SensorSonar(0, *this, *mp_sonarDataProvider)));
+		/*for(int i = 0; i < 8; i++) {
 			m_sensors.push_back(ISensorModelPtr(new SensorSonar(i, *this, *mp_sonarDataProvider)));
-		}
+		}*/
 	}
 
 	void LocalizationManager::buildDefaultVision()
