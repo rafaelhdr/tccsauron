@@ -201,10 +201,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OdometerBasedDynamic.h"
-				>
-			</File>
-			<File
 				RelativePath=".\SensorSonar.h"
 				>
 			</File>
