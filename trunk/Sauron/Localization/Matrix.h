@@ -15,6 +15,7 @@ typedef Matrix Covariance;
 
 	inline std::ostream& operator<<(std::ostream& os, const Matrix& m)
 	{
+		if(m.size1() > 1) os << std::endl;
 		os << "[";
 		for(unsigned int i = 0; i < m.size1(); i++) {
 			for(unsigned int j = 0; j < m.size2(); j++) {
