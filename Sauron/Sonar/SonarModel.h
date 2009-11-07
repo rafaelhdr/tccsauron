@@ -31,20 +31,30 @@ namespace sauron
 #ifdef _CLR_
 		friend ref class SonarUnitTests::SonarTest;
 #endif
-		SonarModel(const sauron::Pose& sonarPose)
-			: m_sonarX(sonarPose.X()),
+		SonarModel(int sonarNumber, const sauron::Pose& sonarPose)
+			: m_sonarNumber(sonarNumber),
+			m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),
 			m_sonarTheta(sonarPose.getTheta()),
 			m_readings(20) {
 		}
 
-		SonarModel(pose_t x, pose_t y, pose_t theta)
-			: m_sonarX(x), m_sonarY(y), m_sonarTheta(theta), m_readings(5) {
+		SonarModel(int sonarNumber, pose_t x, pose_t y, pose_t theta)
+			: m_sonarNumber(sonarNumber),m_sonarX(x), m_sonarY(y), m_sonarTheta(theta), m_readings(20) {
 		}
 
 		/** ISonarModel **/
 		void addReading(const SonarReading& reading, const Pose& estimatedPose);
 		bool validateReadings();
+
+		bool tryGetMatchingMapLine(
+			const Pose& latestPose, // a posição mais recente do robô
+			Map& map, // o mapa do ambiente
+			double sigmaError2, // o erro utilizado no portão de validação
+			/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
+			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
+			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
+		);
 
 		bool tryGetMatchingMapLine(
 			Map& map, // o mapa do ambiente
@@ -59,6 +69,7 @@ namespace sauron
 		Line getObservedLine();
 		inline int getReadingsBufferCount() { return m_readings.size(); }
 	private:
+		int m_sonarNumber;
 		pose_t m_sonarX, m_sonarY, m_sonarTheta;
 
 		std::vector<double> getGammas();
@@ -71,7 +82,7 @@ namespace sauron
 		double getSonarAngleOfIncidence();
 		std::vector<LineSegment> filterFarAwayLines(std::vector<LineSegment>& mapLines, const Pose& robotPose);
 		std::vector<LineSegment> filterBySonarAngle(std::vector<LineSegment>& mapLines, const Pose& robotPose);
-		SonarReading getExpectedReadingByMapLine(const LineSegment& lineSegment);
+		SonarReading getExpectedReadingByMapLine(const Pose& pose, const LineSegment& lineSegment);
 		bool matchMapLineWithReading(const SonarReading& reading, const LineSegment& mapLine,
 			double sigmaError2);
 		bool robotHasTurned(const Pose& latestPose);

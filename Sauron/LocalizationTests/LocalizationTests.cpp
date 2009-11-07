@@ -110,7 +110,7 @@ int principal(int argc, char** argv)
   robot.unlock();
 
   ArMap map;
-  if(!map.readFile("corredorfake.map")) {
+  if(!map.readFile("pavsup.map")) {
 	  robot.disconnect(); // sem isso dá pau (pure virtual call)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
@@ -205,7 +205,7 @@ int main(int argc, char** argv)
 	try
 	{
 		Output2FILE::Stream() = fopen("sonar_log.log", "w");
-		FILELog::ReportingLevel() = logDEBUG3;
+		FILELog::ReportingLevel() = logDEBUG4;
 
 		return principal(argc, argv);
 	} catch(std::exception& e)

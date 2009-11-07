@@ -3,6 +3,8 @@
 #include <cassert>
 #include <boost/numeric/ublas/matrix.hpp>
 
+#include "log.h"
+#define SONAR_LOG(level) FILE_LOG(level) << "SonarModel #" << m_sonarNumber << ": "
 #include "MathHelper.h"
 #include "Line.h"
 #include "Cone.h"
@@ -21,13 +23,19 @@ namespace sauron
 
 	void SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
 		SCOPED_READINGS_LOCK();
+		TLogLevel oldLevel = FILELog::ReportingLevel();
+		FILELog::ReportingLevel() = logDEBUG4;
+		SONAR_LOG(logDEBUG4) << "Recebeu leitura: " << reading.getReading();
 		if(robotHasTurned(estimatedPose)) {
+			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
 		}
 		ReadingAndPose rnp(reading, estimatedPose);
 		if(isReadingMeaningful(rnp)) {
+			SONAR_LOG(logDEBUG4) << "Leitura significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 			m_readings.push_back(rnp);
 		}
+		FILELog::ReportingLevel() = oldLevel;
 	}
 
 	bool SonarModel::robotHasTurned(const Pose& latestPose) {
@@ -74,11 +82,11 @@ namespace sauron
 		return Line(rWall, thetaWall_rads);
 	}
 
-	SonarReading SonarModel::getExpectedReadingByMapLine(const LineSegment& lineSegment)
+	SonarReading SonarModel::getExpectedReadingByMapLine(const Pose& pose, const LineSegment& lineSegment)
 	{
 		SCOPED_READINGS_LOCK();
 		sauron::Line line = lineSegment.getSauronLine();
-		sauron::Pose sonarPose = this->getSonarGlobalPose(this->getLatestReading().estimatedPose);
+		sauron::Pose sonarPose = this->getSonarGlobalPose(pose);
 		
 		double beta_rads = getSonarAngleOfIncidence();
 
@@ -88,6 +96,8 @@ namespace sauron
 		double expectedReading = (line.getRWall() - x_times_cos - y_times_sin) / ::sin(beta_rads);
 		// HACK não sei ao certo por que às vezes a leitura esperada é negativa. Isso conserta
 		// o teste SonarTest3::ExpectedReadingTest2_S3
+		SONAR_LOG(logDEBUG4) << "Leitura Esperada: " << expectedReading << "(rWall = " << line.getRWall() <<
+			"; thetaWall = " << line.getTheta() << "; beta = " << beta_rads << " rads)";
 		return expectedReading > 0 ? expectedReading : -expectedReading;
 	}
 
@@ -181,8 +191,15 @@ namespace sauron
 		return trigonometry::correctImprecisions(sinAlpha);
 	}
 
-
 	bool SonarModel::tryGetMatchingMapLine(Map& map, double sigmaError2,
+		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
+		actualReading)
+	{
+		return tryGetMatchingMapLine(getLatestReading().estimatedPose, map, sigmaError2,
+			matchedMapLine, expectedReading, actualReading);
+	}
+
+	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map& map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
 		actualReading)
 	{
@@ -191,7 +208,9 @@ namespace sauron
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
 			getLatestReading().estimatedPose);
+		SONAR_LOG(logDEBUG3) << "Linhas apos FarAwayFilter: " << mapLines.size();
 		mapLines = filterBySonarAngle(mapLines, getLatestReading().estimatedPose);
+		SONAR_LOG(logDEBUG3) << "Linhas apos SonarAngleFilter: " << mapLines.size();
 		
 		std::vector<LineSegment> matchedLines;
 		SonarReading latestReading = getLatestReading().reading;
@@ -206,11 +225,12 @@ namespace sauron
 			if(matchedMapLine != NULL)
 				*matchedMapLine = matchedLines[0];
 			if(expectedReading != NULL)
-				*expectedReading = getExpectedReadingByMapLine(matchedLines[0]);
+				*expectedReading = getExpectedReadingByMapLine(latestPose, matchedLines[0]);
 			if(actualReading != NULL)
 				*actualReading = getLatestReading().reading;
 			return true;
 		} else {
+			SONAR_LOG(logDEBUG3) << "Nao validou pois no. de segmentos eh: " << matchedLines.size();
 			return false;
 		}
 	}
@@ -237,14 +257,6 @@ namespace sauron
 			Cone sonarCone(sonarPose, sonarPose.getTheta(), configs::sonars::sonarApertureAngleRads);
 			for(std::vector<LineSegment>::iterator it = mapLines.begin(); it != mapLines.end();
 				it++) {
-					if((floating_point::isEqual(
-						it->getEndPoint1().getX(), 4375) && floating_point::isEqual(
-						it->getEndPoint1().getY(), 40)) ||
-						(floating_point::isEqual(
-						it->getEndPoint2().getX(), 4375) && floating_point::isEqual(
-						it->getEndPoint2().getY(), 40))){
-							int a = 42;
-					}
 					if(sonarCone.intersectsSegment(*it)) {
 						 reachableLines.push_back(*it);
 					 }
@@ -254,7 +266,7 @@ namespace sauron
 
 	bool SonarModel::matchMapLineWithReading(const SonarReading &reading,
 		const LineSegment &mapLine, double sigmaError2) {
-			double expectedReading =  getExpectedReadingByMapLine(mapLine);
+			double expectedReading =  getExpectedReadingByMapLine(getLatestReading().estimatedPose, mapLine);
 			double v_2 = reading.getReading() - expectedReading;
 			v_2 *= v_2;
 			double s_2 = sigmaError2;
