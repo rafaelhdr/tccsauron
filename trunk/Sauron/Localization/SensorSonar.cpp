@@ -15,7 +15,7 @@ namespace sauron
 		ISonarDataAsyncProvider& readingsProvider)
 		: m_sonarNumber(sonarNumber), m_dataProvider(readingsProvider),
 		m_localization(localizationManager), m_callback(this, &SensorSonar::addReadingToModel),
-		m_model(configs::sonars::getSonarPose(sonarNumber))
+		m_model(sonarNumber, configs::sonars::getSonarPose(sonarNumber))
 	{
 		SONAR_LOG(logINFO) << " Construtor";
 		if(sonarNumber < 0 ||sonarNumber > 8) {
@@ -33,10 +33,10 @@ namespace sauron
 	{
 		SonarReading expectedReading, actualReading;
 		LineSegment matchedLineSegment;
-		SONAR_LOG(logDEBUG4) << "getEstimate (lastPose: " << last << ")";
+		SONAR_LOG(logDEBUG3) << "getEstimate (lastPose: " << last << ")";
 		if(m_model.validateReadings()) {
 			SONAR_LOG(logDEBUG3) << "Validou leituras (k = " << m_model.getReadingsBufferCount() << ")";
-			if(m_model.tryGetMatchingMapLine(m_localization.getMap(),
+			if(m_model.tryGetMatchingMapLine(last, m_localization.getMap(),
 				configs::sonars::validationGateSigma2,
 				&matchedLineSegment, &expectedReading, &actualReading)) {
 					SONAR_LOG(logDEBUG2) << "Pegou segmento: (" << matchedLineSegment.getEndPoint1().getX() << ", "<< matchedLineSegment.getEndPoint1().getY() << ") -> (" << matchedLineSegment.getEndPoint2().getX() << ", "<< matchedLineSegment.getEndPoint2().getY() << "))";
@@ -75,7 +75,7 @@ namespace sauron
 				SONAR_LOG(logDEBUG4) << "Não associou a segmento no mapa.";
 			}
 		} else {
-			SONAR_LOG(logDEBUG4) << "Não validou leituras.";
+			SONAR_LOG(logDEBUG4) << "Não validou leituras. (k = " << m_model.getReadingsBufferCount() << ")" ;
 		}
 		return false;
 	}

@@ -20,16 +20,24 @@ namespace sauron
 		  ArLineSegment(x1, y1, x2, y2) { }
 		Line getSauronLine() const
 		{
-			double rWall = this->getLine()->getPerpDist(ArPose(0,0));
+			const ArLine* pline = this->getLine();
+			double rWall = pline->getPerpDist(ArPose(0,0));
 			ArPose endpoint1 = getEndPoint1();
 			ArPose endpoint2  = getEndPoint2();
 			double deltaX = endpoint1.getX() - endpoint2.getX();
 			double deltaY = endpoint1.getY() - endpoint2.getY();
 			double thWall;
 			if(!floating_point::isEqual(deltaX, 0)) {
-				thWall = trigonometry::PI / 2 + ::atan( deltaY / deltaX );
+				ArPose intersection;
+				pline->getPerpPoint(ArPose(0,0), &intersection);
+				//thWall = trigonometry::PI / 2 + ::atan( deltaY / deltaX );
+				thWall = ::atan2( intersection.getY(), intersection.getX() );
 			} else {
-				thWall = 0;
+				if(endpoint1.getX() > 0) {
+					thWall = 0;
+				} else {
+					thWall = trigonometry::PI;
+				}
 			}
 			return Line(rWall, thWall);
 		}
