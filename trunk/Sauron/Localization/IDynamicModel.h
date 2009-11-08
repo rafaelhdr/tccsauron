@@ -6,7 +6,7 @@
 
 namespace sauron
 {
-
+class ILocalizationManager;
 class IDynamicModel
 {
 	public:
