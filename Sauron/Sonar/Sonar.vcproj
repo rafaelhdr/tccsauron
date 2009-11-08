@@ -106,7 +106,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Common;..\.."
+				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -124,6 +124,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="AriaVC9.lib"
+				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

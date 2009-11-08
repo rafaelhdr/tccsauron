@@ -61,8 +61,10 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="videoInputDebug.lib"
+				LinkLibraryDependencies="false"
+				AdditionalDependencies="videoInput.lib"
 				AdditionalLibraryDirectories="..\..\VideoInput\lib"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

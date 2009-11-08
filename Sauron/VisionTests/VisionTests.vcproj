@@ -61,10 +61,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="true"
+				UseLibraryDependencyInputs="false"
 				AdditionalDependencies="cv.lib cxcore.lib highgui.lib"
-				LinkIncremental="2"
+				ShowProgress="0"
+				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\boost\lib"
-				IgnoreDefaultLibraryNames="atlthunk.lib"
+				IgnoreDefaultLibraryNames="atlthunk.lib  libcmtd.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"

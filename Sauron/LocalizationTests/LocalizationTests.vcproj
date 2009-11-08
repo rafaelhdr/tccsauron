@@ -65,6 +65,7 @@
 				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -96,7 +97,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -118,7 +119,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ARIA_STATIC"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -136,7 +138,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
