@@ -64,11 +64,25 @@ namespace sauron
 					R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
 					
 					Line matchedLine = matchedLineSegment.getSauronLine();
-					H(0,0) = -1.0 * ::cos(matchedLine.getTheta());
-					H(0,1) = -1.0 * ::sin(matchedLine.getTheta());
+					Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
+
+					double denominator = ::sin(
+						sonarRelativePose.Theta() + matchedLine.getTheta() - last.Theta() + trigonometry::PI / 2);
+
+					double multiplier = trigonometry::normalizeAngle(
+						m_model.getSonarGlobalPose(last).Theta()) < 0 ? 1.0 : -1.0;
+
+					SONAR_LOG(logDEBUG2) << "Angulo do sonar: " << m_model.getSonarGlobalPose(last).Theta() <<
+						"normalizado = " << trigonometry::normalizeAngle(m_model.getSonarGlobalPose(last).Theta()) <<
+						"=> " << multiplier;
+
+					//
+					H(0,0) = multiplier * ::cos(matchedLine.getTheta());
+					H(0,1) = multiplier * ::sin(matchedLine.getTheta());
+					//H(0,1) = multiplier * ::sin(matchedLine.getTheta()) / denominator;
 					// H(0,2) = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
 					double theta_diff = last.Theta() - matchedLine.getTheta();
-					Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
+
 					pose_t x_sonar = sonarRelativePose.X();
 					pose_t y_sonar = sonarRelativePose.Y();
 					H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);

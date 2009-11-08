@@ -42,10 +42,10 @@ namespace sauron
 	void ExtendedKalmanFilter::update( const Measure &z, const Matrix &hValue, const Model &H, const Covariance &R )
 	{
 		using namespace boost::numeric::ublas;
-		UPDATE_LOG(logDEBUG3) << "z = " << z;
-		UPDATE_LOG(logDEBUG3) << "hValue = " << hValue;
-		UPDATE_LOG(logDEBUG3) << "H = " << H;
-		UPDATE_LOG(logDEBUG3) << "R = " << R;
+		UPDATE_LOG(logDEBUG2) << "z = " << z;
+		UPDATE_LOG(logDEBUG2) << "hValue = " << hValue;
+		UPDATE_LOG(logDEBUG2) << "H = " << H;
+		UPDATE_LOG(logDEBUG2) << "R = " << R;
 		Matrix K( H.size2(), H.size1() ); // é nessa ordem mesmo ( 2 -> 1 )
 
 		
@@ -53,28 +53,28 @@ namespace sauron
 
 		// Kk = P*C'*inv(H*P*H' + R)
 		Matrix temp1 = prod(H,m_latestCovariance);
-		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance = " << temp1;
+		UPDATE_LOG(logDEBUG2) << "H * m_latestCovariance = " << temp1;
 		temp1 = prod(temp1, boost::numeric::ublas::trans(H));
-		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance * H' = " << temp1;
+		UPDATE_LOG(logDEBUG2) << "H * m_latestCovariance * H' = " << temp1;
 		temp1 = temp1 + R;
-		UPDATE_LOG(logDEBUG3) << "H * m_latestCovariance * H' + R = " << temp1;
+		UPDATE_LOG(logDEBUG2) << "H * m_latestCovariance * H' + R = " << temp1;
 
 		Matrix temp2(temp1.size1(), temp1.size2());
 		algelin::InvertMatrix(temp1, temp2);// temp2 = inv(H*P*H' + R)
-		UPDATE_LOG(logDEBUG3) << "inv(H * m_latestCovariance * H' + R) = " << temp2;
+		UPDATE_LOG(logDEBUG2) << "inv(H * m_latestCovariance * H' + R) = " << temp2;
 
 		temp1 = prod(m_latestCovariance, trans(H));
-		UPDATE_LOG(logDEBUG3) << "m_latestCovariance * H' = " << temp1;
+		UPDATE_LOG(logDEBUG2) << "m_latestCovariance * H' = " << temp1;
 		K = prod(temp1,temp2);
 		
-		UPDATE_LOG(logDEBUG3) << "K = m_latestCovariance * H' * inv(H * m_latestCovariance * H' + R)" << K;
+		UPDATE_LOG(logDEBUG2) << "K = m_latestCovariance * H' * inv(H * m_latestCovariance * H' + R)" << K;
 
 		// xk = x + K*(y - hk(xk,0))
 		yTemp = z - hValue;
-		UPDATE_LOG(logDEBUG3) << "z - hValue" << yTemp;
+		UPDATE_LOG(logDEBUG2) << "z - hValue" << yTemp;
 		yTemp = prod(K, yTemp);
 
-		UPDATE_LOG(logDEBUG3) << "K * (z - hValue) = " << yTemp;
+		UPDATE_LOG(logDEBUG2) << "K * (z - hValue) = " << yTemp;
 
 		m_latestEstimate.X() = m_latestEstimate.X() + yTemp(0,0);
 		m_latestEstimate.Y() = m_latestEstimate.Y() + yTemp(1,0);
@@ -86,8 +86,8 @@ namespace sauron
 		temp1 = I - temp1;
 		m_latestCovariance = prod(temp1,m_latestCovariance);
 
-		UPDATE_LOG(logDEBUG3) << "estimativa: " << m_latestEstimate;
-		UPDATE_LOG(logDEBUG3) << "covariância: " << m_latestCovariance;
+		UPDATE_LOG(logDEBUG2) << "estimativa: " << m_latestEstimate;
+		UPDATE_LOG(logDEBUG2) << "covariância: " << m_latestCovariance;
 	}
 
 }   // namespace sauron

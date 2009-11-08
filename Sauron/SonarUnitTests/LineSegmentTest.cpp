@@ -76,6 +76,146 @@ namespace SonarUnitTests
 		};
 
 		[TestMethod]
+		void TestSauronLine_3()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, -1000, -1000, 1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(100, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(sauron::trigonometry::PI, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_4()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, 1000, 1000, 1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(100, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(sauron::trigonometry::PI / 2, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_5()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(1000, 1000, 1000, -1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(100, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(0, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_6()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, -1000, 1000, -1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(100, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(-(sauron::trigonometry::PI / 2), sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_7()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-3000, 5000, 7000, -5000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(sauron::trigonometry::PI / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_8()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-7000, 5000, 3000, -5000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual((-3 *sauron::trigonometry::PI) / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_9()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-7000, -5000, 3000, 5000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual((3 *sauron::trigonometry::PI) / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_10()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-3000, -5000, 7000, 5000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual((-1*sauron::trigonometry::PI) / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_11()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, -1000, 1000, 1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(0, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual((sauron::trigonometry::PI) / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_12()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, 1000, 1000, -1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(0, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual((-1*sauron::trigonometry::PI) / 4, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_13()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(-1000, 0, 1000, 0);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(0, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(sauron::trigonometry::PI / 2, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_14()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(300, 0, 1000, 0);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(0, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(sauron::trigonometry::PI / 2, sauronLine.getTheta(), 0.0001);
+		};
+
+		[TestMethod]
+		void TestSauronLine_15()
+		{
+			// construtor do ArLineSegment em mm
+			ArLineSegment lineSegment(0, -1000, 0, 1000);
+			sauron::LineSegment sauronSegment(lineSegment);
+			sauron::Line sauronLine = sauronSegment.getSauronLine();
+			Assert::AreEqual(0, sauronLine.getRWall(), 0.0001);
+			Assert::AreEqual(0, sauronLine.getTheta(), 0.0001);
+		};
+
+
+		[TestMethod]
 		void TestContains()
 		{
 			// construtor do ArLineSegment em mm

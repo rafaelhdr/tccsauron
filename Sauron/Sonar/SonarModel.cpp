@@ -113,7 +113,7 @@ namespace sauron
 		double expectedReading = (line.getRWall() - x_times_cos - y_times_sin) / ::sin(beta_rads);
 		// HACK não sei ao certo por que às vezes a leitura esperada é negativa. Isso conserta
 		// o teste SonarTest3::ExpectedReadingTest2_S3
-		SONAR_LOG(logDEBUG4) << "Leitura Esperada: " << expectedReading << "(rWall = " << line.getRWall() <<
+		SONAR_LOG(logDEBUG2) << "Leitura Esperada: " << expectedReading << "(rWall = " << line.getRWall() <<
 			"; thetaWall = " << line.getTheta() << "; beta = " << beta_rads << " rads)";
 		return expectedReading > 0 ? expectedReading : -expectedReading;
 	}
@@ -221,14 +221,18 @@ namespace sauron
 		actualReading)
 	{
 		SCOPED_READINGS_LOCK();
+
 		std::vector<LineSegment>* pLines = map.getLines();	
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
 			getLatestReading().estimatedPose);
 		SONAR_LOG(logDEBUG3) << "Linhas apos FarAwayFilter: " << mapLines.size();
+		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
 		mapLines = filterBySonarAngle(mapLines, getLatestReading().estimatedPose);
 		SONAR_LOG(logDEBUG3) << "Linhas apos SonarAngleFilter: " << mapLines.size();
-		
+		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
+
+
 		std::vector<LineSegment> matchedLines;
 		SonarReading latestReading = getLatestReading().reading;
 		for(std::vector<LineSegment>::const_iterator it = mapLines.begin();
@@ -285,11 +289,13 @@ namespace sauron
 
 	bool SonarModel::matchMapLineWithReading(const SonarReading &reading,
 		const LineSegment &mapLine, double sigmaError2) {
+			
 			double expectedReading =  getExpectedReadingByMapLine(getLatestReading().estimatedPose, mapLine);
 			double v_2 = reading.getReading() - expectedReading;
 			v_2 *= v_2;
 			double s_2 = sigmaError2;
-
+			SONAR_LOG(logDEBUG2) << "Associando segmento " << mapLine << ". Leitura esperada = " << expectedReading << ";" <<
+				" leitura real = " << reading.getReading() << "; v_2 = " << v_2 << "; s_2 = " << s_2 << "; v_2 / s_2 = " << v_2 / s_2;
 			return v_2 / s_2 < configs::sonars::wallRejectionValue2;
 	}
 
