@@ -3,6 +3,7 @@
 #include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/function.hpp>
 
 #include "ILocalizationManager.h"
 #include "ISensorModel.h"
@@ -33,6 +34,8 @@ public:
 		mp_ekf->setLatestEstimate(initial);
 	}
 
+	void addPoseChangedCallback(boost::function<void (const Pose&)> callback);
+
 	Pose getPose();
 	Map getMap() { return m_map; }
 
@@ -53,6 +56,9 @@ private:
 	std::vector<ISensorModelPtr> m_sensors;
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
+
+	std::vector<boost::function<void (const Pose&)> > m_poseChangedCallbacks;
+	void invokePoseChangedCallbacks();
 
     std::string m_visionMarksFilename;
 

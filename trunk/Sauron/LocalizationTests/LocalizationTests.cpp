@@ -116,7 +116,6 @@ int principal(int argc, char** argv)
 
   FILE_LOG(logINFO) << "ois";
   sauron::LocalizationManager locManager(&robot, map, std::string(""));
-  locManager.startAsync();
 
   startEstimatedPoseConsole(locManager);
 

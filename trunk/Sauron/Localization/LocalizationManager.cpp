@@ -34,6 +34,7 @@ namespace sauron
 		setInitialPose(initialPose);
 	}
 
+
 	IDynamicModel* LocalizationManager::buildDefaultDynamic()
 	{
 		return new modeloDinamica::ModeloDinamica(*mp_robot);
@@ -78,21 +79,39 @@ namespace sauron
         //m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
+	void LocalizationManager::addPoseChangedCallback(boost::function<void (const Pose&)> callback) {
+		m_poseChangedCallbacks.push_back(callback);
+	}
+
+	void LocalizationManager::invokePoseChangedCallbacks() {
+		Pose currentPose = getPose();
+		for(std::vector<boost::function<void (const Pose&)> >::iterator it = m_poseChangedCallbacks.begin(); it != m_poseChangedCallbacks.end();
+			it++) {
+				(*it)(currentPose);
+		}
+	}
+
 	void LocalizationManager::update(const Matrix &hValue,
 									 const Measure &z,
 									 const Model &H,
 									 const Covariance &R)
 	{
-		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
-		mp_ekf->update(z, hValue, H, R);
+		{
+			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			mp_ekf->update(z, hValue, H, R);
+		}
+		invokePoseChangedCallbacks();
 	}
 
 	void LocalizationManager::predict(const Matrix &fValue,
 									  const Model &dynModel,
 									  const Covariance &dynNoise)
 	{
-		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
-				mp_ekf->predict(fValue, dynModel, dynNoise);
+		{
+			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			mp_ekf->predict(fValue, dynModel, dynNoise);
+		}
+		invokePoseChangedCallbacks();
 	}
 
 	Pose LocalizationManager::getPose()

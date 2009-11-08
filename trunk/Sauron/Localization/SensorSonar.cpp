@@ -90,6 +90,10 @@ namespace sauron
 		m_dataProvider.setAddReadingCallback(m_sonarNumber, &m_callback);
 	}
 
+	void SensorSonar::setLocalizationManager(ILocalizationManager& locManager) {
+			mp_localization = &locManager;
+	}
+
 	void SensorSonar::addReadingToModel(int sonarNumber, SonarReading reading)
 	{
 		if(sonarNumber == m_sonarNumber) {
