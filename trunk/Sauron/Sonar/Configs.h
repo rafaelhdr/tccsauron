@@ -9,6 +9,7 @@ namespace sauron
 	{
 		namespace sonars
 		{
+			const int circularBufferLength = 5;
 			const reading_t sonarReadingStandardDeviationMm =  25;
 			const int validationGateSigma2 = 625;
 			const int kMin = 4;
@@ -18,7 +19,7 @@ namespace sauron
 			const double maximumSonarToLineDistance = 550;
 			// variação mínima em radianos para que o sistema considere que o robô fez
 			// uma curva
-			const double minimumRobotTurnAngle = 0.174; // 10 graus
+			const double minimumRobotTurnAngle =  0.05; //0.174; // 10 graus
 			// valor de "não achei nada" do sonar
 			const double invalidReading = 500; // (cm)
 			// abertura do cone do sonar

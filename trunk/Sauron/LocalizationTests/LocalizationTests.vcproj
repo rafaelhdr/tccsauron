@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SauronArRobot.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -215,7 +219,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\ArSimStat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ConsoleLogger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SauronArRobot.h"
 				>
 			</File>
 			<File

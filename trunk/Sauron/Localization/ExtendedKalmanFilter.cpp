@@ -28,8 +28,8 @@ namespace sauron
 		m_latestEstimate.X() = fValue(0,0);
 		m_latestEstimate.Y() = fValue(1,0);
 		m_latestEstimate.setTheta(fValue(2,0));
-		PREDICT_LOG(logDEBUG1) << "estimativa: " << m_latestEstimate;
-		PREDICT_LOG(logDEBUG1) << "covariância: " << m_latestCovariance;
+		PREDICT_LOG(logDEBUG3) << "estimativa: " << m_latestEstimate;
+		PREDICT_LOG(logDEBUG3) << "covariância: " << m_latestCovariance;
 	}
 
 
@@ -86,8 +86,8 @@ namespace sauron
 		temp1 = I - temp1;
 		m_latestCovariance = prod(temp1,m_latestCovariance);
 
-		UPDATE_LOG(logDEBUG1) << "estimativa: " << m_latestEstimate;
-		UPDATE_LOG(logDEBUG1) << "covariância: " << m_latestCovariance;
+		UPDATE_LOG(logDEBUG3) << "estimativa: " << m_latestEstimate;
+		UPDATE_LOG(logDEBUG3) << "covariância: " << m_latestCovariance;
 	}
 
 }   // namespace sauron

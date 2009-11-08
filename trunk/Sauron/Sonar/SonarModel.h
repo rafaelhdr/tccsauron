@@ -31,17 +31,9 @@ namespace sauron
 #ifdef _CLR_
 		friend ref class SonarUnitTests::SonarTest;
 #endif
-		SonarModel(int sonarNumber, const sauron::Pose& sonarPose)
-			: m_sonarNumber(sonarNumber),
-			m_sonarX(sonarPose.X()),
-			m_sonarY(sonarPose.Y()),
-			m_sonarTheta(sonarPose.getTheta()),
-			m_readings(20) {
-		}
+		SonarModel(int sonarNumber, const sauron::Pose& sonarPose);
 
-		SonarModel(int sonarNumber, pose_t x, pose_t y, pose_t theta)
-			: m_sonarNumber(sonarNumber),m_sonarX(x), m_sonarY(y), m_sonarTheta(theta), m_readings(20) {
-		}
+		SonarModel(int sonarNumber, pose_t x, pose_t y, pose_t theta);
 
 		/** ISonarModel **/
 		bool addReading(const SonarReading& reading, const Pose& estimatedPose);
