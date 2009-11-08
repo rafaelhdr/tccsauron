@@ -1,6 +1,8 @@
 #include "MedidaOdometro.h"
 #include "MathHelper.h"
 #include <cmath>
+#include "log.h"
+#define ODOMETER_LOG(level) FILE_LOG(level) << "Odometro #" << ": "
 
 namespace sauron 
 {
@@ -30,13 +32,19 @@ namespace sauron
 			deltaDistance = newDistance - oldDistance;
 			oldDistance = newDistance;
 
-			double newTheta = trigonometry::degrees2rads(robot.getOdometerDegrees());
+            
+            double odometer = robot.getOdometerDegrees();
+			double newTheta = trigonometry::degrees2rads(odometer);
             deltaTheta = newTheta - oldTheta;
             if(deltaTheta > trigonometry::PI)
-                deltaTheta = 2*trigonometry::PI + deltaTheta;
-            if(deltaTheta < -trigonometry::PI)
                 deltaTheta = -2*trigonometry::PI + deltaTheta;
-
+            if(deltaTheta < -trigonometry::PI)
+                deltaTheta = 2*trigonometry::PI + deltaTheta;
+            
+            if(!floating_point::isEqual(deltaTheta, 0))
+            {
+                ODOMETER_LOG(logDEBUG2) << "OldTheta: "<<oldTheta<< ". Odometer: "<<odometer<<". NewTheta: "<< newTheta;
+            }
 			oldTheta = newTheta;
 		}
 	}
