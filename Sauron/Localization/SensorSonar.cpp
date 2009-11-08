@@ -69,16 +69,24 @@ namespace sauron
 					double denominator = ::sin(
 						sonarRelativePose.Theta() + matchedLine.getTheta() - last.Theta() + trigonometry::PI / 2);
 
+					SONAR_LOG(logDEBUG2) << "Theta' = " << sonarRelativePose.Theta() << "; ThetaWall = " <<
+						matchedLine.getTheta() << "; Theta = " << last.Theta() << "; soma = " <<
+						sonarRelativePose.Theta() + matchedLine.getTheta() - last.Theta() + trigonometry::PI / 2
+						<< "sin(soma) = denominator = " << denominator;
+
 					double multiplier = trigonometry::normalizeAngle(
 						m_model.getSonarGlobalPose(last).Theta()) < 0 ? 1.0 : -1.0;
 
-					SONAR_LOG(logDEBUG2) << "Angulo do sonar: " << m_model.getSonarGlobalPose(last).Theta() <<
-						"normalizado = " << trigonometry::normalizeAngle(m_model.getSonarGlobalPose(last).Theta()) <<
-						"=> " << multiplier;
+					//SONAR_LOG(logDEBUG2) << "Angulo do sonar: " << m_model.getSonarGlobalPose(last).Theta() <<
+					//	"normalizado = " << trigonometry::normalizeAngle(m_model.getSonarGlobalPose(last).Theta()) <<
+					//	"=> " << multiplier;
 
 					//
-					H(0,0) = multiplier * ::cos(matchedLine.getTheta());
-					H(0,1) = multiplier * ::sin(matchedLine.getTheta());
+					H(0,0) = ::cos(matchedLine.getTheta()) / denominator;
+					//H(0,0) = 0;
+					H(0,1) = ::sin(matchedLine.getTheta()) / denominator;
+					//H(0,0) = multiplier * ::cos(matchedLine.getTheta());
+					//H(0,1) = multiplier * ::sin(matchedLine.getTheta());
 					//H(0,1) = multiplier * ::sin(matchedLine.getTheta()) / denominator;
 					// H(0,2) = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
 					double theta_diff = last.Theta() - matchedLine.getTheta();
