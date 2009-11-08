@@ -2,23 +2,18 @@
 #include "ConsoleLogger.h"
 #include <stdexcept>
 
-void printEstimatedPoseLoop(sauron::LocalizationManager* plocManager, CConsoleLogger& console)
+CConsoleLogger console;
+
+void printEstimatedPose(const sauron::Pose& currentPose)
 {
-	int i = 0;
-	while(true)
-	{
-		sauron::Pose currentPose = plocManager->getPose();
-		console.printf("%.3f %.3f %.3f", currentPose.X(), currentPose.Y(), currentPose.Theta());
-		console.print("\r");
-		::Sleep(300);
-	}
+	console.printf("%.3f %.3f %.3f", currentPose.X(), currentPose.Y(), currentPose.Theta());
+	console.print("\r");
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
 {
-	CConsoleLogger console;
 	console.Create("Posicao atual");
-	boost::thread printThread(&printEstimatedPoseLoop, &locManager, console);
+	locManager.addPoseChangedCallback(printEstimatedPose);
 }
 
 int principal(int argc, char** argv)
@@ -113,8 +108,6 @@ int principal(int argc, char** argv)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
 
-
-  FILE_LOG(logINFO) << "ois";
   sauron::LocalizationManager locManager(&robot, map, std::string(""));
 
   startEstimatedPoseConsole(locManager);
