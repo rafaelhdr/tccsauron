@@ -20,9 +20,7 @@ class SensorSonar : public ISensorModel
     public:
         SensorSonar(int sonarNumber, ISonarDataAsyncProvider& readingsProvider);
         ~SensorSonar();
-		inline virtual void setLocalizationManager(ILocalizationManager& locManager) {
-			mp_localization = &locManager;
-		}
+		void setLocalizationManager(ILocalizationManager& locManager);
 private:
 	void updateEstimate();
 	bool getEstimate( const Pose& last, Matrix &hValue, Measure &z, Model &H, Covariance &R );
