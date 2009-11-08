@@ -245,6 +245,8 @@ namespace sauron
 				*expectedReading = getExpectedReadingByMapLine(latestPose, matchedLines[0]);
 			if(actualReading != NULL)
 				*actualReading = getLatestReading().reading;
+
+
 			return true;
 		} else {
 			SONAR_LOG(logDEBUG3) << "Nao validou pois no. de segmentos eh: " << matchedLines.size();

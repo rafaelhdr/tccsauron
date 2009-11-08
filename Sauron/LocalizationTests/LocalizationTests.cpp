@@ -148,7 +148,7 @@ int principal(int argc, char** argv)
   robot.unlock();
 
   ArMap map;
-  if(!map.readFile("AMROffice.map")) {
+  if(!map.readFile("pavsup.map")) {
 	  robot.disconnect(); // sem isso dá pau (pure virtual call)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
