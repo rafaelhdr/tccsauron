@@ -25,7 +25,7 @@ namespace sauron
 		SCOPED_READINGS_LOCK();
 		TLogLevel oldLevel = FILELog::ReportingLevel();
 		FILELog::ReportingLevel() = logDEBUG4;
-		SONAR_LOG(logDEBUG4) << "Recebeu leitura: " << reading.getReading();
+		SONAR_LOG(logDEBUG4) << "Recebeu leitura: " << reading.getReading() << " @ " << estimatedPose;
 		if(robotHasTurned(estimatedPose)) {
 			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
