@@ -21,13 +21,27 @@
 namespace sauron
 {
 
+	SonarModel::SonarModel(int sonarNumber, const sauron::Pose& sonarPose)
+			: m_sonarNumber(sonarNumber),
+			m_sonarX(sonarPose.X()),
+			m_sonarY(sonarPose.Y()),
+			m_sonarTheta(sonarPose.getTheta()),
+			m_readings(sauron::configs::sonars::circularBufferLength) {
+		}
+
+		SonarModel::SonarModel(int sonarNumber, pose_t x, pose_t y, pose_t theta)
+			: m_sonarNumber(sonarNumber),m_sonarX(x), m_sonarY(y), m_sonarTheta(theta),
+			m_readings(sauron::configs::sonars::circularBufferLength) {
+		}
+
+
 	bool SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
 		SCOPED_READINGS_LOCK();
 		TLogLevel oldLevel = FILELog::ReportingLevel();
-		FILELog::ReportingLevel() = logDEBUG4;
+		//FILELog::ReportingLevel() = logDEBUG4;
 		SONAR_LOG(logDEBUG4) << "Recebeu leitura: " << reading.getReading() << " @ " << estimatedPose;
 		if(robotHasTurned(estimatedPose)) {
-			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
+			SONAR_LOG(logDEBUG3) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
 			return false;
 		}

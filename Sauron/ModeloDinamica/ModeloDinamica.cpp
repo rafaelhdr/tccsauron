@@ -3,6 +3,8 @@
 #pragma once
 #include "ModeloDinamica.h"
 #include "MathHelper.h"
+#include "log.h"
+#define DINAMICA_LOG(level) FILE_LOG(level) << "Dinamica #" << ": "
 
 
 namespace sauron
@@ -48,8 +50,7 @@ void ModeloDinamica::init()
 
 pose_t ModeloDinamica::calculaX()
 {
-	/* x(n-1) + delta distancia * cos (teta médio)
-	/* dúvida: teta médio anterior ou atual ? */
+	
 	return posicaoEstimada.X() + medidaOdometro.getDeltaDistance()*::cos(posicaoEstimada.Theta());
 }
 
@@ -62,6 +63,7 @@ pose_t ModeloDinamica::calculaY()
 
 pose_t ModeloDinamica::calculaTheta()
 {
+	DINAMICA_LOG(logDEBUG2) << "Ultimo Theta Estimado: " << posicaoEstimada.Theta() << ". Delta Theta: " << medidaOdometro.getDeltaTheta();
 	return sauron::trigonometry::normalizeAngle((posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta()));
 }
 

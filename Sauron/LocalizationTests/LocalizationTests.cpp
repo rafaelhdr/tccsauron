@@ -1,13 +1,45 @@
 #include "stdafx.h"
 #include "ConsoleLogger.h"
 #include <stdexcept>
+#include <boost/thread.hpp>
+#include "SauronArRobot.h"
+
+#define TEST_LOG(level) FILE_LOG(level) << "LocalizationTests: "
 
 CConsoleLogger console;
+boost::mutex consoleMutex;
+sauron::SauronArRobot robot;
+
+sauron::Pose lastEstimatedPose;
+sauron::Pose lastTruePose;
+
+void cls(int n)
+{
+	while(n-- > 0)
+		console.print("\n");
+}
 
 void printEstimatedPose(const sauron::Pose& currentPose)
 {
-	console.printf("%.3f %.3f %.3f", currentPose.X(), currentPose.Y(), currentPose.Theta());
-	console.print("\r");
+	boost::unique_lock<boost::mutex> lock(consoleMutex);
+	console.printf("%.3f\t%.3f\t%.3f\n", currentPose.X(), currentPose.Y(), currentPose.Theta());
+	ArPose arPose = robot.getTruePose();
+	sauron::Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
+	console.printf("%.3f\t%.3f\t%.3f\n", truePose.X(), truePose.Y(), truePose.Theta());
+	console.printf("Erro em X = %.3f cm\n", currentPose.X() - truePose.X());
+	console.printf("Erro em Y = %.3f cm\n", currentPose.Y() - truePose.Y());
+	console.printf("Erro em Theta = %.3f radianos\n", currentPose.Theta() - truePose.Theta());
+	cls(19);
+	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
+		currentPose.Theta() == lastEstimatedPose.Theta())) {
+		TEST_LOG(logDEBUG1) << "Posição estimada: " << currentPose;
+		lastEstimatedPose = currentPose;
+	}
+	if(!(truePose.X() == lastTruePose.X() && truePose.Y() == lastTruePose.Y() &&
+		truePose.Theta() == lastTruePose.Theta())) {
+		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
+		lastTruePose = truePose;
+	}
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
@@ -37,7 +69,7 @@ int principal(int argc, char** argv)
 
   // Central object that is an interface to the robot and its integrated
   // devices, and which manages control of the robot by the rest of the program.
-  ArRobot robot;
+  //ArRobot robot;
 
   // Object that connects to the robot or simulator using program options
   ArRobotConnector robotConnector(&parser, &robot);
@@ -104,7 +136,7 @@ int principal(int argc, char** argv)
   robot.unlock();
 
   ArMap map;
-  if(!map.readFile("corredorfake.map")) {
+  if(!map.readFile("AMROffice.map")) {
 	  robot.disconnect(); // sem isso dá pau (pure virtual call)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
@@ -129,8 +161,7 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 		  << "5. (S) Sair;"            << std::endl;
 
 	  std::cin >> c;
-		
-	  
+	  ArPose arPose = robot.getTruePose();
 	  switch(c){
 		case 'm':
 		case 'M':
@@ -142,15 +173,8 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
 			break;
 		case 'p':
 		case 'P':
-			std::cout << "Digite na ordem: x y theta e aperte ENTER:"  << std::endl; 
-			double x;
-			double y;
-			double theta;
-
-			std::cin >> x;
-			std::cin >> y;
-			std::cin >> theta;
-			locManager.setInitialPose(sauron::Pose(x, y, theta));
+			locManager.setInitialPose(sauron::Pose(arPose.getX(), arPose.getY(),
+				sauron::trigonometry::degrees2rads(arPose.getTh())));
 			break;
 		case 'v':
 		case 'V':
@@ -186,7 +210,7 @@ std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
   // thread to exit (e.g. by robot disconnecting, escape key pressed, or OS
   // signal)
   //robot.waitForRunExit();
-
+  robot.disconnect();
   Aria::exit(0);
   return 0;
 }
@@ -196,7 +220,7 @@ int main(int argc, char** argv)
 	try
 	{
 		Output2FILE::Stream() = fopen("sonar_log.log", "w");
-		FILELog::ReportingLevel() = logDEBUG4;
+		FILELog::ReportingLevel() = logDEBUG2;
 
 		return principal(argc, argv);
 	} catch(std::exception& e)
