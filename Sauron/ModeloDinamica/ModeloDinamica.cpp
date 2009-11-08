@@ -63,8 +63,11 @@ pose_t ModeloDinamica::calculaY()
 
 pose_t ModeloDinamica::calculaTheta()
 {
-	DINAMICA_LOG(logDEBUG2) << "Ultimo Theta Estimado: " << posicaoEstimada.Theta() << ". Delta Theta: " << medidaOdometro.getDeltaTheta();
-	return sauron::trigonometry::normalizeAngle((posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta()));
+    if(!floating_point::isEqual(medidaOdometro.getDeltaTheta(), 0))
+    {
+	    DINAMICA_LOG(logDEBUG2) << "Ultimo Theta Estimado: " << posicaoEstimada.Theta() << ". Delta Theta: " << medidaOdometro.getDeltaTheta();
+    }
+    return sauron::trigonometry::normalizeAngle((posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta()));
 }
 
 
