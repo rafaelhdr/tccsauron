@@ -29,12 +29,20 @@ ModeloDinamica::ModeloDinamica(Pose posicaoEstimada, ArRobot& robot)
 }
 
 
+ModeloDinamica::~ModeloDinamica()
+{
+    m_thread.join();
+}
+
+
 void ModeloDinamica::init()
 {
 	influLinearLinear   = 0.033;
 	influLinearAngular  = 0.001;
 	influAngularLinear  = 0.0;
 	influAngularAngular = 0.035;
+
+    m_thread = boost::thread::thread( &ModeloDinamica::mainLoop, this );
 }
 
 
@@ -146,7 +154,6 @@ void ModeloDinamica::atualizaFValue(Matrix &fValue)
 
 void ModeloDinamica::updateModel( Matrix &fValue, Model &dynModel, Covariance &dynNoise )
 {
-	
 	// atualizaPose
 	posicaoEstimada = m_localizationManager->getPose();
 
@@ -160,7 +167,30 @@ void ModeloDinamica::updateModel( Matrix &fValue, Model &dynModel, Covariance &d
 
 	// atualiza Q
 	atualizaCovariancia(dynNoise);
+}
 
+
+void ModeloDinamica::mainLoop()
+{
+    Matrix     fValue( 1, 1 );
+    Matrix     dynModel( 1, 1 );
+    Covariance dynNoise( 1, 1 );
+
+    boost::xtime sleepTime;
+    boost::xtime sleepDeltaTime;
+
+    sleepDeltaTime.nsec = 50000000;
+
+    while ( true )
+    {
+        this->updateModel( fValue, dynModel, dynNoise );
+        m_localizationManager->predict( fValue, dynModel, dynNoise );
+        
+        boost::xtime_get( &sleepTime, boost::TIME_UTC );
+        sleepTime.nsec += sleepDeltaTime.nsec;
+
+        m_thread.sleep( sleepTime );
+    }
 }
 
 

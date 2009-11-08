@@ -4,6 +4,8 @@
 #include "IDynamicModel.h"
 #include "ILocalizationManager.h"
 #include <boost/numeric/ublas/matrix.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/thread/mutex.hpp>
 #include <Aria.h>
 
 
@@ -19,8 +21,11 @@ namespace sauron
 		public:
 			ModeloDinamica(ArRobot& robot);
 			ModeloDinamica(Pose posicaoEstimada, ArRobot& robot);
+            ~ModeloDinamica();
 
             void setLocalizationManager( ILocalizationManager &locManager );
+
+            void mainLoop();
 
         private:
             void updateModel( Matrix &fValue, Model &dynModel, Covariance &dynNoise );
@@ -51,7 +56,7 @@ namespace sauron
 			double influAngularLinear;
 			double influAngularAngular;
 
-						
+            boost::thread   m_thread;						
 		};
 	}
 }
