@@ -1,9 +1,7 @@
-// LocalizationTests.cpp : Defines the entry point for the console application.
-//
-
 #include "stdafx.h"
 #include "ConsoleLogger.h"
 #include <stdexcept>
+
 void printEstimatedPoseLoop(sauron::LocalizationManager* plocManager, CConsoleLogger& console)
 {
 	int i = 0;
@@ -123,7 +121,7 @@ int principal(int argc, char** argv)
   startEstimatedPoseConsole(locManager);
 
 std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
-<< "Digite a letra referente a opcao desejada:" << std::endl;
+          << "Digite a letra referente a opcao desejada:" << std::endl;
 
   char c = 'A';
 
