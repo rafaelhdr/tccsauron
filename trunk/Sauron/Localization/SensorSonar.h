@@ -18,21 +18,21 @@ class ISonarModel;
 class SensorSonar : public ISensorModel
 {
     public:
-        SensorSonar(int sonarNumber, ILocalizationManager& localizationManager,
-			ISonarDataAsyncProvider& readingsProvider);
+        SensorSonar(int sonarNumber, ISonarDataAsyncProvider& readingsProvider);
         ~SensorSonar();
-
-        bool getEstimate( const Pose &last, 
-                          Matrix &hValue, Measure &z, Model &H, Covariance &R );
-
-        bool checkNewEstimateAvailable();
+		inline virtual void setLocalizationManager(ILocalizationManager& locManager) {
+			mp_localization = &locManager;
+		}
 private:
+	void updateEstimate();
+	bool getEstimate( const Pose& last, Matrix &hValue, Measure &z, Model &H, Covariance &R );
+	bool getEstimate( Matrix &hValue, Measure &z, Model &H, Covariance &R );
 	void setupAsyncDataFeed();
 	void addReadingToModel(int sonarNumber, SonarReading reading);
 
 	int m_sonarNumber;
 	ISonarDataAsyncProvider& m_dataProvider;
-	ILocalizationManager& m_localization;
+	ILocalizationManager* mp_localization;
 	SonarModel m_model;
 	ArFunctor2C<SensorSonar, int, SonarReading> m_callback;
 };

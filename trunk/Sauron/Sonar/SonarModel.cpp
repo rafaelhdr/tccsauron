@@ -21,7 +21,7 @@
 namespace sauron
 {
 
-	void SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
+	bool SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
 		SCOPED_READINGS_LOCK();
 		TLogLevel oldLevel = FILELog::ReportingLevel();
 		FILELog::ReportingLevel() = logDEBUG4;
@@ -29,12 +29,15 @@ namespace sauron
 		if(robotHasTurned(estimatedPose)) {
 			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
+			return false;
 		}
 		ReadingAndPose rnp(reading, estimatedPose);
 		if(isReadingMeaningful(rnp)) {
 			SONAR_LOG(logDEBUG4) << "Leitura significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 			m_readings.push_back(rnp);
+			return true;
 		}
+		return false;
 		FILELog::ReportingLevel() = oldLevel;
 	}
 

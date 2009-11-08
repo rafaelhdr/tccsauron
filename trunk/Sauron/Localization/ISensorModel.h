@@ -1,11 +1,10 @@
 #ifndef __SENSOR_MODEL_H__
 #define __SENSOR_MODEL_H__
 
+#include "Matrix.h"
+
 namespace sauron
 {
-
-class Matrix;
-class Pose;
 class ILocalizationManager;
 
 class ISensorModel
