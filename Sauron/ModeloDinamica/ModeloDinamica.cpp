@@ -183,12 +183,14 @@ void ModeloDinamica::mainLoop()
 
     while ( true )
     {
-        this->updateModel( fValue, dynModel, dynNoise );
-        m_localizationManager->predict( fValue, dynModel, dynNoise );
+        if ( m_localizationManager )
+        {
+            this->updateModel( fValue, dynModel, dynNoise );
+            m_localizationManager->predict( fValue, dynModel, dynNoise );
+        }
         
         boost::xtime_get( &sleepTime, boost::TIME_UTC );
         sleepTime.nsec += sleepDeltaTime.nsec;
-
         m_thread.sleep( sleepTime );
     }
 }
