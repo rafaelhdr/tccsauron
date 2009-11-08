@@ -9,9 +9,10 @@ namespace sauron
 
 class IDynamicModel
 {
-    public:
-        virtual void updateModel( const Pose &last, 
-                                  Matrix &fValue, Model &dynModel, Covariance &dynNoise ) = 0;
+	public:
+		virtual void setLocalizationManager(ILocalizationManager& locManager);
+    private:
+        virtual void updateModel(Matrix &fValue, Model &dynModel, Covariance &dynNoise ) = 0;
 };
 
 }   // namespace sauron

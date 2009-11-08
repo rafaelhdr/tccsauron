@@ -71,7 +71,7 @@ namespace sauron
 
 	void LocalizationManager::buildDefaultVision()
 	{
-        m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
+        //m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
 	void LocalizationManager::startAsync()

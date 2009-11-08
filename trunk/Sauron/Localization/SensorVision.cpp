@@ -1,6 +1,8 @@
 #include "SensorVision.h"
 #include <cmath>
 
+#if 0
+
 namespace sauron
 {
 
@@ -93,3 +95,5 @@ bool SensorVision::checkNewEstimateAvailable()
 }
 
 }   // namespace sauron
+
+#endif

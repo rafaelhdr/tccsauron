@@ -13,6 +13,17 @@ class ILocalizationManager
 		virtual void startAsync() = 0;
 		virtual void stopAsync() = 0;
 		virtual Map getMap() = 0;
+
+		virtual void update(const Matrix &hValue,
+							const Measure &z,
+							const Model &H,
+							const Covariance &R) = 0;
+
+		virtual void predict(const Matrix &fValue,
+							 const Model &dynModel,
+							 const Covariance &dynNoise) = 0;
+
+
 };
 
 
