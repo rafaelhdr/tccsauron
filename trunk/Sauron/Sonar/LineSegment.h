@@ -20,20 +20,34 @@ namespace sauron
 		  ArLineSegment(x1, y1, x2, y2) { }
 		Line getSauronLine() const
 		{
+			if(myX1 == 410 && myY1 == 0) {
+				int a = 42;
+			}
 			const ArLine* pline = this->getLine();
 			double rWall = pline->getPerpDist(ArPose(0,0));
+			
 			ArPose endpoint1 = getEndPoint1();
 			ArPose endpoint2  = getEndPoint2();
 			double deltaX = endpoint1.getX() - endpoint2.getX();
 			double deltaY = endpoint1.getY() - endpoint2.getY();
 			double thWall;
+
 			if(!floating_point::isEqual(deltaX, 0)) {
 				ArPose intersection;
 				pline->getPerpPoint(ArPose(0,0), &intersection);
 				//thWall = trigonometry::PI / 2 + ::atan( deltaY / deltaX );
-				thWall = ::atan2( intersection.getY(), intersection.getX() );
+				if(intersection != ArPose(0,0)) {
+					thWall = ::atan2( intersection.getY(), intersection.getX() );
+				} else {
+					if(!floating_point::isEqual(deltaY, 0)) {
+						thWall = ::atan(deltaY / deltaX);
+					} else {
+						thWall = trigonometry::PI / 2;
+					}
+				}
 			} else {
-				if(endpoint1.getX() > 0) {
+				// deltaX = 0, reta vertical
+				if(floating_point::equalOrGreater(endpoint1.getX(), 0)) {
 					thWall = 0;
 				} else {
 					thWall = trigonometry::PI;
@@ -59,5 +73,10 @@ namespace sauron
 			return linePointIsInSegment(&segment.getEndPoint1()) &&
 				linePointIsInSegment(&segment.getEndPoint2());
 		}
+
+		friend std::ostream& operator<<(std::ostream& os, const LineSegment& s)
+			{
+				return os << "(" << s.getEndPoint1().getX() << ", "<< s.getEndPoint1().getY() << ") -> (" << s.getEndPoint2().getX() << ", "<< s.getEndPoint2().getY() << "))";
+			}
 	};
 }

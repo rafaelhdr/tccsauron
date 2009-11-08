@@ -62,7 +62,7 @@ namespace SonarUnitTests
 			sauron::Line seenBy01234(0, sauron::trigonometry::PI / 2);
 			
 			sauron::Pose sonarRelativePose = sauron::configs::sonars::getSonarPose(0);
-			sauron::SonarModel sonar(sonarRelativePose);
+			sauron::SonarModel sonar(0,sonarRelativePose);
 			parser.addAllReadingsOfOneSonar(0, sonar);
 			Assert::IsTrue(sonar.getReadingsBufferCount() <= 1);
 
