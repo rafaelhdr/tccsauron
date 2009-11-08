@@ -37,7 +37,9 @@ namespace sauron
 
 	IDynamicModel* LocalizationManager::buildDefaultDynamic()
 	{
-		return new modeloDinamica::ModeloDinamica(*mp_robot);
+		IDynamicModel* dynamic = new modeloDinamica::ModeloDinamica(*mp_robot);
+		dynamic->setLocalizationManager(*this);
+        return dynamic;
 	}
 
 	IDynamicModel* LocalizationManager::buildDefaultDynamic(const Pose& initialPose)

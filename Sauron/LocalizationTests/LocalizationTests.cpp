@@ -13,6 +13,7 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
 {
 	console.Create("Posicao atual");
+	printEstimatedPose(locManager.getPose());
 	locManager.addPoseChangedCallback(printEstimatedPose);
 }
 
@@ -103,7 +104,7 @@ int principal(int argc, char** argv)
   robot.unlock();
 
   ArMap map;
-  if(!map.readFile("pavsup.map")) {
+  if(!map.readFile("corredorfake.map")) {
 	  robot.disconnect(); // sem isso dá pau (pure virtual call)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }

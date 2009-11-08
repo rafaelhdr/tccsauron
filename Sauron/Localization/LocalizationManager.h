@@ -30,8 +30,11 @@ public:
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial){
-		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
-		mp_ekf->setLatestEstimate(initial);
+		{
+			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			mp_ekf->setLatestEstimate(initial);
+		}
+		invokePoseChangedCallbacks();
 	}
 
 	void addPoseChangedCallback(boost::function<void (const Pose&)> callback);
