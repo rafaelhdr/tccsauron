@@ -31,7 +31,12 @@ namespace sauron
 			oldDistance = newDistance;
 
 			double newTheta = trigonometry::degrees2rads(robot.getOdometerDegrees());
-			deltaTheta = newTheta - oldTheta;
+            deltaTheta = newTheta - oldTheta;
+            if(deltaTheta > trigonometry::PI)
+                deltaTheta = 2*trigonometry::PI + deltaTheta;
+            if(deltaTheta < -trigonometry::PI)
+                deltaTheta = -2*trigonometry::PI + deltaTheta;
+
 			oldTheta = newTheta;
 		}
 	}
