@@ -10,7 +10,8 @@ class ILocalizationManager;
 class ISensorModel
 {
     public:
-		virtual void setLocalizationManager(ILocalizationManager& locManager);
+		virtual void setLocalizationManager(ILocalizationManager& locManager) = 0;
+
 	private:
 		virtual bool getEstimate(/*out*/Matrix &hValue,
 							   /*out*/Measure &z,
