@@ -43,6 +43,7 @@ namespace sauron
 	{
 		IDynamicModel* dynamic = new modeloDinamica::ModeloDinamica(initialPose, *mp_robot);
 		dynamic->setLocalizationManager(*this);
+        return dynamic;
 	}
 
 	IKalmanFilter* LocalizationManager::buildDefaultEKF()
