@@ -12,7 +12,7 @@ namespace sauron
 		MedidaOdometro::MedidaOdometro(ArRobot&   robot) : robot(robot)
 		{
 			oldDistance = robot.getOdometerDistance()/10;
-			oldTheta = trigonometry::degrees2rads(robot.getOdometerDegrees());
+			oldTheta = robot.getOdometerDegrees();
 			atualizaMedida();
 		}
 
@@ -33,17 +33,19 @@ namespace sauron
 			oldDistance = newDistance;
 
             
-            double odometer = robot.getOdometerDegrees();
-			double newTheta = trigonometry::degrees2rads(odometer);
-            deltaTheta = newTheta - oldTheta;
-            if(deltaTheta > trigonometry::PI)
-                deltaTheta = -2*trigonometry::PI + deltaTheta;
-            if(deltaTheta < -trigonometry::PI)
-                deltaTheta = 2*trigonometry::PI + deltaTheta;
             
+			double newTheta = robot.getOdometerDegrees();
+           
+
             if(!floating_point::isEqual(deltaTheta, 0))
             {
-                ODOMETER_LOG(logDEBUG2) << "OldTheta: "<<oldTheta<< ". Odometer: "<<odometer<<". NewTheta: "<< newTheta;
+                ODOMETER_LOG(logDEBUG2) << "OldTheta: "<<oldTheta<< ". NewTheta: "<<newTheta;
+            }
+
+            deltaTheta = trigonometry::degrees2rads(newTheta - oldTheta);
+            if(robot.getRotVel() < 0)
+            {
+                deltaTheta = -deltaTheta;
             }
 			oldTheta = newTheta;
 		}
