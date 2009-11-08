@@ -33,10 +33,18 @@ public:
 		mp_ekf->setLatestEstimate(initial);
 	}
 
-	void startAsync();
-	void stopAsync();
 	Pose getPose();
 	Map getMap() { return m_map; }
+
+	void update(const Matrix &hValue,
+				const Measure &z,
+				const Model &H,
+				const Covariance &R);
+
+	void predict(const Matrix &fValue,
+				 const Model &dynModel,
+				 const Covariance &dynNoise);
+
 private:
 	LocalizationManager(LocalizationManager& original);
 	ArRobot* mp_robot;
@@ -47,10 +55,6 @@ private:
 	IDynamicModelPtr mp_dynamic;
 
     std::string m_visionMarksFilename;
-
-	bool localize;
-	boost::thread m_localizationThread;
-	void mainLoop();
 
 	boost::mutex m_ekfMutex;
 

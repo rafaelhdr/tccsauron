@@ -44,7 +44,7 @@ namespace sauron
 		}
 
 		/** ISonarModel **/
-		void addReading(const SonarReading& reading, const Pose& estimatedPose);
+		bool addReading(const SonarReading& reading, const Pose& estimatedPose);
 		bool validateReadings();
 
 		bool tryGetMatchingMapLine(

@@ -10,7 +10,8 @@ class LineSegment;
 class ISonarModel
 {
 public:
-	virtual void addReading(const SonarReading& reading, const Pose& estimatedPose) = 0;
+	// retorna true se a leitura for significativa
+	virtual bool addReading(const SonarReading& reading, const Pose& estimatedPose) = 0;
 	virtual bool validateReadings() = 0;
 	// Tenta associar as leituras no buffer com alguma linha do mapa. Retorna true se conseguiu, e preenche as
 	// variáveis de saída, se elas não forem nulas. Se não houver associação satisfatória, retorna false e o

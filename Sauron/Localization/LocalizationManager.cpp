@@ -74,63 +74,21 @@ namespace sauron
         //m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
-	void LocalizationManager::startAsync()
+	void LocalizationManager::update(const Matrix &hValue,
+									 const Measure &z,
+									 const Model &H,
+									 const Covariance &R)
 	{
-		if(m_localizationThread.get_id() == boost::thread::id()) { // true se a thread não foi iniciada
-			localize = true;
-			m_localizationThread = boost::thread(&LocalizationManager::mainLoop, this);
-		}
+		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+		mp_ekf->update(z, hValue, H, R);
 	}
 
-	void LocalizationManager::stopAsync()
+	void LocalizationManager::predict(const Matrix &fValue,
+									  const Model &dynModel,
+									  const Covariance &dynNoise)
 	{
-		localize = false;
-	}
-
-	void LocalizationManager::mainLoop()
-	{
-
-		/* TODO:
-			conversando com o Silva achamos q isso precisa ser reestruturado...
-			do jeito atual, vc eh obrigado a pegar uma atualização de cada sensor
-
-			o ideal eh cada sensor dar a sua atualização na hora em q ele a tiver... 
-
-			ou então o predict e os updates são disparados em threads distintas... cada uma processando no seu ritmo
-
-		*/
-
-        Matrix          fValue( 1,1 ); 
-        Model           dynModel( 3,3 );	
-        Covariance      dynNoise( 3,3 );
-        Matrix          hValue(1,3 ); 
-        Measure         z( 1,1 ); 
-        Model           H( 1,3 ); 
-        Covariance      R( 3,3 );
-
-		while(localize) 
-        {
-			// predict
-			mp_dynamic->updateModel(this->getPose(), fValue, dynModel, dynNoise);
-			{
-				/* fiz essa alteração pq o setInitial Pose não estava funcionando.... agora eu dou lock e unlock
-				e o setInitialPose faz a mesma coisa, assim, se um estiver alterando, o outro vai esperar */
-
-				boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+		boost::unique_lock<boost::mutex> lock(m_ekfMutex);
 				mp_ekf->predict(fValue, dynModel, dynNoise);
-			}
-
-			// update
-			for(std::vector<ISensorModelPtr>::iterator it = m_sensors.begin(); it != m_sensors.end(); it++) 
-            {
-					if( (*it)->getEstimate(this->getPose(), hValue, z, H, R) ) 
-                    {
-						boost::unique_lock<boost::mutex> lock(m_ekfMutex);
-						mp_ekf->update(z, hValue, H, R);
-					}
-			}
-			
-		}
 	}
 
 	Pose LocalizationManager::getPose()

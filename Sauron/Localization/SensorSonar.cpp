@@ -2,6 +2,10 @@
 
 #include "log.h"
 #define SONAR_LOG(level) FILE_LOG(level) << "SensorSonar #"<< m_sonarNumber << ": "
+
+#include "Matrix.h"
+#include "Pose.h"
+
 #include "ILocalizationManager.h"
 #include "MathHelper.h"
 #include "Sonar/Configs.h"
@@ -11,10 +15,10 @@
 
 namespace sauron
 {
-	SensorSonar::SensorSonar(int sonarNumber, ILocalizationManager& localizationManager,
+	SensorSonar::SensorSonar(int sonarNumber,
 		ISonarDataAsyncProvider& readingsProvider)
 		: m_sonarNumber(sonarNumber), m_dataProvider(readingsProvider),
-		m_localization(localizationManager), m_callback(this, &SensorSonar::addReadingToModel),
+		mp_localization(0), m_callback(this, &SensorSonar::addReadingToModel),
 		m_model(sonarNumber, configs::sonars::getSonarPose(sonarNumber))
 	{
 		SONAR_LOG(logINFO) << " Construtor";
@@ -28,15 +32,15 @@ namespace sauron
 	{
 	}
 
-	bool SensorSonar::getEstimate( const Pose &last, 
-		Matrix &hValue, Measure &z, Model &H, Covariance &R )
+	bool SensorSonar::getEstimate( Matrix &hValue, Measure &z, Model &H, Covariance &R )
 	{
 		SonarReading expectedReading, actualReading;
 		LineSegment matchedLineSegment;
+		const Pose last = mp_localization->getPose();
 		SONAR_LOG(logDEBUG3) << "getEstimate (lastPose: " << last << ")";
 		if(m_model.validateReadings()) {
 			SONAR_LOG(logDEBUG3) << "Validou leituras (k = " << m_model.getReadingsBufferCount() << ")";
-			if(m_model.tryGetMatchingMapLine(last, m_localization.getMap(),
+			if(m_model.tryGetMatchingMapLine(last, mp_localization->getMap(),
 				configs::sonars::validationGateSigma2,
 				&matchedLineSegment, &expectedReading, &actualReading)) {
 					SONAR_LOG(logDEBUG2) << "Pegou segmento: (" << matchedLineSegment.getEndPoint1().getX() << ", "<< matchedLineSegment.getEndPoint1().getY() << ") -> (" << matchedLineSegment.getEndPoint2().getX() << ", "<< matchedLineSegment.getEndPoint2().getY() << "))";
@@ -80,14 +84,6 @@ namespace sauron
 		return false;
 	}
 
-	bool SensorSonar::checkNewEstimateAvailable()
-	{
-		if(m_model.validateReadings())
-			return m_model.tryGetMatchingMapLine(m_localization.getMap(), configs::sonars::validationGateSigma2,
-			NULL, NULL, NULL);
-		else
-			return false;
-	}
 
 	void SensorSonar::setupAsyncDataFeed()
 	{
@@ -97,11 +93,32 @@ namespace sauron
 	void SensorSonar::addReadingToModel(int sonarNumber, SonarReading reading)
 	{
 		if(sonarNumber == m_sonarNumber) {
-			Pose currentEstimatedPose = m_localization.getPose();
-			m_model.addReading(reading, currentEstimatedPose);
+			if(mp_localization != 0) {
+				Pose currentEstimatedPose = mp_localization->getPose();
+				if(m_model.addReading(reading, currentEstimatedPose)) {
+					updateEstimate();
+				}
+			} else {
+				SONAR_LOG(logWARNING) << "Leitura recebida, mas mp_localization é null";
+			}
 		} else {
 			throw std::invalid_argument("addReadingToModel: sonarNumber invalido");
 		}
 	}
+
+	void SensorSonar::updateEstimate()
+	{
+		if(mp_localization != 0) {
+			Matrix          hValue; 
+			Measure         z; 
+			Model           H; 
+			Covariance      R;
+			if(getEstimate( hValue, z, H, R )) {
+				mp_localization->update(hValue, z, H, R);
+			}
+		}
+	}
+
+
 
 }   // namespace sauron
