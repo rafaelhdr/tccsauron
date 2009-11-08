@@ -26,20 +26,32 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 	ArPose arPose = robot.getTruePose();
 	sauron::Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
 	console.printf("%.3f\t%.3f\t%.3f\n", truePose.X(), truePose.Y(), truePose.Theta());
-	console.printf("Erro em X = %.3f cm\n", currentPose.X() - truePose.X());
-	console.printf("Erro em Y = %.3f cm\n", currentPose.Y() - truePose.Y());
-	console.printf("Erro em Theta = %.3f radianos\n", currentPose.Theta() - truePose.Theta());
+    double erroX = currentPose.X() - truePose.X();
+    double erroY = currentPose.Y() - truePose.Y();
+    double erroTheta = currentPose.Theta() - truePose.Theta();
+	console.printf("Erro em X = %.3f cm\n", erroX );
+	console.printf("Erro em Y = %.3f cm\n", erroY );
+	console.printf("Erro em Theta = %.3f radianos\n", erroTheta );
 	cls(19);
+    bool printEstimated = false;
+    bool printReal = false;
 	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
 		currentPose.Theta() == lastEstimatedPose.Theta())) {
 		TEST_LOG(logDEBUG1) << "Posição estimada: " << currentPose;
 		lastEstimatedPose = currentPose;
+        printEstimated = true;
 	}
 	if(!(truePose.X() == lastTruePose.X() && truePose.Y() == lastTruePose.Y() &&
 		truePose.Theta() == lastTruePose.Theta())) {
 		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
 		lastTruePose = truePose;
+        printReal = true; 
 	}
+
+    if(printEstimated && printReal)
+    {
+        TEST_LOG(logDEBUG1) << "Erro: ( " << erroX << " , " << erroY << " , " << erroTheta << " )";
+    }
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
