@@ -1,0 +1,130 @@
+
+% ctan tug
+\documentclass[a4paper,capchap,espacoduplo,normaltoc]{abntepusp}
+
+%\usepackage[bookmarks,pdftex,a4paper,colorlinks=true,citecolor=black,urlcolor=blue,linkcolor=black,pdfpagemode=None]{hyperref}
+%\usepackage[bookmarks,a4paper,colorlinks=true,citecolor=black,urlcolor=blue,linkcolor=black,pdfpagemode=None]{hyperref}
+\usepackage[centertags]{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+%\usepackage[alf,abnt-repeated-author-omit=yes]{abntcite}
+
+\usepackage{url} % \url{http...}
+\usepackage{helvet}\renewcommand{\familydefault}{\sfdefault}
+%\usepackage{winfonts}
+%\usepackage{txfonts}
+%\usepackage{tabela-simbolos}
+
+\fontfamily{arial}\selectfont
+\renewcommand{\rmdefault}{arial}
+
+% Math -------------------------------------------------------------------
+\newtheorem{theorem}{Teorema}{\bfseries}{\itshape}
+\newtheorem{lemma}{Lema}{\bfseries}{\itshape}
+\newtheorem{definition}{Definição}{\bfseries}{\itshape}
+\newtheorem{corollary}{Corolário}{\bfseries}{\itshape}
+
+\sloppy
+
+\begin{document}
+
+\renewcommand{\bibname}{Refer\^encias} % adaptação para ABNT/EPUSP
+
+\autorPoli{Felipe G. Godoy, Pedro d'Aquino, Rafael Ruppel, Rafael da Silva}
+
+\titulo{SAURON}
+
+\orientador{Anna Reali Costa}
+
+\monografiaFormatura
+%\monografiaMBA
+%\qualificacaoMSc{<Área do Mestrado>}
+%\qualificacaoMSc{Enge\-nharia Elétrica}
+%\dissertacao{<Área do Mestrado>}
+%\qualificacaoDr{<Área do Mestrado>}
+%\teseDr{<Área do Doutorado>}
+%\teseLD
+%\memorialLD
+
+%\areaConcentracao{<Área de Concentração>}
+\areaConcentracao{Sistemas Digitais}
+
+%\departamento{<Departamento>}
+\departamento{Departamento de Engenharia de Computação e Sistemas Digitais (PCS)}
+
+\local{São Paulo}
+
+\data{2009}
+
+\dedicatoria{}
+
+\capa{}
+
+\folhaderosto{}
+
+%
+% Ficha Catalográfica
+% (deve ficar no verso da página de rosto)
+%
+\renewcommand{\PoliFichaCatalograficaData}{%
+  1. Assunto \#1. 2. Assunto \#2. 3. Assunto \#3.
+  I. Universidade de São Paulo. Escola Politécnica.
+  \PoliDepartamentoData. II. t.}
+
+%\fichacatalografica % formata a ficha
+
+\paginadedicatoria{}
+
+\begin{agradecimentos}
+Vou citar~\cite{agashe-lauter-venkatesan}
+\end{agradecimentos}
+
+\begin{resumo}
+\end{resumo}
+
+\begin{abstract}
+\end{abstract}
+
+\begin{resume}
+\end{resume}
+
+\begin{zusammenfassung}
+\end{zusammenfassung}
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+\chapter{Introdução}\label{chp:intro}
+
+\section{Apresentação}\label{sec:presentation}
+
+\section{Objetivos}\label{sec:goals}
+
+\section{Contribuições originais}\label{sec:contrib}
+
+\section{Organização}
+
+\chapter{Outro capítulo}\label{chp:outrocap}
+
+Este capítulo desenvolve a teoria de~\cite{agashe-lauter-venkatesan,al-riyami-paterson,ansi-x9.62,balasubramanian-koblitz,blake-seroussi-smart,bleichenbacher,weimerskirch}.
+
+\[
+E = mc^2.
+\]
+
+\chapter{Conclusões}\label{chp:conclusion}
+\bibliographystyle{alpha}
+\bibliography{biblio}
+
+\appendix
+
+\chapter{Apêndice}\label{app:apendiceA}
+
+\end{document}
