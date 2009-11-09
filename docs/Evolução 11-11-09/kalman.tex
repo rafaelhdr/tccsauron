@@ -37,8 +37,9 @@ Também em forma vetorial. Assim, o método dos mínimos quadrados consiste na mini
 \begin{displaymath}
 	J=\frac{\epsilon^{2}_{y1}}{\sigma^{2}_{1}}+\cdots+\frac{\epsilon^{2}_{yk}}{\sigma^{2}_{k}}
 \end{displaymath}
-Como a própria modelagem do sistema nos informa, o método dos mínimos quadrados é a forma ótima de minimizar os erros provenientes de medições imprecisas, como é o problema que possuímos.
-No entanto, resta uma questão. Como estimar o estado e o erro do sistema entre duas medidas, sabendo-se que nosso robô estará em movimento.
+Como a própria modelagem do sistema nos informa, o método dos mínimos quadrados é a forma ótima de minimizar os erros provenientes de medições imprecisas, como é o problema que possuímos.\\
+O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de H por x e minimizar J novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é utilizado no filtro de kalman.\\
+No entanto, ainda nos resta uma questão. Como estimar o estado e o erro do sistema entre duas medidas, sabendo-se que nosso robô estará em movimento.
 
 \subsection{Propagação de estados e covariâncias}
 Para obter uma estimativa correta do estado e da covariância após um determinado intervalo de tempo decorrido, iniciamos descrevendo um sistema contínuo gernérico:
@@ -149,6 +150,29 @@ Tendo definido estes estados e de posse da teoria previamente discutida, podemos
 			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k}(I-K_{k}H_{k})^{T}+K_{k}R_{k}K^{T}_{k}
 		\end{displaymath}
 \end{itemize}
-Ou seja, iniciamos estimando um estado. Se temos certeza do mesmo,\begin{math}P_{0}^{+}=0\end{math}. A partir daí, propagamos o sistema no tempo até o momento da primeira medição, obtendo \begin{math}P_{k}^{-}\end{math} e \begin{math}\hat{x}_{k}^{-}\end{math}. Após isto, usamos a medida \begin{math}y_{k}\end{math} para atualizar a estimativa e covariância para \begin{math}P_{k}^{+}\end{math} e \begin{math}\hat{x}_{k}^{+}\end{math}.\\
-Um ponto importante a ser considerado é a diferença de fórmulas desta usada aqui e a derivada anteriormente para o método dos mínimos quadrados.\\
-Quando derivamos a equação para estimar o estado a partir das diversas medições, fizemos a suposição de que já possuísse-mos todas as medições, o que no caso do robô é completamente falso. Em nossa formulação final do filtro de kalman, usamos como forma de atualização do filtro um método conhecido como método dos mínimos quadrados recursivo, de forma a atualizar nossa estimativa de acordo com a entrada das medições. A teoria por trás desta, baseada em nosso desevolvimento, pode ser encontrada facilmente em diversas fontes.
+Ou seja, iniciamos estimando um estado. Se temos certeza do mesmo,\begin{math}P_{0}^{+}=0\end{math}. A partir daí, propagamos o sistema no tempo até o momento da primeira medição, obtendo \begin{math}P_{k}^{-}\end{math} e \begin{math}\hat{x}_{k}^{-}\end{math}. Após isto, usamos a medida \begin{math}y_{k}\end{math} para atualizar a estimativa e covariância para \begin{math}P_{k}^{+}\end{math} e \begin{math}\hat{x}_{k}^{+}\end{math}.
+
+\subsection{Filtro de Kalman Extendido}
+O filtro de kalman desenvolvido anteriormente é matematicamente o método ótimo de estimação de estados para sistemas lineares. No entanto, na natureza existem poucos sistemas lineares, a maioria são sistemas lineares, e o problema de estimação da posição do robô com sonares e visão computacional não é linear. Assim, é necessário um outro filtro para isso.\\
+Foi desenvolvido uma versão extendida para estimação de sistemas não lineares, usado inicialmente para o sistema de navegação de espaçonaves, e atualmente é o filtro padrão para estimação de sistemas não lineares.\\
+No filtro extendido, os estados de transição e modelos de observação não precisam ser funções lineares, podendo ser equações diferenciais. Em nossa formulação, usaremos o método hibrido de filtragem, que consiste em propagação de estado de forma contínua e atualização de estado com medidas de forma discreta. Isto porque nosso poder computacional nos permite propagar o estado segundo nosso modelo de dinâmica várias vezes entre duas medidas de sonares estarem disponíveis.\\
+Assim, nosso sistema será descrito pelas seguintes equações:
+\begin{displaymath}
+	\dot{x}	= f(x,u,w,t)
+\end{displaymath}
+\begin{displaymath}
+	y = h(x,v,t)
+\end{displaymath}
+Onde x é o estado, u é uma força de controle, w o ruído do processo e v o ruído da medição.\\
+Estas equações nos bastam para predizer nossa estimativa e atualizá-la com a nova medida. No entanto, não há como diretamente aplicá-las na obtenção da covariância diretamente. Para obter a covariância, é realizada uma expansão de taylor de primeira ordem ao redor de cada estimativa, linearizando o sistema segundo uma função normalizada, e após isto utilizamos o filtro de kalman discreto anteriormente descrito no sistema agora linear.\\
+De forma a obter a covariância, utilizamos o jacobiano de f e h, obtendo $F_{k-1}$ e $H_{k}$, que serão utilizados nas equações de filtro linear, a saber:
+\begin{displaymath}
+	P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1}
+\end{displaymath}
+\begin{displaymath}
+	K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1}
+\end{displaymath}
+\begin{displaymath}
+	P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k}
+\end{displaymath}
+É importante notar que para sistemas com não-linearidades muito grandes a expansão apresenta erros muito grandes. No entanto, para nosso problema o EKF apresenta performance satisfatória.
