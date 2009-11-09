@@ -1,4 +1,4 @@
-%\begin{comment}
+\begin{comment}
 \documentclass[a4paper,11pt]{article}
 \usepackage{graphicx}
 \usepackage[brazilian]{babel}
@@ -6,7 +6,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{fullpage}
 \begin{document}
-%\end{comment}
+\end{comment}
 
 \section{Arquitetura do Sistema de Localização}
 
@@ -18,7 +18,7 @@ Essas estimativas, que são corrigidas pelos sensores, são previstas pelo modelo 
 
 O filtro estendido de Kalman (EKF) é filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de Localização, que coordena o funcionamento de todo o sistema, iniciando os sensores e ligando-os ao EKF.
 
-A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores ($z$, $h$, $H$ e $R$)
+A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores ($z$, $h$, $H$ e $R$) representam a observação real ($z$), observação esperada ($h$), matriz de observação, que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada ($H$) e a covariância ($R$).
 
 \begin{figure}[h]
 	\centering
@@ -27,4 +27,4 @@ A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As in
 	\label{fig:arquitetura}
 \end{figure}
 
-\end{document}
+%\end{document}
