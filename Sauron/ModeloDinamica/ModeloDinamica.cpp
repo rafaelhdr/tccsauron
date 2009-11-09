@@ -184,7 +184,7 @@ void ModeloDinamica::mainLoop()
     boost::xtime sleepTime;
     boost::xtime sleepDeltaTime;
 
-    sleepDeltaTime.nsec = 50000000;
+    sleepDeltaTime.nsec = 25 * 1000000;
 
     while ( true )
     {
