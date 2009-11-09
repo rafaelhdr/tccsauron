@@ -148,17 +148,19 @@ int principal(int argc, char** argv)
   robot.unlock();
 
   ArMap map;
-  if(!map.readFile("pavsup.map")) {
+  char mapName[] = "pavsup.map";
+  if(!map.readFile(mapName)) {
 	  robot.disconnect(); // sem isso dá pau (pure virtual call)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
 
   sauron::LocalizationManager locManager(&robot, map, std::string(""));
-
+	
   startEstimatedPoseConsole(locManager);
 
-std::cout << "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
-          << "Digite a letra referente a opcao desejada:" << std::endl;
+std::cout	<< "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
+			<< "Você está usando o mapa: " << mapName << std::endl
+			<< "Digite a letra referente a opcao desejada:" << std::endl;
 
   char c = 'A';
 
