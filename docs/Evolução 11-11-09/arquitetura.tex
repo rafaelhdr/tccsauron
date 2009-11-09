@@ -1,8 +1,27 @@
+%\begin{comment}
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\begin{document}
+%\end{comment}
+
+\section{Arquitetura do Sistema de Localização}
+
+O sistema de localização estima a posição do robô a partir dos dados de seus sensores. No SAURON, os sensores são os oito sonares e uma câmera de vídeo. Cada sensor tem associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma série de leituras a uma parede no mapa. De agora em diante, quando falarmos em um sensor, estamos nos referindo ao seu modelo de observação.
+
+Cada sensor sabe qual é a observação esperada para uma dada postura do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura estimada. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
+
+Essas estimativas, que são corrigidas pelos sensores, são geradas pelo mo
 
 
-\begin{figure}[!t]
-\centering 
-\includegraphics[width=15.5cm]{imagens/logo.pdf}
+\begin{figure}
+	\centering
+		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
+	\caption{Modelo refinado de incidência dos sonares. $\beta=\theta_{sonar}+\alpha$}
+	\label{fig:nossomodelo}
 \end{figure}
 
-\maketitle
+\end{document}

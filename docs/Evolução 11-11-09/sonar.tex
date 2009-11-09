@@ -8,6 +8,15 @@
 \begin{document}
 \end{comment}
 
+\begin{equation}
+h(x) = \frac{R_{wall} - x_{sonar}\cos \theta_{wall} - y_{sonar}\sin \theta_{wall}}{\sin(\theta'_{sonar} + \theta_{wall} - \theta + \frac{\pi}{2})}
+\end{equation}
+
+\begin{equation}
+h(x) = \frac{R_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}}{\sin(\theta'_{sonar} + \theta_{wall} - \theta + \frac{\pi}{2})}
+\end{equation}
+
+
 \section{Modelo de Observação dos Sonares}
 O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações\footnote{A MobileRobots vende o kit de \textit{upgrade} de robôs existentes para sensores laser por US\$1 295 (preço de desconto para universidades).}. Um dos objetivos de nosso projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 

@@ -10,9 +10,9 @@ Como foi especificado no documento de especificação, nós seguiremos a arquitetur
 \end{center}
 \end{figure}
 
-Dentro desta arquitetura, os módulos: Odômetro, Sonares e Visão são considerados prontos. Odômetros e Sonares são sensores presentes na plataforma-robô Pionner P2DX. A Visão será provida por uma câmera comercial de baixo custo. Nossos testes estão sendo realizados com a HS988 da Raysun Shine e com a Microsoft LifeCam VX1000.
+Odômetros e sonares são sensores presentes na plataforma-robô Pionner P2DX. A Visão será provida por uma câmera comercial de baixo custo. Nossos testes estão sendo realizados com a HS988 da Raysun Shine e com a Microsoft LifeCam VX1000.
 
-Nossos progressos concentraram-se no Módulo de Localização, cuja arquitetura se baseia no uso do estimador baesiano conhecido por Filtro de Kalman. A arquitetura detalhada do Módulo de Localização encontra-se na figura~\ref{arquitetura:localizacao} abaixo.
+Nossos progressos concentraram-se no Módulo de Localização, cuja arquitetura se baseia no uso do estimador bayesiano conhecido por Filtro Estendido de Kalman. A arquitetura detalhada do Módulo de Localização encontra-se na figura~\ref{arquitetura:localizacao} abaixo.
 
 \begin{figure}[h]%
 \begin{center}
@@ -22,6 +22,19 @@ Nossos progressos concentraram-se no Módulo de Localização, cuja arquitetura se 
 \end{center}
 \end{figure}
 
-O Módulo de Localização foi o primeiro a ser desenvolvido levando-se em conta sua dificuldade, considerada maior do que dos demais módulos. Dessa forma também seguimos o planejamento realizado anteriormente.
+Os trabalhos do último mês resultaram em um avanço considerável no módulo de localização.
 
-Nas próximas seções detalharemos os progessos relativos ao Módulo de Localização e os módulos internos, como o Modelo de Dinâmica com uso dos odômetros, o Modelo de Observação dos Sonares, o Modelo de Observação da Camêra e o Filtro de Kalman especificamente.
+\subsection{Arquitetura do Sistema}
+Todos os módulos do sistema foram integrados, e os testes do sistema completo começaram. Uma arquitetura de software fortemente assíncrona e desacoplada foi desenvolvida, com resultados satisfatórios. A arquitetura do sistema é descrita na seção \ref{sec:arquitetura}.
+
+\subsection{Filtro Estendido de Kalman (EKF)}
+O código do filtro estendido de Kalman, EKF, foi implementado e testado no simulador.
+
+\subsection{Modelo de Dinâmica}
+O modelo de dinâmica foi finalizado e testado no simulador. Ele é descrito na seção \ref{sec:dinamica}.
+
+\subsection{Modelo de Sonares}
+O modelo de sonares foi finalizado e testado no simulador. Muito esforço foi gasto para garantir que a modelagem matemática dos sonares estava correta. As equações finais podem ser vistas na seção \ref{sec:sonar}.
+
+\subsection{Modelo de Visão}
+Seção \ref{sec:visao}.
