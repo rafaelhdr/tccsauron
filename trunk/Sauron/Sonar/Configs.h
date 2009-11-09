@@ -9,14 +9,14 @@ namespace sauron
 	{
 		namespace sonars
 		{
-			const int circularBufferLength = 5;
+			const int circularBufferLength = 15;
 			const reading_t sonarReadingStandardDeviationMm =  25;
 			const int validationGateSigma2 = 625;
 			const int kMin = 4;
 			const double phoErrorFront4mm = 0.05;
 			const double readingValidationAlpha = 0.5;
 			const double wallRejectionValue2 = 2.7060;
-			const double maximumSonarToLineDistance = 550;
+			const double maximumSonarToLineDistance = 350;
 			// variação mínima em radianos para que o sistema considere que o robô fez
 			// uma curva
 			const double minimumRobotTurnAngle =  0.05; //0.174; // 10 graus

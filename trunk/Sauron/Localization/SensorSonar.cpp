@@ -82,18 +82,34 @@ namespace sauron
 					//	"=> " << multiplier;
 
 					//
-					H(0,0) = ::cos(matchedLine.getTheta()) / denominator;
+					H(0,0) = -1 * ::cos(matchedLine.getTheta()) / denominator;
 					//H(0,0) = 0;
 					H(0,1) = ::sin(matchedLine.getTheta()) / denominator;
 					//H(0,0) = multiplier * ::cos(matchedLine.getTheta());
 					//H(0,1) = multiplier * ::sin(matchedLine.getTheta());
 					//H(0,1) = multiplier * ::sin(matchedLine.getTheta()) / denominator;
 					// H(0,2) = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
+					// novo:
+					// h_antigo = x'_sonar * sin(Theta_n - Theta_wall) + y'_sonar * cos (Theta_n - Theta_wall)
+					// angulo_novo = theta'_sonar + theta_wall - theta_n + pi/2
+					// esperada = r_wall - (x_n + x'_sonar * cos(Theta_n) - y'_sonar * sen(Theta_n)) * cos(Theta_wall)
+					//			  - (y_n + x'_sonar * sen(Theta_n) + y' * cos(Theta_n)) * sen(Theta_wall)
+					// H(0,2) = (h_antigo * sin(angulo_novo) + esperada * cos(angulo_novo)) / sen(angulo_novo)^2
 					double theta_diff = last.Theta() - matchedLine.getTheta();
 
 					pose_t x_sonar = sonarRelativePose.X();
 					pose_t y_sonar = sonarRelativePose.Y();
-					H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
+					pose_t th_sonar = sonarRelativePose.Theta();
+					//H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
+					double h_antigo =  x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
+					double angulo_novo = th_sonar + matchedLine.getTheta() - last.Theta() + trigonometry::PI/2;
+					double obs_esperada = matchedLine.getRWall() -
+						( last.X() + x_sonar * cos(last.Theta()) - y_sonar * sin(last.Theta())) * cos(matchedLine.getTheta())
+						- (last.Y() + x_sonar * sin(last.Theta()) + y_sonar * cos(last.Theta())) * sin(matchedLine.getTheta());
+					double sin_angulo_novo_2 = sin(angulo_novo);
+					sin_angulo_novo_2 *= sin_angulo_novo_2;
+
+					H(0,2) = (h_antigo * sin(angulo_novo) + obs_esperada * cos(angulo_novo)) / sin_angulo_novo_2;
 
 					SONAR_LOG(logDEBUG3) << "Matriz H: " << H;
 					return true;
