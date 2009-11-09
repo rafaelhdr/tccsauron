@@ -1,0 +1,27 @@
+\section{Progressos}
+
+Como foi especificado no documento de especificação, nós seguiremos a arquitetura indicada na figura~\ref{arquitetura:global} abaixo.
+
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquitetura.jpg}
+\caption{Arquitetura do Sistema completo.}%
+\label{arquitetura:global}%
+\end{center}
+\end{figure}
+
+Dentro desta arquitetura, os módulos: Odômetro, Sonares e Visão são considerados prontos. Odômetros e Sonares são sensores presentes na plataforma-robô Pionner P2DX. A Visão será provida por uma câmera comercial de baixo custo. Nossos testes estão sendo realizados com a HS988 da Raysun Shine e com a Microsoft LifeCam VX1000.
+
+Nossos progressos concentraram-se no Módulo de Localização, cuja arquitetura se baseia no uso do estimador baesiano conhecido por Filtro de Kalman. A arquitetura detalhada do Módulo de Localização encontra-se na figura~\ref{arquitetura:localizacao} abaixo.
+
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquitetura_localizacao.jpg}
+\caption{Arquitetura Detalhada do Módulo de Localização.\cite{barra}}%
+\label{arquitetura:localizacao}%
+\end{center}
+\end{figure}
+
+O Módulo de Localização foi o primeiro a ser desenvolvido levando-se em conta sua dificuldade, considerada maior do que dos demais módulos. Dessa forma também seguimos o planejamento realizado anteriormente.
+
+Nas próximas seções detalharemos os progessos relativos ao Módulo de Localização e os módulos internos, como o Modelo de Dinâmica com uso dos odômetros, o Modelo de Observação dos Sonares, o Modelo de Observação da Camêra e o Filtro de Kalman especificamente.

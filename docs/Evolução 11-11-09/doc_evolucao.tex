@@ -1,0 +1,37 @@
+\documentclass[a4paper,11pt]{article}
+%\documentclass{abnt}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[pdftex,bookmarks=true]{hyperref}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage[hang,small]{caption}
+\usepackage[bottom]{footmisc}
+\pdfadjustspacing=1
+\parskip=\baselineskip % space between paragraphs
+
+% define the title
+\author{Felipe G. Godoy, Pedro d'Aquino, Rafael Ruppel, Rafael Silva\\Sob orientação da Prof. Dr\textsuperscript{a}. Anna Reali Costa}
+\title{SAURON\\Robô-guia\\Documento de Evolução}
+
+\begin{document}
+
+\include{capa}
+\include{sumario}
+\include{introducao}
+\include{progressos}
+\include{kalman}
+\include{modelodinamica}
+\include{sonar}
+\include{visao}
+\include{conclusao}
+
+
+\addcontentsline{toc}{section}{Referências} 
+\bibliographystyle{plain}
+\bibliography{referencias}
+\end{document}
