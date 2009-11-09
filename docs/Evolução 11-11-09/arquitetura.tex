@@ -12,16 +12,19 @@
 
 O sistema de localização estima a posição do robô a partir dos dados de seus sensores. No SAURON, os sensores são os oito sonares e uma câmera de vídeo. Cada sensor tem associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma série de leituras a uma parede no mapa. De agora em diante, quando falarmos em um sensor, estamos nos referindo ao seu modelo de observação.
 
-Cada sensor sabe qual é a observação esperada para uma dada postura do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura estimada. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
+Cada sensor sabe qual é a observação esperada para uma dada postura do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
 
-Essas estimativas, que são corrigidas pelos sensores, são geradas pelo mo
+Essas estimativas, que são corrigidas pelos sensores, são previstas pelo modelo de dinâmica. Seu papel é gerar uma estimativa a partir da última postura do robô, sabendo o quanto ele andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada no SAURON, é obter as informações a partir do odômetro do robô.
 
+O filtro estendido de Kalman (EKF) é filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de Localização, que coordena o funcionamento de todo o sistema, iniciando os sensores e ligando-os ao EKF.
 
-\begin{figure}
+A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores ($z$, $h$, $H$ e $R$)
+
+\begin{figure}[h]
 	\centering
 		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
 	\caption{Modelo refinado de incidência dos sonares. $\beta=\theta_{sonar}+\alpha$}
-	\label{fig:nossomodelo}
+	\label{fig:arquitetura}
 \end{figure}
 
 \end{document}
