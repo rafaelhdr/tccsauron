@@ -18,7 +18,6 @@ h(x) = \frac{R_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\co
 
 
 \section{Modelo de Observação dos Sonares}
-\label{sec:sonar}
 O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações\footnote{A MobileRobots vende o kit de \textit{upgrade} de robôs existentes para sensores laser por US\$1 295 (preço de desconto para universidades).}. Um dos objetivos de nosso projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 
 A abordagem adotada é fortemente baseada em \cite{barra}. Nesse trabalho, o autor utilizou um modelo de observação para os sonares que lhe permitiu localizar robôs móveis em um ambiente similar ao contemplado neste projeto. Algumas mudanças, contudo, foram realizadas no modelo matemático.
