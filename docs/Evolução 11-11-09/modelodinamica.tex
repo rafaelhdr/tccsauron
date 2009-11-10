@@ -84,15 +84,4 @@ pose_t ModeloDinamica::calculaTheta()
 \end{lstlisting}
 
 
-\subsection{Atividades Realizadas}
-O Modelo de Dinâmica encontra-se finalizado e testado. Após a primeira implementação houve mudanças relativas a dois quesitos:
 
-1. Interfaceamento com o ôdometro do Robô.
-
-2. Integração dos Módulos do Sistema.
-
-As mudanças relativas ao interfaceamento com o ôdometro do robô se justificam pela forma inesperada que o odômetro trabalhava em relação ao ângulo de deslocamento. O odômetro acumulava a variaçao de ângulo sempre positivamente, independente do sentido de deslocamento angular. Uma pequena correção utilizando o sinal de controle do robô de velocidade rotacional corrigiu esse problema, ao adicionar o sentido correto ao deslocamento angular.
-
-Essa mudança foi traumática porque nos primeiros testes, por desatenção da equipe, utilizamos apenas curvas para o mesmo sentido, e o Modelo de Dinâmica foi considerado aprovado. Após a integração com os Sonares, testes mais detalhados revelaram o problema, que acreditava-se estar nos Sonares.
-
-A integração dos Módulos do Sistema também exigiu reestruturação do Módulo, mas de forma bem menos traumática do que a mudança anterior, pois já estava planejada. 

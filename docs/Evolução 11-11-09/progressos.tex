@@ -34,7 +34,17 @@ Primeiramente, um sistema centralizado foi construído, mas ele apresentava dois 
 O código do filtro estendido de Kalman, EKF, foi implementado e testado no simulador, sendo que inicialmente foi testado o modelo de dinâmica isoladamente de forma a corrigir erros na etapa de predição do modelo e depois com o modelo de dinâmica conjuntamente do sonar, a fim de testar a etapa de atualização do filtro. O EKF é detalhado na seção \ref{sec:kalman}.
 
 \subsection{Modelo de Dinâmica}
-O modelo de dinâmica foi finalizado e testado no simulador. Alguns erros foram corrigidos. Em particular, agora é utilizada a informação de velocidade rotacional do robô para o cálculo da inclinação estimada do robô. Ele é descrito na seção \ref{sec:dinamica}.
+O Modelo de Dinâmica encontra-se finalizado e testado. Após a primeira implementação houve mudanças relativas a dois quesitos:
+
+1. Interfaceamento com o ôdometro do Robô.
+
+2. Integração dos Módulos do Sistema.
+
+As mudanças relativas ao interfaceamento com o ôdometro do robô se justificam pela forma inesperada que o odômetro trabalhava em relação ao ângulo de deslocamento. O odômetro acumulava a variaçao de ângulo sempre positivamente, independente do sentido de deslocamento angular. Uma pequena correção utilizando o sinal de controle do robô de velocidade rotacional corrigiu esse problema, ao adicionar o sentido correto ao deslocamento angular.
+
+Essa mudança foi traumática porque nos primeiros testes, por desatenção da equipe, utilizamos apenas curvas para o mesmo sentido, e o Modelo de Dinâmica foi considerado aprovado. Após a integração com os Sonares, testes mais detalhados revelaram o problema, que acreditava-se estar nos Sonares.
+
+A integração dos Módulos do Sistema também exigiu reestruturação do Módulo, mas de forma bem menos traumática do que a mudança anterior, pois já estava planejada. 
 
 \subsection{Modelo de Sonares}
 Com a integração do modelo de dinâmica e do EKF, o teste integrado dos sonares pôde começar. Até agora, só foram realizados testes no simulador. A dificuldade em verificar exatamente o que está acontecendo em um teste diminui o ritmo de progressos, mas o sistema de log foi fundamental para consertar a maior parte dos erros.
