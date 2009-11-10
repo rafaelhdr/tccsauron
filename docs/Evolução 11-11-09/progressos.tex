@@ -77,7 +77,7 @@ Os testes foram feitos no mapa da figura \ref{fig:pavsup}, o pavimento superior 
 \end{figure}
 
 
-Em testes simples, como andar em linha reta, o sistema se sai bem. Especificamente, o erro nas coordenadas $y$ 3 cm, e em $\theta$, abaixo de 0.05 radianos. Contudo, um comportamento estranho é visto no erro no eixo $x$, como ilustrado na figura \ref{fig:xzoado}. A causa dessa oscilação não é conhecida e está sendo objeto de investigações.
+Em testes simples, como andar em linha reta, o sistema se sai bem. Especificamente, o erro no eixo $y$ foi de cerca de 3 cm, e em $\theta$, abaixo de 0.05 radianos. Contudo, um comportamento estranho é visto no erro no eixo $x$, como ilustrado na figura \ref{fig:xzoado}\footnote{Note, também, que os erros em $x$ acabam causando prejuízos em $y$.}. A causa dessa oscilação não é conhecida e está sendo objeto de investigações.
 
 \begin{figure}
 	\centering
@@ -86,8 +86,8 @@ Em testes simples, como andar em linha reta, o sistema se sai bem. Especificamen
 	\label{fig:xzoado}
 \end{figure}
 
-Como pode ser visto na seção \ref{sec:sonar}, os sonares são mais adequados para corrigir a componente $y$ da postura\footnote{Pois o vetor $H$ depende, na coordenada $y$, do seno de $\theta_{wall}$. Na maior parte das vezes, $\theta_{wall}$ é $\frac{\pi}{2}$ -- existem mais paredes paralelas
-ao eixo $x$ do que ao eixo $y$}. Logo, testamos também a capacidade do sistema de se recuperar de associações erradas (figura \ref{fig:associacaoinvalida}) e erros na estimativa inicial (figura \ref{fig:estimativainicial}).
+Testamos também a capacidade do sistema de se recuperar de associações erradas (figura \ref{fig:associacaoinvalida}) e erros na estimativa inicial (figura \ref{fig:estimativainicial}). Como pode ser visto na seção \ref{sec:sonar}, os sonares são mais adequados para corrigir a componente $y$ da postura\footnote{Pois o vetor $H$ depende, na coordenada $y$, do seno de $\theta_{wall}$. Na maior parte das vezes, $\theta_{wall}$ é $\frac{\pi}{2}$ -- existem mais paredes paralelas
+ao eixo $x$ do que ao eixo $y$}, de modo que é nesse eixo que concentramos nossas avaliações. Note que em ambos os casos o sistema convergiu para a posição correta.
 
 \begin{figure}
 	\centering
