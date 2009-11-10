@@ -3,9 +3,7 @@
 \label{sec:dinamica}
 
 \subsection{Visão Geral}
-O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman. Nosso Modelo de Dinâmica utilizará os dados do odômetro para conseguir realizar tal predição. Realizar a predição significa obter uma nova postura (i.e., coordenadas (x,y) e ângulo $\theta$ )  com os dados do odômetro e da última estimativa.
-
-O Modelo de Dinâmica é talvez uma das partes mais fáceis a ser realizada dentro do Módulo de Localização, por isso ele foi delegado a um dos dois integrantes do grupo que não tinha experiência com a linguagem C++ utilizada para 
+O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman. Nosso Modelo de Dinâmica utiliza os dados do odômetro para conseguir realizar tal predição. Realizar a predição significa obter uma nova postura (i.e., coordenadas (x,y) e ângulo $\theta$ )  com os dados do odômetro e da última estimativa.
 
 \subsection{Modelagem}
 
@@ -27,43 +25,74 @@ As equações para se obter a postura estimada do robô, a partir da última estimat
 	\theta(n)=\theta(n-1)+\delta\theta(n)
 \end{gather}
 
-Para completar o modelo de dinâmica também é preciso encontrar as fórmulas de incerteza, que estão começando a ser tratadas na atual fase de implementação.
+Essas equações formam a chamada matriz f do Filtro de Kalman, responsável diretamente pela etapa de predição.
+
+Além disso, por exigência do filtro de Kalman Extendido, é necessário calcular a matriz de covariâncias Q e a matriz F, de propagação das incertezas pelas derivadas da matriz f. 
+
+\subsection{Incertezas e Covariâncias}
+
+A propagação de incertezas, representada pela matriz F, é calculada através da matriz das derivadas da matriz f (conhecida por jacobiano de f). Pela simplicidade de f, a matriz F é facilmente deduzida para:
+
+
+\[ F(n) = \left( \begin{array}{ccc}
+1 & 0 & -\delta_{m}(n)sin(\Theta_{m}(n-1)) \\
+0 & 1 & \delta_{m}(n)cos(\Theta_{m}(n-1)) \\
+0 & 0 & 1 \end{array} \right).\] 
+  
+ 
+A matriz Q, da variância do Modelo de Dinâmica, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear e angular.
+
+
+\[ Q(n) = \left( \begin{array}{ccc}
+\sigma^{2}_{d_{m}} cos^2(\Theta_{m}(n-1))  & \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & 0 \\
+\sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & \sigma^{2}_{d_{m}} sin^2(\Theta_{m}(n-1)) & 0 \\
+0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right).\]   
+
 
 \subsection{Exemplo de Implementação}
 
 Abaixo a classe mais genérica do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
 
 \begin{lstlisting}[language=C++]
-Pose ModeloDinamica::getNovaPosicao(const MedidaOdometro nova_medida)
-{
- Pose nova_posicao(calculaX(nova_medida), calculaY(nova_medida),
- calculaTheta(nova_medida));
- posicao_anterior = nova_posicao;
- medida_anterior = nova_medida;
- return nova_posicao;
-}
 		
-pose_t ModeloDinamica::calculaX(const MedidaOdometro nova_medida)
+pose_t ModeloDinamica::calculaX()
 {
- /* x(n-1) + delta distancia * cos (teta médio) */
- return posicao_anterior.X() + 
- nova_medida.minus(medida_anterior).getDistance()*
- ::cos(medida_anterior.getTheta());
+	
+	return posicaoEstimada.X() 
+	+ medidaOdometro.getDeltaDistance()*::cos(posicaoEstimada.Theta());
 }
 
-pose_t ModeloDinamica::calculaY(const MedidaOdometro nova_medida)
+
+pose_t ModeloDinamica::calculaY()
 {
- return posicao_anterior.Y() + 
- nova_medida.minus(medida_anterior).getDistance()*
- ::sin(medida_anterior.getTheta());
+	return posicaoEstimada.Y() 
+	+ medidaOdometro.getDeltaDistance()*::sin(posicaoEstimada.Theta());
 }
 
-pose_t ModeloDinamica::calculaTheta(const MedidaOdometro nova_medida)
+
+pose_t ModeloDinamica::calculaTheta()
 {
- return nova_medida.getTheta();
+    if(!floating_point::isEqual(medidaOdometro.getDeltaTheta(), 0))
+    {
+	    DINAMICA_LOG(logDEBUG2) 
+	    << "Ultimo Theta Estimado: " << posicaoEstimada.Theta() 
+	    << ". Delta Theta: " << medidaOdometro.getDeltaTheta();
+    }
+    return sauron::trigonometry::normalizeAngle(
+    (posicaoEstimada.Theta() + medidaOdometro.getDeltaTheta()));
 }
 \end{lstlisting}
 
 
-\subsection{Próximos Passos}
-Os próximos passos do Modelo de Dinâmica consistem em encontrar as equações da incerteza e implementá-las. Como nos demais modelos são realizados testes para se encontrar as constantes a serem usadas.
+\subsection{Atividades Realizadas}
+O Modelo de Dinâmica encontra-se finalizado e testado. Após a primeira implementação houve mudanças relativas a dois quesitos:
+
+1. Interfaceamento com o ôdometro do Robô.
+
+2. Integração dos Módulos do Sistema.
+
+As mudanças relativas ao interfaceamento com o ôdometro do robô se justificam pela forma inesperada que o odômetro trabalhava em relação ao ângulo de deslocamento. O odômetro acumulava a variaçao de ângulo sempre positivamente, independente do sentido de deslocamento angular. Uma pequena correção utilizando o sinal de controle do robô de velocidade rotacional corrigiu esse problema, ao adicionar o sentido correto ao deslocamento angular.
+
+Essa mudança foi traumática porque nos primeiros testes, por desatenção da equipe, utilizamos apenas curvas para o mesmo sentido, e o Modelo de Dinâmica foi considerado aprovado. Após a integração com os Sonares, testes mais detalhados revelaram o problema, que acreditava-se estar nos Sonares.
+
+A integração dos Módulos do Sistema também exigiu reestruturação do Módulo, mas de forma bem menos traumática do que a mudança anterior, pois já estava planejada. 
