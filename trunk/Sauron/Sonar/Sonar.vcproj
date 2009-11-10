@@ -60,7 +60,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="AriaDebugVC9.lib"
 				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
 			/>
 			<Tool

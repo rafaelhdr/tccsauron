@@ -68,6 +68,9 @@ namespace sauron
 
 					double denominator = ::sin(
 						sonarRelativePose.Theta() + matchedLine.getTheta() - last.Theta() + trigonometry::PI / 2);
+					
+					if(floating_point::isEqual(denominator, 0, 0.01))
+						return false;
 
 					SONAR_LOG(logDEBUG2) << "Theta' = " << sonarRelativePose.Theta() << "; ThetaWall = " <<
 						matchedLine.getTheta() << "; Theta = " << last.Theta() << "; soma = " <<
