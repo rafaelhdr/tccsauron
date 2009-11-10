@@ -19,24 +19,41 @@ h(x) = \frac{R_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\co
 
 \section{Modelo de Observação dos Sonares}
 \label{sec:sonar}
-O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações\footnote{A MobileRobots vende o kit de \textit{upgrade} de robôs existentes para sensores laser por US\$1 295 (preço de desconto para universidades).}. Um dos objetivos de nosso projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
+O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações\footnote{A MobileRobots vende o kit de \textit{upgrade} de robôs existentes para sensores laser por US\$1 295 (preço de desconto para universidades).}. Um dos objetivos de nosso projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada, principalmente levando em consideração que o robô utilizado no projeto contém oito sonares integrados.
 
-A abordagem adotada é fortemente baseada em \cite{barra}. Nesse trabalho, o autor utilizou um modelo de observação para os sonares que lhe permitiu localizar robôs móveis em um ambiente similar ao contemplado neste projeto. Algumas mudanças, contudo, foram realizadas no modelo matemático.
+A abordagem adotada é fortemente baseada em \cite{barra}. Nesse trabalho, o autor utilizou um modelo de observação para os sonares que lhe permitiu localizar robôs móveis em um ambiente similar ao contemplado neste projeto. Algumas alterações, entretanto, foram realizadas no modelo matemático, e serão detalhadas adiante.
 
 \subsection{Visão geral}
 
 O modelo de observação dos sonares é um dos módulos de localização do sistema. A saída de todos os módulos de localização é dirigida ao estimador, que, no nosso caso, é um filtro de Kalman. Cada módulo deve fornecer ao filtro as observações que seriam esperadas caso o robô realmente estivesse na posição estimada.
 
-De modo geral, a operação do modelo dos sonares pode ser dividida em três etapas. Primeiramente, as observações são validadas e é determinado se estamos realmente enxergando uma parede. Caso estejamos, consultamos o mapa do ambiente e obtemos a posição global da parede observada, e, por fim, retornamos a observação que seria esperada para aquela parede, supondo que a posição estimada do robô está correta. Cada sonar é tratado como um sensor isolado.
+De modo geral, a operação do modelo dos sonares pode ser dividida em três etapas. Primeiramente, as observações são validadas e é determinado se estamos realmente enxergando uma parede. Em caso afirmativo, consultamos o mapa do ambiente e obtemos a posição global da parede observada, e, por fim, retornamos a observação que seria esperada para aquela parede, supondo que a posição estimada do robô está correta. Cada sonar é tratado como um sensor isolado.
 
-\paragraph{Validação das observações} As últimas $k$ observações são consultadas, juntamente com a postura estimada em cada uma delas. Determina-se, com auxílio do mapa, se as observações podem corresponder a uma superfície plana. Caso isso seja verdade, estima-se a posução da parede.
+\paragraph{Validação das observações} As últimas $k$ observações são consultadas, juntamente com a postura estimada em cada uma delas. Determina-se, com auxílio do mapa, se as observações podem corresponder a uma superfície plana. Caso isso seja verdade, estima-se a posição da parede.
 
 \paragraph{Associação das observações com o mapa} O mapa é então consultado para encontrar uma parede que corresponda às observações validadas. Essa associação, por ser muito importante, é bastante conservadora. Se o algoritmo de correspondência encontrar uma, e somente uma, parede que corresponda às leituras do sonar, a associação é realizada com sucesso.
 
 \paragraph{Obtenção das observações esperadas} De posse da parede que o sonar está enxergando e da postura estimada do robô, retorna-se a leitura esperada do sonar.\\
 
-A descrição detalhada de cada etapa está fora do escopo deste documento de evolução. Ateremo-nos aos refinamentos feitos ao modelo original descrito em \cite{barra}.
+\subsection{Detalhamento do modelo}
+Definimos $k$ como o número de observações obtidas pelo sonar, e $k_{min}$ como o número de observações mínimos para se conseguir validar se uma superfície plana foi vista ou não. Enquanto $k < k_{min}$ a validação falhará, pois não há dados suficientes para a validação dos dados. Quando $k = k_{min}$, inicia-se o processo de validação.\\
+A etapa de validação sofreu um refinamento na modelagem de como é modelado a incidência dos sonares em uma parede e está detalhado na subseção a seguir. Como os triângulos formados entre a posição do robô, o ponto de incidência do sonar na parede e a intersecção da trajetória do robô com a parede devem ser semelhantes para todas as observações, sabemos que:\\
+\begin{equation}
+	\frac{y_{2}-y_{1}}{d_{1,2}}=\frac{y_{3}-y_{2}}{d_{2,3}}=\frac{y_{k}-y_{k-1}}{d_{k-1,k}}
+\end{equation}
+Assim, definimos o seguinte conjunto de elementos:
+\begin{equation}
+	\frac{y_{j}-y_{j-1}}{d_{j-1,j}}=\gamma_{j,j-1}, j > 1
+\end{equation}
+Para que o processo dê como válidas as observações, é necessário que duas hipóteses sejam satisfeitas:
+\begin{equation}
+	
+\begin{align}
+	H_{0}: \gamma ~ N(A,\delta^{2}_{obsmedia})
+	\gamma ~ N(A,\delta^{2}_{alternativo}), \delta^{2}_{obsmedia}<\delta^{2}_{alternativo}
+\end{align}
 
+\end{equation}
 
 \subsection{Refinamentos do modelo}
 
