@@ -40,9 +40,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm112"
+				AdditionalOptions="/Zm200"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;ARIA_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Sonar.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib"
+				AdditionalDependencies="AriaDebugVC9.lib ArNetworkingStaticDebugVC9.lib Sonar.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
 				IgnoreDefaultLibraryNames="atlthunk.lib"

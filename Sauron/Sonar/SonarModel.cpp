@@ -225,10 +225,10 @@ namespace sauron
 		std::vector<LineSegment>* pLines = map.getLines();	
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
-			getLatestReading().estimatedPose);
+			latestPose);
 		SONAR_LOG(logDEBUG3) << "Linhas apos FarAwayFilter: " << mapLines.size();
 		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
-		mapLines = filterBySonarAngle(mapLines, getLatestReading().estimatedPose);
+		mapLines = filterBySonarAngle(mapLines, latestPose);
 		SONAR_LOG(logDEBUG3) << "Linhas apos SonarAngleFilter: " << mapLines.size();
 		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
 

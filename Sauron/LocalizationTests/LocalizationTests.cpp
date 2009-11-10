@@ -5,10 +5,40 @@
 #include "SauronArRobot.h"
 
 #define TEST_LOG(level) FILE_LOG(level) << "LocalizationTests: "
+#include <windows.h>
+#include <fstream>
+
+AREXPORT const char *ArMapInterface::MAP_CATEGORY_2D = "2D-Map";
+AREXPORT const char *ArMapInterface::MAP_CATEGORY_2D_MULTI_SOURCES = "2D-Map-Ex";
+AREXPORT const char *ArMapInterface::MAP_CATEGORY_2D_EXTENDED = "2D-Map-Ex2";
+/*
+ULONGLONG epoch = -1;
+
+ULONGLONG getTimeMs()
+{
+	SYSTEMTIME systemTime;
+	GetSystemTime( &systemTime );
+
+	FILETIME fileTime;
+	SystemTimeToFileTime( &systemTime, &fileTime );
+
+	ULARGE_INTEGER uli;
+	uli.LowPart = fileTime.dwLowDateTime; // could use memcpy here!
+	uli.HighPart = fileTime.dwHighDateTime;
+
+	ULONGLONG systemTimeIn_ms( uli.QuadPart/10000 );
+	if(epoch == -1) {
+		epoch = systemTimeIn_ms; return 0;
+	} else {
+		return systemTimeIn_ms - epoch;
+	}
+}
+
+std::ofstream grafico("grafico.csv", std::ios::trunc);
 
 CConsoleLogger console;
 boost::mutex consoleMutex;
-sauron::SauronArRobot robot;
+//sauron::SauronArRobot robot;
 
 sauron::Pose lastEstimatedPose;
 sauron::Pose lastTruePose;
@@ -22,6 +52,12 @@ void cls(int n)
 void printEstimatedPose(const sauron::Pose& currentPose)
 {
 	boost::unique_lock<boost::mutex> lock(consoleMutex);
+
+	robot.lock();
+	robot.moveTo(ArPose(currentPose.X(), currentPose.Y(),
+		sauron::trigonometry::rads2degrees(currentPose.Theta())));
+	robot.unlock();
+
 	console.printf("%.3f\t%.3f\t%.3f\n", currentPose.X(), currentPose.Y(), currentPose.Theta());
 	ArPose arPose = robot.getTruePose();
 	sauron::Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
@@ -32,26 +68,24 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 	console.printf("Erro em X = %.3f cm\n", erroX );
 	console.printf("Erro em Y = %.3f cm\n", erroY );
 	console.printf("Erro em Theta = %.3f radianos\n", erroTheta );
+
+	grafico << getTimeMs() / 1000.0 << ";" << erroX << ";" << erroY << ";" << erroTheta << ";" << currentPose.X() << ";" << currentPose.Y() << ";" << currentPose.Theta() << ";" <<
+		truePose.X() << ";" << truePose.Y() << ";" << truePose.Theta() << ";" << truePose.getDistance(currentPose) << std::endl;
+	grafico.flush();
+
 	cls(19);
-    bool printEstimated = false;
-    bool printReal = false;
+
 	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
 		currentPose.Theta() == lastEstimatedPose.Theta())) {
 		TEST_LOG(logDEBUG1) << "Posição estimada: " << currentPose;
+		TEST_LOG(logDEBUG1) << "Erro: ( " << erroX << " , " << erroY << " , " << erroTheta << " )";
 		lastEstimatedPose = currentPose;
-        printEstimated = true;
 	}
 	if(!(truePose.X() == lastTruePose.X() && truePose.Y() == lastTruePose.Y() &&
 		truePose.Theta() == lastTruePose.Theta())) {
 		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
 		lastTruePose = truePose;
-        printReal = true; 
 	}
-
-    if(printEstimated && printReal)
-    {
-        TEST_LOG(logDEBUG1) << "Erro: ( " << erroX << " , " << erroY << " , " << erroTheta << " )";
-    }
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
@@ -60,12 +94,13 @@ void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
 	printEstimatedPose(locManager.getPose());
 	locManager.addPoseChangedCallback(printEstimatedPose);
 }
-
+*/
 int principal(int argc, char** argv)
 {
 
 #pragma region boiler1
   // Initialize some global data
+  ArRobot robot;
   Aria::init();
   ArLog::init(ArLog::StdErr, ArLog::Terse);
 
@@ -74,6 +109,14 @@ int principal(int argc, char** argv)
 
   // This object parses program options from the command line
   ArArgumentParser parser(&argc, argv);
+
+  // Our networking server
+  
+  ArServerBase server;
+  
+
+  // Set up our simpleOpener, used to set up the networking server
+  ArServerSimpleOpener simpleOpener(&parser);
 
   // Load some default values for command line arguments from /etc/Aria.args
   // (Linux) or the ARIAARGS environment variable.
@@ -120,6 +163,29 @@ int principal(int argc, char** argv)
   // Attach sonarDev to the robot so it gets data from it.
   robot.addRangeDevice(&sonarDev);
 
+     /* Start the server */
+
+  // Open the networking server
+   if (!simpleOpener.open(&server))
+   {
+     ArLog::log(ArLog::Normal, "Error: Could not open server.");
+     exit(2);
+   }
+
+   // Service to provide drawings of data in the map display :
+  //ArServerInfoDrawings drawings(&server);
+  //drawings.addRobotsRangeDevices(&robot);
+
+  // service that allows the client to monitor the communication link status
+  // between the robot and the client.
+  //
+  //ArServerHandlerCommMonitor handlerCommMonitor(&server);
+
+  // These provide various kinds of information to the client:
+  //ArServerInfoRobot serverInfoRobot(&server, &robot);
+ // ArServerInfoSensor serverInfoSensor(&server, &robot);
+
+
   // Start the robot task loop running in a new background thread. The 'true' argument means if it loses
   // connection the task loop stops and the thread exits.
   robot.runAsync(true);
@@ -154,7 +220,12 @@ int principal(int argc, char** argv)
 	  throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
 
-  sauron::LocalizationManager locManager(&robot, map, std::string(""));
+  // Provide the map to the client (and related controls):
+   ArServerHandlerMap serverMap(&server, &map);
+
+  server.runAsync();
+
+  /*sauron::LocalizationManager locManager(&robot, map, std::string(""));
 	
   startEstimatedPoseConsole(locManager);
 
@@ -219,11 +290,11 @@ std::cout	<< "Bem-vindo ao programa de testes mais bonito do Brasil" << std::end
   }
 
   std::cout << "Ciao!";
-
+*/
   // Block execution of the main thread here and wait for the robot's task loop
   // thread to exit (e.g. by robot disconnecting, escape key pressed, or OS
   // signal)
-  //robot.waitForRunExit();
+  robot.waitForRunExit();
   robot.disconnect();
   Aria::exit(0);
   return 0;
