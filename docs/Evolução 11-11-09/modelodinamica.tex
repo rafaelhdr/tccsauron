@@ -3,7 +3,15 @@
 \label{sec:dinamica}
 
 \subsection{Visão Geral}
-O Modelo de Dinâmica é o responsável por fazer a predição no filtro de Kalman. Nosso Modelo de Dinâmica utiliza os dados do odômetro para conseguir realizar tal predição. Realizar a predição significa obter uma nova postura (i.e., coordenadas (x,y) e ângulo $\theta$ )  com os dados do odômetro e da última estimativa.
+O Modelo de Dinâmica é o responsável por fazer a predição da postura no filtro de Kalman. Existem duas possibilidades para a realização da predição:
+
+1. Através dos sinais de controle do robô, ou seja, qual a velocidade linear do motor, a velocidade rotacional do motor e outros parâmetros.
+
+2. Através de sinais observados por sensores, como o odômetro.
+
+No SAURON, o Modelo de Dinâmica foi realizado utilizando-se a segunda alternativa, por ser mais simples e menos dependente dos parâmetros do robô.
+
+A obtenção da nova postura será realizada, portanto, com os dados do odômetro e da última estimativa.
 
 \subsection{Modelagem}
 
@@ -17,7 +25,7 @@ A plataforma-robô Pionner P2DX foi modelada de acordo com a figura~\ref{figura:m
 \end{center}
 \end{figure}
 
-As equações para se obter a postura estimada do robô, a partir da última estimativa estão descritas abaixo:
+As equações para se obter a postura estimada do robô, a partir da última estimativa, estão descritas abaixo:
 
 \begin{gather}
 	x(n)=x(n-1)+dt_{m}(n)cos(\theta(n))\\
@@ -51,7 +59,7 @@ A matriz Q, da variância do Modelo de Dinâmica, por sua vez, dependerá das influ
 
 \subsection{Exemplo de Implementação}
 
-Abaixo a classe mais genérica do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
+Abaixo um exemplo de implementação do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
 
 \begin{lstlisting}[language=C++]
 		
