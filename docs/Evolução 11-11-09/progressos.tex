@@ -26,16 +26,69 @@ Nossos progressos concentraram-se no Módulo de Localização, cuja arquitetura se 
 Os trabalhos do último mês resultaram em um avanço considerável no módulo de localização.
 
 \subsection{Arquitetura do Sistema}
-Todos os módulos do sistema foram integrados, e os testes do sistema completo começaram. Uma arquitetura de software fortemente assíncrona e desacoplada foi desenvolvida, com resultados satisfatórios. A arquitetura do sistema é descrita na seção \ref{sec:arquitetura}.
+Todos os módulos do sistema foram integrados, e os testes do sistema completo começaram, no simulador. Uma arquitetura de software fortemente assíncrona e desacoplada foi desenvolvida, com resultados satisfatórios. Além disso, um sistema de log foi criado, para auxiliar o diagnóstico de erros. Os logs se provaram essenciais para A arquitetura do sistema é descrita na seção \ref{sec:arquitetura}.
+
+Primeiramente, um sistema centralizado foi construído, mas ele apresentava dois problemas: desperdício de processamento e excesso de logs. Para evitar isso, um sistema mais complexo, assíncrono foi desenvolvido. Ele apresentou desempenho muito melhor, e passou a gerar logs muito mais concisos.
 
 \subsection{Filtro Estendido de Kalman (EKF)}
 O código do filtro estendido de Kalman, EKF, foi implementado e testado no simulador, sendo que inicialmente foi testado o modelo de dinâmica isoladamente de forma a corrigir erros na etapa de predição do modelo e depois com o modelo de dinâmica conjuntamente do sonar, a fim de testar a etapa de atualização do filtro. O EKF é detalhado na seção \ref{sec:kalman}.
 
 \subsection{Modelo de Dinâmica}
-O modelo de dinâmica foi finalizado e testado no simulador. Ele é descrito na seção \ref{sec:dinamica}.
+O modelo de dinâmica foi finalizado e testado no simulador. Alguns erros foram corrigidos. Em particular, agora é utilizada a informação de velocidade rotacional do robô para o cálculo da inclinação estimada do robô. Ele é descrito na seção \ref{sec:dinamica}.
 
 \subsection{Modelo de Sonares}
-O modelo de sonares foi finalizado e testado no simulador. Muito esforço foi gasto para garantir que a modelagem matemática dos sonares estava correta. As equações finais podem ser vistas na seção \ref{sec:sonar}.
+Com a integração do modelo de dinâmica e do EKF, o teste integrado dos sonares pôde começar. Até agora, só foram realizados testes no simulador. A dificuldade em verificar exatamente o que está acontecendo em um teste diminui o ritmo de progressos, mas o sistema de log foi fundamental para consertar a maior parte dos erros.
+
+Os testes revelaram também erros teóricos que havíamos cometidos. Por exemplo, apesar de termos mudado a equação que dá a observação esperada, não mudamos a matriz H. As equações finais podem ser vistas na seção \ref{sec:sonar}.
 
 \subsection{Modelo de Visão}
 Seção \ref{sec:visao}.
+
+\subsection{Testes}
+
+Todos os testes até agora foram realizados no simulador fornecido pela MobileRobots. Foram testados o modelo de dinâmica, o EKF e o modelo dos sonares - esse úlitmo notadamente o mais complicado de todos. O simulador insere erros aleatórios nas medidas dos odômetros e dos sonares, mas experiências anteriores nos indicam que ele é significativamente otimista quanto à variâncicia das medidas, se comparado com os sensores reais. Contudo, é primordial que o sistema primeiro funcione no simulador, para então passarmos aos testes com o robô real.
+
+Os testes no simulador combinados com o sistema de logs, nos permitiu resolver inúmeros \textit{bugs} em todos os módulos do sistema. Dos três módulos que foram testados, o EKF está finalizado e (aparentemente) sem erros; o modelo de dinâmica e o modelo dos sonares estão em fase final de aprimoramento.
+
+\subsubsection{Dados experimentais} 
+
+Os testes foram feitos no mapa da figura \ref{fig:pavsup}, o pavimento superior do prédio de Engenharia Elétrica. Este é um bom caso de testes por alguns motivos:
+
+\begin{itemize}
+	\item Alta simetria, o que é desafiador para o sonar.
+	\item Vão central, onde os sonares perdem quaisquer referências e costumam fazer associações erradas.
+\end{itemize}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.8\columnwidth]{imagens/mapa2.jpeg}
+	\caption{Mapa utilizado para testes}
+	\label{fig:pavsup}
+\end{figure}
+
+
+Em testes simples, como andar em linha reta, o sistema se sai bem. Especificamente, o erro nas coordenadas $y$ 3 cm, e em $\theta$, abaixo de 0.05 radianos. Contudo, um comportamento estranho é visto no erro no eixo $x$, como ilustrado na figura \ref{fig:xzoado}. A causa dessa oscilação não é conhecida e está sendo objeto de investigações.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/xzoado.png}
+	\caption{Erros nas componentes $x$, $y$ e $\theta$ durante um teste do sonar. Os erros em $y$ e $\theta$ se mantêm dentro do esperado, mas o comportamento das estimativas no eixo $x$ não é correto.}
+	\label{fig:xzoado}
+\end{figure}
+
+Como pode ser visto na seção \ref{sec:sonar}, os sonares são mais adequados para corrigir a componente $y$ da postura\footnote{Pois o vetor $H$ depende, na coordenada $y$, do seno de $\theta_{wall}$. Na maior parte das vezes, $\theta_{wall}$ é $\frac{\pi}{2}$ -- existem mais paredes paralelas
+ao eixo $x$ do que ao eixo $y$}. Logo, testamos também a capacidade do sistema de se recuperar de associações erradas (figura \ref{fig:associacaoinvalida}) e erros na estimativa inicial (figura \ref{fig:estimativainicial}).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacaoestimativainicial.png}
+	\caption{Sistema se recuperando de uma estimativa inicial de 1,17 metros.}
+	\label{fig:estimativainicial}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/associacaoinvalida.png}
+	\caption{Sistema se recuperando após acreditar estar vendo uma parede errada.}
+	\label{fig:associacaoinvalida}
+\end{figure}
