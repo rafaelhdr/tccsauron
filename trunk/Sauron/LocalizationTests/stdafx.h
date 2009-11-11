@@ -19,6 +19,7 @@
 #include <iostream>
 #include "Aria.h"
 #include "ArSilentTelop.h"
+#include "Arnl.h"
 
 #include "log.h"
 
