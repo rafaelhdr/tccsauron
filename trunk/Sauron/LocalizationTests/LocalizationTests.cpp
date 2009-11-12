@@ -418,8 +418,7 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 	boost::unique_lock<boost::mutex> lock(consoleMutex);
 
 	//pRobot->lock();
-	pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
-		sauron::trigonometry::rads2degrees(currentPose.Theta())));
+	
 	//pRobot->unlock();
 
 	console.printf("%.3f\t%.3f\t%.3f\n", currentPose.X(), currentPose.Y(), currentPose.Theta());
@@ -450,6 +449,9 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
 		lastTruePose = truePose;
 	}
+
+	pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
+		sauron::trigonometry::rads2degrees(currentPose.Theta())));
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
@@ -621,9 +623,9 @@ int principal(int argc, char** argv)
 	  std::cout << "Escolha a opção:"  << std::endl 
 		  << "1. (M) Mostrar Posicao;" << std::endl
 		  << "2. (P) Setar a Posição Inicial;" << std::endl
+		  << "2. (S) Pegar a Posicao do Simulador;" << std::endl
 		  << "3. (V) Setar Velocidades;" << std::endl
-		  << "4. (T) Modo teleoperação;" << std::endl
-		  << "5. (S) Sair;"            << std::endl;
+		  << "4. (T) Modo teleoperação;" << std::endl;
 
 	  std::cin >> c;
 	  ArPose arPose = robot.getTruePose();
@@ -638,6 +640,13 @@ int principal(int argc, char** argv)
 			break;
 		case 'p':
 		case 'P':
+			double x, y, th;
+			std::cin >> x;
+			std::cin >> y;
+			std::cin >> th;
+			locManager.setInitialPose(sauron::Pose(x, y, th));
+		case 's':
+		case 'S':
 			locManager.setInitialPose(sauron::Pose(arPose.getX(), arPose.getY(),
 				sauron::trigonometry::degrees2rads(arPose.getTh())));
 			break;
@@ -656,9 +665,6 @@ int principal(int argc, char** argv)
 		case 't':
 		case 'T':
 			robot.waitForRunExit();
-			break;
-		case 's':
-		case 'S':
 			break;
 		default:
 			std::cout << "Ops... nao encontrei a opcao. Voce sabe ler instrucoes, seu macaco?" << std::endl;
