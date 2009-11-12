@@ -39,17 +39,18 @@ namespace sauron
 		SCOPED_READINGS_LOCK();
 		TLogLevel oldLevel = FILELog::ReportingLevel();
 		//FILELog::ReportingLevel() = logDEBUG4;
-		SONAR_LOG(logDEBUG4) << "Recebeu leitura: " << reading.getReading() << " @ " << estimatedPose;
 		if(robotHasTurned(estimatedPose)) {
-			SONAR_LOG(logDEBUG3) << "Robô virou @ " << estimatedPose;
+			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
 			return false;
 		}
 		ReadingAndPose rnp(reading, estimatedPose);
 		if(isReadingMeaningful(rnp)) {
-			SONAR_LOG(logDEBUG4) << "Leitura significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
+			SONAR_LOG(logDEBUG2) << "Leitura significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 			m_readings.push_back(rnp);
 			return true;
+		} else {
+			SONAR_LOG(logDEBUG2) << "Leitura NÃO-significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 		}
 		return false;
 		FILELog::ReportingLevel() = oldLevel;
@@ -113,8 +114,9 @@ namespace sauron
 		double expectedReading = (line.getRWall() - x_times_cos - y_times_sin) / ::sin(beta_rads);
 		// HACK não sei ao certo por que às vezes a leitura esperada é negativa. Isso conserta
 		// o teste SonarTest3::ExpectedReadingTest2_S3
-		SONAR_LOG(logDEBUG2) << "Leitura Esperada: " << expectedReading << "(rWall = " << line.getRWall() <<
-			"; thetaWall = " << line.getTheta() << "; beta = " << beta_rads << " rads)";
+		SONAR_LOG(logDEBUG2) << "Leitura Esperada: " << expectedReading << " (rWall = " << line.getRWall() <<
+			"; thetaWall = " << line.getTheta() << "; beta = " << beta_rads <<
+			" rads; sonarGlobalPose =" << sonarPose << ")";
 		return expectedReading > 0 ? expectedReading : -expectedReading;
 	}
 
@@ -226,10 +228,10 @@ namespace sauron
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,
 			latestPose);
-		SONAR_LOG(logDEBUG3) << "Linhas apos FarAwayFilter: " << mapLines.size();
+		SONAR_LOG(logDEBUG2) << "Linhas apos FarAwayFilter: " << mapLines.size();
 		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
 		mapLines = filterBySonarAngle(mapLines, latestPose);
-		SONAR_LOG(logDEBUG3) << "Linhas apos SonarAngleFilter: " << mapLines.size();
+		SONAR_LOG(logDEBUG2) << "Linhas apos SonarAngleFilter: " << mapLines.size();
 		//for(int i = 0; i < mapLines.size(); i++) SONAR_LOG(logDEBUG2) << mapLines[i];
 
 
@@ -253,7 +255,7 @@ namespace sauron
 
 			return true;
 		} else {
-			SONAR_LOG(logDEBUG3) << "Nao validou pois no. de segmentos eh: " << matchedLines.size();
+			SONAR_LOG(logDEBUG2) << "Nao validou pois no. de segmentos eh: " << matchedLines.size();
 			return false;
 		}
 	}

@@ -12,13 +12,13 @@ class ExtendedKalmanFilter : public IKalmanFilter
 
 		ExtendedKalmanFilter()
             : m_latestCovariance(3,3) {
-				m_latestCovariance.clear();
+				initCovariance();
 		}
 
 		ExtendedKalmanFilter(const Pose& initialPose) 
             : m_latestCovariance(3,3),
               m_latestEstimate(initialPose) {
-				  m_latestCovariance.clear();
+				  initCovariance();
 		}
 
 		ExtendedKalmanFilter(const Pose& initialPose, const Covariance& initialCovariance) 
@@ -48,6 +48,7 @@ class ExtendedKalmanFilter : public IKalmanFilter
 		inline void setLatestCovariance(const Covariance& covariance) { m_latestCovariance = covariance; }
 
     private:
+		void initCovariance();
 	    Pose m_latestEstimate;
 	    Covariance m_latestCovariance;
 

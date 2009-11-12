@@ -645,6 +645,7 @@ int principal(int argc, char** argv)
 			std::cin >> y;
 			std::cin >> th;
 			locManager.setInitialPose(sauron::Pose(x, y, th));
+			break;
 		case 's':
 		case 'S':
 			locManager.setInitialPose(sauron::Pose(arPose.getX(), arPose.getY(),
