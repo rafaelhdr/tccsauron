@@ -9,7 +9,7 @@ namespace sauron
 	{
 		namespace sonars
 		{
-			const int circularBufferLength = 15;
+			const int circularBufferLength = 5;
 			const reading_t sonarReadingStandardDeviationMm =  25;
 			const int validationGateSigma2 = 625;
 			const int kMin = 4;

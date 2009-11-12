@@ -39,7 +39,7 @@ namespace sauron
 		const Pose last = mp_localization->getPose();
 		SONAR_LOG(logDEBUG3) << "getEstimate (lastPose: " << last << ")";
 		if(m_model.validateReadings()) {
-			SONAR_LOG(logDEBUG3) << "Validou leituras (k = " << m_model.getReadingsBufferCount() << ")";
+			SONAR_LOG(logDEBUG2) << "Validou leituras (k = " << m_model.getReadingsBufferCount() << ")";
 			if(m_model.tryGetMatchingMapLine(last, mp_localization->getMap(),
 				configs::sonars::validationGateSigma2,
 				&matchedLineSegment, &expectedReading, &actualReading)) {
@@ -120,7 +120,7 @@ namespace sauron
 				SONAR_LOG(logDEBUG4) << "Não associou a segmento no mapa.";
 			}
 		} else {
-			SONAR_LOG(logDEBUG4) << "Não validou leituras. (k = " << m_model.getReadingsBufferCount() << ")" ;
+			SONAR_LOG(logDEBUG2) << "Não validou leituras. (k = " << m_model.getReadingsBufferCount() << ")" ;
 		}
 		return false;
 	}

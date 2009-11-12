@@ -13,9 +13,9 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		PREDICT_LOG(logDEBUG2) << "fValue = " << fValue;
-		PREDICT_LOG(logDEBUG2) << "F = " << F;
-		PREDICT_LOG(logDEBUG2) << "Q = " << Q;
+		PREDICT_LOG(logDEBUG3) << "fValue = " << fValue;
+		PREDICT_LOG(logDEBUG3) << "F = " << F;
+		PREDICT_LOG(logDEBUG3) << "Q = " << Q;
 		Matrix temp1(3,3);	
 
 		// Pk = F*P*F'+Q
@@ -28,8 +28,16 @@ namespace sauron
 		m_latestEstimate.X() = fValue(0,0);
 		m_latestEstimate.Y() = fValue(1,0);
 		m_latestEstimate.setTheta(fValue(2,0));
-		PREDICT_LOG(logDEBUG2) << "estimativa: " << m_latestEstimate;
-		PREDICT_LOG(logDEBUG2) << "covariância: " << m_latestCovariance;
+		PREDICT_LOG(logDEBUG3) << "estimativa: " << m_latestEstimate;
+		PREDICT_LOG(logDEBUG3) << "covariância: " << m_latestCovariance;
+	}
+
+	void ExtendedKalmanFilter::initCovariance()
+	{
+		m_latestCovariance.clear();
+		m_latestCovariance(0,0) = 100;
+		m_latestCovariance(1,1) = 100;
+		m_latestCovariance(2,2) = 0.0685389196;
 	}
 
 
