@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ISensorSonarModel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\LocalizationManager.h"
 				>
 			</File>
@@ -210,6 +214,10 @@
 			</File>
 			<File
 				RelativePath=".\SensorVision.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatch.h"
 				>
 			</File>
 			<File

@@ -22,7 +22,8 @@
 #include "Arnl.h"
 
 #include "log.h"
-
+#include <string>
+#include <sstream>
 #include <boost/thread.hpp>
 
 #include <stdio.h>
