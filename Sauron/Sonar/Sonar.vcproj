@@ -220,6 +220,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MatchTracking.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PhysicalSonars.cpp"
 				>
 			</File>
@@ -259,6 +263,10 @@
 			</File>
 			<File
 				RelativePath=".\Map.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MatchTracking.h"
 				>
 			</File>
 			<File

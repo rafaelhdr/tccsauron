@@ -26,19 +26,19 @@ namespace sauron
 			m_sonarX(sonarPose.X()),
 			m_sonarY(sonarPose.Y()),
 			m_sonarTheta(sonarPose.getTheta()),
-			m_readings(sauron::configs::sonars::circularBufferLength) {
+			m_readings(sauron::configs::sonars::circularBufferLength),
+			m_isTracking(false), m_tracking(sonarNumber){
 		}
 
 		SonarModel::SonarModel(int sonarNumber, pose_t x, pose_t y, pose_t theta)
 			: m_sonarNumber(sonarNumber),m_sonarX(x), m_sonarY(y), m_sonarTheta(theta),
-			m_readings(sauron::configs::sonars::circularBufferLength) {
+			m_readings(sauron::configs::sonars::circularBufferLength),
+			m_isTracking(false), m_tracking(sonarNumber){
 		}
 
 
 	bool SonarModel::addReading(const SonarReading& reading, const Pose& estimatedPose) {
 		SCOPED_READINGS_LOCK();
-		TLogLevel oldLevel = FILELog::ReportingLevel();
-		//FILELog::ReportingLevel() = logDEBUG4;
 		if(robotHasTurned(estimatedPose)) {
 			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
 			m_readings.clear();
@@ -53,7 +53,6 @@ namespace sauron
 			SONAR_LOG(logDEBUG2) << "Leitura NÃO-significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 		}
 		return false;
-		FILELog::ReportingLevel() = oldLevel;
 	}
 
 	bool SonarModel::robotHasTurned(const Pose& latestPose) {
@@ -220,9 +219,27 @@ namespace sauron
 
 	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map& map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
+		actualReading) {
+			SCOPED_READINGS_LOCK();
+
+			if(!m_isTracking) {
+				if(tryAssociateMapLine(latestPose, map, sigmaError2, matchedMapLine,
+					expectedReading, actualReading)) {
+						m_isTracking = true;
+						m_tracking.reset();
+						m_tracking.setMatch(*matchedMapLine, *expectedReading, *actualReading);
+				} else {
+					return false;
+				}
+			}
+
+	}
+
+	bool SonarModel::tryAssociateMapLine(const Pose& latestPose, Map& map, double sigmaError2,
+		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
 		actualReading)
 	{
-		SCOPED_READINGS_LOCK();
+		
 
 		std::vector<LineSegment>* pLines = map.getLines();	
 
