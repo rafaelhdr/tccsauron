@@ -2,7 +2,7 @@
 #define __LOCALIZATION_H__
 
 #include "Matrix.h"
-
+#include <boost/thread.hpp>
 namespace sauron
 {
 class Pose;
@@ -13,6 +13,7 @@ class ILocalizationManager
         virtual void setInitialPose( const Pose &initial ) = 0;
         virtual Pose getPose() = 0;
 		virtual Map getMap() = 0;
+		virtual boost::recursive_mutex* getPoseMutex() = 0;
 
 		virtual void update(const Matrix &hValue,
 							const Measure &z,

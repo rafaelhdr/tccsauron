@@ -159,6 +159,7 @@ void ModeloDinamica::atualizaFValue(Matrix &fValue)
 
 void ModeloDinamica::updateModel( Matrix &fValue, Model &dynModel, Covariance &dynNoise )
 {
+	boost::unique_lock<boost::recursive_mutex> lock(*m_localizationManager->getPoseMutex());
 	// atualizaPose
 	posicaoEstimada = m_localizationManager->getPose();
 

@@ -93,7 +93,7 @@ namespace sauron
 									 const Covariance &R)
 	{
 		{
-			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
 			mp_ekf->update(z, hValue, H, R);
 		}
 		invokePoseChangedCallbacks();
@@ -104,7 +104,7 @@ namespace sauron
 									  const Covariance &dynNoise)
 	{
 		{
-			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
 			mp_ekf->predict(fValue, dynModel, dynNoise);
 		}
 		invokePoseChangedCallbacks();
@@ -112,7 +112,7 @@ namespace sauron
 
 	Pose LocalizationManager::getPose()
 	{
-		boost::unique_lock<boost::mutex>(m_ekfMutex);
+		boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
 		return mp_ekf->getLatestEstimate();
 	}
 
