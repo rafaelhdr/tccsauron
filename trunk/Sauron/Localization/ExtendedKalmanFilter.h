@@ -41,11 +41,21 @@ class ExtendedKalmanFilter : public IKalmanFilter
 					 const Model &H,		// matriz de observação
 					 const Covariance &R );	// covariância
 
-		inline Pose getLatestEstimate()                     { return m_latestEstimate; }
-		inline void setLatestEstimate(const Pose& estimate) { m_latestEstimate = estimate; m_latestCovariance.clear(); }
+		inline Pose getLatestEstimate() {
+			return m_latestEstimate;
+		}
 
-		inline Covariance getLatestCovariance()                       { return m_latestCovariance; }
-		inline void setLatestCovariance(const Covariance& covariance) { m_latestCovariance = covariance; }
+		inline void setLatestEstimate(const Pose& estimate) {
+			m_latestEstimate = estimate;
+			initCovariance();
+		}
+
+		inline Covariance getLatestCovariance() {
+			return m_latestCovariance;
+		}
+		inline void setLatestCovariance(const Covariance& covariance) {
+			m_latestCovariance = covariance;
+		}
 
     private:
 		void initCovariance();
