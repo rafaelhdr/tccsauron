@@ -35,7 +35,7 @@ public:
 
 	void setInitialPose(const Pose& initial){
 		{
-			boost::unique_lock<boost::mutex> lock(m_ekfMutex);
+			boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
 			mp_ekf->setLatestEstimate(initial);
 		}
 		invokePoseChangedCallbacks();
@@ -46,6 +46,7 @@ public:
 	}
 
 	Pose getPose();
+	boost::recursive_mutex* getPoseMutex() { return &m_ekfMutex; }
 	Map getMap() { return m_map; }
 	std::vector<SonarMatch> getSonarMatches();
 
@@ -73,7 +74,7 @@ private:
 
     std::string m_visionMarksFilename;
 
-	boost::mutex m_ekfMutex;
+	boost::recursive_mutex m_ekfMutex;
 
 	void buildDefaultSensors();
 	void buildDefaultSonars();
