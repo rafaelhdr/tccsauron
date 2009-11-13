@@ -36,6 +36,8 @@ namespace sauron
 	{
 		SonarReading expectedReading, actualReading;
 		LineSegment matchedLineSegment;
+		boost::unique_lock<boost::recursive_mutex> lock(*mp_localization->getPoseMutex());
+
 		const Pose last = mp_localization->getPose();
 		SONAR_LOG(logDEBUG3) << "getEstimate (lastPose: " << last << ")";
 		bool matched = false;
