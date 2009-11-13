@@ -7,6 +7,7 @@
 #include "SensorVision.h"
 #include "Sonar/PhysicalSonars.h"
 
+
 #include <iostream>
 
 namespace sauron
@@ -71,9 +72,9 @@ namespace sauron
 		//m_sensors.push_back(ISensorModelPtr(new SensorSonar(0, *this, *mp_sonarDataProvider)));
 		//for(int i = 0; i < 8; i++) {
 		for(int i = 0; i < 8; i++) {
-			ISensorModelPtr sonarModel = ISensorModelPtr(new SensorSonar(i, *mp_sonarDataProvider));
+			ISensorSonarModelPtr sonarModel = ISensorSonarModelPtr(new SensorSonar(i, *mp_sonarDataProvider));
 			sonarModel->setLocalizationManager(*this);
-			m_sensors.push_back(sonarModel);
+			m_sonars.push_back(sonarModel);
 		}
 	}
 
@@ -82,16 +83,8 @@ namespace sauron
         //m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
 	}
 
-	void LocalizationManager::addPoseChangedCallback(boost::function<void (const Pose&)> callback) {
-		m_poseChangedCallbacks.push_back(callback);
-	}
-
 	void LocalizationManager::invokePoseChangedCallbacks() {
-		Pose currentPose = getPose();
-		for(std::vector<boost::function<void (const Pose&)> >::iterator it = m_poseChangedCallbacks.begin(); it != m_poseChangedCallbacks.end();
-			it++) {
-				(*it)(currentPose);
-		}
+		invokeCallbacks(this->getPose());
 	}
 
 	void LocalizationManager::update(const Matrix &hValue,
@@ -121,6 +114,18 @@ namespace sauron
 	{
 		boost::unique_lock<boost::mutex>(m_ekfMutex);
 		return mp_ekf->getLatestEstimate();
+	}
+
+	std::vector<SonarMatch> LocalizationManager::getSonarMatches()
+	{
+		std::vector<SonarMatch> matches;
+		for(std::vector<ISensorSonarModelPtr>::const_iterator it = m_sonars.begin(); it != m_sonars.end(); it++)
+		{
+			if((*it)->hasMatch()) {
+				matches.push_back((*it)->getLatestMatch());
+			}
+		}
+		return matches;
 	}
 
 	LocalizationManager::~LocalizationManager(void)

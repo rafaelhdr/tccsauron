@@ -195,6 +195,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SonarMatchDrawing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchPainter.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -230,6 +238,14 @@
 			</File>
 			<File
 				RelativePath=".\SauronArRobot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchDrawing.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchPainter.h"
 				>
 			</File>
 			<File
