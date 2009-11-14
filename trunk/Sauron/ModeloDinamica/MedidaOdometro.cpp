@@ -29,19 +29,16 @@ namespace sauron
 		void MedidaOdometro::atualizaMedida()
 		{
 			double newDistance = robot.getOdometerDistance()/10;
+			// deltaDistance é sempre positivo, odometro só cresce
 			deltaDistance = newDistance - oldDistance;
+			if(robot.getVel() < 0)
+			{
+				deltaDistance = -deltaDistance;
+			}
 			oldDistance = newDistance;
-
-            
             
 			double newTheta = robot.getOdometerDegrees();
-           
-
-            if(!floating_point::isEqual(deltaTheta, 0))
-            {
-                ODOMETER_LOG(logDEBUG2) << "OldTheta: "<<oldTheta<< ". NewTheta: "<<newTheta;
-            }
-
+			// deltaTheta também é sempre positivo
             deltaTheta = trigonometry::degrees2rads(newTheta - oldTheta);
             if(robot.getRotVel() < 0)
             {
