@@ -41,6 +41,8 @@ namespace sauron
 		SCOPED_READINGS_LOCK();
 		if(robotHasTurned(estimatedPose)) {
 			SONAR_LOG(logDEBUG2) << "Robô virou @ " << estimatedPose;
+			m_tracking.reset();
+			m_isTracking = false;
 			m_readings.clear();
 			return false;
 		}
@@ -68,15 +70,11 @@ namespace sauron
 	}
 
 	bool SonarModel::isReadingMeaningful(const ReadingAndPose& readingAndPose) {
-		if(readingAndPose.reading.getReading() < configs::sonars::invalidReading) {
-			if(m_readings.size() > 0) {
+		if(m_readings.size() > 0) {
 			pose_t distMoved = readingAndPose.estimatedPose.getDistance(getLatestReading().estimatedPose);
 			return distMoved > configs::sonars::minimumRobotDistance;
-			} else {
-				return true;
-			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 
@@ -222,17 +220,64 @@ namespace sauron
 		actualReading) {
 			SCOPED_READINGS_LOCK();
 
+			if(!getLatestReading().reading.isValid()) {
+				m_tracking.reset();
+				m_isTracking = false;
+				SONAR_LOG(logDEBUG2) << "Última leitura foi inválida; não há associação possível";
+				return false;
+			}
+
 			if(!m_isTracking) {
 				if(tryAssociateMapLine(latestPose, map, sigmaError2, matchedMapLine,
 					expectedReading, actualReading)) {
 						m_isTracking = true;
 						m_tracking.reset();
 						m_tracking.setMatch(*matchedMapLine, *expectedReading, *actualReading);
+
+						SONAR_LOG(logDEBUG2) << "Começou match de " << m_tracking.getSegment() << " com score de " << m_tracking.getScore();
+						return true;
 				} else {
 					return false;
 				}
+			} else {
+				if(tryTrackMapLine(latestPose, map, expectedReading, actualReading)) {
+					*matchedMapLine = m_tracking.getSegment();
+					SONAR_LOG(logDEBUG2) << "Manteve match de " << m_tracking.getSegment() << " com score de " << m_tracking.getScore();
+					return true;
+				} else {
+					SONAR_LOG(logDEBUG2) << "PERDEU match de " << m_tracking.getSegment() << " porque score foi " << m_tracking.getScore() <<
+						"; tentando associação...";
+					return tryGetMatchingMapLine(latestPose, map, sigmaError2, matchedMapLine,
+						expectedReading, actualReading);
+				}
 			}
+	}
 
+	bool SonarModel::tryTrackMapLine(const Pose& latestPose, // a posição mais recente do robô
+		Map& map, // o mapa do ambiente
+		/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
+		/*out*/SonarReading* actualReading)
+	{
+		std::vector<LineSegment> vecTrackedLine;
+		vecTrackedLine.push_back(m_tracking.getSegment());
+
+		if(filterBySonarAngle(vecTrackedLine, latestPose).size() == 1) {
+			*actualReading = getLatestReading().reading;
+			*expectedReading = getExpectedReadingByMapLine(latestPose,
+				m_tracking.getSegment());
+			m_tracking.updateMatch(*expectedReading, *actualReading);
+			if(m_tracking.isMatchValid()) {
+				return true;
+			} else {
+				m_isTracking = false;
+				m_tracking.reset();
+				return false;
+			}
+		} else {
+			m_isTracking = false;
+			m_tracking.reset();
+			return false;
+		}
 	}
 
 	bool SonarModel::tryAssociateMapLine(const Pose& latestPose, Map& map, double sigmaError2,
@@ -240,7 +285,6 @@ namespace sauron
 		actualReading)
 	{
 		
-
 		std::vector<LineSegment>* pLines = map.getLines();	
 
 		std::vector<LineSegment> mapLines = filterFarAwayLines(*pLines,

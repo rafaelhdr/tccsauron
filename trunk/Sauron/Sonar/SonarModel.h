@@ -76,6 +76,14 @@ namespace sauron
 			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
 		);
 
+		bool tryTrackMapLine(
+			const Pose& latestPose, // a posição mais recente do robô
+			Map& map, // o mapa do ambiente
+			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
+			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
+		);
+
+
 
 		std::vector<double> getGammas();
 		double getObsMediaVariance();

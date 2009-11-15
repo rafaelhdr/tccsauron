@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\.."
+				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -141,6 +141,77 @@
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
+		<Configuration
+			Name="UnitTest|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="AriaDebugVC9.lib ArNetworkingDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib"
+				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				GenerateDebugInformation="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -155,18 +226,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\NavigationManager.cpp"
 				>
 			</File>
@@ -176,6 +235,18 @@
 			</File>
 			<File
 				RelativePath=".\NodesPersistence.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PoseTracker.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RobotController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\RouteExecuter.cpp"
 				>
 			</File>
 		</Filter>
@@ -198,6 +269,18 @@
 			</File>
 			<File
 				RelativePath=".\NodesPersistence.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PoseTracker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RobotController.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RouteExecuter.h"
 				>
 			</File>
 		</Filter>
