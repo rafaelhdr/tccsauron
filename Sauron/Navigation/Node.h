@@ -17,6 +17,7 @@ class Node
         {
             PRIMARY,
             SECUNDARY,
+            TEMPORARY,
         };
 
         Node();

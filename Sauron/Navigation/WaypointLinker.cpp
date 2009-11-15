@@ -52,7 +52,7 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
         if ( bidirectional )
             closestIt->addAdjacent( toLink );
     }
-    else
+    else // secundary and temporary
     {
         Graph::iterator closestIt;
         Graph::iterator tempIt;
