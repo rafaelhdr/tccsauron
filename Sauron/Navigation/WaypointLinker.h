@@ -13,6 +13,7 @@ class WaypointLinker
 {
     public:
         static void link( Graph &graph );
+        static void linkNodeToNearest( Graph &graph, Node &toLink, bool bidirectional = false );
 };
 
 }   // namespace util

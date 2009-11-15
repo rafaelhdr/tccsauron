@@ -11,67 +11,73 @@ void WaypointLinker::link( Graph &graph )
 {
     Graph::iterator it;
     for ( it = graph.begin(); it != graph.end(); ++it )
+        linkNodeToNearest( graph, *it, true );
+}
+
+
+void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirectional )
+{
+    if ( toLink.Type() == Node::PRIMARY )
     {
-        if ( it->Type() == Node::PRIMARY )
+        Graph::iterator closestIt;
+        Graph::iterator tempIt;
+        pose_t minDist = -1.0;
+
+        // TODO Find a way to remove unnecessary links that are created between
+        //      PRIMARY nodes and optimize them
+        // TODO Check if the link don't lead to a crash with a wall or an object
+
+        for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
         {
-            Graph::iterator closestIt;
-            Graph::iterator tempIt;
-            pose_t minDist = -1.0;
+            if ( tempIt->Type() == Node::SECUNDARY )
+                continue;
 
-            // TODO Find a way to remove unnecessary links that are created between
-            //      PRIMARY nodes and optimize them
-            // TODO Check if the link don't lead to a crash with a wall or an object
+            const std::vector< Node *> adjs = toLink.getAdjacents();
+            if ( std::find( adjs.begin(), adjs.end(), &(*tempIt) ) != adjs.end() )
+                continue;
 
-            for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
+            if ( minDist < 0.0 )
             {
-                if ( tempIt->Type() == Node::SECUNDARY )
-                    continue;
-
-                const std::vector< Node *> adjs = it->getAdjacents();
-                if ( std::find( adjs.begin(), adjs.end(), &(*tempIt) ) != adjs.end() )
-                    continue;
-
-                if ( minDist < 0.0 )
-                {
-                    closestIt = tempIt;
-                    minDist = it->getPosition().getDistance( closestIt->getPosition() );
-                }
-                else if ( minDist < it->getPosition().getDistance( tempIt->getPosition() ) )
-                {
-                    closestIt = tempIt;
-                    minDist = it->getPosition().getDistance( tempIt->getPosition() );
-                }
+                closestIt = tempIt;
+                minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
             }
-
-            it->addAdjacent( *closestIt );
-            closestIt->addAdjacent( *it );
+            else if ( minDist < toLink.getPosition().getDistance( tempIt->getPosition() ) )
+            {
+                closestIt = tempIt;
+                minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
+            }
         }
-        else
+
+        toLink.addAdjacent( *closestIt );
+        if ( bidirectional )
+            closestIt->addAdjacent( toLink );
+    }
+    else
+    {
+        Graph::iterator closestIt;
+        Graph::iterator tempIt;
+        pose_t minDist = -1.0;
+
+        for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
         {
-            Graph::iterator closestIt;
-            Graph::iterator tempIt;
-            pose_t minDist = -1.0;
+            if ( tempIt->Type() == Node::SECUNDARY )
+                continue;
 
-            for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
+            if ( minDist < 0.0 )
             {
-                if ( tempIt->Type() == Node::SECUNDARY )
-                    continue;
-
-                if ( minDist < 0.0 )
-                {
-                    closestIt = tempIt;
-                    minDist = it->getPosition().getDistance( closestIt->getPosition() );
-                }
-                else if ( minDist < it->getPosition().getDistance( tempIt->getPosition() ) )
-                {
-                    closestIt = tempIt;
-                    minDist = it->getPosition().getDistance( tempIt->getPosition() );
-                }
+                closestIt = tempIt;
+                minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
             }
-
-            it->addAdjacent( *closestIt );
-            closestIt->addAdjacent( *it );
+            else if ( minDist < toLink.getPosition().getDistance( tempIt->getPosition() ) )
+            {
+                closestIt = tempIt;
+                minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
+            }
         }
+
+        toLink.addAdjacent( *closestIt );
+        if ( bidirectional )
+            closestIt->addAdjacent( toLink );
     }
 }
 
