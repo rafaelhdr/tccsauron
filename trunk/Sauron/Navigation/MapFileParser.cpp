@@ -44,6 +44,7 @@ bool MapFileParser::loadWaypoints( const std::string &filename, Graph &graph )
             else
                 type = Node::SECUNDARY;
 
+            // reading position
             ss >> x >> y;
 
             graph.push_back( Node( Point2D<pose_t>(x, y), type ) );
