@@ -2,9 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Sonar"
-	ProjectGUID="{8BDE01B1-0125-41C1-A1BC-1D416596FBFE}"
-	RootNamespace="Sonar"
+	Name="Navigation"
+	ProjectGUID="{04ED78B1-D2D4-48EE-BC76-461390E5F098}"
+	RootNamespace="Navigation"
+	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -20,8 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="2"
-			ManagedExtensions="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -41,13 +41,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;"
-				MinimalRebuild="false"
-				BasicRuntimeChecks="0"
+				AdditionalIncludeDirectories="..\Common;..\.."
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -60,8 +61,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				LinkLibraryDependencies="false"
-				AdditionalLibraryDirectories=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -84,7 +83,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -106,10 +105,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
-				PreprocessorDefinitions="WIN32;NDEBUG;"
+				AdditionalIncludeDirectories="..\Common;..\.."
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -124,72 +124,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="AriaVC9.lib"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="UnitTest|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
-			CharacterSet="2"
-			ManagedExtensions="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\Common;..\..;..\..\MobileRobots\Aria\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CLR_"
-				MinimalRebuild="false"
-				BasicRuntimeChecks="0"
-				RuntimeLibrary="3"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-				AdditionalDependencies="AriaDebugVC9.lib"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -217,19 +151,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Cone.cpp"
+				RelativePath=".\AStar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\MatchTracking.cpp"
+				RelativePath=".\main.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\NavigationManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\PhysicalSonars.cpp"
+				RelativePath=".\Node.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SonarModel.cpp"
+				RelativePath=".\NodesPersistence.cpp"
 				>
 			</File>
 		</Filter>
@@ -239,47 +185,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Cone.h"
+				RelativePath=".\AStar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Configs.h"
+				RelativePath=".\NavigationManager.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ISonarDataAsyncProvider.h"
+				RelativePath=".\Node.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ISonarModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Line.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LineSegment.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Map.h"
-				>
-			</File>
-			<File
-				RelativePath=".\MatchTracking.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PhysicalSonars.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SonarModel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\SonarReading.h"
+				RelativePath=".\NodesPersistence.h"
 				>
 			</File>
 		</Filter>
