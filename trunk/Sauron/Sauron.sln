@@ -64,11 +64,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LocalizationTests", "Locali
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Navigation", "Navigation\Navigation.vcproj", "{04ED78B1-D2D4-48EE-BC76-461390E5F098}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NavigationWaypointBuilder", "NavigationWaypointBuilder\NavigationWaypointBuilder.vcproj", "{CF6439ED-484A-43BF-B143-943DC9765D70}"
-	ProjectSection(ProjectDependencies) = postProject
-		{04ED78B1-D2D4-48EE-BC76-461390E5F098} = {04ED78B1-D2D4-48EE-BC76-461390E5F098}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NavigationTests", "NavigationTests\NavigationTests.vcproj", "{C87BB8DC-51A9-49C1-B87A-FD058F18A877}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D} = {BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D}
@@ -129,11 +124,6 @@ Global
 		{04ED78B1-D2D4-48EE-BC76-461390E5F098}.Release|Win32.Build.0 = Release|Win32
 		{04ED78B1-D2D4-48EE-BC76-461390E5F098}.UnitTest|Win32.ActiveCfg = UnitTest|Win32
 		{04ED78B1-D2D4-48EE-BC76-461390E5F098}.UnitTest|Win32.Build.0 = UnitTest|Win32
-		{CF6439ED-484A-43BF-B143-943DC9765D70}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CF6439ED-484A-43BF-B143-943DC9765D70}.Debug|Win32.Build.0 = Debug|Win32
-		{CF6439ED-484A-43BF-B143-943DC9765D70}.Release|Win32.ActiveCfg = Release|Win32
-		{CF6439ED-484A-43BF-B143-943DC9765D70}.Release|Win32.Build.0 = Release|Win32
-		{CF6439ED-484A-43BF-B143-943DC9765D70}.UnitTest|Win32.ActiveCfg = Release|Win32
 		{C87BB8DC-51A9-49C1-B87A-FD058F18A877}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C87BB8DC-51A9-49C1-B87A-FD058F18A877}.Debug|Win32.Build.0 = Debug|Win32
 		{C87BB8DC-51A9-49C1-B87A-FD058F18A877}.Release|Win32.ActiveCfg = Release|Win32
