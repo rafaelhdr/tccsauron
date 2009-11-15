@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MapFileParser.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NavigationManager.cpp"
 				>
 			</File>
@@ -234,7 +238,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NodesPersistence.cpp"
+				RelativePath=".\PathPlanner.cpp"
 				>
 			</File>
 			<File
@@ -249,6 +253,10 @@
 				RelativePath=".\RouteExecuter.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WaypointLinker.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -257,6 +265,10 @@
 			>
 			<File
 				RelativePath=".\AStar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapFileParser.h"
 				>
 			</File>
 			<File
@@ -272,6 +284,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PathPlanner.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PoseTracker.h"
 				>
 			</File>
@@ -281,6 +297,10 @@
 			</File>
 			<File
 				RelativePath=".\RouteExecuter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WaypointLinker.h"
 				>
 			</File>
 		</Filter>

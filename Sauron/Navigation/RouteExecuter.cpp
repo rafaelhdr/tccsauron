@@ -62,11 +62,11 @@ namespace sauron
 		double currentDeltaX, currentDeltaY;
 		double cosTheta = ::cos(from.Theta());
 		if(floating_point::isEqual(cosTheta, 0)) {
-			currentDeltaY = ::sin(from.Theta()) * 5;
+			currentDeltaY = ::sin(from.Theta()) * 5; // +5 ou -5
 			currentDeltaX = 0;
 		} else if(floating_point::isEqual(::sin(from.Theta()), 0)) {
 			currentDeltaY = 0;
-			currentDeltaX = cosTheta * 5;
+			currentDeltaX = cosTheta * 5; // +5 ou -5
 		} else {
 			currentDeltaX = cosTheta < 0 ? -5 : 5;
 			currentDeltaY = currentDeltaX * ::tan(from.Theta());
