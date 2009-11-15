@@ -20,6 +20,10 @@ namespace sauron
 			return m_reading;
 		}
 
+		inline bool isValid() const {
+			return m_reading < configs::sonars::invalidReading;
+		}
+
 		operator reading_t () { return m_reading; }
 
 	private:

@@ -1,4 +1,8 @@
 #include "MatchTracking.h"
+#include "log.h"
+
+#define TRACK_LOG(level) FILE_LOG(level) << "MatchTracking #" << m_sonarNumber << ": "
+
 
 namespace sauron
 {
@@ -6,6 +10,7 @@ namespace sauron
 void MatchTracking::setMatch(const LineSegment &matchedSegment, double expectedReading,
 							 double actualReading)
 {
+	reset();
 	m_segment = matchedSegment;
 	m_lastError = actualReading - expectedReading;
 	m_lastError *= m_lastError;
@@ -26,6 +31,12 @@ void MatchTracking::updateMatch(double expectedReading, double actualReading)
 
 	double deltaImprovement = m_lastError - error;
 	updateScore(deltaImprovement);
+
+	TRACK_LOG(logDEBUG2) << "UpdateMatch: segmento: " << m_segment << "; leitura esperada = " <<
+		expectedReading << "; leitura real = " << actualReading << "; erro antigo = " <<
+		m_lastError << "; erro novo = " << error << "; delta = " <<	deltaImprovement <<
+		"; novo score = " << getScore();
+	m_lastError = error;
 }
 
 void MatchTracking::updateScore(double deltaImprovement)
@@ -39,7 +50,7 @@ void MatchTracking::updateScore(double deltaImprovement)
 
 bool MatchTracking::isMatchValid()
 {
-	return m_score < 0;
+	return m_score > 0;
 }
 
 void setMatch(const LineSegment& matchedSegment, double expectedReading,

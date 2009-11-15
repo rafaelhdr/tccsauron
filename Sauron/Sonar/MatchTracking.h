@@ -12,6 +12,7 @@ public:
 		double actualReading);
 	void updateMatch(double expectedReading, double actualReading);
 	bool isMatchValid();
+	inline LineSegment getSegment() { return m_segment; }
 	inline double getScore() { return m_score; }
 	void reset();
 

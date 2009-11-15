@@ -41,8 +41,12 @@ public:
 		invokePoseChangedCallbacks();
 	}
 
-	void addPoseChangedCallback(boost::function<void (const Pose&)> callback) {
-		addCallback(callback);
+	int addPoseChangedCallback(boost::function<void (const Pose&)> callback) {
+		return addCallback(callback);
+	}
+
+	void removePoseChangedCallback(int callbackId) {
+		return removeCallback(callbackId);
 	}
 
 	Pose getPose();
@@ -69,6 +73,7 @@ private:
 	IDynamicModelPtr mp_dynamic;
 
 	void invokePoseChangedCallbacks();
+	void updateArRobotPose(const Pose& newPose);
 
 	void newSonarAssociation(SonarMatch match);
 

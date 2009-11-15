@@ -6,7 +6,7 @@
 #include "SensorSonar.h"
 #include "SensorVision.h"
 #include "Sonar/PhysicalSonars.h"
-
+#include <boost/bind.hpp>
 
 #include <iostream>
 
@@ -21,6 +21,7 @@ namespace sauron
           m_visionMarksFilename( marksFile )
 	{
 		buildDefaultSensors();
+		addPoseChangedCallback(boost::bind(&LocalizationManager::updateArRobotPose, this, _1));
 	}
 
     LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile, const Pose& initialPose)
@@ -33,6 +34,7 @@ namespace sauron
 	{
 		buildDefaultSensors();
 		setInitialPose(initialPose);
+		addPoseChangedCallback(boost::bind(&LocalizationManager::updateArRobotPose, this, _1));
 	}
 
 
@@ -85,6 +87,11 @@ namespace sauron
 
 	void LocalizationManager::invokePoseChangedCallbacks() {
 		invokeCallbacks(this->getPose());
+	}
+
+	void LocalizationManager::updateArRobotPose(const Pose& currentPose) {
+		mp_robot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
+			sauron::trigonometry::rads2degrees(currentPose.Theta())));
 	}
 
 	void LocalizationManager::update(const Matrix &hValue,

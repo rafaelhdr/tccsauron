@@ -14,6 +14,8 @@ namespace sauron
 	    public:
 		    Pose() : m_theta(0) {}
 
+			Pose( Point2DDouble point ) : m_position(point), m_theta(0) { }
+
 		    Pose( pose_t x, pose_t y, pose_t theta ) : m_position(x, y), m_theta(theta) { }
 
             pose_t &X()     { return m_position.X(); }

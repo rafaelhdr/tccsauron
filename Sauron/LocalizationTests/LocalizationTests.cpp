@@ -89,8 +89,8 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 		lastTruePose = truePose;
 	}
 
-	pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
-		sauron::trigonometry::rads2degrees(currentPose.Theta())));
+	/*pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
+		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
 }
 
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
