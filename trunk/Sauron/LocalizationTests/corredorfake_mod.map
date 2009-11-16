@@ -1,0 +1,35 @@
+2D-Map
+Resolution: 0
+LineMinPos: -12760 -840
+LineMaxPos: 12760 1700
+NumLines: 2
+LinesAreSorted: true
+MapInfo: DockType "Name=Dock" "Label=Dock" "NameRequired=1" "Color0=0xffff00" "Color1=0x000000" "Color2=0x000000" "Heading=Required"
+MapInfo: GoalType "Name=Goal" "Label=Goal" "NameRequired=1" "Color0=0x008080" "Color1=0x00ffff" "Color2=0x008080"
+MetaInfo: Rotation "Value=0"
+MetaInfo: Feature "Name=changeprocessing"
+RouteInfo: EveryBefore "_everyBefore"
+RouteInfo: EveryAfter "_everyAfter"
+SchedInfo: Current "_Friday"
+SchedInfo: Current "_Monday"
+SchedInfo: Current "_Saturday"
+SchedInfo: Current "_Sunday"
+SchedInfo: Current "_Thursday"
+SchedInfo: Current "_Tuesday"
+SchedInfo: Current "_Wednesday"
+Cairn: GoalWithHeading -12392 972 0.000000 "" ICON "G4"
+Cairn: Dock -9689 -139 0.000000 "" ICON "WP7"
+Cairn: Dock -6202 -191 0.000000 "" ICON "WP4"
+Cairn: GoalWithHeading -5610 1144 2.200000 "" ICON "G2"
+Cairn: Dock -2760 1046 0.000000 "" ICON "WP5"
+Cairn: GoalWithHeading -1580 1060 0.000000 "" ICON "G3"
+Cairn: Dock 1878 -21 0.000000 "" ICON "WP0"
+Cairn: Dock 4936 1066 0.000000 "" ICON "WP1"
+Cairn: Dock 4950 -452 0.000000 "" ICON "WP3"
+Cairn: GoalWithHeading 6658 -441 0.000000 "" ICON "G0"
+Cairn: Dock 8025 1093 0.000000 "" ICON "WP2"
+Cairn: GoalWithHeading 10187 1121 -0.018543 "" ICON "G1"
+LINES
+-12760 -840 12760 -840
+-12760 1700 12740 1700
+DATA
