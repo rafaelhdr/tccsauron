@@ -24,8 +24,11 @@ void testTurnAngle(double fromX, double fromY, double degrees, double toX, doubl
 void testTurn() {
 	while(true) {
 		sauron::robotController::setRobot(pRobot);
-		std::cout << "Turning 180 degrees..." << std::endl;
-		sauron::robotController::turn(3.14159);
+		std::cout << "Insert degree, svp..." << std::endl;
+		double degree;
+		std::cin >> degree;
+		std::cout << "Turning" << degree << " degrees..." << std::endl;
+		sauron::robotController::turn(sauron::trigonometry::degrees2rads(degree));
 		std::cout << "Finished!" << std::endl;
 	}
 }
@@ -175,10 +178,10 @@ int principal(int argc, char** argv) {
 #pragma endregion
 
 	std::string mapName;
-	std::cout << "Digite o nome do mapa: ";
+	//std::cout << "Digite o nome do mapa: ";
 	//std::cin >> mapName;
-	mapName = "corredorfake_mod.map";
-	//mapName = "pavsup_mod.map";
+	//mapName = "corredorfake_mod.map";
+	mapName = "pavsup_nocolluns.map";
 	ArMap map;
 	if(!map.readFile(mapName.c_str())) {
 		std::cout << "Ah, poxa! Esse mapa nao existe." << std::endl;
@@ -200,7 +203,11 @@ int principal(int argc, char** argv) {
 	//}
 
 
-	testPathPlanner(map, mapName);
+	//testPathPlanner(map, mapName);
+	while(true)
+	{
+		testTurn();
+	}
 
 
   robot.waitForRunExit();
