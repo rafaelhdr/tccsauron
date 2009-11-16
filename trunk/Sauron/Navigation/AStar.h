@@ -17,7 +17,6 @@ class AStar
     private:
         static pose_t estimateHeuristic( const Node &current, const Node &final );
 		static Path buildPath( const Node &final, std::map<Node, Node> &cameFrom );
-        static Path buildReversePath( const Node &final, std::map<Node, Node> &cameFrom );
 };
 
 }   // namespace sauron

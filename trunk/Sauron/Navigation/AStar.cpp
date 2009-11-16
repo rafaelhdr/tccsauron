@@ -89,38 +89,15 @@ pose_t AStar::estimateHeuristic( const Node &current, const Node &final )
     return current.getPosition().getDistance( final.getPosition() );
 }
 
-Path AStar::buildPath(  const Node &goal, std::map<Node, Node> &cameFrom )
-{
-	Path reversePath = buildReversePath(goal, cameFrom);
-	Path path;
-	for(Path::reverse_iterator it = reversePath.rbegin(); it != reversePath.rend(); it++)
-	{
-		path.push_back(*it);
-	}
-	return path;
-}
-
-Path AStar::buildReversePath( const Node &current, std::map<Node, Node> &cameFrom )
+Path AStar::buildPath( const Node &current, std::map<Node, Node> &cameFrom )
 {
 	if(cameFrom.find(current) != cameFrom.end()) {
-		Path p = buildReversePath(cameFrom[current], cameFrom);
+		Path p = buildPath(cameFrom[current], cameFrom);
 		p.push_back(current);
 		return p;
 	} else {
 		return Path();
 	}
-	/*
-    Path path;
-    Node next = goesTo[ initial ];
-
-    while ( next != final )
-    {
-        path.push_back( next );
-        next = goesTo[ next ];
-    }
-
-    path.push_back( next );
-    return path;*/
 }
 
 }   // namespace sauron

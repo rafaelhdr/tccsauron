@@ -175,6 +175,7 @@ int principal(int argc, char** argv) {
 	std::cout << "Digite o nome do mapa: ";
 	//std::cin >> mapName;
 	mapName = "corredorfake_mod.map";
+	//mapName = "pavsup_mod.map";
 	ArMap map;
 	if(!map.readFile(mapName.c_str())) {
 		std::cout << "Ah, poxa! Esse mapa nao existe." << std::endl;
