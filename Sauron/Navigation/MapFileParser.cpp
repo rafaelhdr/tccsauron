@@ -42,12 +42,24 @@ bool MapFileParser::loadWaypoints( const std::string &filename, Graph &graph )
             if ( temp == "Dock" )
                 type = Node::PRIMARY;
             else
-                type = Node::SECUNDARY;
+                type = Node::SECONDARY;
 
             // reading position
             ss >> x >> y;
+			x /= 10.0;
+			y /= 10.0;
 
-            graph.push_back( Node( Point2D<pose_t>(x, y), type ) );
+			// reading theta (useless), "", ICON
+			ss >> temp >> temp >> temp;
+
+			// read nodeName (this probably means there can't be any spaces in the node name)
+			std::string nodeName;
+			ss >> nodeName;
+
+			// remove quotes around name
+			nodeName = nodeName.substr(1, nodeName.size() - 2);
+
+            graph.push_back( Node( Point2D<pose_t>(x, y), type, nodeName) );
         }
     }
 

@@ -29,7 +29,10 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
 
         for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
         {
-            if ( tempIt->Type() == Node::SECUNDARY )
+			if(*tempIt == toLink)
+				continue;
+
+            if ( tempIt->Type() == Node::SECONDARY )
                 continue;
 
             const std::vector< Node *> adjs = toLink.getAdjacents();
@@ -41,7 +44,7 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
                 closestIt = tempIt;
                 minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
             }
-            else if ( minDist < toLink.getPosition().getDistance( tempIt->getPosition() ) )
+            else if ( minDist > toLink.getPosition().getDistance( tempIt->getPosition() ) )
             {
                 closestIt = tempIt;
                 minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
@@ -60,7 +63,10 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
 
         for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
         {
-            if ( tempIt->Type() == Node::SECUNDARY )
+			if(*tempIt == toLink)
+				continue;
+
+            if ( tempIt->Type() == Node::SECONDARY )
                 continue;
 
             if ( minDist < 0.0 )
@@ -68,7 +74,7 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
                 closestIt = tempIt;
                 minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
             }
-            else if ( minDist < toLink.getPosition().getDistance( tempIt->getPosition() ) )
+            else if ( minDist > toLink.getPosition().getDistance( tempIt->getPosition() ) )
             {
                 closestIt = tempIt;
                 minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
