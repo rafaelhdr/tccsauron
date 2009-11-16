@@ -31,26 +31,31 @@ namespace sauron
 		if(!hasReachedDestination(destination))
 		{
 			Node currentNode = getCurrentPoseAsNode();
-			util::WaypointLinker::linkNodeToNearest(m_graph, currentNode);
+			util::WaypointLinker::linkTemporaryNode(m_graph, currentNode, destination);
 			Path path = AStar::searchPath(currentNode, destination);
 			removeNodesTooCloseFromPath(currentNode, path);
-
+			
 			if(path.size() > 0) {
+				invokeCallbacks(GOING_TO_WAYPOINT, &path[0]);
 				RouteExecuter::MoveResult moveResult = RouteExecuter(mp_robot, mp_localization).goTo(path[0].getPosition());
 				if(moveResult == RouteExecuter::SUCCESS) {
+					invokeCallbacks(ARRIVED_AT_WAYPOINT, &path[0]);
 					return goTo(destination);
 				} else if(moveResult == RouteExecuter::FAILED_STRAYED) {
 					// desviou-se da rota. há algo de podre no reino da dinamarca, mas somos brasileiros e não desistimos nunca.
+					invokeCallbacks(FAILED_STRAYED, &Node());
 					return goTo(destination);
 				} else if(moveResult == RouteExecuter::FAILED_EMERGENCY_STOP) {
 					// algum idiota pôs o pé na frente, ou estamos perdidinhos. vamos tentar de novo, mas com parcimônia
 					// TODO dormir por alguns segundos antes de tentar de novo
 					// TODO contar quantas vezes falhamos e desistir depois de um tempo
+					invokeCallbacks(FAILED_COLLISION_AVOIDANCE,  &Node());
 					return goTo(destination);
 				}
 			}
 		}
 		else {
+			invokeCallbacks(GOAL_REACHED, &destination);
 			return true;
 		}
 		return false; // caminho não foi encontrado, ou não conseguiu se movimentar
@@ -77,7 +82,7 @@ namespace sauron
 
 	Node PathPlanner::getCurrentPoseAsNode()
 	{
-		return Node(mp_localization->getPose(), Node::TEMPORARY);
+		return Node(mp_localization->getPose(), Node::TEMPORARY, "CurrentPose");
 	}
 
 	bool PathPlanner::hasReachedDestination(const Node& destination)

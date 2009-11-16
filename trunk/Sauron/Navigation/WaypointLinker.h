@@ -14,6 +14,7 @@ class WaypointLinker
     public:
         static void link( Graph &graph );
         static void linkNodeToNearest( Graph &graph, Node &toLink, bool bidirectional = false );
+		static void linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal );
 };
 
 }   // namespace util

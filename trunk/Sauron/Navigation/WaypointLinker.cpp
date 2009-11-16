@@ -87,6 +87,39 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
     }
 }
 
+void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal )
+{
+	// a ideia é nunca linkar a um nó que nos deixará mais longe de onde já estamos
+	Graph::iterator closestIt;
+	Graph::iterator tempIt;
+	pose_t minDist = -1;
+
+	double distFromTempToGoal = tempNode.getPosition().getDistance( goal.getPosition() );
+
+	for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
+	{
+		if(*tempIt == tempNode)
+			continue;
+
+		if ( tempIt->Type() == Node::SECONDARY && *tempIt != goal )
+			continue;
+
+		double distFromCurrentToGoal = tempIt->getPosition().getDistance( goal.getPosition() );
+
+		if(distFromCurrentToGoal > distFromTempToGoal)
+			continue;
+
+		double distFromTempToCurrent = tempNode.getPosition().getDistance( tempIt->getPosition() );
+
+		if( minDist < 0 || minDist > distFromTempToCurrent)
+		{
+			closestIt = tempIt;
+			minDist =  distFromTempToCurrent;
+		}
+	}
+	tempNode.addAdjacent( *closestIt );
+}
+
 
 }   // namespace util
 

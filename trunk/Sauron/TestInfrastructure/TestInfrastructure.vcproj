@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="LocalizationTests"
-	ProjectGUID="{42229D51-F140-47CE-8A87-7EB8108286D1}"
-	RootNamespace="LocalizationTests"
+	Name="TestInfrastructure"
+	ProjectGUID="{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}"
+	RootNamespace="TestInfrastructure"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
+			ConfigurationType="4"
 			CharacterSet="2"
 			>
 			<Tool
@@ -43,7 +43,7 @@
 				AdditionalOptions="/Zm200"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,22 +61,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				LinkLibraryDependencies="true"
-				UseLibraryDependencyInputs="false"
-				AdditionalDependencies="AriaDebugVC9.lib ArNetworkingDebugVC9.lib SonArnlDebugVC9.lib BaseArnlDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\OpenCV\lib;..\..\boost\lib"
-				IgnoreDefaultLibraryNames="atlthunk.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -88,9 +76,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -98,8 +83,8 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="2"
+			ConfigurationType="4"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -119,11 +104,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm112"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ARIA_STATIC"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -140,22 +123,10 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="AriaVC9.lib ArNetworkingVC9.lib SonArnlVC9.lib BaseArnlVC9.lib ws2_32.lib winmm.lib advapi32.lib"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
-				IgnoreDefaultLibraryNames="atlthunk.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -165,9 +136,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -183,7 +151,31 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\LocalizationTests.cpp"
+				RelativePath=".\ConsoleLogger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LocalizationMonitorConsole.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\NavigationMonitorConsole.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SauronArRobot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchDrawing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchPainter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchServer.cpp"
 				>
 			</File>
 			<File
@@ -212,6 +204,38 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\ArSimStat.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ConsoleLogger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LocalizationMonitorConsole.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NavigationMonitorConsole.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SauronArRobot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchDrawing.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchPainter.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SonarMatchServer.h"
+				>
+			</File>
 			<File
 				RelativePath=".\stdafx.h"
 				>

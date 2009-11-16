@@ -26,7 +26,7 @@ class Node
 		Node( const Point2D<pose_t> &position, const NodeType &type, const std::string& name );
         ~Node();
 
-		std::string getName() { return m_name; }
+		std::string getName() const { return m_name; }
 
         void setPosition( const Point2D<pose_t> &position );
         const Point2D<pose_t> &getPosition() const;

@@ -4,6 +4,9 @@
 #include "Navigation/PathPlanner.h"
 #include "Navigation/RouteExecuter.h"
 #include "Navigation/RobotController.h"
+#include "TestInfrastructure/SonarMatchServer.h"
+#include "TestInfrastructure/LocalizationMonitorConsole.h"
+#include "TestInfrastructure/NavigationMonitorConsole.h"
 
 using namespace sauron;
 

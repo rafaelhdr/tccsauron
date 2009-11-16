@@ -33,7 +33,7 @@ protected:
 	}
 
 	template<typename T>
-	inline void invokeCallbacks(T& t) {
+	inline void invokeCallbacks(T t) {
 		boost::unique_lock<boost::mutex> lock(m_callbacksMutex);
 		mapType::iterator it;
 		for(it = m_callbacks.begin(); it != m_callbacks.end(); it++) {
@@ -45,7 +45,7 @@ protected:
 		}*/
 	}
 	template<typename T, typename R>
-	inline void invokeCallbacks(T& t, R& r) {
+	inline void invokeCallbacks(T t, R r) {
 		boost::unique_lock<boost::mutex> lock(m_callbacksMutex);
 		mapType::iterator it;
 		for(it = m_callbacks.begin(); it != m_callbacks.end(); it++) {
@@ -54,7 +54,7 @@ protected:
 	}
 
 	template<typename T, typename R, typename S>
-	inline void invokeCallbacks(T& t, R& r, S& s) {
+	inline void invokeCallbacks(T t, R r, S s) {
 		boost::unique_lock<boost::mutex> lock(m_callbacksMutex);
 		mapType::iterator it;
 		for(it = m_callbacks.begin(); it != m_callbacks.end(); it++) {
