@@ -25,7 +25,7 @@ namespace sauron
 
 	bool PoseTracker::hasReachedGoal(const Pose& pose)
 	{
-		const int minDistanceCm = 7;
+		const int minDistanceCm = 20;
 		return pose.getDistance(m_goal) < minDistanceCm;
 	}
 
