@@ -6,28 +6,35 @@
 #pragma once
 
 #include "targetver.h"
-#include "Localization/LocalizationManager.h"
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <stdio.h>
+#include <tchar.h>
+
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 #include "Aria.h"
 #include "ArSilentTelop.h"
 #include "ArNetworking.h"
-
-#include "targetver.h"
-
-#include <stdio.h>
-#include <tchar.h>
-#include "Pose.h"
-#include <iostream>
-#include "Aria.h"
-#include "ArSilentTelop.h"
 #include "Arnl.h"
 
 #include "log.h"
-#include <string>
-#include <sstream>
-#include <boost/thread.hpp>
+#include "MathHelper.h"
+#include "Pose.h"
+#include "SauronArRobot.h"
+#include "Localization/LocalizationManager.h"
 
-#include <stdio.h>
-#include <tchar.h>
+#include "ConsoleLogger.h"
+
+
+
+
+
+
 
 
 

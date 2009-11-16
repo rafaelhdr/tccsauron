@@ -1,9 +1,9 @@
 #include "stdafx.h"
-#include "ConsoleLogger.h"
 #include <stdexcept>
-#include <boost/thread.hpp>
-#include "SauronArRobot.h"
-#include "SonarMatchPainter.h"
+#include "TestInfrastructure/SauronArRobot.h"
+#include "TestInfrastructure/SonarMatchServer.h"
+#include "TestInfrastructure/LocalizationMonitorConsole.h"
+#include "TestInfrastructure/NavigationMonitorConsole.h"
 
 #include "Navigation/PathPlanner.h"
 
@@ -35,49 +35,31 @@ ULONGLONG getTimeMs()
 }
 
 std::ofstream grafico("grafico.csv", std::ios::trunc);
-
-CConsoleLogger console;
-boost::mutex consoleMutex;
 sauron::SauronArRobot* pRobot;
 
 sauron::Pose lastEstimatedPose;
 sauron::Pose lastTruePose;
 
-void cls(int n)
-{
-	while(n-- > 0)
-		console.print("\n");
-}
-
-sauron::SonarMatchPainter* psonarPainter;
 sauron::LocalizationManager* plocManager;
 
 void printEstimatedPose(const sauron::Pose& currentPose)
 {
-	boost::unique_lock<boost::mutex> lock(consoleMutex);
+	using namespace sauron;
 
 	//pRobot->lock();
 	
 	//pRobot->unlock();
 
-	psonarPainter->update(plocManager->getSonarMatches());
-
-	console.printf("%.3f\t%.3f\t%.3f\n", currentPose.X(), currentPose.Y(), currentPose.Theta());
-	ArPose arPose = pRobot->getTruePose();
-	sauron::Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
-	console.printf("%.3f\t%.3f\t%.3f\n", truePose.X(), truePose.Y(), truePose.Theta());
-    double erroX = currentPose.X() - truePose.X();
-    double erroY = currentPose.Y() - truePose.Y();
-    double erroTheta = currentPose.Theta() - truePose.Theta();
-	console.printf("Erro em X = %.3f cm\n", erroX );
-	console.printf("Erro em Y = %.3f cm\n", erroY );
-	console.printf("Erro em Theta = %.3f radianos\n", erroTheta );
+    ArPose arPose = pRobot->getTruePose();
+	Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
+	
+	double erroX = currentPose.X() - truePose.X();
+	double erroY = currentPose.Y() - truePose.Y();
+	double erroTheta = currentPose.Theta() - truePose.Theta();
 
 	grafico << getTimeMs() / 1000.0 << ";" << erroX << ";" << erroY << ";" << erroTheta << ";" << currentPose.X() << ";" << currentPose.Y() << ";" << currentPose.Theta() << ";" <<
 		truePose.X() << ";" << truePose.Y() << ";" << truePose.Theta() << ";" << truePose.getDistance(currentPose) << std::endl;
 	grafico.flush();
-
-	cls(19);
 
 	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
 		currentPose.Theta() == lastEstimatedPose.Theta())) {
@@ -100,6 +82,7 @@ void testNavigation(ArMap& map, sauron::LocalizationManager& locManager, const s
 	sauron::PathPlanner planner(pRobot, &locManager, mapName);
 	std::cout << "Mapa lido com sucesso (" << planner.getGraph().size() << " nós)." << std::endl;
 	
+	sauron::tests::NavigationMonitorConsole monitor(&planner);
 
 	while(true)
 	{
@@ -113,14 +96,6 @@ void testNavigation(ArMap& map, sauron::LocalizationManager& locManager, const s
 		}
 		std::cout << std::endl;
 	}
-}
-
-
-void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
-{
-	console.Create("Posicao atual");
-	printEstimatedPose(locManager.getPose());
-	locManager.addPoseChangedCallback(printEstimatedPose);
 }
 
 int principal(int argc, char** argv)
@@ -267,14 +242,13 @@ int principal(int argc, char** argv)
   server.runAsync();
   printf("Server is now running...\n");
   clientSwitchManager.runAsync();
-
-  sauron::SonarMatchPainter sonarPainter(&drawings);
-  psonarPainter = &sonarPainter;
-
+#pragma endregion
   sauron::LocalizationManager locManager(&robot, map, std::string(""));
   plocManager = &locManager;
 
-  startEstimatedPoseConsole(locManager);
+  sauron::tests::LocalizationMonitorConsole locConsole(&locManager, &robot);
+  sauron::tests::SonarMatchServer sonarMatches(&drawings, &locManager);
+  
 
   std::cout	<< "Bem-vindo ao programa de testes mais bonito do Brasil" << std::endl 
 			<< "Você está usando o mapa: " << mapName << std::endl
