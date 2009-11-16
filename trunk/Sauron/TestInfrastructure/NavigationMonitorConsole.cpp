@@ -26,6 +26,7 @@ void NavigationMonitorConsole::callback(sauron::PathPlannerStatus status, const 
 	{
 	case GOING_TO_WAYPOINT:
 		m_console.printf("Indo para %s\n", p_node->getName().c_str());
+		break;
 	case ARRIVED_AT_WAYPOINT:
 		m_console.printf("Chegou em %s\n", p_node->getName().c_str());
 		break;
