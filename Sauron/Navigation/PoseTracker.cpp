@@ -32,6 +32,7 @@ namespace sauron
 	bool PoseTracker::hasStrayedFromRoute(const Pose& pose)
 	{
 		const int maxDistanceCm = 40;
-		return m_route.getPerpDist(ArPose(pose.X(), pose.Y(), pose.Theta())) > maxDistanceCm;
+		int distanceToRoute = m_route.getPerpDist(ArPose(pose.X(), pose.Y(), pose.Theta()));
+		return distanceToRoute > maxDistanceCm ||distanceToRoute < 0;
 	}
 }
