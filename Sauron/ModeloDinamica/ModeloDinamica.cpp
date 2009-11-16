@@ -42,7 +42,7 @@ void ModeloDinamica::init()
 	influLinearLinear   = 0.033;
 	influLinearAngular  = 0.001;
 	influAngularLinear  = 0.0;
-	influAngularAngular = 0.35;
+	influAngularAngular = 0.40;
 
     m_thread = boost::thread::thread( &ModeloDinamica::mainLoop, this );
 }

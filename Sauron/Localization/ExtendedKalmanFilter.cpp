@@ -36,8 +36,8 @@ namespace sauron
 	{
 		m_latestCovariance.clear();
 		m_latestCovariance(0,0) = 100;
-		m_latestCovariance(1,1) = 100;
-		m_latestCovariance(2,2) = 0.0685389196;
+		m_latestCovariance(1,1) = 15;
+		m_latestCovariance(2,2) = 0.0005;
 	}
 
 
