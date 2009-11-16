@@ -18,19 +18,20 @@ namespace sauron
 			FAILED_OTHER
 		};
 
-		RouteExecuter();
-		RouteExecuter(ArRobot* robot);
+		RouteExecuter(LocalizationManager* locManager);
+		RouteExecuter(ArRobot* robot, LocalizationManager* locManager);
 		
-		MoveResult goTo(LocalizationManager* locManager, const Point2DDouble& to);
-
+		MoveResult goTo(const Point2DDouble& to);
 
 
 	public:
-		double getTurnAngle(const Pose& from, const Point2DDouble& to);
-		double getTurnAngle(ArRobot* robot, const Point2DDouble& to);
+		static double getTurnAngle(const Pose& from, const Point2DDouble& to);
+		static double getTurnAngle(ArRobot* robot, const Point2DDouble& to);
 
 	private:
 		ArRobot* mp_robot;
+		LocalizationManager* mp_localization;
+
 		boost::condition_variable m_movementStoppedCond;
 		bool m_movementStopped;
 		boost::mutex m_mutex;

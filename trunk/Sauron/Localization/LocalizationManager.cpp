@@ -91,7 +91,7 @@ namespace sauron
 
 	void LocalizationManager::updateArRobotPose(const Pose& currentPose) {
 		mp_robot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
-			sauron::trigonometry::rads2degrees(currentPose.Theta())));
+			sauron::trigonometry::rads2degrees(currentPose.Theta())), false);
 	}
 
 	void LocalizationManager::update(const Matrix &hValue,

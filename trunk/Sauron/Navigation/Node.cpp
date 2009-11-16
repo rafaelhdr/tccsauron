@@ -23,6 +23,14 @@ Node::Node( const Point2D<pose_t> &position, const NodeType &type )
 {
 }
 
+Node::Node( const Point2D<pose_t> &position, const NodeType &type, const std::string& name )
+    : m_position( position ),
+      m_type( type ),
+	  m_name( name )
+{
+}
+
+
 
 Node::~Node()
 {

@@ -55,6 +55,7 @@ namespace sauron
 					}
 				}
 			}
+			details::p_robot->clearDirectMotion();
 		}
 
 

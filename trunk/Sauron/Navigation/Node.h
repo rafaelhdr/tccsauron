@@ -16,14 +16,17 @@ class Node
         enum NodeType
         {
             PRIMARY,
-            SECUNDARY,
+            SECONDARY,
             TEMPORARY,
         };
 
         Node();
         Node( const Point2D<pose_t> &position );
         Node( const Point2D<pose_t> &position, const NodeType &type );
+		Node( const Point2D<pose_t> &position, const NodeType &type, const std::string& name );
         ~Node();
+
+		std::string getName() { return m_name; }
 
         void setPosition( const Point2D<pose_t> &position );
         const Point2D<pose_t> &getPosition() const;
@@ -39,6 +42,7 @@ class Node
         const NodeType &Type() const;
 
    private:
+		std::string m_name;
         Point2D<pose_t>     m_position;
         std::vector<Node *> m_adjacents;
         NodeType            m_type;

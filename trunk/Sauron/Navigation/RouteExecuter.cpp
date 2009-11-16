@@ -11,23 +11,24 @@ namespace sauron
 {
 	class LocalizationManager;
 
-	RouteExecuter::RouteExecuter() : mp_robot(0)
+	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager)
 	{
 	}
-	RouteExecuter::RouteExecuter(ArRobot* robot) : mp_robot(robot)
+	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot), mp_localization(locManager)
 	{
 	}
 
-	RouteExecuter::MoveResult RouteExecuter::goTo(LocalizationManager* locManager, const Point2DDouble& to)
+	RouteExecuter::MoveResult RouteExecuter::goTo(const Point2DDouble& to)
 	{
-		double deltaHeading = getTurnAngle(locManager->getPose(), to);
+		Pose currentPose = mp_localization->getPose();
+
+		double deltaHeading = getTurnAngle(currentPose, to);
 		robotController::turn(deltaHeading);
 
-		Pose currentPose = locManager->getPose();
 		ArLineSegment route(currentPose.X(), currentPose.Y(), to.X(), to.Y());
 
 		
-		PoseTracker tracker(locManager, to, route);
+		PoseTracker tracker(mp_localization, to, route);
 		tracker.trackAsync(boost::bind(&RouteExecuter::reachedGoal, this, _1));
 		mp_robot->setVel(200);
 		waitGoalIsReached();
