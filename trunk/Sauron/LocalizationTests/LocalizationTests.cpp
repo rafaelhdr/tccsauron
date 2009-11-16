@@ -5,6 +5,8 @@
 #include "SauronArRobot.h"
 #include "SonarMatchPainter.h"
 
+#include "Navigation/PathPlanner.h"
+
 #define TEST_LOG(level) FILE_LOG(level) << "LocalizationTests: "
 #include <windows.h>
 #include <fstream>
@@ -93,6 +95,27 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
 }
 
+void testNavigation(ArMap& map, sauron::LocalizationManager& locManager, const std::string& mapName) {
+
+	sauron::PathPlanner planner(pRobot, &locManager, mapName);
+	std::cout << "Mapa lido com sucesso (" << planner.getGraph().size() << " nós)." << std::endl;
+	
+
+	while(true)
+	{
+		std::string goalName;
+		std::cout << "Digite o nome de seu destino: ";
+		std::cin >> goalName;
+		if(planner.goTo(goalName)) {
+			std::cout << "Chegamos em " << goalName << "!" << std::endl;
+		} else {
+			std::cout << "Hoje nao vai dar errado, hoje nao, hoje nao, hoje nao... Hoje sim.. hoje sim?" << std::endl;
+		}
+		std::cout << std::endl;
+	}
+}
+
+
 void startEstimatedPoseConsole(sauron::LocalizationManager& locManager)
 {
 	console.Create("Posicao atual");
@@ -166,8 +189,8 @@ int principal(int argc, char** argv)
 
   
   ArMap map;
-  char mapName[] = "pavsup.map";
-  if(!map.readFile(mapName)) {
+  std::string mapName = "pavsup_mod.map";
+  if(!map.readFile(mapName.c_str())) {
 	 robot.disconnect(); // sem isso dá pau (pure virtual call)
 	 throw std::invalid_argument(std::string("Mapa nao foi encontrado"));
   }
@@ -267,7 +290,8 @@ int principal(int argc, char** argv)
 		  << "2. (P) Setar a Posição Inicial;" << std::endl
 		  << "2. (S) Pegar a Posicao do Simulador;" << std::endl
 		  << "3. (V) Setar Velocidades;" << std::endl
-		  << "4. (T) Modo teleoperação;" << std::endl;
+		  << "4. (T) Modo teleoperação;" << std::endl
+		  << "5. (N) Navegacao automatica" << std::endl;
 
 	  std::cin >> c;
 	  ArPose arPose = robot.getTruePose();
@@ -304,6 +328,10 @@ int principal(int argc, char** argv)
 
 			robot.setVel(vel);
 			robot.setRotVel(rotVel);
+			break;
+		case 'n':
+		case 'N':
+			testNavigation(map, locManager, mapName);
 			break;
 		case 't':
 		case 'T':
