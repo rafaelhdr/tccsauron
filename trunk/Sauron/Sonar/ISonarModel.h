@@ -21,7 +21,8 @@ public:
 		double sigmaError2, // o erro utilizado no portão de validação
 		/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
 		/*out*/ SonarReading* expectedReading, // variável de saída: a leitura esperada para aquela linha
-		/*out*/SonarReading* actualReading // variável de saída: a leitura de fato obtida para aquela linha
+		/*out*/SonarReading* actualReading, // variável de saída: a leitura de fato obtida para aquela linha
+		/*out*/ int* matchScore // variável de saída: a pontuação da associação
 		) = 0;
 
 };

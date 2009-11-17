@@ -37,6 +37,7 @@ private:
 	bool getEstimate( Matrix &hValue, Measure &z, Model &H, Covariance &R );
 	void setupAsyncDataFeed();
 	void addReadingToModel(int sonarNumber, SonarReading reading);
+	double getMatchVariance(int matchScore);
 
 	int m_sonarNumber;
 	ISonarDataAsyncProvider& m_dataProvider;
