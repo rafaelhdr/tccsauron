@@ -47,6 +47,10 @@ namespace sauron
 			return false;
 		}
 		ReadingAndPose rnp(reading, estimatedPose);
+		if(reading.getReading() > configs::sonars::invalidReading) {
+			SONAR_LOG(logDEBUG1) << "Leitura misteriosa de " << reading.getReading() << " recebida e ignorada @ " << estimatedPose;
+			return false;
+		}
 		if(isReadingMeaningful(rnp)) {
 			SONAR_LOG(logDEBUG2) << "Leitura significativa: " << rnp.reading.getReading() << " @ " << rnp.estimatedPose;
 			m_readings.push_back(rnp);
@@ -209,15 +213,15 @@ namespace sauron
 
 	bool SonarModel::tryGetMatchingMapLine(Map& map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
-		actualReading)
+		actualReading, int* matchScore)
 	{
 		return tryGetMatchingMapLine(getLatestReading().estimatedPose, map, sigmaError2,
-			matchedMapLine, expectedReading, actualReading);
+			matchedMapLine, expectedReading, actualReading, matchScore);
 	}
 
 	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map& map, double sigmaError2,
-		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
-		actualReading) {
+		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading* actualReading,
+		int* matchScore) {
 			SCOPED_READINGS_LOCK();
 
 			if(!getLatestReading().reading.isValid()) {
@@ -233,7 +237,7 @@ namespace sauron
 						m_isTracking = true;
 						m_tracking.reset();
 						m_tracking.setMatch(*matchedMapLine, *expectedReading, *actualReading);
-
+						*matchScore = m_tracking.getScore();
 						SONAR_LOG(logDEBUG2) << "Começou match de " << m_tracking.getSegment() << " com score de " << m_tracking.getScore();
 						return true;
 				} else {
@@ -242,13 +246,14 @@ namespace sauron
 			} else {
 				if(tryTrackMapLine(latestPose, map, expectedReading, actualReading)) {
 					*matchedMapLine = m_tracking.getSegment();
+					*matchScore = m_tracking.getScore();
 					SONAR_LOG(logDEBUG2) << "Manteve match de " << m_tracking.getSegment() << " com score de " << m_tracking.getScore();
 					return true;
 				} else {
 					SONAR_LOG(logDEBUG2) << "PERDEU match de " << m_tracking.getSegment() << " porque score foi " << m_tracking.getScore() <<
 						"; tentando associação...";
 					return tryGetMatchingMapLine(latestPose, map, sigmaError2, matchedMapLine,
-						expectedReading, actualReading);
+						expectedReading, actualReading, matchScore);
 				}
 			}
 	}
@@ -358,7 +363,8 @@ namespace sauron
 			v_2 *= v_2;
 			double s_2 = sigmaError2;
 			SONAR_LOG(logDEBUG2) << "Associando segmento " << mapLine << ". Leitura esperada = " << expectedReading << ";" <<
-				" leitura real = " << reading.getReading() << "; v_2 = " << v_2 << "; s_2 = " << s_2 << "; v_2 / s_2 = " << v_2 / s_2;
+				" leitura real = " << reading.getReading() << "; v_2 = " << v_2 << "; s_2 = " << s_2 << "; v_2 / s_2 = " << v_2 / s_2 <<
+				"wallRejectionValue2 = " << configs::sonars::wallRejectionValue2 << "; resultado: " << (v_2 / s_2 < configs::sonars::wallRejectionValue2) ;
 			return v_2 / s_2 < configs::sonars::wallRejectionValue2;
 	}
 

@@ -36,6 +36,7 @@ namespace sauron
 	{
 		SonarReading expectedReading, actualReading;
 		LineSegment matchedLineSegment;
+		int matchScore;
 		boost::unique_lock<boost::recursive_mutex> lock(*mp_localization->getPoseMutex());
 
 		const Pose last = mp_localization->getPose();
@@ -46,7 +47,7 @@ namespace sauron
 			SONAR_LOG(logDEBUG2) << "Validou leituras (k = " << m_model.getReadingsBufferCount() << ")";
 			if(m_model.tryGetMatchingMapLine(last, mp_localization->getMap(),
 				configs::sonars::validationGateSigma2,
-				&matchedLineSegment, &expectedReading, &actualReading)) {
+				&matchedLineSegment, &expectedReading, &actualReading, &matchScore)) {
 					matched = true;
 					SONAR_LOG(logDEBUG2) << "Pegou segmento: (" << matchedLineSegment.getEndPoint1().getX() << ", "<< matchedLineSegment.getEndPoint1().getY() << ") -> (" << matchedLineSegment.getEndPoint2().getX() << ", "<< matchedLineSegment.getEndPoint2().getY() << "))";
 					SONAR_LOG(logDEBUG2) << "Leitura esperada: " << expectedReading.getReading();
@@ -66,7 +67,13 @@ namespace sauron
 
 					z(0,0) = actualReading;
 
-					R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
+					if(matchScore == -1) {
+						R(0,0) = configs::sonars::sonarReadingStandardDeviationMm;
+					}
+					else {
+						R(0,0) = getMatchVariance(matchScore);
+						SONAR_LOG(logDEBUG2) << "getMatchVariance: variância de " << R(0,0) << " com score de " << matchScore;
+					}
 					
 					Line matchedLine = matchedLineSegment.getSauronLine();
 					Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
@@ -132,6 +139,12 @@ namespace sauron
 		return matched;
 	}
 
+	double SensorSonar::getMatchVariance(int matchScore)
+	{
+		if(floating_point::isEqual(matchScore, 0))
+			return 500;
+		return 10 + 300 / matchScore;
+	}
 
 	void SensorSonar::setupAsyncDataFeed()
 	{

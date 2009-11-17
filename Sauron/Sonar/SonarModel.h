@@ -44,9 +44,10 @@ namespace sauron
 			const Pose& latestPose, // a posição mais recente do robô
 			Map& map, // o mapa do ambiente
 			double sigmaError2, // o erro utilizado no portão de validação
-			/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
+			/*out*/ LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
 			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
-			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
+			/*out*/ SonarReading* actualReading, // variável de saída: a leitura que foi de fato obtida para aquela linha
+			/*out*/ int* matchScore
 		);
 
 		bool tryGetMatchingMapLine(
@@ -54,7 +55,8 @@ namespace sauron
 			double sigmaError2, // o erro utilizado no portão de validação
 			/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
 			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
-			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
+			/*out*/SonarReading* actualReading, // variável de saída: a leitura que foi de fato obtida para aquela linha
+			/*out*/ int* matchScore
 		);
 		/** ISonarModel **/
 

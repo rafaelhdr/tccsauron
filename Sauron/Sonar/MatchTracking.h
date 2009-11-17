@@ -20,7 +20,7 @@ private:
 	void updateScore(double deltaImprovement);
 	int m_sonarNumber;
 	static const int K_improvement = 3;
-	static const int K_worsening = 7;
+	static const int K_worsening = 4;
 	LineSegment m_segment;
 	double m_score;
 	double m_lastError;
