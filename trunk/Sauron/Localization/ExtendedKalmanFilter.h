@@ -32,7 +32,7 @@ class ExtendedKalmanFilter : public IKalmanFilter
 		// Atualiza as estimativas com os dados de um sensor.
 		// As seguintes restrições quanto as tamanhos das matrizes devem ser obedecidos:
 		// H.size2() == 3
-		// R.size1() == R.size2() == H.size1()
+		// R.size1() == R.size2() == H.size1() == z.size1()
 		// z.size1() == hValue.size1()
 		// z.size2() == hValue.size2()
 		// z.size1() == H.size1()

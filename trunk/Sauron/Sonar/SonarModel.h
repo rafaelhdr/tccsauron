@@ -47,7 +47,7 @@ namespace sauron
 			/*out*/ LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
 			/*out*/ SonarReading* expectedReading, // variável de saída: a leitura que seria esperada para aquela linha
 			/*out*/ SonarReading* actualReading, // variável de saída: a leitura que foi de fato obtida para aquela linha
-			/*out*/ int* matchScore
+			/*out*/ int* matchScore, double* beta
 		);
 
 		bool tryGetMatchingMapLine(
@@ -85,7 +85,8 @@ namespace sauron
 			/*out*/SonarReading* actualReading // variável de saída: a leitura que foi de fato obtida para aquela linha
 		);
 
-
+		double getTheoreticalAngleOfIncidence(const Pose& pose, const Line& lineSegment);
+		SonarReading getTheoreticalExpectedReadingByMapLine(const Pose& pose, const LineSegment& lineSegment);
 
 		std::vector<double> getGammas();
 		double getObsMediaVariance();

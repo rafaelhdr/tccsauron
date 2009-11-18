@@ -73,7 +73,7 @@ namespace sauron
 	{
 		//m_sensors.push_back(ISensorModelPtr(new SensorSonar(0, *this, *mp_sonarDataProvider)));
 		//for(int i = 0; i < 8; i++) {
-		for(int i = 0; i < 8; i++) {
+		for(int i = 1; i < 2; i++) {
 			ISensorSonarModelPtr sonarModel = ISensorSonarModelPtr(new SensorSonar(i, *mp_sonarDataProvider));
 			sonarModel->setLocalizationManager(*this);
 			m_sonars.push_back(sonarModel);

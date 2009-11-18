@@ -101,6 +101,32 @@ namespace sauron
 		return Line(rWall, thetaWall_rads);
 	}
 
+	double SonarModel::getTheoreticalAngleOfIncidence(const Pose& pose, const Line& line)
+	{
+		return this->m_sonarTheta + pose.Theta() + (trigonometry::PI/2 - line.getTheta());
+	}
+
+	SonarReading SonarModel::getTheoreticalExpectedReadingByMapLine(const Pose& pose, const LineSegment& lineSegment)
+	{
+		SCOPED_READINGS_LOCK();
+		sauron::Line line = lineSegment.getSauronLine();
+		sauron::Pose sonarPose = this->getSonarGlobalPose(pose);
+		
+		//double beta_rads = getSonarAngleOfIncidence();
+		double beta_rads = getTheoreticalAngleOfIncidence(pose, line);
+
+		double x_times_cos = sonarPose.X() * ::cos(line.getTheta());
+		double y_times_sin = sonarPose.Y() * ::sin(line.getTheta());
+		// expectedReading = (R_wall - X_sonar * cos Th_wall - Y_sonar * sin Th_wall) / sin Beta
+		double expectedReading = (line.getRWall() - x_times_cos - y_times_sin) / ::sin(beta_rads);
+		// HACK não sei ao certo por que às vezes a leitura esperada é negativa. Isso conserta
+		// o teste SonarTest3::ExpectedReadingTest2_S3
+		SONAR_LOG(logDEBUG2) << "Leitura Esperada: " << expectedReading << " (rWall = " << line.getRWall() <<
+			"; thetaWall = " << line.getTheta() << "; beta = " << beta_rads <<
+			" rads; sonarGlobalPose =" << sonarPose << ")";
+		return expectedReading > 0 ? expectedReading : -expectedReading;
+	}
+
 	SonarReading SonarModel::getExpectedReadingByMapLine(const Pose& pose, const LineSegment& lineSegment)
 	{
 		SCOPED_READINGS_LOCK();
@@ -202,12 +228,20 @@ namespace sauron
 		double d_sonar = getD_Sonar();// * ::cos(this->m_sonarTheta);
 		double d_robot = getD_Robot();
 
+		for(int i = 0; i < m_readings.size(); i++)
+		{
+			SONAR_LOG(logDEBUG2) << "( " << m_readings[i].reading.getReading() << " @ " << m_readings[i].estimatedPose << " ) ";
+		}
+
 		// cosine law
 		double x = ::sqrt(d_sonar * d_sonar + d_robot * d_robot - 
 			2 * d_sonar * d_robot * ::cos(this->m_sonarTheta));
 		// sine law
 		double sinAlpha = d_sonar * ::sin(this->m_sonarTheta) / x;
 
+		SONAR_LOG(logDEBUG2) << "getSinAlpha: " << "d_sonar = " << d_sonar << "; d_robot = " << d_robot
+			<< "; sonarTheta = " << this->m_sonarTheta << "; x = " << x << "; sinAlpha = " << sinAlpha;
+		
 		return trigonometry::correctImprecisions(sinAlpha);
 	}
 
@@ -215,14 +249,17 @@ namespace sauron
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
 		actualReading, int* matchScore)
 	{
+		double beta;
 		return tryGetMatchingMapLine(getLatestReading().estimatedPose, map, sigmaError2,
-			matchedMapLine, expectedReading, actualReading, matchScore);
+			matchedMapLine, expectedReading, actualReading, matchScore, &beta);
 	}
 
 	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map& map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading* actualReading,
-		int* matchScore) {
+		int* matchScore, double* beta) {
 			SCOPED_READINGS_LOCK();
+
+			*beta = getSonarAngleOfIncidence();
 
 			if(!getLatestReading().reading.isValid()) {
 				m_tracking.reset();
@@ -253,7 +290,7 @@ namespace sauron
 					SONAR_LOG(logDEBUG2) << "PERDEU match de " << m_tracking.getSegment() << " porque score foi " << m_tracking.getScore() <<
 						"; tentando associação...";
 					return tryGetMatchingMapLine(latestPose, map, sigmaError2, matchedMapLine,
-						expectedReading, actualReading, matchScore);
+						expectedReading, actualReading, matchScore, beta);
 				}
 			}
 	}
@@ -268,7 +305,7 @@ namespace sauron
 
 		if(filterBySonarAngle(vecTrackedLine, latestPose).size() == 1) {
 			*actualReading = getLatestReading().reading;
-			*expectedReading = getExpectedReadingByMapLine(latestPose,
+			*expectedReading = getTheoreticalExpectedReadingByMapLine(latestPose,
 				m_tracking.getSegment());
 			m_tracking.updateMatch(*expectedReading, *actualReading);
 			if(m_tracking.isMatchValid()) {
@@ -314,7 +351,7 @@ namespace sauron
 			if(matchedMapLine != NULL)
 				*matchedMapLine = matchedLines[0];
 			if(expectedReading != NULL)
-				*expectedReading = getExpectedReadingByMapLine(latestPose, matchedLines[0]);
+				*expectedReading = getTheoreticalExpectedReadingByMapLine(latestPose, matchedLines[0]);
 			if(actualReading != NULL)
 				*actualReading = getLatestReading().reading;
 
