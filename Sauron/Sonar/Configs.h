@@ -15,7 +15,7 @@ namespace sauron
 			const int kMin = 4;
 			const double phoErrorFront4mm = 0.05;
 			const double readingValidationAlpha = 0.5;
-			const double wallRejectionValue2 = 80;//2.7060;
+			const double wallRejectionValue2 = 15;//2.7060;
 			const double maximumSonarToLineDistance = 500;//350;
 			// variação mínima em radianos para que o sistema considere que o robô fez
 			// uma curva

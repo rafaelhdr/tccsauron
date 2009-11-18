@@ -13,9 +13,9 @@ namespace sauron
 	{
 		using namespace boost::numeric::ublas;
 
-		PREDICT_LOG(logDEBUG2) << "predict fValue = " << fValue;
-		PREDICT_LOG(logDEBUG2) << "predict F = " << F;
-		PREDICT_LOG(logDEBUG2) << "predict Q = " << Q;
+		PREDICT_LOG(logDEBUG4) << "predict fValue = " << fValue;
+		PREDICT_LOG(logDEBUG4) << "predict F = " << F;
+		PREDICT_LOG(logDEBUG4) << "predict Q = " << Q;
 		Matrix temp1(3,3);	
 
 		// Pk = F*P*F'+Q
@@ -28,8 +28,8 @@ namespace sauron
 		m_latestEstimate.X() = fValue(0,0);
 		m_latestEstimate.Y() = fValue(1,0);
 		m_latestEstimate.setTheta(fValue(2,0));
-		PREDICT_LOG(logDEBUG2) << "predict estimativa: " << m_latestEstimate;
-		PREDICT_LOG(logDEBUG2) << "predict covariância: " << m_latestCovariance;
+		PREDICT_LOG(logDEBUG3) << "predict estimativa: " << m_latestEstimate;
+		PREDICT_LOG(logDEBUG3) << "predict covariância: " << m_latestCovariance;
 	}
 
 	void ExtendedKalmanFilter::initCovariance()
@@ -37,7 +37,7 @@ namespace sauron
 		m_latestCovariance.clear();
 		m_latestCovariance(0,0) = 100;
 		m_latestCovariance(1,1) = 15;
-		m_latestCovariance(2,2) = 0.0005;
+		m_latestCovariance(2,2) = 0.3;
 	}
 
 
@@ -72,17 +72,17 @@ namespace sauron
 		UPDATE_LOG(logDEBUG3) << "inv(H * m_latestCovariance * H' + R) = " << temp2;
 
 		temp1 = prod(m_latestCovariance, trans(H));
-		UPDATE_LOG(logDEBUG2) << "m_latestCovariance * H' = " << temp1;
+		UPDATE_LOG(logDEBUG3) << "m_latestCovariance * H' = " << temp1;
 		K = prod(temp1,temp2);
 		
-		UPDATE_LOG(logDEBUG3) << "K = m_latestCovariance * H' * inv(H * m_latestCovariance * H' + R)" << K;
+		UPDATE_LOG(logDEBUG2) << "K = m_latestCovariance * H' * inv(H * m_latestCovariance * H' + R)" << K;
 
 		// xk = x + K*(y - hk(xk,0))
 		yTemp = z - hValue;
 		UPDATE_LOG(logDEBUG3) << "z - hValue" << yTemp;
 		yTemp = prod(K, yTemp);
 
-		UPDATE_LOG(logDEBUG3) << "K * (z - hValue) = " << yTemp;
+		UPDATE_LOG(logDEBUG2) << "K * (z - hValue) = " << yTemp;
 
 		m_latestEstimate.X() = m_latestEstimate.X() + yTemp(0,0);
 		m_latestEstimate.Y() = m_latestEstimate.Y() + yTemp(1,0);

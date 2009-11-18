@@ -101,7 +101,7 @@ void ModeloDinamica::atualizaCovariancia(Covariance &dynNoise)
     double varLinear = getVarianciaLinear();
     double varAngular = getVarianciaAngular();
 
-    DINAMICA_LOG(logDEBUG2) << "Var. Angular: " << varAngular << ". Var. Linear: " << varLinear << ". CosTheta: " << cosTheta << ". SenTheta: " << senTheta;
+    DINAMICA_LOG(logDEBUG3) << "Var. Angular: " << varAngular << ". Var. Linear: " << varLinear << ". CosTheta: " << cosTheta << ". SenTheta: " << senTheta;
 
     dynNoise.resize( 3, 3 );
     dynNoise.clear();
