@@ -163,6 +163,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SensorSimpleSonar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SensorSonar.cpp"
 				>
 			</File>
@@ -206,6 +210,10 @@
 			</File>
 			<File
 				RelativePath=".\Matrix.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SensorSimpleSonar.h"
 				>
 			</File>
 			<File

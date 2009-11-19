@@ -69,6 +69,7 @@ private:
 	Map m_map;
 	IKalmanFilterPtr mp_ekf;
 	std::vector<ISensorSonarModelPtr> m_sonars;
+	std::vector<ISensorModelPtr> m_simpleSonars;
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
 
@@ -83,6 +84,7 @@ private:
 
 	void buildDefaultSensors();
 	void buildDefaultSonars();
+	void buildDefaultSimpleSonars();
 	void buildDefaultVision();
 
 	ISonarDataAsyncProvider* buildDefaultSonarDataProvider();
