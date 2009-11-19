@@ -81,10 +81,12 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, bool bidirec
             }
         }
 
-        toLink.addAdjacent( *closestIt );
-        if ( bidirectional )
-            closestIt->addAdjacent( toLink );
-    }
+		if(minDist > 0.0) {
+			toLink.addAdjacent( *closestIt );
+			if ( bidirectional )
+				closestIt->addAdjacent( toLink );
+		}
+	}
 }
 
 void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal )

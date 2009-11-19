@@ -37,7 +37,7 @@ namespace sauron
 		m_latestCovariance.clear();
 		m_latestCovariance(0,0) = 100;
 		m_latestCovariance(1,1) = 15;
-		m_latestCovariance(2,2) = 0.3;
+		m_latestCovariance(2,2) = 0.003;
 	}
 
 
@@ -82,6 +82,7 @@ namespace sauron
 		UPDATE_LOG(logDEBUG3) << "z - hValue" << yTemp;
 		yTemp = prod(K, yTemp);
 
+		//yTemp(2,0) = 0;
 		UPDATE_LOG(logDEBUG2) << "K * (z - hValue) = " << yTemp;
 
 		m_latestEstimate.X() = m_latestEstimate.X() + yTemp(0,0);

@@ -4,6 +4,7 @@
 #include "Pose.h"
 #include "ModeloDinamica/ModeloDinamica.h"
 #include "SensorSonar.h"
+#include "SensorSimpleSonar.h"
 #include "SensorVision.h"
 #include "Sonar/PhysicalSonars.h"
 #include <boost/bind.hpp>
@@ -65,18 +66,26 @@ namespace sauron
 
 	void LocalizationManager::buildDefaultSensors()
 	{
-		buildDefaultSonars();
+		//buildDefaultSonars();
+		buildDefaultSimpleSonars();
 		//buildDefaultVision();
 	}
 
 	void LocalizationManager::buildDefaultSonars()
 	{
-		//m_sensors.push_back(ISensorModelPtr(new SensorSonar(0, *this, *mp_sonarDataProvider)));
-		//for(int i = 0; i < 8; i++) {
-		for(int i = 1; i < 2; i++) {
+		for(int i = 0; i < 8; i++) {
 			ISensorSonarModelPtr sonarModel = ISensorSonarModelPtr(new SensorSonar(i, *mp_sonarDataProvider));
 			sonarModel->setLocalizationManager(*this);
 			m_sonars.push_back(sonarModel);
+		}
+	}
+
+	void LocalizationManager::buildDefaultSimpleSonars()
+	{
+		for(int i = 0; i < 8; i++) {
+			ISensorModelPtr simpleSonarModel = ISensorModelPtr(new SensorSimpleSonar(i, *mp_sonarDataProvider));
+			simpleSonarModel->setLocalizationManager(*this);
+			m_simpleSonars.push_back(simpleSonarModel);
 		}
 	}
 

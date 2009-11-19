@@ -229,6 +229,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\SimpleSonarModel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SonarModel.cpp"
 				>
 			</File>
@@ -244,6 +248,10 @@
 			</File>
 			<File
 				RelativePath=".\Configs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ISimpleSonarModel.h"
 				>
 			</File>
 			<File
@@ -272,6 +280,10 @@
 			</File>
 			<File
 				RelativePath=".\PhysicalSonars.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SimpleSonarModel.h"
 				>
 			</File>
 			<File

@@ -164,8 +164,8 @@ int principal(int argc, char** argv)
 
   
   ArMap map;
-  //std::string mapName = "pavsup_nocolluns.map";
-  std::string mapName = "corredorfake.map";
+  std::string mapName = "pavsup_mod.map";
+  //std::string mapName = "corredorfake.map";
   if(!map.readFile(mapName.c_str())) {
 	 robot.disconnect(); // sem isso dá pau (pure virtual call)
 	 throw std::invalid_argument(std::string("Mapa nao foi encontrado"));

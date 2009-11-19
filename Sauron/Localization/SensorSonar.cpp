@@ -128,7 +128,7 @@ namespace sauron
 						- (last.Y() + x_sonar * sin(last.Theta()) + y_sonar * cos(last.Theta())) * sin(matchedLine.getTheta());
 
 					H(0,2) = (df * sin(beta) - f * cos(beta)) / (::sin(beta) * ::sin(beta));
-					//H(0,2) = df / ::sin(beta);
+					//H(0,2) = 0;
 
 					SONAR_LOG(logDEBUG3) << "Matriz H: " << H;
 
