@@ -30,7 +30,7 @@ namespace sauron
 		
 		PoseTracker tracker(mp_localization, to, route);
 		tracker.trackAsync(boost::bind(&RouteExecuter::reachedGoal, this, _1));
-		mp_robot->setVel(200);
+		mp_robot->setVel(500);
 		waitGoalIsReached();
 		mp_robot->stop();
 		return m_moveResult;

@@ -1,7 +1,6 @@
 #pragma once
+#include "Aria.h"
 #include <vector>
-#include "ariaUtil.h"
-#include "ArMapInterface.h"
 #include "LineSegment.h"
 namespace sauron
 {

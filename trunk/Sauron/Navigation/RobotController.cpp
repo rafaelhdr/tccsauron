@@ -48,7 +48,7 @@ namespace sauron
 				if(!details::p_robot->isHeadingDone() ){
 					boost::thread::sleep(delay(0,300,0));
 				} else {
-					if(floating_point::isEqual(details::p_robot->getRotVel(), 0)) {
+					if(floating_point::isEqual(details::p_robot->getRotVel(), 0, 0.01)) {
 						break;
 					} else {
 						boost::thread::sleep(delay(0,100,0));

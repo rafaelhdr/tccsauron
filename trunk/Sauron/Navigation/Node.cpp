@@ -51,7 +51,8 @@ const Point2D<pose_t> &Node::getPosition() const
 
 void Node::addAdjacent( Node &other )
 {
-    m_adjacents.push_back( &other );
+	if(std::find(m_adjacents.begin(), m_adjacents.end(), &other) == m_adjacents.end())
+		m_adjacents.push_back( &other );
 }
 
 
