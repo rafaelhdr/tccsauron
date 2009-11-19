@@ -1,9 +1,11 @@
+#include "Aria.h"
 #include "PathPlanner.h"
 #include "MapFileParser.h"
 #include "WaypointLinker.h"
 #include "RouteExecuter.h"
 #include "RobotController.h"
 #include "Localization/LocalizationManager.h"
+#include "Sonar/Map.h"
 
 namespace sauron
 {
@@ -76,8 +78,10 @@ namespace sauron
 
 	void PathPlanner::loadWaypointsGraphFromMap(const std::string& mapFilename)
 	{
+		ArMap map;
+		map.readFile(mapFilename.c_str());
 		util::MapFileParser::loadWaypoints( mapFilename, m_graph );
-		util::WaypointLinker::link(m_graph);
+		util::WaypointLinker::link(m_graph, Map(map));
 	}
 
 	Node PathPlanner::getCurrentPoseAsNode()

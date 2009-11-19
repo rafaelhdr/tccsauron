@@ -1,6 +1,6 @@
 #pragma once
 #include "MathHelper.h"
-#include "ariaUtil.h"
+#include "Aria.h"
 #include "Line.h"
 #include "Pose.h"
 
