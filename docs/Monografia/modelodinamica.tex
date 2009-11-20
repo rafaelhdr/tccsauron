@@ -1,0 +1,69 @@
+
+
+\chapter{Modelo de Dinâmica}\label{chp:modelodinamica}
+
+
+O Modelo de Dinâmica é o responsável por fazer a predição da postura no filtro de Kalman. Existem duas possibilidades para a realização da predição:
+
+\begin{enumerate}
+	\item Através dos sinais de controle do robô, ou seja, qual a velocidade linear do motor, a velocidade rotacional do motor e outros parâmetros.
+	\item Através de sinais observados por sensores, como o odômetro.
+\end{enumerate}
+
+
+No SAURON, o Modelo de Dinâmica foi realizado utilizando-se a segunda alternativa, por ser mais simples e menos dependente dos parâmetros do robô.
+
+A obtenção da nova postura será realizada, portanto, com os dados do odômetro e da última estimativa.
+
+De fato, por uma limitação dos odômetros do Pionner 2DX, o sinal de controle foi usado para se obter o sinal das variações do odômetro, ou seja, para saber se o robô deslocava-se positivamente ou negativamente pelo eixo x, por exemplo, usou-se o sinal do valor de controle da velocidade.
+
+\section{Modelagem}
+
+A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:modelorobo} abaixo.
+
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/modelorobo.jpg}
+\caption{Arquitetura do Sistema completo.}%
+\label{figura:modelorobo}%
+\end{center}
+\end{figure}
+
+As equações para se obter a postura estimada do robô, a partir da última estimativa, estão descritas abaixo:
+
+\begin{gather}
+	x(n)=x(n-1)+dt_{m}(n)cos(\theta(n))\\
+	y(n)=y(n-1)+dt_{m}(n)sen(\theta(n))\\
+	\theta(n)=\theta(n-1)+\delta\theta(n)
+\end{gather}
+
+Essas equações formam a chamada matriz f do Filtro de Kalman, responsável diretamente pela etapa de predição.
+
+Além disso, por exigência do filtro de Kalman Extendido, é necessário calcular a matriz de covariâncias Q e a matriz F, de propagação das incertezas pelas derivadas da matriz f. 
+
+\section{Incertezas e Covariâncias}
+
+A propagação de incertezas, representada pela matriz F, é calculada através da matriz das derivadas da matriz f (conhecida por jacobiano de f). Pela simplicidade de f, a matriz F é facilmente deduzida para:
+
+
+\[ F(n) = \left( \begin{array}{ccc}
+1 & 0 & -\delta_{m}(n)sin(\Theta_{m}(n-1)) \\
+0 & 1 & \delta_{m}(n)cos(\Theta_{m}(n-1)) \\
+0 & 0 & 1 \end{array} \right).\] 
+  
+ 
+A matriz Q, da variância do Modelo de Dinâmica, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear e angular.
+
+
+\[ Q(n) = \left( \begin{array}{ccc}
+\sigma^{2}_{d_{m}} cos^2(\Theta_{m}(n-1))  & \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & 0 \\
+\sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & \sigma^{2}_{d_{m}} sin^2(\Theta_{m}(n-1)) & 0 \\
+0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right).\]   
+
+
+\section{Exemplo de Implementação}
+
+Abaixo um exemplo de implementação do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
+
+
+
