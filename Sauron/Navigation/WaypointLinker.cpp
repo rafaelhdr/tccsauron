@@ -301,7 +301,7 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 
 		Path pathFromCurrentToClosestToGoal = AStar::searchPath(*tempIt, *closestToGoalIt);
 
-		if(pathFromCurrentToClosestToGoal.size() == 0 && *tempIt != goal)
+		if(pathFromCurrentToClosestToGoal.size() == 0 && *tempIt != goal && tempIt != closestToGoalIt)
 			continue;
 
 		double distFromCurrentToClosestToGoal = getPathLength(*tempIt, pathFromCurrentToClosestToGoal);

@@ -56,22 +56,14 @@ namespace sauron
 	double RouteExecuter::getTurnAngle(const Pose& from, const Point2DDouble& to)
 	{
 		// segmento que os liga
-		double routeDeltaX = to.X() - from.X();
-		double routeDeltaY = to.Y() - from.Y();
+		double routeDeltaX = to.X()- from.X();
+		double routeDeltaY = to.Y()- from.Y();
 
-		// deltaX e deltaY da postura atual, com um deltaX arbitrário
-		double currentDeltaX, currentDeltaY;
-		double cosTheta = ::cos(from.Theta());
-		if(floating_point::isEqual(cosTheta, 0)) {
-			currentDeltaY = ::sin(from.Theta()) * 5; // +5 ou -5
-			currentDeltaX = 0;
-		} else if(floating_point::isEqual(::sin(from.Theta()), 0)) {
-			currentDeltaY = 0;
-			currentDeltaX = cosTheta * 5; // +5 ou -5
-		} else {
-			currentDeltaX = cosTheta < 0 ? -5 : 5;
-			currentDeltaY = currentDeltaX * ::tan(from.Theta());
-		}
+        /*return - from.Theta() + atan2( routeDeltaY, routeDeltaX ) ;*/
+
+		const int segmentLength = 400;
+		double currentDeltaX = segmentLength * ::cos(from.Theta());
+		double currentDeltaY = segmentLength * ::sin(from.Theta());
 
 		double crossProductLen = currentDeltaX * routeDeltaY - routeDeltaX * currentDeltaY;
 		double dotProduct = currentDeltaX * routeDeltaX + currentDeltaY * routeDeltaY;

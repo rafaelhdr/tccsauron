@@ -66,7 +66,7 @@ namespace sauron
 	void PathPlanner::removeNodesTooCloseFromPath(const Node& currentNode, Path &path)
 	{
 		Path cleanPath;
-		const int minimalDistanceBetweenNodes = 20; // cm
+		const int minimalDistanceBetweenNodes = 40; // cm
 		for(Path::iterator it = path.begin(); it != path.end(); it++)
 		{
 			if(it->getPosition().getDistance(currentNode.getPosition()) > minimalDistanceBetweenNodes)
