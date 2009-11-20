@@ -260,11 +260,12 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 		if( !isLinkPossible( tempNode, *tempIt, map ) )
 			continue;
 
-		double distFromTempToCurrent = tempNode.getPosition().getDistance( tempIt->getPosition() );
 		Path pathFromCurrentToGoal = AStar::searchPath(*tempIt, goal);
 
 		if(pathFromCurrentToGoal.size() == 0 && *tempIt != goal)
 			continue;
+
+		double distFromCurrentToGoal = getPathLength(pathFromCurrentToGoal);
 
 		if( minDistanceToGoal < 0 || minDistanceToGoal > distFromCurrentToGoal)
 		{
@@ -300,14 +301,14 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 			continue;
 
 		double distFromTempToCurrent = tempIt->getPosition().getDistance(tempNode.getPosition());
-		if(distFromTemp < 0 || distFromTemp > distFromTempToCurrent)
+		if(minDistFromTemp < 0 || minDistFromTemp > distFromTempToCurrent)
 		{
 			closestIt = tempIt;
-			distFromTemp = distFromTempToCurrent;
+			minDistFromTemp = distFromTempToCurrent;
 		}
 	}
 
-	if(distFromTemp < 0)
+	if(minDistFromTemp < 0)
 	{
 		std::cerr << "Ah, poxa! Nao achei nenhum ponto perto de mim. A discussao e' pontual. Ou nao." << std::endl;
 	} else {
