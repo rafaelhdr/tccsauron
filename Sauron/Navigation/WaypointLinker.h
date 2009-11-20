@@ -27,7 +27,7 @@ private:
 		static bool linkClosestPossibleDown( Graph& graph, Node& node, Map& map );
 		static bool isLinkPossible( Node& node1, Node& node2, Map& map);
 
-		static pose_t getPathLength( const Path& path );
+		static pose_t getPathLength( const Node& start, const Path& path );
 
 };
 
