@@ -33,7 +33,7 @@ namespace sauron
 		if(!hasReachedDestination(destination))
 		{
 			Node currentNode = getCurrentPoseAsNode();
-			util::WaypointLinker::linkTemporaryNode(m_graph, currentNode, destination);
+			util::WaypointLinker::linkTemporaryNode(m_graph, currentNode, destination, mp_localization->getMap());
 			Path path = AStar::searchPath(currentNode, destination);
 			removeNodesTooCloseFromPath(currentNode, path);
 			
