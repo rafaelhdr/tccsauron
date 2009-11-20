@@ -261,11 +261,10 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 			continue;
 
 		Path pathFromCurrentToGoal = AStar::searchPath(*tempIt, goal);
-
 		if(pathFromCurrentToGoal.size() == 0 && *tempIt != goal)
 			continue;
 
-		double distFromCurrentToGoal = getPathLength(pathFromCurrentToGoal);
+		double distFromCurrentToGoal = getPathLength(*tempIt, pathFromCurrentToGoal);
 
 		if( minDistanceToGoal < 0 || minDistanceToGoal > distFromCurrentToGoal)
 		{
@@ -281,7 +280,7 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 	}
 
 	// o nó mais próximo do destino é apontado por closestToGoalIt.
-	double distToClosest = closestToGoalIt->getPosition().getDistance(tempNode.getPosition());
+	double distFromTempToClosestToGoal = closestToGoalIt->getPosition().getDistance(tempNode.getPosition());
 
 	// agora, percorremos todos os nós do grafo e escolhemos o mais próximo que satisfaça duas
 	// condições
@@ -298,6 +297,15 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 			continue;
 
 		if( !isLinkPossible( tempNode, *tempIt, map ) )
+			continue;
+
+		Path pathFromCurrentToClosestToGoal = AStar::searchPath(*tempIt, *closestToGoalIt);
+
+		if(pathFromCurrentToClosestToGoal.size() == 0 && *tempIt != goal)
+			continue;
+
+		double distFromCurrentToClosestToGoal = getPathLength(*tempIt, pathFromCurrentToClosestToGoal);
+		if(distFromTempToClosestToGoal < distFromCurrentToClosestToGoal)
 			continue;
 
 		double distFromTempToCurrent = tempIt->getPosition().getDistance(tempNode.getPosition());
@@ -317,9 +325,12 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 	}
 }
 
-pose_t WaypointLinker::getPathLength(const sauron::Path &path)
+pose_t WaypointLinker::getPathLength(const Node& start, const sauron::Path &path)
 {
-	pose_t length = 0;
+	if(path.size() == 0)
+		return 0;
+
+	pose_t length = start.getPosition().getDistance(path[0].getPosition());
 	for(int i = 0; i < static_cast<int>(path.size()) - 1; i++)
 	{
 		length += path[i].getPosition().getDistance(path[i+1].getPosition());
