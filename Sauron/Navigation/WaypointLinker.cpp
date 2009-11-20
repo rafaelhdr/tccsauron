@@ -7,6 +7,7 @@
 #include "Sonar/Map.h"
 #include "MathHelper.h"
 #include "Sonar/LineSegment.h"
+#include "AStar.h"
 
 #define LINKER_LOG(level) FILE_LOG(level) << "WaypointLinker: " 
 
@@ -35,6 +36,7 @@ void WaypointLinker::link( Graph &graph, Map& map )
 		ss << std::endl;
 	}
 	std::cout << ss.str();
+	LINKER_LOG(logINFO) << ss.str();
 }
 
 bool WaypointLinker::linkClosestPossibleRight( Graph& graph, Node& node, Map& map )
@@ -235,14 +237,17 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, Map& map )
 	}
 }
 
-void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal )
+void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map& map )
 {
 	// a ideia é nunca linkar a um nó que nos deixará mais longe de onde já estamos
+	// para isso, pegamos a distância até o nó diretamente alcançável (isto é, que enxergamos
+	// sem precisar atravessar paredes) mais próximo do destino.
+
+	Graph::iterator closestToGoalIt;
 	Graph::iterator closestIt;
 	Graph::iterator tempIt;
-	pose_t minDist = -1;
 
-	double distFromTempToGoal = tempNode.getPosition().getDistance( goal.getPosition() );
+	double minDistanceToGoal = -1;
 
 	for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
 	{
@@ -252,20 +257,73 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 		if ( tempIt->Type() == Node::SECONDARY && *tempIt != goal )
 			continue;
 
-		double distFromCurrentToGoal = tempIt->getPosition().getDistance( goal.getPosition() );
-
-		if(distFromCurrentToGoal > distFromTempToGoal)
+		if( !isLinkPossible( tempNode, *tempIt, map ) )
 			continue;
 
 		double distFromTempToCurrent = tempNode.getPosition().getDistance( tempIt->getPosition() );
+		Path pathFromCurrentToGoal = AStar::searchPath(*tempIt, goal);
 
-		if( minDist < 0 || minDist > distFromTempToCurrent)
+		if(pathFromCurrentToGoal.size() == 0 && *tempIt != goal)
+			continue;
+
+		if( minDistanceToGoal < 0 || minDistanceToGoal > distFromCurrentToGoal)
 		{
-			closestIt = tempIt;
-			minDist =  distFromTempToCurrent;
+			closestToGoalIt = tempIt;
+			minDistanceToGoal =  distFromCurrentToGoal;
 		}
 	}
-	tempNode.addAdjacent( *closestIt );
+
+	if(minDistanceToGoal < 0)
+	{
+		std::cerr << "Ah, poxa! Nao achei ninguem perto do objetivo." << std::endl;
+		return;
+	}
+
+	// o nó mais próximo do destino é apontado por closestToGoalIt.
+	double distToClosest = closestToGoalIt->getPosition().getDistance(tempNode.getPosition());
+
+	// agora, percorremos todos os nós do grafo e escolhemos o mais próximo que satisfaça duas
+	// condições
+	// 1) Seja possível (isLinkPossible)
+	// 2) Não nos leve para mais longe do que já estamos (usando distToClosest)
+
+	double minDistFromTemp = -1;
+	for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
+	{
+		if(*tempIt == tempNode)
+			continue;
+
+		if ( tempIt->Type() == Node::SECONDARY && *tempIt != goal )
+			continue;
+
+		if( !isLinkPossible( tempNode, *tempIt, map ) )
+			continue;
+
+		double distFromTempToCurrent = tempIt->getPosition().getDistance(tempNode.getPosition());
+		if(distFromTemp < 0 || distFromTemp > distFromTempToCurrent)
+		{
+			closestIt = tempIt;
+			distFromTemp = distFromTempToCurrent;
+		}
+	}
+
+	if(distFromTemp < 0)
+	{
+		std::cerr << "Ah, poxa! Nao achei nenhum ponto perto de mim. A discussao e' pontual. Ou nao." << std::endl;
+	} else {
+		tempNode.addAdjacent( *closestIt );
+		LINKER_LOG(logINFO) << "TempLink escolhido: " << closestIt->getName() << std::endl;
+	}
+}
+
+pose_t WaypointLinker::getPathLength(const sauron::Path &path)
+{
+	pose_t length = 0;
+	for(int i = 0; i < static_cast<int>(path.size()) - 1; i++)
+	{
+		length += path[i].getPosition().getDistance(path[i+1].getPosition());
+	}
+	return length;
 }
 
 

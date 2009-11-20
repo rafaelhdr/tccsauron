@@ -1,6 +1,7 @@
 #ifndef __WAYPOINT_LINKER_H__
 #define __WAYPOINT_LINKER_H__
 
+#include "CustomTypes.h"
 #include "Node.h"
 
 
@@ -15,7 +16,7 @@ class WaypointLinker
 {
     public:
         static void link( Graph &graph, Map& map );
-		static void linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal );
+		static void linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map& map );
 
 private:
 		static void linkNodeToNearest( Graph &graph, Node &toLink, Map& map );
@@ -25,6 +26,8 @@ private:
 		static bool linkClosestPossibleUp( Graph& graph, Node& node, Map& map );
 		static bool linkClosestPossibleDown( Graph& graph, Node& node, Map& map );
 		static bool isLinkPossible( Node& node1, Node& node2, Map& map);
+
+		static pose_t getPathLength( const Path& path );
 
 };
 

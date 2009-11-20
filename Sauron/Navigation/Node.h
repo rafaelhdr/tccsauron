@@ -51,6 +51,7 @@ class Node
 
 typedef Node Waypoint;
 typedef std::vector<Node> Graph;
+typedef std::vector<Node> Path;
 
 }   // namespace sauron
 

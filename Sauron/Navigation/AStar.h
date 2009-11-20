@@ -7,8 +7,6 @@
 namespace sauron
 {
 
-typedef std::vector<Node> Path;
-
 class AStar
 {
     public:
