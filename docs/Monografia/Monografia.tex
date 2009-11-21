@@ -1,146 +1,196 @@
+% Modelo de tese para a Poli/USP
+%
+% Jomi Fred Hübner (jomi@inf.furb.br)
+% USP/LTI
+%
+%
+\documentclass[%ruledheader, % cabeçalho com nome da seção e linha
+               noindentfirst, % não identar primeiro par. da seção
+               normaltoc, % tira o p. no início das páginas do sumário
+               normalfigtabnum, % numeração de figuras dependente do capítulo
+               %sumarioincompleto,
+               %naousarHyperref, % não usa o HyperRef
+               %naousarRefABNT, % não carrega o pacore de referências da ABNT
+               %twoside,
+               %times, % usa fontes tipo windows (times new roman, arial, \ldots)
+               anapnormal, % palavra anexo não aparece em maiúsculo
+               anapcustomindent % não indenta o restante do título do anexo
+]{abnt-meu}
 
-% ctan tug
-\documentclass[a4paper,capchap,espacoduplo,normaltoc]{abntepusp}
+% a opção "twoside" possibilita a impressão frente/verso. Segundo a
+% biblioteca, neste caso, tem que ser em papel com gramatura 90.
+%
+% as demais opções podem ser obtidas na documentação da classe abnt e
+% report (do LaTeX).
+%
+% No arquivo Makefile estão os comandos que geram o PDF/PS
+%
 
-%\usepackage[bookmarks,pdftex,a4paper,colorlinks=true,citecolor=black,urlcolor=blue,linkcolor=black,pdfpagemode=None]{hyperref}
-%\usepackage[bookmarks,a4paper,colorlinks=true,citecolor=black,urlcolor=blue,linkcolor=black,pdfpagemode=None]{hyperref}
-\usepackage[centertags]{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
-\usepackage[brazil]{babel}
-\usepackage{amsmath}
+\usepackage{helvet} \renewcommand{\familydefault}{\sfdefault}
+\usepackage{ae}
+\usepackage{poli} % personalização da ABNT para a Poli
 
-\usepackage{graphicx}
-\usepackage[pdftex,bookmarks=true]{hyperref}
-\usepackage{fullpage}
-\usepackage{verbatim}
-\usepackage{listings}
-\usepackage[hang,small]{caption}
-\usepackage[bottom]{footmisc}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+%\versaofinal % descomente para gerar a versão final
+              % sem as notas de pendencias, margens laterais, \ldots
 
-%\usepackage[alf,abnt-repeated-author-omit=yes]{abntcite}
+%~~
+%~~   Capa
+%~~
 
-\usepackage{url} % \url{http...}
-\usepackage{helvet}\renewcommand{\familydefault}{\sfdefault}
-%\usepackage{winfonts}
-%\usepackage{txfonts}
-%\usepackage{tabela-simbolos}
 
-\fontfamily{arial}\selectfont
-\renewcommand{\rmdefault}{arial}
-
-% Math -------------------------------------------------------------------
-\newtheorem{theorem}{Teorema}{\bfseries}{\itshape}
-\newtheorem{lemma}{Lema}{\bfseries}{\itshape}
-\newtheorem{definition}{Definição}{\bfseries}{\itshape}
-\newtheorem{corollary}{Corolário}{\bfseries}{\itshape}
-
-\sloppy
 
 \begin{document}
 
-\renewcommand{\bibname}{Refer\^encias} % adaptação para ABNT/EPUSP
+% Título como será escrito na capa e folha de rosto, tudo em maiúscula
+\titulo{SAURON: ROBÔ GUIA}
 
-\autorPoli{Felipe G. Godoy, Pedro d'Aquino, Rafael Ruppel, Rafael da Silva}
+% Título como será escrito na ficha catalográfica
+\renewcommand{\PolyTituloFichaCatalografica}{Robô guia de museu}
 
-\titulo{SAURON}
+% Autor como será escrito na capa e folha de rosto, tudo em maiúscula 
+\autoresPoli{FELIPE GODOY}{PEDRO D'AQUINO DE SÁ BARBUDA}{RAFAEL DE OLIVEIRA DA SILVA}{RAFAEL RUPPEL RUIZ}{\ }
 
-\orientador{Anna Reali Costa}
+% Autor como será escrito na ficha catalográfica
+\renewcommand{\PolyAutorFichaCatalograficaI}{F. Godoy, P.A. Barbuda, R.O. Da Silva, R.R. Ruiz}
 
-\monografiaFormatura
-%\monografiaMBA
-%\qualificacaoMSc{<Área do Mestrado>}
-%\qualificacaoMSc{Enge\-nharia Elétrica}
-%\dissertacao{<Área do Mestrado>}
-%\qualificacaoDr{<Área do Mestrado>}
-%\teseDr{<Área do Doutorado>}
-%\teseLD
-%\memorialLD
 
-%\areaConcentracao{<Área de Concentração>}
-\areaConcentracao{Sistemas Digitais}
+\orientador{Prof. Dr. Anna Reali Costa}
+           
+\areaConcentracao{Área de concentração:\\Engenharia da Computação}
 
-%\departamento{<Departamento>}
-\departamento{Departamento de Engenharia de Computação e Sistemas Digitais (PCS)}
+\departamento{%
+  \href{http://www.pcs.usp.br}
+  {Departamento de Engenharia de Computação\hfill\linebreak e Sistemas Digitais}}
 
-\local{São Paulo}
 
-\data{2009}
+% dos quatro comandos abaixo, deixe somente um sem comentário
+%
+%\teseLD{Texto apresentado}    % para Livre docência (pode-se trocar
+                               % para ``tese apresentada'')
+%\memorialLD                  % para memorial
+%\teseDr{Engenharia Elétrica} % para doutorado
+\tcc{Engenharia da Computação} % para conclusão de curso
+%\dissertacao{Engenharia}     % para Mestrado
+%\qualiDr{Engenharia Elétrica}  % para quali doutorado
 
-\dedicatoria{Dedico esse trabalho a meus pais.......}
+\local{São Paulo} \data{2009}
 
-\capa{}
 
-\folhaderosto{}
+\capa
+
+\setcounter{page}{1}
+
+\falsafolhaderosto
+\folhaderosto
+
 
 %
 % Ficha Catalográfica
 % (deve ficar no verso da página de rosto)
 %
-\renewcommand{\PoliFichaCatalograficaData}{%
-  1. Assunto \#1. 2. Assunto \#2. 3. Assunto \#3.
-  I. Universidade de São Paulo. Escola Politécnica.
+\renewcommand{\PolyAssFichaCatalografica}{%
+  I. Godoy, Felipe II. Barbuda, Pedro d'Aquino III. Da Silva, Rafael de Oliveira IV. Ruiz, Rafael Ruppel
   \PoliDepartamentoData. II. t.}
 
-%\fichacatalografica % formata a ficha
+\fichacatalografica % formata a ficha
 
-\paginadedicatoria{}
 
-\begin{agradecimentos}
-Vou citar~\cite{agashe-lauter-venkatesan}
-\end{agradecimentos}
+%
+% Dedicatória (opcional)
+%
+\pretextualchapter{Dedicatória}
+
+\ \ \ \ \ Dedico essa monografia ao presidente Lula.
+
+%
+% Agradecimentos (opcional)
+%
+\pretextualchapter{Agradecimentos}
+
+\ \ \ \ \ Agradeço ao Governador Serra por utilizar o twitter.
+
+
+%
+% Resumo
+% (a natureza do problema, material e métodos,
+% resultados mais significativos, principais conclusões)
+%
 
 \begin{resumo}
+Este documento versa sobre o desenvolvimento de um robô guia de baixo custo desenvolvido para ambientes fechados.
 \end{resumo}
 
 \begin{abstract}
+\selectlanguage{english}
+This document is about the development of a low cost auto-guided robot for closed environments.
 \end{abstract}
 
-\begin{resume}
-\end{resume}
 
-\begin{zusammenfassung}
-\end{zusammenfassung}
 
-\setlength{\parskip}{0cm}
+
+%
+% Listas
+%
+
+% figuras
+\cleardoublepage\listoffigures
+
+% tabelas
+\cleardoublepage\listoftables
+
+% abreviaturas
+\cleardoublepage\pretextualchapter{Lista de Abreviaturas}% e Siglas}
+
+% lista de símbolos
+\cleardoublepage\pretextualchapter{Lista de Símbolos}
+
+
+%
+% Sumário
+%
 \tableofcontents
-\setlength{\parskip}{\baselineskip}
 
-\listoffigures
 
-\listoftables
+% a poli não segue a ABNT aqui, a numeração
+% começa de 1 na introdução.
+\cleardoublepage
 
-\chapter{Introdução}\label{chp:intro}
 
-\section{Apresentação}\label{sec:presentation}
+%
+% Capítulos
+%
 
-\section{Objetivos}\label{sec:goals}
+\input{introducao}
+\input{revisaoLiteratura}
+\input{materiaisMetodos}
+\input{resultados}
+\input{discussao}
+\input{conclusoes}
 
-\section{Contribuições originais}\label{sec:contrib}
 
-\section{Organização}
+%
+% Referências
+%
+\bibliographystyle{abnt-alf} % estilo da ABNT
+%\bibliographystyle{plain} % sem estilo da ABNT
+\bibliography{jomi-abnt} % arquivo bibtex
 
-\include{modelodinamica}
+%
+% Índice
+%
+\printindex
 
-\chapter{Outro capítulo}\label{chp:outrocap}
-
-Este capítulo desenvolve a teoria de~\cite{agashe-lauter-venkatesan,al-riyami-paterson,ansi-x9.62,balasubramanian-koblitz,blake-seroussi-smart,bleichenbacher,weimerskirch}.
-
-\[
-E = mc^2.
-\]
-
-\chapter{Conclusões}\label{chp:conclusion}
-\bibliographystyle{alpha}
-\bibliography{biblio}
-
-\appendix
-
-\chapter{Apêndice}\label{app:apendiceA}
+%
+% Apêndices
+%
+\input{apendiceA}
 
 \end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "tese"
+%%% x-symbol-8bits: t
+%%% End:
