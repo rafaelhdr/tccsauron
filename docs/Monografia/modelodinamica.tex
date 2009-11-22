@@ -1,4 +1,4 @@
-\chapter{Modelo de Dinâmica}\label{chp:modelodinamica}
+\subsection{Modelo de Dinâmica}\label{subsec:modelodinamica}
 
 
 O Modelo de Dinâmica é o responsável por fazer a predição da postura no filtro de Kalman. Existem duas possibilidades para a realização da predição:
@@ -15,7 +15,7 @@ A obtenção da nova postura será realizada, portanto, com os dados do odômetro e 
 
 De fato, por uma limitação dos odômetros do Pionner 2DX, o sinal de controle foi usado para se obter o sinal das variações do odômetro, ou seja, para saber se o robô deslocava-se positivamente ou negativamente pelo eixo x, por exemplo, usou-se o sinal do valor de controle da velocidade.
 
-\section{Modelagem}
+\subsubsection{Modelagem}
 
 A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:modelorobo} abaixo.
 
@@ -39,7 +39,7 @@ Essas equações formam a chamada matriz f do Filtro de Kalman, responsável direta
 
 Além disso, por exigência do filtro de Kalman Extendido, é necessário calcular a matriz de covariâncias Q e a matriz F, de propagação das incertezas pelas derivadas da matriz f. 
 
-\section{Incertezas e Covariâncias}
+\subsubsection{Incertezas e Covariâncias}
 
 A propagação de incertezas, representada pela matriz F, é calculada através da matriz das derivadas da matriz f (conhecida por jacobiano de f). Pela simplicidade de f, a matriz F é facilmente deduzida para:
 
@@ -58,10 +58,6 @@ A matriz Q, da variância do Modelo de Dinâmica, por sua vez, dependerá das influ
 \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & \sigma^{2}_{d_{m}} sin^2(\Theta_{m}(n-1)) & 0 \\
 0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right).\]   
 
-
-\section{Exemplo de Implementação}
-
-Abaixo um exemplo de implementação do Modelo de Dinâmica em C++, com os métodos para se obter a postura.
 
 
 
