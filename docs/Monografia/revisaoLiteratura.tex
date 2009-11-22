@@ -15,4 +15,12 @@ O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro 
 
 Em \cite{barra} são utilizados oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente. Assim, são considerados oito sensores distintos, podendo-se desativar individualmente cada sonar conforme a necessidade.
 
-O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. Suponha-se uma parede infinita paralela ao eixo $x$. Independentemente da leitura do sonar e do ângulo de incidência do mesmo na parede, é impossível determinar qual é sua posição relativa à abcissa do plano, visto que a resposta fornecida pelo sonar é a mesma para qualquer $x$. Entretanto, a leitura do sonar é capaz de fornecer uma estimativa de $y$ segundo o seguinte exeomplo: Caso o pulso incida perpendicularmente à parede, sua leitura fornecerá a distância do mesmo à parede. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$.
+O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. Suponha-se uma parede infinita paralela ao eixo $x$. Independentemente da leitura do sonar e do ângulo de incidência do mesmo na parede, é impossível determinar qual é sua posição relativa à abcissa do plano, visto que a resposta fornecida pelo sonar é a mesma para qualquer $x$. Entretanto, a leitura do sonar é capaz de fornecer uma estimativa de $y$ segundo o seguinte exeomplo: Caso o pulso incida perpendicularmente à parede, sua leitura fornecerá a distância do mesmo à parede. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$, como mostrado na figura \ref{fig:modelosonarbarra}.
+
+\begin{figure}
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/sonar/ModeloSonarParede.png}
+	\caption{Uma parede é representada pela sua distância à origem, $r_{wall}$, e sua inclinação, $\theta_{wall}$ em relação ao eixo $x$.}
+	\label{fig:modelosonarbarra}
+\end{figure}
+
