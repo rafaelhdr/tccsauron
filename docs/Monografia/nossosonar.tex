@@ -18,7 +18,7 @@
 
 \newcommand{\hx}{$h(\hat{x})$}
 
-\section{Modelos de Observação dos Sonares}
+\subsection{Modelos de Observação dos Sonares}
 
 Um modelo é uma aproximação matemática do mundo real. No contexto de localização robótica, modelos de observação são usados para representar o comportamento de sensores e, em especial, como as medidas obtidas se relacionam com grandezas do ambiente observado. 
 
@@ -33,7 +33,7 @@ Como descrito na seção \ref{sec:localizacao}, a localização bayesiana por filtro
 
 Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 
-\subsection{Modelo Baseado em Associações}
+\subsubsection{Modelo Baseado em Associações}
 \label{sec:nossosonar}
 A seção \label{sec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação basedado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
@@ -133,8 +133,7 @@ Nas equações acima, $d_{k,1}$ é a distância percorrida pelo robô durante as últi
 \label{eq:novoalpha}
 \end{equation}
 
-\subsubsection{Associação das observações com o mapa}
-\label{sec:associacao}
+\subsubsection{Associação das observações com o mapa}\label{sec:associacao}
 Se as $k$ observações armazenadas passarem no teste estatístico da equação \ref{eq:chitest}, procede-se com a busca de uma parede mapeada que corresponda às leituras validadas. O algoritmo utilizado trata as paredes como retas infinitas, definidas em termos de $r_{wall}$, o comprimento do segmento perpendicular à reta e que passa pela origem, e $\theta_{wall}$, o ângulo deste segmento com relação à origem. A figura \ref{fig:retas} ilustra essa convenção.
 
 Dois filtros são aplicados sobre as paredes do mapa, de modo a reduzir o espaço de busca. Primeiramente, paredes que estejam fora do alcance do sonar são eliminadas; em seguida, paredes que estejam além do cone de visão do sonar também são desconsideradas.

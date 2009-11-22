@@ -10,7 +10,7 @@ O trabalho corrente, chamado SAURON, possui como objetivo locomover-se de forma 
 
 A fim de ser capaz de realizar as ações descritas, um ser, mecânico ou vivo, deve ser capaz de extrair informações do ambiente no qual está inserido e relacioná-las com seu conhecimento do mesmo. Há diversas formas disto ser feito. Neste capítulo será descrito como \cite{barra} resolveu um dos problemas listados, a saber, a localização. Seu trabalho é a base para este projeto.
 
-\section{Sonar} \label{sec:sonarbarra}
+\subsection{Sonar} \label{sec:sonarbarra}
 O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro de alta frequência e sua recepção depois do mesmo ter sido refletido em uma superfície. Conhecendo a velocidade do pulso sonoro no ambiente, é possivel determinar a distância do objeto refletor.
 
 Em \cite{barra} são utilizados oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente. Assim, são considerados oito sensores distintos, podendo-se desativar individualmente cada sonar conforme a necessidade.
