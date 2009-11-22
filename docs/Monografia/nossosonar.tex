@@ -1,0 +1,204 @@
+\begin{comment}
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{amsmath, amsthm, amssymb, bm}
+\usepackage[ruled,vlined,portugues]{algorithm2e}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\begin{document}
+\end{comment}
+
+\section{Modelos de Observação dos Sonares}
+
+Um modelo é uma aproximação matemática do mundo real. No contexto de localização robótica, modelos de observação são usados para representar o comportamento de sensores e, em especial, como as medidas obtidas se relacionam com grandezas do ambiente observado. 
+
+Como descrito na seção \ref{sec:localizacao}, a localização bayesiana por filtro de Kalman utiliza as informações dos sensores para corrigir sua estimativa do estado atual. Essencialmente, a informação utilizada pelo filtro é a diferença entra a observação esperada (normalmente indicada por $h(\hat{x})$, onde $\hat{x}$ é a estimativa da postura) e a observação real (denotada por $z$). Por exemplo, suponha um robô equipado com um sonar que incide perpendicularmente à parede, como na figura \ref{fig:exemplo_modelo}. Se ele estima estar em uma posição tal que a leitura esperada do sonar é 100 cm, mas a observação real é 80 cm, sabe-se que o robô está de fato mais perto da parede do que acredita. O papel do modelo de observação de um sensor é gerar as estimativas de observação $h(\hat{x})$.
+
+\begin{figure}[b]
+	\centering
+		\includegraphics{imagens/sonar/exemplo_modelo.pdf}
+			\caption{Um modelo de observação é usado para estimar o erro entre a postura real ($\vec{x}$) e a postura estimada ($\hat{x}$). Neste exemplo, um sonar perpendicular à parede recebe leitura $z$, mas o modelo de observação prevê, para a posição estimada $\hat{x}$, a leitura $h(\hat{x})$. Essa diferença será utilizada pelo filtro de Kalman para corrigir a estimativa da postura.}
+	\label{fig:exemplo_modelo}
+\end{figure}
+
+Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
+
+\subsection{Modelo Baseado em Associações}
+\label{sec:nossosonar}
+A seção \label{sec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação basedado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
+
+Este modelo é chamado de baseado em associações porque, antes de gerar observações esperadas e corrigir a postura estimada, é necessária uma confirmação de que um sonar está de fato observando uma determinada parede. A tarefa de relacionar as últimas leituras com uma parede do mapa chama-se associação. A principal motivação de um modelo deste tipo é diminuir os erros causados pelos sonares, dispositivos imprecisos. Contudo, resultados experimentais sugerem que esta abordagem talvez não seja a mais eficaz, como descrito na seção \ref{sec:criticasbarra}.
+
+\subsubsection{Visão Geral}
+De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Primeiramente, as últimas $k$ observações são validadas e é determinado se uma parede está sendo vista pelo sonar. Se isso for verdade, consulta-se o mapa do ambiente de modo a se associar as leituras mais recentes a uma parede no mapa. Por fim, quando a associação é realizada com sucesso, determina-se a observação que seria esperada para a postura estimada do robô. A associação é registrada e o modelo tenta mantê-la nas próximas iterações, atribuindo uma pontuação para seu grau de confiança.
+
+\paragraph{Validação das observações} As últimas $k$ observações são armazenadas, juntamente com a postura estimada em cada uma delas. Determina-se, através de um teste estatístico, se as observações podem corresponder a uma superfície plana. Também nesta fase, curvas realizadas pelo robô são detectadas. Nesse caso, o \textit{buffer} é limpo e a associação atual, se houver, é desfeita.
+
+\paragraph{Associação das observações com o mapa} O mapa é então consultado para encontrar uma parede que corresponda às observações validadas. O processo é bastante conservador. Se o algoritmo de correspondência encontrar uma, e somente uma, parede que corresponda às leituras do sonar, a associação é realizada com sucesso.
+
+\paragraph{Rastreamento de associações} Caso uma associação seja realizada com sucesso, dá-se início ao processo de rastreamento dessa associação. Para as próximas leituras realizadas pelo sonar, a etapa de associação das observações é pulado - ou seja, mapa não é consultado e assume-se que a parede observada é aquela sendo rastreada. Estabelece-se uma pontuação para cada rastreamento, em função do erro entre as observações esperadas e obtidas. Quando a pontuação se torna negativa, o rastreamento se encerra.
+
+\paragraph{Obtenção das observações esperadas} De posse da parede que o sonar está enxergando e da postura estimada do robô, retorna-se a leitura esperada do sonar.
+
+\subsection{Validação das Observações}
+Definimos $k$ como o número de observações coletadas pelo sonar, e $k_{min}$ como o número mínimo de observações para que seja possível a validação de uma superfície plana. Enquanto $k<k_{min}$ a validação falhará. Quando $k=k_{min}$, inicia-se o processo de validação.
+
+Para determinar se as útlimas \textit{k} observações correspondem a uma parede, calcula-se a relação entre a diferença entre observações sucessivas e a distância percorrida pelo robô entre elas. A figura \ref{fig:modelo_sonar} ilustra que, caso um sonar esteja observando uma superfície plana, as leituras do sensor se alinharão em um segmento de reta. Isso equivale a dizer que a relação entre as diferenças de leituras consecutivas e a distância percorrida entre essas leituras é constante. Matematicamente, seja $z_{i,j} = z^{(i)} - z^{(j)}$ a diferença entre duas medidas sucessivas e $d_{i,j}$ a distância percorrida entre elas, então:
+
+\begin{equation}
+\frac{z_{2,1}}{d_{2,1}} = \frac{z_{3,2}}{d_{3,2}} = \dots = \frac{z_{i,j}}{d_{i,j}} = \gamma
+\end{equation}
+
+Idealmente, a relação é perfeita e $\frac{z_{i,j}}{d_{i,j}} = \gamma$ para quaisquer $i$ e $j$. Naturalmente, erros de medida introduzem variações nas observações, de modo que:
+
+\begin{equation}
+\frac{z_{2,1}}{d_{2,1}} = \gamma_{2,1} \approx \frac{z_{3,2}}{d_{3,2}} = \gamma_{3,2} \approx \dots \approx \gamma_{i, j}
+\end{equation}
+
+\begin{figure}
+%	\centering
+		\includegraphics{imagens/sonar/modelo_sonar.pdf}
+		\caption{Representação das observações de um sonar com ângulo relativo $\theta'_{sonar}$. Os feixes do sonar incidem na parede com um ângulo $\beta$. Cada $z^{(i)}$ é uma observação, e $d_{i,j}$ é a distância percorrida entre as observações $i$ e $j$. Como a parede é uma superfície plana, a relação entre a diferença das leituras e a distância percorrida é constante.}
+	\label{fig:modelo_sonar}
+\end{figure}
+
+Assumindo-se que um único segmento de reta está sendo visto em todas as $k$ observações, podemos considerar que todos os elementos do conjunto formado por $\gamma$ são elementos de uma mesma distribuição normal. Se isso for verdade, as observações são validadas e passa-se à próxima fase do modelo de observação. O seguinte teste de hipótese pode ser utilizado para averiguar se o conjunto de $\gamma_{i,j}$ corresponde a uma distribuição:
+
+\begin{equation*}
+		H_{0}:\gamma ~ N(A, \sigma^{2}_{obsmedia})
+\end{equation*}
+\begin{equation*}
+		H_{1}:\gamma ~ N(A, \sigma^{2}_{alternativo}), \sigma^{2}_{obsmedia} < \sigma^{2}_{alternativo}
+\end{equation*}
+sendo que o teste é realizado sobre a estatística $\chi^{2}$.
+Para aceitar $H_{0}$, é verificado se $\chi^{2}$ é menor que um dado limite:
+\begin{equation}
+	\chi^{2}_{k-2} < \chi^{2}_{k-2,\alpha}
+	\label{eq:chitest}
+\end{equation}
+onde o segundo termo é tabelado, $\alpha$ indica a confiança no teste e o primeiro termo é obtido da seguinte equação:
+\begin{equation*}
+	\chi^{2}_{k-2} = \frac{(k-2)s^{2}_{\gamma}}{\sigma^{2}_{obsmedia}}
+\end{equation*}
+onde $s^{2}_{\gamma}$ é a variância do conjunto formado pelos $\gamma_{i,i-1}$ de cada par de observações.
+
+Considerando que todos os $\gamma_{i,i-1}$ pertencem à mesma distribuição de probabilidades, $\sigma^{2}_{obsmedia}$ é a variância esperada dessa distribuição. De acordo com \cite{barra}, seu valor é dado por:
+
+\begin{equation}
+\sigma^2_{obsmedia}=\sigma^2_{\gamma} = \vec{F}_\gamma \bm{\Sigma}_{\omega_{i,i-1}} \vec{F}_\gamma^{T} 
+\end{equation}
+
+\begin{align}
+\vec{F}_\gamma=\frac{\partial\gamma(\omega_{i,i-1})}{\partial\omega_{i,i-1}}  |  \bm{\omega_{i,i-1}} = \bm{\bar{\omega}_{i,i-1}} = \notag \\
+= \left( -\frac{(k-1)z_{i,i-1}}{d^{2}_{k,1}}~\frac{k-1}{d_{k,1}} \right) | \bm{\omega_{i,i-1}}
+\end{align}
+
+\begin{equation}
+\bm{\Sigma}_{\omega_{i,i-1}} =
+\begin{pmatrix}
+\frac{\sigma^2_{d_{k,1}}}{(k-1)^2} & E_z\left[ z_{i, i-1} \frac{d_{k,1}}{k-1} \right] \\
+ E_z\left[ z_{i, i-1} \frac{d_{k,1}}{k-1}\right] & \sigma^2_{z_{i,i-1}}
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+\sigma^2_{z_{i,i-1}}=2\sigma^2_{obs} + \frac{\sigma^2_{d_{k,1}}}{(k-1)^2} \sin^2(\alpha)
+\end{equation}
+
+\begin{equation}
+ E_z\left[ z_{i, i-1} \frac{d_{k,1}}{k-1} \right] = \frac{\sigma^2_{d_{k,1}} \sin(\alpha)}{(k-1)^2}
+\end{equation}
+
+\begin{equation}
+\bm{w_{i,i-1}}=
+\begin{pmatrix}
+\frac{d_{k,1}}{k-1} & z_{i,i-1}
+\end{pmatrix}^T
+\end{equation}
+Nas equações acima, $d_{k,1}$ é a distância percorrida pelo robô durante as últimas $k$ observações; $z_{i,j}$ é a diferença entre a leitura dos sonares nos instantes $i$ e $j$; $\sigma^2_{obs}$ é a incerteza da observação do sonar, determinada empiricamente como 625 $mm^2$; $\sigma^2_{d_{k,1}}$ é a incerteza no deslocamento do robô e vale $\frac{d_{k,1}\sigma_{desloc}}{k-1}$, com $\sigma_{desloc}$ determinado experimentalmente como 0.05 m; e $\alpha$ é o ângulo de incidência do robô com a parede observada. $\alpha$ pode ser calculado empiricamente do seguinte modo:
+
+\begin{equation}
+\sin \alpha=\frac{z_{k,1}\sin \theta'_{sonar}}{\sqrt{z_{k,1}^2 + d_{k,1}^2 - 2z_{k,1} d_{k,1} \cos \theta'_{sonar}}}
+\label{eq:novoalpha}
+\end{equation}
+
+\subsection{Associação das observações com o mapa}
+
+Se as $k$ observações armazenadas passarem no teste estatístico da equação \ref{eq:chitest}, procede-se com a busca de uma parede mapeada que corresponda às leituras validadas. O algoritmo utilizado trata as paredes como retas infinitas, definidas em termos de $r_{wall}$, o comprimento do segmento perpendicular à reta e que passa pela origem, e $\theta_{wall}$, o ângulo deste segmento com relação à origem. A figura \ref{fig:retas} ilustra essa convenção.
+
+Dois filtros são aplicados sobre as paredes do mapa, de modo a reduzir o espaço de busca. Primeiramente, paredes que estejam fora do alcance do sonar são eliminadas; em seguida, paredes que estejam além do cone de visão do sonar também são desconsideradas.
+
+\subsubsection{Filtro de paredes distantes}
+
+Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$, calcula-se a distância perpendicular até a última posição estimada do robô, $\hat{x}$. Caso essa distância seja maior do que um dado limite -- a faixa de operação do sonar utilizado --, rejeita-se esta parede como candidata a associação. Empiricamente, determinou-se 400 cm como um limite razoável.
+
+\subsubsection{Filtro de paredes pelo ângulo do sonar}
+
+É necessário também filtrar as paredes candidatas pelo ângulo global do sonar. Neste caso, as paredes não são tratadas como retas infinitas, e sim como segmentos. Um segmento só pode ser observado se um cone centrado na postura global do sonar com ângulo de abertura $\phi$ interseccioná-lo. O algoritmo \ref{algo:cone} descreve o comportamento do filtro.
+
+\begin{figure}[bt]
+	\centering
+	\includegraphics[width=.5\columnwidth]{imagens/retas.pdf}
+	\caption{O modelo adotado para representar as paredes do mapa, que são tratadas como retas infinitas. Cada reta é definida em termos de $r_{wall}$ e $\theta_{wall}$.}
+	\label{fig:retas}
+\end{figure}
+
+\begin{algorithm}
+	\dontprintsemicolon
+	\SetKwData{bordau}{borda1}
+	\SetKwData{bordad}{borda2}
+	\SetKwData{eixo}{eixo}
+	\SetKwData{parede}{parede}
+	\SetKwData{pareta}{retaParede}
+	\SetKwData{verdade}{verdadeiro}
+	\SetKw{e}{e}
+	\SetKw{lp}{$($}
+	\SetKw{rp}{$)$}
+	\SetKw{ou}{ou}
+	\SetKwData{falso}{falso}
+	\SetKwData{interbu}{interseçãoBorda1}
+	\SetKwData{interbd}{interseçãoBorda1}
+	
+	\Entrada{A postura global estimada do sonar, $(\hat{x}_{sonar}, \hat{y}_{sonar}, \hat{\theta}_{sonar})$, e seu ângulo de abertura, $\phi$}
+	\Entrada{A parede, representada por um segmento de reta (\parede)}
+	\Saida{\verdade se a parede for visível pelo sonar; \falso caso contrário}
+	
+	\Inicio{
+		\pareta $\leftarrow$ a reta que contém \parede \;
+		\bordau $\leftarrow$ a semireta com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclininação $\hat{\theta}_{sonar} + \phi/2$ \;
+		\bordad $\leftarrow$ a semireta com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclininação $\hat{\theta}_{sonar} - \phi/2$ \;
+		\eixo $\leftarrow$ a semireta  com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclininação $\hat{\theta}_{sonar}$ \;
+		\interbu $\leftarrow$ a interseção, se existir, entre \bordau e \pareta \;
+		\interbd $\leftarrow$ a interseção, se existir, entre \bordad e \pareta \;
+		\Se{\lp \interbu  \ou \interbd\ \rp \e \parede contém o ponto de interseção}{\Retorna{\verdade} \;}
+		\SenaoSe{\interbu \e \interbd}{
+			\SetKwData{seginter}{segmentoInterseções}
+			\seginter $\leftarrow$ o segmento de reta que une as duas interseções \;
+			\lSe{ \seginter contém \parede }{\Retorna{\verdade}} \;
+			\lSenao{\Retorna{\falso}}
+		}
+		\SenaoSe{ \interbu \ou \interbd } {
+			\SetKwData{angpu}{anguloExtremo1}
+			\SetKwData{angpd}{anguloExtremo2}
+			\angpu $\leftarrow$ $atan2($\parede.extremo1.y, \parede.extremo1.x$)$ \;
+			\angpd $\leftarrow$ $atan2($\parede.extremo2.y, \parede.extremo2.x$)$ \;
+			\lSe{
+			$distanciaAngular($ \eixo, \angpu $) \leq \phi / 2$ \ou 
+			$distanciaAngular($ \eixo, \angpd $) \leq \phi / 2$}{\Retorna{\verdade} \;
+			} \;	
+		}
+		\Senao{ \Retorna{\falso}}
+			
+	
+	}
+	
+	\label{algo:cone}
+	\caption{Algoritmo de filtro de uma parede pelo ângulo do sonar}
+\end{algorithm}
+
+
+%\end{document}
