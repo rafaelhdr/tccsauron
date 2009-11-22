@@ -1,4 +1,147 @@
-\chapter*{Apêndice A}
-\section*{Teoria de filtragem de kalman}
+\chapter*{Apêndice A - Filtro extendido de Kalman} \label{sec:apendicea}
 
-Aqui será escrito o primeiro apêndice
+A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
+
+Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho.
+
+\section{Método dos mínimos quadrados}
+Suponha-se um conjunto de medições sobre uma determinada constante, adquiridas com um equipamento ruidoso. Cada medida é adquirida de forma independente e possui variâncias distintas.
+Pode-se modelar o problema como:
+\begin{equation}
+	y = Hx + v
+\end{equation}
+Onde y é um vetor com as medições, x é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e v é o ruído da medição.
+
+Suponha-se também que as medições são independentes e com média nula. A matriz da covariância fica então com a seguinte forma:
+\begin{equation}
+  R = 
+	\left[
+  \begin{array}{ccc}
+	  \sigma^{2}_{1} & \cdots & 0 \\
+	  \vdots & \ddots & \vdots \\
+	  0 & \cdots & \sigma^{2}_{k} \\
+	\end{array}
+	\right]
+\end{equation}
+Considerando-se que o erro de cada medida é, em forma vetorial
+\begin{equation}
+	\epsilon_{y}=y-H\widehat{x}
+\end{equation}
+o método dos mínimos quadrados consiste na minimização da seguinte função de custo:
+\begin{equation}
+	J=\frac{\epsilon^{2}_{y1}}{\sigma^{2}_{1}}+\cdots+\frac{\epsilon^{2}_{yk}}{\sigma^{2}_{k}}
+\end{equation}
+Este é o método dos mínimos quadrados aplicado quando cada medição possui variância distinta. Sua principal característica é ser a forma ótima de minimizar os erros provenientes de medições imprecisas.
+
+O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de H por x e minimizar J novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
+
+\section{Propagação de estados e covariâncias}
+Para se obter uma estimativa correta do estado e da covariância após um determinado intervalo de tempo decorrido, suponha-se o seguinte sistema diferencial linear genérico:
+\[
+	\dot{x}=Ax+Bu+w
+\]
+Onde $x$ é o estado do sistema, $u$ é uma variável de controle e $w$ é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo $t_{k}$ é:
+\begin{equation}
+	x(t_{k})=e^{A(t_{k}-t_{k-1})}x(t_{k-1})+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}[B(\tau)u(\tau)+w(\tau)]d\tau
+	\label{eq:solDiferencial}
+\end{equation}
+Agora fazendo-se a seguinte hipótese
+\[
+	u(t)=u_{k}, t \in [t_{k-1},t_{k}]
+\]
+e as seguintes definições
+\begin{gather*}
+	\Delta t=t_{k}-t_{k-1} \\
+	x_{k}=x(t_{k}) \\
+	u_{k}=u(t_{k}) \\
+	F_{k}=e^{A\Delta t} \\
+	G_{k}=\int^{t_{k+1}}_{t_{k}}e^{A(t_{k+1}-\tau)}B(\tau)d\tau
+\end{gather*}
+A equação \eqref{eq:solDiferencial} é reescrita como:
+\[
+	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}w(\tau)d\tau
+\]
+Obtendo-se a média da equação acima, e lembrando-se que o ruído possui média nula, obtemos finalmente
+\begin{equation}
+	\bar{x}_{k}=F_{k-1}\bar{x}_{k-1}+G_{k-1}u_{k-1}
+	\label{eq:estimativaX}
+\end{equation}
+A propagação da matriz de covariâncias é dada pela seguinte fórmula:
+\[
+	P_{k}=E[(x_{k}-\bar{x}_{k})(x_{k}-\bar{x}_{k})^{T}]
+\]
+Utilizando-se a equação \eqref{eq:estimativaX} e assumindo como hipótese que $w(t)$ é um ruído branco de covariância $Q_{c}(t)$ obtém-se, após alguma manipulação matemática, a sequinte equação para $P_{k}$:
+\begin{equation}
+	P_{k}=F_{k-1}P_{k-1}F^{T}_{k-1}+Q_{k-1}
+\end{equation}
+Onde $Q_{k-1}$ pode ser aproximado por
+\[
+	Q_{k-1}\approx Q_{c}(t_{k})\Delta t
+\]
+e $Q_{c}$ é a covariância do ruído branco $w(t)$.
+
+\section{Filtro de Kalman discreto}
+De posse da base teórica acima pode-se descrever o filtro de Kalman, que opera propagando o estado e a covariância no tempo e atualizando-os com os valores medidos, usando-se para isso o método dos mínimos quadrados recursivo. Em suma:
+\begin{itemize}
+	\item Uma descrição matemárica do problema para os quais a estimação dos estados são necessárias é realizada.
+	\item Propaga-se o estado e a covariância no tempo como descrito anteriormente.
+	\item Atualiza-se o sistema com informação vinda de observações quando estas são disponíveis.
+\end{itemize}
+Assim, o sistema é modelado da seguinte forma
+\begin{gather}
+	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1} \nonumber \\
+	y_{k}=H_{k}x_{k}+v_{k}
+\end{gather}
+onde os ruídos $w_{k-1}$ e $v_{k}$ são brancos, centrados no zero, não correlatos e possuem matrizes de covariância $Q$ e $R$ respectivamente.
+
+Para estimar o valor de $x_{k}$ divide-se $x_{k}$ em dois valores distintos, $\hat{x}_{k}^{-}$ e $\hat{x}_{k}^{+}$, onde o primeiro corresponde a um valor antes de uma observação e o segundo após a observação, i.e., $\hat{x}_{k}^{-}$ corresponde ao valor estimado baseado na dinâmica do sistema em um instante $k$ instantâneamente antes de uma medição ser realizada, enquanto que $\hat{x}_{k}^{+}$ corresponde ao valor estimado no mesmo instante $k$ após a obtenção de uma estimativa $y_{k}$. De forma semelhante, $P_{k}$ é dividido em $P_{k}^{-}$ e $P_{k}^{+}$, sendo estas as matrizes de covariâncias antes e depois de uma observação no instante $k$ respectivamente.
+
+Tendo definido estes estados e de posse da teoria previamente discutida, pode-se descrever o processo de estimação através do filtro de Kalman com o seguinte processo:
+\begin{itemize}
+	\item Descreve-se matematicamente o sistema:
+		\begin{gather}
+			x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1} \nonumber \\
+			y_{k}=H_{k}x_{k}+v_{k} \nonumber \\
+			E(w_{k}w^{T}_{j})=Q_{k}\delta_{k-j} \\
+			E(v_{k}v^{T}_{j})=R_{k}\delta_{k-j} \nonumber \\
+			E(w_{k}v^{T}_{j})=0 \nonumber 
+		\end{gather}	
+	\item Inicia-se o filtro:
+		\begin{gather}
+			\hat{x}^{+}_{0}=E(x_{0}) \nonumber \\
+			P^{+}_{0}=E[(x_{0}-\hat{x}^{+}_{0})(x_{0}-\hat{x}^{+}_{0})^{T}]
+		\end{gather}
+	\item Itera-se o filtro para cada uma das seguintes equações:
+		\begin{gather}
+			P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1} \nonumber \\
+			\hat{x}^{-}_{k}=F_{k-1}\hat{x}^{+}_{k-1}+G_{k-1}u_{k-1} \nonumber \\
+			K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1} \\
+			\hat{x}^{+}_{k}=\hat{x}^{-}_{k}+K_{k}(y_{k}-H_{k}\hat{x}^{-}_{k}) \nonumber \\
+			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k}(I-K_{k}H_{k})^{T}+K_{k}R_{k}K^{T}_{k} \nonumber
+		\end{gather}
+\end{itemize}
+Ou seja, o sistema é suprido de uma estimativa inicial do estado e da covariância da estimativa. Se o estado é conhecido, $P_{0}^{+}=0$. A partir daí, propaga-se o sistema no tempo até o momento da primeira medição, obtendo-se $P_{1}^{-}$ e $\hat{x}_{1}^{-}$. Após isto, o valor da estimativa $y_{1}$ é utilizado para atualizar a estimativa e covariância, obtendo-se assim $\hat{x}_{1}^{+}$ e $P_{1}^{+}$.
+
+\section{Filtro Estendido de Kalman}
+O filtro de Kalman desenvolvido anteriormente é matematicamente o método ótimo de estimação de estados para sistemas lineares. No entanto, na natureza existem poucos sistemas lineares, a maioria são sistemas lineares, e o problema de estimação da posição do robô com sonares e visão computacional não é linear. Assim, é necessário um outro filtro para isso.
+
+Foi desenvolvido uma versão extendida para estimação de sistemas não lineares, usado inicialmente para o sistema de navegação de espaçonaves, e atualmente é o filtro padrão para estimação de sistemas não lineares.
+
+No filtro extendido, os estados de transição e modelos de observação não precisam ser funções lineares, podendo ser equações diferenciais. Em nossa formulação, usaremos o método hibrido de filtragem, que consiste em propagação de estado de forma contínua e atualização de estado com medidas de forma discreta. Isto porque nosso poder computacional nos permite propagar o estado segundo nosso modelo de dinâmica várias vezes entre duas medidas de sonares estarem disponíveis.
+
+No EKF, o sistema é modelado da seguinte forma:
+\begin{gather}
+	\dot{x}	= f(x,u,w,t) \nonumber \\
+	y = h(x,v,t)
+\end{gather}
+Onde $x$ é o estado, $u$ é uma força de controle, $w$ o ruído do processo e $v$ o ruído da medição.
+
+Estas equações bastam para predizer a estimativa e atualizá-la com a nova medida. No entanto, não há como diretamente aplicá-las na obtenção da covariância. Para obter a covariância, é realizada uma expansão de taylor de primeira ordem ao redor de cada estimativa, linearizando o sistema segundo uma função normalizada, e após isto o filtro de Kalman discreto anteriormente descrito é utilizado no sistema agora linear.
+
+Para o processo de linearização do entorno da estimativa, é necessário o cálculo do jacobiano de $f$ e $h$, obtendo-se $F_{k-1}$ e $H_{k}$ respectivamente, que serão utilizados nas equações de filtro linear, a saber:
+\begin{gather}
+	P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1} \nonumber \\
+	K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1} \\
+	P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k} \nonumber
+\end{gather}
+É importante notar que para sistemas com não-linearidades muito grandes a expansão apresenta erros muito grandes. No entanto, para o problema de estimativa de localização de um robô o EKF apresenta performance satisfatória.
