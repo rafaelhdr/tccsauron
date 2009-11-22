@@ -1,10 +1,18 @@
-\chapter{Revisão da literatura}
+\chapter{Revisão da literatura} \label{chp:revisaoLiteratura}
+Um robô móvel é um agente autômato que possui representação física. Desta forma, este possui as mesmas dificuldades dos indivíduos os quais o autômato repetirá as ações.
 
-Um robô móvel é um agente autômato que possui representação física. Desta forma, este possui as mesmas dificuldades dos indivíduos os quais o autômato repetirá as ações.\\
-O Sauron possui como objetivo locomover-se de forma autônoma em um ambiente cujo mapa é conhecido ao mesmo, e ir até um local discretizado em seu mapa. Assim sendo, as seguintes características são necessárias:
+O Sauron possui como objetivo locomover-se de forma autônoma em um ambiente cujo mapa é conhecido pelo mesmo até um destino fornecido por um usuário. Assim sendo, as seguintes características são necessárias:
 \begin{itemize}
   \item capacidade de localizar-se em seu mapa interno;
   \item capacidade de planejar uma rota para seu destino final partindo de sua localização;
   \item capacidade de navegar-se pelo ambiente cumprindo a rota planejada;
 \end{itemize}
+
 A fim de ser capaz de realizar as ações descritas, um ser, mecânico ou vivo, deve ser capaz de extrair informações do ambiente no qual está inserido e relacioná-las com seu conhecimento do mesmo. Há diversas formas disto ser feito. No presente capítulo será descrito como \cite{barra} resolveu os problemas acima, visto que este foi o trabalho base para o presente trabalho.
+
+\section{Sonar} \label{sec:sonarbarra}
+O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro de alta frequência e sua recepção depois do mesmo ter sido refletido em uma superfície. Conhecendo a velocidade do pulso sonoro no ambiente, é possivel determinar a distância do objeto refletor.
+
+Em \cite{barra} são utilizados oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente. Assim, são considerados oito sensores distintos, podendo-se desativar individualmente cada sonar conforme a necessidade.
+
+O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. Suponha-se uma parede infinita paralela ao eixo $x$. Independentemente da leitura do sonar e do ângulo de incidência do mesmo na parede, é impossível determinar qual é sua posição relativa à abcissa do plano, visto que a resposta fornecida pelo sonar é a mesma para qualquer $x$. Entretanto, a leitura do sonar é capaz de fornecer uma estimativa de $y$ segundo o seguinte exeomplo: Caso o pulso incida perpendicularmente à parede, sua leitura fornecerá a distância do mesmo à parede. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$.
