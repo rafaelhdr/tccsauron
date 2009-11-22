@@ -1,10 +1,11 @@
-\chapter*{Apêndice A - Filtro extendido de Kalman} \label{sec:apendicea}
+\chapter{Apêndice A - Filtro extendido de Kalman} \label{sec:apendicea}
 
 A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
 
-Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho.
+Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{simon}.
 
 \section{Método dos mínimos quadrados}
+
 Suponha-se um conjunto de medições sobre uma determinada constante, adquiridas com um equipamento ruidoso. Cada medida é adquirida de forma independente e possui variâncias distintas.
 Pode-se modelar o problema como:
 \begin{equation}
@@ -30,10 +31,56 @@ Considerando-se que o erro de cada medida é, em forma vetorial
 o método dos mínimos quadrados consiste na minimização da seguinte função de custo:
 \begin{equation}
 	J=\frac{\epsilon^{2}_{y1}}{\sigma^{2}_{1}}+\cdots+\frac{\epsilon^{2}_{yk}}{\sigma^{2}_{k}}
+	\label{eq:funcaodecusto}
 \end{equation}
 Este é o método dos mínimos quadrados aplicado quando cada medição possui variância distinta. Sua principal característica é ser a forma ótima de minimizar os erros provenientes de medições imprecisas.
 
 O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de H por x e minimizar J novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
+
+\section{método dos mínimos quadrados recursivo}
+Um estimador linear recursivo pode ser escrito na forma:
+\begin{gather}
+	y_{k} = H_{k}x+v_{k} \nonumber \\
+	\hat{x}_{k} = \hat{x}_{k-1} + K_{k}(y_{k}-H_{k}\hat{x}_{k-1})
+\end{gather}
+$K_{k}$ é uma matriz a ser determinada, chamada na literatura de matriz de ganho do estimador. O termo $(y_{k}-H_{k}\hat{x}_{k-1})$ é chamado de termo de correção. Se a matriz de ganho ou termo de correção forem nulos a estimativa do estado não muda.
+
+Calculando o erro da da estimativa, temos que:
+\begin{align}
+	E(\epsilon_{x,k})& = E(x-\hat{x}_{k}) \nonumber \\
+	                 & = E[x-\hat{x}_{k-1}-K_{k}(y_{k}-H_{k}\hat{x}_{k-1})] \nonumber \\
+	                 & = E[\epsilon_{x,k-1}-K_{k}(H_{k}x+v_{k}-H_{k}\hat{x}_{k-1})] \nonumber \\
+	                 & = E[\epsilon_{x,k-1}-K_{k}H_{k}(x-\hat{x}_{k-1})-K_{k}v_{k}] \nonumber \\
+	                 & = (I - K_{k}H_{k})E(\epsilon_{x,k-1})-K_{k}E(v_{k}) \label{eq:erroestimativarecursivo}
+\end{align}
+Verifica-se que $\epsilon_{x,k} = 0$ se $E(\epsilon_{x,k-1}) = 0$ e $E(v_{k}) = 0$. É importante salientar que isto é válido para qualquer $K_{k}$, o que fornece liberdade na hora de calcular $K_{k}$.
+
+Para calcular a matriz $K_{k}$ de maneira ótima, o método utilizado é o da minimização da soma das variâncias no tempo $k$. Assim, de forma análoga à \ref{eq:funcaodecusto}:
+\begin{align}
+	J_{k} & = E[(x_{1} - \hat{x}_{1})^{2}]+\cdots + E[(x_{n} - \hat{x}_{n})^{2}] \nonumber \\
+		  & = E(\epsilon_{x1,k}^{2}+\cdots + \epsilon_{xn,k}^{2}) \nonumber \\
+		  & = E(\epsilon_{x,k}^{T}\epsilon_{x,k}) \nonumber \\
+		  & = E[Tr(\epsilon_{x,k}^{T}\epsilon_{x,k}] \nonumber \\
+		  & = TrP_{k} \label{eq:custorecursivo}
+\end{align}
+Substituindo \ref{eq:erroestimativarecursivo} em \ref{eq:custorecursivo}, obtem-se
+\[
+	P_{k} = (I-K_{k}H_{k})P_{k-1}(I-K_{k}H_{k})^{T} + K_{k}R_{k}K_{k}^{T}
+	\label{eq:calculocovariancia}
+\]
+onde $R_{k} = E(v_{k}v_{k}^{T})$.
+
+Tomando-se $\frac{\partial J_{k}}{\partial K_{k}} = 0$ obtemos:
+\[
+	K_{k} = P_{k-1}H_{k}^{T}(H_{k}P_{k-1}H_{k}^{T} + R_{k})^{-1}
+	\label{eq:calculok}
+\]
+Assim, o método dos mínimos quadrados recursivo é obtido através das seguintes equações:
+\begin{align}
+	K_{k} & = P_{k-1}H_{k}^{T}(H_{k}P_{k-1}H_{k}^{T} + R_{k})^{-1} \nonumber \\
+	\hat{x}_{k} & = \hat{x}_{k-1} + K_{k}(y_{k}-H_{k}\hat{x}_{k-1}) \nonumber \\
+	P_{k} & = (I-K_{k}H_{k})P_{k-1}(I-K_{k}H_{k})^{T} + K_{k}R_{k}K_{k}^{T}
+\end{align}
 
 \section{Propagação de estados e covariâncias}
 Para se obter uma estimativa correta do estado e da covariância após um determinado intervalo de tempo decorrido, suponha-se o seguinte sistema diferencial linear genérico:
