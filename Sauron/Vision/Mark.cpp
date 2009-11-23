@@ -60,7 +60,7 @@ Mark Mark::restore( std::istream &stream )
     float y;
     memcpy( &x, pt, sizeof(float) ); 
     pt += sizeof( float );
-    memcpy( &y, &pt, sizeof(float) );
+    memcpy( &y, pt, sizeof(float) );
 
     char description[512] = { 0 };
     uint descriptionSize;

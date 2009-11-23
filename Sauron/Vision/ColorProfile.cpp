@@ -100,7 +100,7 @@ float ColorProfile::compare( const ColorProfile &other ) const
     const float maxVar = 30.0f;
     const float maxMeanVar = 50.0f;
 
-    const float colorProportion = 0.8f;
+    const float colorProportion = 0.7f;
     const float meanProportion  = 1.0f - colorProportion;
 
     float ret = 0.0f;

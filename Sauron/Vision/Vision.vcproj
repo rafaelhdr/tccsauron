@@ -61,10 +61,11 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				LinkLibraryDependencies="false"
-				AdditionalDependencies="videoInput.lib"
-				AdditionalLibraryDirectories="..\..\VideoInput\lib"
-				IgnoreDefaultLibraryNames="atlthunk.lib"
+				LinkLibraryDependencies="true"
+				AdditionalDependencies="videoInputDebug.lib"
+				AdditionalLibraryDirectories="..\..\VideoInput\lib;..\..\OpenCV\lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -131,7 +132,9 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="videoInput.lib"
-				AdditionalLibraryDirectories="..\..\VideoInput\lib"
+				AdditionalLibraryDirectories="..\..\VideoInput\lib;..\..\OpenCV\lib"
+				IgnoreAllDefaultLibraries="false"
+				IgnoreDefaultLibraryNames=""
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -221,7 +224,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CameraParams.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ColorProfile.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CoordinateConverter.h"
 				>
 			</File>
 			<File

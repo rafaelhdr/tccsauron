@@ -10,10 +10,10 @@ extern int testVisionModel();
 int main( int argc, char *argv[] )
 {
     //testBasicImage();
-    //testCamera();
+    testCamera();
     //testMarkMapper();
     //testMarkAssociation();
-    testVisionModel();
+    //testVisionModel();
     
     return 0;
 }

@@ -181,7 +181,7 @@ int principal(int argc, char** argv) {
 	//std::cout << "Digite o nome do mapa: ";
 	//std::cin >> mapName;
 	//mapName = "corredorfake_mod.map";
-	mapName = "pavsup_nocolluns.map";
+	mapName = "corredorfake_mod.map";//"pavsup_nocolluns.map";
 	ArMap map;
 	if(!map.readFile(mapName.c_str())) {
 		std::cout << "Ah, poxa! Esse mapa nao existe." << std::endl;
@@ -197,17 +197,17 @@ int principal(int argc, char** argv) {
 	clientSwitchManager.runAsync();
 
 
-	//sauron::LocalizationManager locManager(&robot, map, std::string(""));
-	//while(true) {
-	//	testGoTo(&locManager);
-	//}
+	sauron::LocalizationManager locManager(&robot, map, std::string(""));
+	while(true) {
+		testGoTo(&locManager);
+	}
 
 
 	//testPathPlanner(map, mapName);
-	while(true)
+	/*while(true)
 	{
 		testTurn();
-	}
+	}*/
 
 
   robot.waitForRunExit();

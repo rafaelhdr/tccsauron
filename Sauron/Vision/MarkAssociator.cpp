@@ -1,7 +1,13 @@
 #include "MarkAssociator.h"
+#include "MathHelper.h"
+#include "CoordinateConverter.h"
+#include <map>
+#include <cmath>
 
 namespace sauron
 {
+
+#if _USE_NEW_MARK_ASSOCIATOR
 
 MarkAssociator::MarkAssociator()
 {
@@ -25,7 +31,102 @@ void MarkAssociator::loadMarks( const MarkVector &marks )
 }
 
 
-void MarkAssociator::associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks, ProjectionVector &associatedProjs ) const
+void MarkAssociator::filterMarksByAngleOfView( const Pose &lastPose, MarkVector &possibleMarks ) const
+{
+    double deltaX;
+    double deltaY;
+    double length;
+
+    double coneHalfAngle = trigonometry::degrees2rads( lastPose.Theta() );
+    double coneX = cos( coneHalfAngle );
+    double coneY = sin( coneHalfAngle );
+    coneHalfAngle /= 2.0;
+
+    double crossProduct;
+
+    possibleMarks.clear();
+
+    MarkVector::const_iterator it;
+    for ( it = m_marks.begin(); it != m_marks.end(); ++it )
+    {
+        deltaX = it->getPosition().X() - lastPose.X();
+        deltaY = it->getPosition().Y() - lastPose.Y();
+        length = sqrt( deltaX * deltaX + deltaY * deltaY );
+        deltaX /= length;
+        deltaY /= length;
+
+        crossProduct = deltaX * coneY - deltaY * coneX;
+        if ( acos( crossProduct ) <= coneHalfAngle )
+            possibleMarks.push_back( *it );
+    }
+}
+
+
+void MarkAssociator::associateMarks(const ProjectionVector &projections, 
+                                    const Pose &lastPose, 
+                                    MarkVector &associatedMarks, 
+                                    ProjectionVector &associatedProjs) const
+{
+    MarkVector possibleMarks;
+    MarkVector::const_iterator mIt;
+
+    ProjectionVector::const_iterator projIt;
+
+    filterMarksByAngleOfView( lastPose, possibleMarks );
+    if ( !possibleMarks.size() )
+        return;
+
+    for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
+    {
+        double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() - lastPose.X(), 
+                                                        mIt->getPosition().Y() - lastPose.Y() );
+
+        std::map< double, const Projection* >  correlationMap;
+
+        for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
+        {
+            if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 8 )
+                continue;
+
+            correlationMap[ mIt->compare( *projIt ) ] = &(*projIt);
+        }
+
+        if ( correlationMap.size() )
+        {
+            // TODO Move the mim value to a more apropriate place
+            if ( correlationMap.rbegin()->first > 0.60 )
+            {
+                associatedMarks.push_back( *mIt );
+                associatedProjs.push_back( *(correlationMap.rbegin()->second) );
+            }
+        }
+    }
+}
+
+#else
+MarkAssociator::MarkAssociator()
+{
+}
+
+
+MarkAssociator::MarkAssociator( const MarkVector &marks )
+{
+    loadMarks( marks );
+}
+
+
+MarkAssociator::~MarkAssociator()
+{
+}
+
+
+void MarkAssociator::loadMarks( const MarkVector &marks )
+{
+    m_marks = marks;
+}
+
+
+uint MarkAssociator::associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks, ProjectionVector &associatedProjs ) const
 {
     MarkVector::const_iterator markIt;
     ProjectionVector::const_iterator projIt;
@@ -36,7 +137,7 @@ void MarkAssociator::associateMarks( const ProjectionVector &projections, MarkVe
     associatedProjs.clear();
 
     if ( projections.empty() )
-        return;
+        return 0;
 
     for (  markIt = m_marks.begin(); markIt != m_marks.end(); ++markIt )
     {
@@ -112,6 +213,10 @@ void MarkAssociator::associateMarks( const ProjectionVector &projections, MarkVe
         if ( allEmpty )
             break;
     }
+
+    return associatedMarks.size();
 }
+
+#endif // _USE_NEW_MARK_ASSOCIATOR
 
 }   // namespace sauron

@@ -122,12 +122,20 @@ namespace sauron
 					pose_t y_sonar = sonarRelativePose.Y();
 					pose_t th_sonar = sonarRelativePose.Theta();
 					//H(0,2) = x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
-					double df =  x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
+					
+                    /*double df =  x_sonar * ::sin(theta_diff) + y_sonar * ::cos(theta_diff);
 					double f = matchedLine.getRWall() -
 						( last.X() + x_sonar * cos(last.Theta()) - y_sonar * sin(last.Theta())) * cos(matchedLine.getTheta())
 						- (last.Y() + x_sonar * sin(last.Theta()) + y_sonar * cos(last.Theta())) * sin(matchedLine.getTheta());
 
-					H(0,2) = (df * sin(beta) - f * cos(beta)) / (::sin(beta) * ::sin(beta));
+					H(0,2) = (df * sin(beta) - f * cos(beta)) / (::sin(beta) * ::sin(beta));*/
+
+                    H(0,2) = ( x_sonar * ( ::sin(theta_diff)*::sin(beta) - ::cos(theta_diff)*::cos(beta) ) +
+                               y_sonar * ( ::cos(theta_diff)*::sin(beta) + ::sin(theta_diff)*::cos(beta) ) +
+                             - matchedLine.getRWall()*::cos(beta) 
+                             - last.X()*::cos(matchedLine.getTheta())*::cos(beta)
+                             - last.Y()*::sin(matchedLine.getTheta())*::cos(beta) ) / (::sin(beta)*::sin(beta) );
+
 					//H(0,2) = 0;
 
 					SONAR_LOG(logDEBUG3) << "Matriz H: " << H;
