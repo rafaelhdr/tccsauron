@@ -9,6 +9,8 @@
 namespace sauron
 {
 
+#if 0
+
 ProjectionTracker::ProjectionTracker()
     : m_iterationCount( 0 ),
       m_uniqueIDReference( 0 ),
@@ -223,5 +225,7 @@ std::vector< uint > ProjectionTracker::debug_getTrackedIDs() const
 
     return ret;
 }
+
+#endif
 
 }   // namespace sauron

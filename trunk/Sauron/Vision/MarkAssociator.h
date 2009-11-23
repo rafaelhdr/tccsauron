@@ -4,9 +4,14 @@
 #include <string>
 #include "Mark.h"
 #include "Projection.h"
+#include "Pose.h"
+
+#define _USE_NEW_MARK_ASSOCIATOR    1
 
 namespace sauron
 {
+
+#if _USE_NEW_MARK_ASSOCIATOR
 
 class MarkAssociator
 {
@@ -16,11 +21,35 @@ class MarkAssociator
         ~MarkAssociator();
 
         void loadMarks( const MarkVector &marks );
-        void associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks, ProjectionVector &associatedProjs ) const;
+        void associateMarks( const ProjectionVector &projections, 
+                             const Pose &lastPose,
+                             MarkVector &associatedMarks,
+                             ProjectionVector &associatedProjs ) const;
+
+    private:
+        void filterMarksByAngleOfView( const Pose &lastPose, MarkVector &possibleMarks ) const;
+
+    private:
+        MarkVector m_marks;
+};
+
+#else  //_USE_NEW_MARK_ASSOCIATOR
+
+class MarkAssociator
+{
+    public:
+        MarkAssociator();
+        MarkAssociator( const MarkVector &marks );
+        ~MarkAssociator();
+
+        void loadMarks( const MarkVector &marks );
+        uint associateMarks( const ProjectionVector &projections, MarkVector &associatedMarks, ProjectionVector &associatedProjs ) const;
 
     private:
         MarkVector m_marks; 
 };
+
+#endif  // _USE_NEW_MARK_ASSOCIATOR
 
 }   // namespace sauron
 

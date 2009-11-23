@@ -1,6 +1,6 @@
 #include "Projection.h"
 
-#define PROJECTION_DEFAULT_COLOR_PROFILE_SIZE   7
+#define PROJECTION_DEFAULT_COLOR_PROFILE_SIZE   5
 
 namespace sauron
 {

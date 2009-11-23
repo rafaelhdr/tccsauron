@@ -18,7 +18,7 @@ extern void drawProjection( sauron::Image &im, const sauron::Projection &proj, C
 
 int testMarkMapper()
 {
-    const sauron::uint imageScale  = 1;
+    const sauron::uint imageScale  = 2;
     const sauron::uint imageWidth  = 320;
     const sauron::uint imageHeight = 240;
     const sauron::uint finalImageWidth  = imageWidth  * imageScale;
@@ -70,12 +70,12 @@ int testMarkMapper()
 
         char choice = 0;
         std::cin.clear();
-        do
+        while ( validChoices.find( choice ) == std::string::npos && projectionsTracked.size() )
         {
             std::cout << "(S)elect   (N)ext   (Q)uit   (A)bort   => ";
             std::cin.get( choice );
         }
-        while ( validChoices.find( choice ) == std::string::npos );
+        
         
         int projectionToMarkID;
         float x;

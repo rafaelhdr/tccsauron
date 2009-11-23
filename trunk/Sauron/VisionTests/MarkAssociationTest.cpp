@@ -17,7 +17,7 @@ extern void drawProjection( sauron::Image &im, const sauron::Projection &proj, C
 
 int testMarkAssociation()
 {
-    const sauron::uint imageScale  = 1;
+    const sauron::uint imageScale  = 2;
     const sauron::uint imageWidth  = 320;
     const sauron::uint imageHeight = 240;
     const sauron::uint finalImageWidth  = imageWidth  * imageScale;
@@ -79,12 +79,12 @@ int testMarkAssociation()
         detector.detect( original, image, projections );
         lineMeanTime += clock() - lineStartTime;
 
-        for ( register unsigned int i = 0; i < projections.size(); ++i )
-            drawProjection( original, projections[ i ], font, 255, 0, 0 );
-
         trackStartTime = clock();
         tracker.track( projections, projectionsTracked );
         trackMeanTime += clock() - trackStartTime;
+
+        for ( register unsigned int i = 0; i < projectionsTracked.size(); ++i )
+            drawProjection( original, projectionsTracked[ i ], font, 255, 0, 0 );
 
         associationStartTime = clock();
         associator.associateMarks( projectionsTracked, marksAssociated, projections );
@@ -94,7 +94,7 @@ int testMarkAssociation()
 
         for ( register unsigned int i = 0; i < marksAssociated.size(); ++i )
         {
-            drawProjection( original, projections[ i ], font, 255, 255, 255, marksAssociated[i].getDescription() );
+            drawProjection( original, projections[ i ], font, 0, 255, 0, marksAssociated[i].getDescription() );
             //std::cout << "Mark[ "<< framesCount << "]: " << marksAssociated[i].getDescription() << std::endl;
         }
         std::cout << std::endl;

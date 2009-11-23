@@ -1,33 +1,70 @@
 #include "SensorVision.h"
+#include "ILocalizationManager.h"
+#include "Vision/CameraParams.h"
 #include <cmath>
-
-#if 0
 
 namespace sauron
 {
 
 SensorVision::SensorVision( const std::string &marksFile )
+    : m_updateFreq( 15 ),
+      m_localization( NULL )
 {
     m_visionModel.loadMarks( marksFile );
+
+    m_thread = boost::thread( &SensorVision::mainLoop, this );
+    m_threadRunning = true;
+    m_threadPause   = false;
 }
 
 
 SensorVision::~SensorVision()
 {
+    stop();
+    m_thread.join();
 }
 
 
-bool SensorVision::getEstimate( const Pose &last, 
-                                Matrix &hValue, Measure &z, Model &H, Covariance &R )
+void SensorVision::setUpdateFrequency( uint hz )
 {
-    MarkVector       m_associatedMarks;
-    ProjectionVector m_associatedProjections;
+    boost::mutex::scoped_lock lock( m_mutexUpdateFreq );
+    m_updateFreq = hz;
+}
 
-    m_visionModel.getAssociatedMarks( last, m_associatedMarks, m_associatedProjections );
 
-    if ( m_associatedMarks.size() > 0 )
+void SensorVision::start()
+{
+    m_threadRunning = true;
+    m_threadPause = false;
+}
+
+
+void SensorVision::stop()
+{
+    m_threadRunning = false;
+}
+
+
+void SensorVision::pause()
+{
+    m_threadPause = true;
+}
+
+
+bool SensorVision::getEstimate( Matrix &hValue, Measure &z, Model &H, Covariance &R )
+{
+    MarkVector       associatedMarks;
+    ProjectionVector associatedProjections;
+
+    Pose last = m_localization->getPose();
+
+    m_mutexVisionModel.lock();
+    m_visionModel.getAssociatedMarks( associatedMarks, associatedProjections );
+    m_mutexVisionModel.unlock();
+
+    if ( associatedMarks.size() > 0 )
     {
-        uint numMarks = m_associatedMarks.size();
+        uint numMarks = associatedMarks.size();
 
         z.resize( numMarks, 1 );
         H.resize( numMarks, 3 );
@@ -42,8 +79,8 @@ bool SensorVision::getEstimate( const Pose &last,
         double aux_z;
         double aux_z2;
 
-        double fu    = m_visionModel.getHorizontalFocalDistance();
-        double u0    = m_visionModel.getProjectionPlaneHorizontalCenter();
+        double fu    = CameraParams::getHorizontalFocalDistance();
+        double u0    = CameraParams::getProjectionPlaneHorizontalCenter();
         double sigma = m_visionModel.getSigma();
 
         double sinTheta;
@@ -53,10 +90,10 @@ bool SensorVision::getEstimate( const Pose &last,
 
         int index = 0;
 
-        MarkVector::iterator       itM = m_associatedMarks.begin();
-        ProjectionVector::iterator itP = m_associatedProjections.begin(); 
+        MarkVector::iterator       itM = associatedMarks.begin();
+        ProjectionVector::iterator itP = associatedProjections.begin(); 
         
-        for ( ; itM != m_associatedMarks.end(); ++itM, ++itP, ++index )
+        for ( ; itM != associatedMarks.end(); ++itM, ++itP, ++index )
         {
             const Point2DFloat markPos = itM->getPosition();
 
@@ -88,12 +125,85 @@ bool SensorVision::getEstimate( const Pose &last,
 }
 
 
-bool SensorVision::checkNewEstimateAvailable()
+void SensorVision::mainLoop() 
 {
-    // TODO
-    return false;
+    boost::xtime time;
+    boost::xtime lastTime;
+    boost::xtime sleepTime;
+    boost::xtime sleepDeltaTime;
+    
+    clock_t fpsStartTime = 0;
+    unsigned int framesCount = 0;
+    
+    sleepDeltaTime.nsec = 0;
+
+    bool toUpdate = false;
+
+    while ( m_threadRunning )
+    {
+        if ( m_threadPause )
+        {
+            boost::xtime_get( &sleepTime, boost::TIME_UTC );
+            sleepTime.nsec += 250000000;
+            m_thread.sleep( sleepTime );
+        }
+        else
+        {
+            if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
+            {
+                std::cout << "Thread: " << (double)framesCount * CLOCKS_PER_SEC / (double)(clock() - fpsStartTime) << " <=> " << framesCount <<  std::endl;
+                framesCount = 1;
+
+                boost::xtime_get( &lastTime, boost::TIME_UTC );
+
+                m_mutexVisionModel.lock();
+                toUpdate = m_visionModel.updateCaptureDetectTrackAssociate( m_localization->getPose() );
+                m_mutexVisionModel.unlock();
+
+                if ( toUpdate )
+                    this->updateEstimate();
+
+                boost::xtime_get( &time, boost::TIME_UTC );
+    
+                m_mutexUpdateFreq.lock();
+                sleepDeltaTime.nsec = ( boost::xtime::xtime_nsec_t( 1000000000 ) - m_updateFreq * (time.nsec - lastTime.nsec) ) / m_updateFreq;
+                m_mutexUpdateFreq.unlock();
+
+                fpsStartTime = clock();
+            }
+            else
+            {
+                m_mutexVisionModel.lock();
+                bool toUpdate = m_visionModel.updateCaptureDetectTrackAssociate( m_localization->getPose() );
+                m_mutexVisionModel.unlock();
+                
+                if ( toUpdate )
+                    this->updateEstimate();
+                
+                ++framesCount;
+            }
+
+            boost::xtime_get( &sleepTime, boost::TIME_UTC );
+            sleepTime.nsec += sleepDeltaTime.nsec;
+
+            m_thread.sleep( sleepTime );
+        }
+    }
+}
+
+
+void SensorVision::updateEstimate()
+{
+	if( m_localization ) 
+    {
+		Matrix          hValue; 
+		Measure         z; 
+		Model           H; 
+		Covariance      R;
+
+		if( getEstimate( hValue, z, H, R ) ) 
+			m_localization->update( hValue, z, H, R );
+	}
 }
 
 }   // namespace sauron
-
-#endif
