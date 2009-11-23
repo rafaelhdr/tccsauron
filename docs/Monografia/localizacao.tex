@@ -1,5 +1,74 @@
 \subsection{Localização}\label{subsec:localizacao}
 
+A localização é o módulo mais complexo dentro da arquitetura deste trabalho. Ela foi projetada com base no filtro bayesiano EKF (\textit{Extended Kalman Filter}), melhor descrito no Apêndice A \ref{sec:apendicea}. Nesta seção, encontra-se a visão geral dessa arquitetura e sua implementação. 
+
+\subsubsection{Visão Geral}
+
+O sistema de localização estima a posição do robô a partir dos dados de seus sensores. No SAURON, os sensores são os oito sonares e uma câmera de vídeo. Cada sensor tem associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma série de leituras a uma parede no mapa. De agora em diante, quando falarmos em um sensor, estamos nos referindo ao seu modelo de observação.
+
+Cada sensor sabe qual é a observação esperada para uma dada postura do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
+
+Essas estimativas, que são corrigidas pelos sensores, são previstas pelo modelo de dinâmica. Seu papel é gerar uma estimativa a partir da última postura do robô, sabendo o quanto ele andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada no SAURON, é obter as informações a partir do odômetro do robô.
+
+O filtro estendido de Kalman (EKF) é filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de Localização, que coordena o funcionamento de todo o sistema, iniciando os sensores e ligando-os ao EKF.
+
+A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
+
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
+	\caption{Arquitetura do sistema de localização}
+	\label{fig:arquitetura}
+\end{figure}
+
+\subsubsection{Implementação}
+
+Uma dificuldade em se implementar um sistema como esse é o controle do fluxo de execução. Para explicar o problema, olhemos o algoritmo \ref{algo:localizacao}, um esboço do funcionamento básico do módulo de localização.
+
+\begin{algorithm}
+\caption{Esboço do algoritmo do módulo de localização}
+\label{algo:localizacao}
+\begin{algorithmic}
+\LOOP
+	\STATE $postura \gets ekf.predict(modeloDinamica.novaEsimativa())$
+	\FORALL{$sensor$}
+		\IF{$sensor.temMedidaNova()$}
+			\STATE $postura \gets ekf.update(sensor.observacaoEsperada())$
+		\ENDIF
+	\ENDFOR
+\ENDLOOP
+\end{algorithmic}
+\end{algorithm}
+
+A implementação ingênua desse algoritmo percorre os passos do pseudocódigo sequencialmente, ou seja, itera por todos os sensores à procura daqueles que estejam prontos. A tabela \ref{tab:frequenciaSensores} mostra que os diferentes tempos de atualização de cada sensor tornam essa abordagem inviável: na grande maioria das vezes, não haverá nenhum sensor pronto, e a única estimativa será aquela fornecida pelo modelo de dinâmica. Além disso, o laço de processamento é executado o tempo todo, consumindo CPU e, paradoxalmente, aumentando ainda mais o tempo de resposta dos sensores.
+
+\begin{table}[htbp]
+	\centering
+		\begin{tabular}{ | l | r | }
+		\hline
+		Sensor & Tempo de atualização (ms) \\ \hline
+		Odômetro & 5 \\ \hline
+		Visão & 25 \\ \hline
+		Sonar & 100 \\ \hline			
+		\end{tabular}
+	\caption{Frequência de atualização dos sensores e do odômetro}
+	\label{tab:frequenciaSensores}
+\end{table}
+
+A solução é transferir o controle do fluxo de execução de um módulo central para os sensores. Quando um sensor receber novas medidas e for capaz de gerar uma observação esperada, ele chama o módulo de localização, que então invoca o EKF e computa a nova estimativa. Esse processo é muito mais eficiente do que o \textit{polling}, pois não há recursos desperdiçados enquanto se espera inutilmente. A desvantagem do método distribuído é que um certo tempo deve ser perdido realizando a sincronização de todas as \textit{threads} (para evitar, por exemplo, que dois sensores atualizem a estimativa ao mesmo tempo, corrompendo-a). A tabela \ref{tab:usoProcessador} relata os resultados obtidos para cada abordagem.
+
+\begin{table}[htbp]
+	\centering
+		\begin{tabular}{ | l | r | }
+		\hline
+		Abordagem & Utilização média dos processadores \\ \hline
+		Centralizada & 50\% \\ \hline
+		Distribuída & 11\% \\ \hline
+		\end{tabular}
+	\caption{Uso do processador nas duas abordagens de implementação (sistema com duas CPUs)}
+	\label{tab:usoProcessador}
+\end{table}
+
 \input{modelodinamica}
 \input {nossosonar}
 \input{modeloVisao}
