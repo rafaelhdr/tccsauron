@@ -1,3 +1,17 @@
 \subsection{Arquitetura}\label{subsec:arquitetura}
 
-Aqui é arquitetura geral. Planejamento+Localização+GUI+Sensores
+A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Navegação, Localização, Sensores e Motores, como pode ser observado na figura \ref{arquitetura:global} abaixo. O módulo de Navegação pode ser dividido em Planejamento, Execução e Camada Reativa.
+ 
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaGeral.jpg}
+\caption{Arquitetura do Sistema completo.}%
+\label{arquitetura:global}%
+\end{center}
+\end{figure}
+
+A Interface Gráfica apresenta ao usuário os possíveis destinos do robô e repassa a escolha do usuário ao submódulo Planejamento, dentro do módulo de Navegação. O Planejamento processa continuamente obtendo os dados do Módulo de Localização até chegar ao destino final desejado.
+
+Os Sensores (Sonares, Odômetro e Camêra) fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas x, y e \theta). A cada iteração do módulo de Planejamento, ele cria um plano de execução, que é passado à Camada Reativa. A Camada Reativa tem a função de evitar colisões e pode seguir ou não o plano de execução, baseada na informação que os sensores, mais especificamente os Sonares, fornecem.
+
+Por fim, a Camada Reativa envia o comando para os Motores do SAURON.
