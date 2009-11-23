@@ -1,3 +1,18 @@
-\chapter*{Introdução}
+\chapter{Introdução}
+O campo da robótica é atualmente um dos mais estudados e um dos que mais têm se desenvolvido na atualidade. A indústria se utiliza largamente de robôs nos dias atuais para produção, e muitos produtos da atualidade somente são possíveis graças à precisão de braços mecânicos que realizam operações com precisão milimétrica. No entanto, o mesmo não é verdadeiro se considerar-mos robôs móveis. Segundo \cite{siegwart}: 
 
-	É a parte inicial do texto onde devem constar a delimitação clara do assunto tratado, os objetivos, as justificativas da pesquisa, os esclarecimentos do ponto de vista sob o qual o assunto é tratado. Deve-se cuidar para não antecipar na Introdução os resultados do trabalho o que anula, de imediato, o interesse pela leitura integral do texto. É por meio da leitura da Introdução que o examinador colhe a primeira imagem do trabalho.
+"A robótica conseguiu seu maior nível de sucesso até o momento na área de manufatura industrial. Braços robóticos, ou manipuladores, consistem em uma indústria de dois bilhões de dólares. Presos em seus ombros numa posição específica da linha de montagem, o braço robótico pode se mover com grande velocidade e acurácia para realizar tarefas repetitivas como soldagem e pintura. Na indústria eletrônica, manipuladores inserem componentes em placas com precisão sobrehumanas, fazendo com que sejam possíveis objetos como laptops e telefones celulares.
+
+Entretanto, mesmo com todo o sucesso existente, estes robôs comerciais sofrem de uma desvantagem fundamental: Falta de mobilidade. Um manipulador fixo possui um alcanço limitado de operação que depende de onde ele esteja fixo. Contrastando com isto, um robô móvel poderia ser capaz de navegar por toda a fábrica, aplicando flexivelmente seus talentos aonde seja mais necessário."
+
+Um robô móvel é um agente autômato que possui representação física. Desta forma, este possui as mesmas dificuldades dos indivíduos os quais o autômato repetirá as ações.
+
+O trabalho corrente possui como objetivo locomover-se de forma autônoma em um ambiente com mapa conhecido até um destino fornecido pelo usuário. Assim sendo, as seguintes características são necessárias:
+\begin{itemize}
+  \item capacidade de localizar-se em seu mapa interno;
+  \item capacidade de planejar uma rota para seu destino final partindo de sua localização;
+  \item capacidade de navegar-se pelo ambiente cumprindo a rota planejada;
+\end{itemize}
+A fim de ser capaz de realizar as ações descritas, um ser, mecânico ou vivo, deve ser capaz de extrair informações do ambiente no qual está inserido e relacioná-las com seu conhecimento do mesmo. Há diversas formas disto ser feito.
+
+Intenta-se com este trabalho o desenvolvimento de algoritmos e técnicas de baixo custo que permitam a navegação do robô por um ambiente populado. Outros trabalhos foram desenvolvidos com o mesmo propósito, como \cite{robox}, mas que nao possuíam a restrição financeira que este trabalho almeja alcançar. Devido a isto, foram escolhidos uma câmera de baixo custo para a visão, e sonares e odômetro já integrados na plataforma base utilizada como robô, o Pioneer D-2X, tentando assim minimizar ao máximo os custos do projeto.
