@@ -1,0 +1,94 @@
+\subsection{Modelo de Observação da Visão}\label{subsec:modeloVisao}
+
+
+A visão monocular, cujo sensor é uma única câmera de vídeo, permite obter uma boa estimativa da localização do robô devido a grande quantidade de estímulos visuais que existem. 
+
+Dentre os vários tipos de estímulos, neste modelo, baseado em \cite{barra}, o principal estímulo são as retas verticais presentes nos ambientes, tais como batentes de portas, colunas, janelas, etc. A denominação \textsl{reta vertical} será dada às retas presentes no mundo real enquanto \textsl{projeções} são as observações dessas retas nas imagens obtidas pela câmera.
+
+\subsubsection{Convolução}
+
+A convolução é aplicada sobre as imagens para que seja possível ressaltar os cantos de objetos contidos na imagem, de maneira análoga ao Filtro de Sobel, uma vez que a característica visual de interesse são retas verticais. 
+
+A idéia básica da convolução de imagens, que é discreta e bidimensional, é a de uma janela que é deslizada sobre a imagem. O valor do pixel resultante é igual à soma ponderada dos pixels da imagem original que se encontram dentro da janela. Os pesos são os valores do filtro que foram estabelecidos para cada um dos pixels da janela. Tal janela é denomindada \textit{kernel} da convolução. 
+
+O \textit{kernel} foi determinado empiricamente, considerando-se dois parâmetros: precisão na demarcação das retas verticais e desempenho, uma vez que aplicar a convolução sobre uma imagem é um processo computacionalmente pesado.
+
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=.6\columnwidth]{imagens/corredor.jpg}
+	\caption{Foto tirada no corredor das salas C2}%
+	\label{visao:original}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=.6\columnwidth]{imagens/sobel.jpg}
+	\caption{Imagem obtida após a aplicação da convolução sobre a Figura~\ref{visao:original}}
+	\label{visao:convolucao}
+\end{figure}
+
+
+\subsubsection{Detecção de Projeções Verticais}
+
+A detecção de projeções é feita sobre a imagem em tons de cinza resultante da convolução do filtro para linhas verticais e tem como objetivo converter as linhas desenhadas para uma estrutura de dados que permita novas formas de manipulação dos dados.
+
+Antes de iniciar a detecção, aplica-se um procedimento que filtra pixels que não são máximos locais, isto é, dada uma pequena porção da imagem, a intensidade não é a maior dessa região. Já que a tendência do filtro de convolução usado é marcar os pixels mais perto do centro de uma linha vertical com valores maiores que os pixels periféricos da mesma linha, o procedimento aplicado faz com que uma possível projeção, antes representada na imagem como uma linha relativamente grossa (vários pixels), passe a ter largura de um único pixel.
+
+Ela é iniciada em um estado no qual a imagem é varrida, da esquerda para a direita, de cima para baixo, buscando um pixel que tenha intensidade maior do que um \textsl{limiar de início}. Quando um pixel atende a esse requisito, passa-se a um estado secundário.
+
+Neste novo estado, supoe-se que o pixel acima do limiar é um ponto de um nova projeção. A partir dele, a imagem passa a ser varrida verticalmente, da seguinte forma: compara-se o valor dos três pixels vizinhos que estão abaixo do pixel recém-inserido na nova possível projeção. O pixel que será adicionado na projeção será aquele com o maior valor. Este processo engloba algumas heurísticas que levam à obtenção das projeções mais significativas para as etapas posteriores, além de filtragem por tamanho da projeção, eliminando, assim, projeções muito pequenas, e a inclinação, descartando aquelas que não estão tão verticais quanto desejado.
+
+Contudo, existem algumas ressalvas:
+\begin{itemize}
+\item se o pixel de maior valor for um dos inferiores laterais, entra em ação um fator de inércia vertical cujo papel é forçar a projeção a ser o mais vertical possível. Enquanto este fator estiver ativo, é dada preferência para o pixel diretamente abaixo, mesmo que seu valor não seja o maior. Esse fator será desativado quando alguns pixels não máximos forem selecionados, evitando a formação de um projeção distorcida.
+\item se o maior valor for inferior a um limiar de término, o pixel é adicionado temporariamente à projeção e passa-se a contar quantos pixels abaixo do limiar foram inseridos em seqüência. Caso essa contagem ultrapasse um valor máximo, todos os que foram adicionados temporariamente são removidos, a projeção obtida até então é considerada finalizada e o algoritmo de detecção volta ao estado inicial. Se após alguns pixels abaixo do limiar de término serem inseridos, mas com contagem menor do que a máxima permitida, for encontrado um pixel cuja intensidade é superior ao limiar de término, a adição deles é confirmada e a contagem é zerada.
+\end{itemize}
+
+Cada projeção detectada passa por algumas verificações que incluem o tamanho da projeção, eliminando, assim, projeções muito pequenas, e a inclinação, descartando aquelas que não estão tão verticais quanto desejado.
+
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=.6\columnwidth]{imagens/projections.jpg}
+	\caption{Projeções detectadas na Figura ~\ref{visao:original}}
+	\label{visao:projecoes}
+\end{figure}
+
+
+\subsubsection{Perfil de Cor}
+O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
+
+Ele considera uma região da imagem centrada na seqüência de pixels que pertencem a uma projeção identificada, estendendo-se por uma faixa de \textit{n} pixels para a direita e para a esquerda de cada pixel da projeção.
+
+As informações que se mostraram relevantes sobre o perfil de cor são os valores médios, para cada componente de cor, dos lados esquerdo e direito em relação ao centro da região.
+
+A comparação de dois perfis de cor, logo, de duas projeções, resulta num fator de correlação normalizado que indica quão semelhantes são os perfis. O cálculo desse fator segue as seguintes equações:
+
+\begin{eqnarray*}
+R & = & \left( \delta - \vert R_{1_{esq}} - R_{2_{esq}} \vert \right) + \left( \delta - \vert R_{1_{dir}} - R_{2_{dir}} \vert \right) \\
+G & = & \left( \delta - \vert G_{1_{esq}} - G_{2_{esq}} \vert \right) + \left( \delta - \vert G_{1_{dir}} - G_{2_{dir}} \vert \right) \\
+B & = & \left( \delta - \vert B_{1_{esq}} - B_{2_{esq}} \vert \right) + \left( \delta - \vert B_{1_{dir}} - B_{2_{dir}} \vert \right)
+\end{eqnarray*}
+\begin{displaymath}
+C = \frac{\left( R + G + B \right)}{6\delta} 
+\end{displaymath}
+
+
+onde $\delta$ é a maior diferença esperada entre os componentes, $R$, $G$ e $B$ são representam as diferenças nas intensidades dos componentes de cor entre o lado direito e esquerdo, em relação à reta considerada, e $C$ é o fator de correlação. Esse modelo não é o usado originalmente por Barra\cite{barra}, pois o usado por ele apresentou resultados ruins nos testes realizados. O motivo de tais resultados parece decorrer do fato de seu modelo considerar as médias das diferenças entre os valores de cada lado da reta. Os testes revelaram que isso leva vários perfis distintos a possuírem valores muito próximos, e, consequentemente, a várias falsas correlações.
+
+Esta nova modelagem foi escrita visando considerar diferenças de um mesmo lado da região, para cada componente de cor, aumentando o valor do fator de correlação quando as cores de cada lados dos perfis comparados são próximos. 
+
+\subsubsection{Rastreamento e Associação}
+A associação de projeções à marcos foi dividida em duas etapas: rastrear projeções em seqüências contínuas de quadros e relacionar projeções rastreadas à marcos descritos no mapa. 
+
+%Essa abordagem não é a mesma seguida por Barra\cite{barra}, que busca a melhor associação aos marcos usando todas as projeções observadas em um dado instante. Maiores detalhes sobre os motivos da divisão serão citados abaixo.
+
+O rastreamento de projeções é responsável por identificar projeções em diferentes quadros que são, na verdade, a mesma projeção vista em um momento e/ou posição diferente. A importância dessa etapa é que ela realiza uma filtragem pelas projeções que têm maior probabilidade de serem marcos. Isso decorre das características desejadas em marcos: altamente visíveis e facilmente identificáveis. Se uma mesma projeção pode ser vista por muito tempo, ela pode ser um marco. 
+%Dessa forma, o rastreamento também age de maneira análoga ao buffer adotado por Barra\cite{barra}.
+
+O rastreamento é feito a partir da comparação dos perfis de cor entre as projeções que foram observadas no último quadro obtido da câmera com aquelas que foram vistas em quadros anteriores, fazendo uso do valor de correlação explicado na seção anterior. Com isso, consegue-se determinar qual projeção nova representa uma antiga no instante de tempo atual, sendo possível manter um histórico das diferentes projeções, que são na verdade a mesma observada em tempos diferentes.
+
+A implementação do rastreamento é iniciada com a comparação de todas as projeções que estão sendo rastreadas com todas as que acabaram de ser detectadas no último frame obtido da câmera. Essa comparação, baseada no perfil de cor, resulta num valor de correlação. Somente os valores acima de um dado limiar, determinado empiricamente, são aceitos. Em seguida, os valores são agrupados de acordo com a projeção rastreada que foi usada para gerá-lo, e ordenados, em ordem decrescente. Para cada grupo, calcula-se um fator de similaridade. O grupo que tiver o maior valor de similaridade, terá o direito de utilizar a projeção recém-observada, associada ao maior valor de correlação, para relacionar à sua projeção rastreada. Após isso, o grupo com maior similaridade é removido, assim como todos os valores de correlação, dos demais grupos, associados à projeção recém-observada que foi usada. O cáluclo de similaridade e a busca pelos grupos é repetida até que todas as projeções rastredas sejam relacionadas ou que ou o maior valor de similaridade encontrado esteja abaixo de um limiar.
+
+O efeito de buffer se deve ao fato do rastreador poder ser configurado para considerar que uma dada projeção só está sendo devidamente rastreada se ela for vista pelos n vezes nos últimos i quadros, sendo n e i facilmente ajustáveis.
+
+A associação de marcos é feita entre projeções rastreadas e marcos descritos num arquivo. Um marco foi modelado como um perfil de cor que se encontra em uma determinada coordenada $\left(x, y\right)$ do mundo real. O algoritmo de associação de marcos, segue, em essência, as mesmas idéias aplicadas no rastreamento de projeções, existindo apenas diferenças quanto as estruturas de dados empregadas na implementação do algoritmo. 
