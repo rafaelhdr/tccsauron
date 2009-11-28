@@ -64,7 +64,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="true"
 				UseLibraryDependencyInputs="false"
-				AdditionalDependencies="AriaDebugVC9.lib ArNetworkingDebugVC9.lib SonArnlDebugVC9.lib BaseArnlDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib"
+				AdditionalDependencies="AriaDebugVC9.lib ArNetworkingDebugVC9.lib SonArnlDebugVC9.lib BaseArnlDebugVC9.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib "
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\OpenCV\lib;..\..\boost\lib"
 				IgnoreDefaultLibraryNames="atlthunk.lib"
@@ -119,10 +119,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Zm112"
+				AdditionalOptions="/Zm200"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;ARIA_STATIC"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -141,9 +141,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="AriaVC9.lib ArNetworkingVC9.lib SonArnlVC9.lib BaseArnlVC9.lib ws2_32.lib winmm.lib advapi32.lib"
+				AdditionalDependencies="AriaVC9.lib ArNetworkingVC9.lib SonArnlVC9.lib BaseArnlVC9.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib "
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\..\OpenCV\lib;..\..\MobileRobots\Aria\lib;..\..\boost\lib;..\Debug"
+				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\OpenCV\lib;..\..\boost\lib"
 				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"

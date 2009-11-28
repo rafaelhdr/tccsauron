@@ -244,7 +244,7 @@ int principal(int argc, char** argv)
   printf("Server is now running...\n");
   clientSwitchManager.runAsync();
 #pragma endregion
-  sauron::LocalizationManager locManager(&robot, map, std::string(""));
+  sauron::LocalizationManager locManager( &robot, map, std::string("marks.map") );
   plocManager = &locManager;
 
   sauron::tests::LocalizationMonitorConsole locConsole(&locManager, &robot);

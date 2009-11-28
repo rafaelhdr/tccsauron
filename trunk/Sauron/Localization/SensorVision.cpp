@@ -13,8 +13,7 @@ SensorVision::SensorVision( const std::string &marksFile )
     m_visionModel.loadMarks( marksFile );
 
     m_thread = boost::thread( &SensorVision::mainLoop, this );
-    m_threadRunning = true;
-    m_threadPause   = false;
+    start();
 }
 
 
@@ -139,6 +138,9 @@ void SensorVision::mainLoop()
 
     bool toUpdate = false;
 
+    cvNamedWindow( "MarksWindow" );
+    Image frame( 320, 240, 8, Pixel::PF_RGB );
+
     while ( m_threadRunning )
     {
         if ( m_threadPause )
@@ -151,7 +153,7 @@ void SensorVision::mainLoop()
         {
             if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
             {
-                std::cout << "Thread: " << (double)framesCount * CLOCKS_PER_SEC / (double)(clock() - fpsStartTime) << " <=> " << framesCount <<  std::endl;
+                //std::cout << "Thread: " << (double)framesCount * CLOCKS_PER_SEC / (double)(clock() - fpsStartTime) << " <=> " << framesCount <<  std::endl;
                 framesCount = 1;
 
                 boost::xtime_get( &lastTime, boost::TIME_UTC );
@@ -159,6 +161,11 @@ void SensorVision::mainLoop()
                 m_mutexVisionModel.lock();
                 toUpdate = m_visionModel.updateCaptureDetectTrackAssociate( m_localization->getPose() );
                 m_mutexVisionModel.unlock();
+
+                m_visionModel.getLastFrameWithMarks( frame, m_localization->getPose() );
+                //m_visionModel.getLastFrameWithProjections( frame );
+                cvShowImage( "MarksWindow", frame );
+                cvWaitKey( 1 );
 
                 if ( toUpdate )
                     this->updateEstimate();
@@ -176,6 +183,11 @@ void SensorVision::mainLoop()
                 m_mutexVisionModel.lock();
                 bool toUpdate = m_visionModel.updateCaptureDetectTrackAssociate( m_localization->getPose() );
                 m_mutexVisionModel.unlock();
+
+                m_visionModel.getLastFrameWithMarks( frame, m_localization->getPose() );
+                //m_visionModel.getLastFrameWithProjections( frame );
+                cvShowImage( "MarksWindow", frame );
+                cvWaitKey( 1 );
                 
                 if ( toUpdate )
                     this->updateEstimate();
@@ -189,6 +201,8 @@ void SensorVision::mainLoop()
             m_thread.sleep( sleepTime );
         }
     }
+
+    cvDestroyWindow( "MarksWindow" );
 }
 
 
@@ -201,9 +215,15 @@ void SensorVision::updateEstimate()
 		Model           H; 
 		Covariance      R;
 
-		if( getEstimate( hValue, z, H, R ) ) 
-			m_localization->update( hValue, z, H, R );
+		/*if( getEstimate( hValue, z, H, R ) ) 
+			m_localization->update( hValue, z, H, R );*/
 	}
+}
+
+
+void SensorVision::setLocalizationManager( ILocalizationManager &locManager )
+{
+    m_localization = &locManager;
 }
 
 }   // namespace sauron

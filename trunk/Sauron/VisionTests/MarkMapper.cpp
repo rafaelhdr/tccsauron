@@ -18,7 +18,7 @@ extern void drawProjection( sauron::Image &im, const sauron::Projection &proj, C
 
 int testMarkMapper()
 {
-    const sauron::uint imageScale  = 2;
+    const sauron::uint imageScale  = 1;
     const sauron::uint imageWidth  = 320;
     const sauron::uint imageHeight = 240;
     const sauron::uint finalImageWidth  = imageWidth  * imageScale;
@@ -35,7 +35,7 @@ int testMarkMapper()
     CvFont font;
     cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0 );
 
-    sauron::ProjectionTracker               tracker;
+    //sauron::ProjectionTracker               tracker;
     sauron::VerticalProjectionDetector      detector;
     sauron::VerticalLineConvolutionOperator conv;
 
@@ -49,20 +49,22 @@ int testMarkMapper()
     bool run = true;
     while ( run )
     {
-        camera.getFrame( image );
+        if ( !camera.getFrame( image ) )
+            continue;
+
         original = image;
         image.convertToGray();
 
         conv.convolve( image );
         image.convertToGray();
         detector.detect( original, image, projections );
-        tracker.track( projections, projectionsTracked );
+        //tracker.track( projections, projectionsTracked );
 
-        for ( register unsigned int i = 0; i < projectionsTracked.size(); ++i )
+        for ( register unsigned int i = 0; i < projections.size(); ++i )
         {
             std::stringstream ss;
             ss << i;
-            drawProjection( original, projectionsTracked[ i ], font, 255, 255, 255, ss.str() );
+            drawProjection( original, projections[ i ], font, 255, 255, 255, ss.str() );
         }
         
         cvShowImage( "Final", original );
@@ -70,7 +72,7 @@ int testMarkMapper()
 
         char choice = 0;
         std::cin.clear();
-        while ( validChoices.find( choice ) == std::string::npos && projectionsTracked.size() )
+        while ( validChoices.find( choice ) == std::string::npos && projections.size() )
         {
             std::cout << "(S)elect   (N)ext   (Q)uit   (A)bort   => ";
             std::cin.get( choice );
@@ -92,7 +94,7 @@ int testMarkMapper()
                 std::cin  >> x >> y;
                 std::cout << "Description: ";
                 std::cin  >> description;
-                marks.push_back( sauron::Mark( sauron::Point2DFloat( x, y ), projectionsTracked[projectionToMarkID].getColorProfile(), description ) );
+                marks.push_back( sauron::Mark( sauron::Point2DFloat( x, y ), projections[projectionToMarkID].getColorProfile(), description ) );
                 std::cout << std::endl << std::endl;
                 break;
 

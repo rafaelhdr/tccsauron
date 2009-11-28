@@ -8,10 +8,10 @@ class CameraParams
 {
     public:
         // TODO Set the values
-        static double getHorizontalFocalDistance()          { return 1.000; } // run calibration
-        static double getVerticalFocalDistance()            { return 1.000; } // run calibration
-        static double getProjectionPlaneHorizontalCenter()  { return 320.0; } // half camera width  
-        static double getProjectionPlaneVerticalCenter()    { return 240.0; } // half camera heigth
+        static double getHorizontalFocalDistance()          { return 394.8956276848544500; }//274.9938104610965900; } // run calibration
+        static double getVerticalFocalDistance()            { return 394.3910703010728300; }//274.2551230486371300; } // run calibration
+        static double getProjectionPlaneHorizontalCenter()  { return 161.9690548236380600; } // run calibration 
+        static double getProjectionPlaneVerticalCenter()    { return 138.3758441701515100; } // run calibration
         static double getAngleOfView()                      { return 2.094; } // radians
 };
 

@@ -132,7 +132,7 @@
 				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="4"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -189,6 +189,10 @@
 			>
 			<File
 				RelativePath=".\BasicImage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CameraCalibration.cpp"
 				>
 			</File>
 			<File
