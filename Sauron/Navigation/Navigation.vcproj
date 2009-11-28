@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="STANN\include;..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
+				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="true"
@@ -106,7 +106,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\Common;..\.."
+				AdditionalIncludeDirectories="..\..\MobileRobots\ARNL\include;..\..\MobileRobots\Aria\ArNetworking\include;..\;..\Common;..\..;..\..\MobileRobots\Aria\include;..\..\OpenCV\cv\include;..\..\OpenCV\cxcore\include;..\..\OpenCV\cvaux\include;..\..\OpenCV\otherlibs\highgui"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

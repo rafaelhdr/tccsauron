@@ -37,9 +37,8 @@ void MarkAssociator::filterMarksByAngleOfView( const Pose &lastPose, MarkVector 
     double deltaY;
     double length;
 
-    double coneHalfAngle = trigonometry::degrees2rads( lastPose.Theta() );
-    double coneX = cos( coneHalfAngle );
-    double coneY = sin( coneHalfAngle );
+    double coneHalfAngle = CameraParams::getAngleOfView();    double coneX = cos( lastPose.Theta() );
+    double coneY = sin( lastPose.Theta() );
     coneHalfAngle /= 2.0;
 
     double crossProduct;
@@ -49,14 +48,16 @@ void MarkAssociator::filterMarksByAngleOfView( const Pose &lastPose, MarkVector 
     MarkVector::const_iterator it;
     for ( it = m_marks.begin(); it != m_marks.end(); ++it )
     {
+
         deltaX = it->getPosition().X() - lastPose.X();
         deltaY = it->getPosition().Y() - lastPose.Y();
         length = sqrt( deltaX * deltaX + deltaY * deltaY );
         deltaX /= length;
         deltaY /= length;
 
-        crossProduct = deltaX * coneY - deltaY * coneX;
-        if ( acos( crossProduct ) <= coneHalfAngle )
+        crossProduct = coneX * deltaY - coneY * deltaX;//deltaX * coneY - deltaY * coneX;
+        double angle = asin( crossProduct );
+        if ( asin( crossProduct ) <= coneHalfAngle )
             possibleMarks.push_back( *it );
     }
 }
@@ -72,20 +73,63 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
 
     ProjectionVector::const_iterator projIt;
 
+    associatedMarks.clear();
+    associatedProjs.clear();
+
+    if ( !projections.size() )
+        return;
+
     filterMarksByAngleOfView( lastPose, possibleMarks );
     if ( !possibleMarks.size() )
         return;
 
+    //std::map< Mark, std::map< const Projection *, double > > correlationMap;
+    //std::map< Mark, std::map< const Projection *, double > >::iterator cmIt;
+
+    //for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
+    //{
+    //    double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() - lastPose.X(),
+    //                                                    mIt->getPosition().Y() - lastPose.Y() );
+
+    //    for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
+    //    {
+    //        if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 10 )
+    //            continue;
+
+    //        correlationMap[ mark ][ *projIt ] = mIt->compare( *projIt );
+    //    }
+    //}
+
+    //if ( correlationMap.size() )
+    //{
+    //    std::map< Mark, const Projection * > selectedAssociationsMap;
+    //    std::map< Mark, 
+
+    //    for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
+    //    {
+    //        for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
+    //        {
+
+    //        }
+    //    }
+    //}
+
     for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
     {
-        double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() - lastPose.X(), 
-                                                        mIt->getPosition().Y() - lastPose.Y() );
+        //double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() * cos( lastPose.Theta() ) - lastPose.X(), 
+        //                                                mIt->getPosition().Y() * sin( lastPose.Theta() ) - lastPose.Y() );
+
+        double camX = mIt->getPosition().X() - lastPose.X();
+        double camY = mIt->getPosition().Y() - lastPose.Y();
+        double rotCamX = camX * cos( lastPose.Theta() ) - camY * sin( lastPose.Theta() );
+        double rotCamY = camX * sin( lastPose.Theta() ) + camY * cos( lastPose.Theta() );
+        double posU = CoordinateConverter::Wordl2Cam_U( -rotCamX, rotCamY );
 
         std::map< double, const Projection* >  correlationMap;
 
         for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
         {
-            if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 8 )
+            if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 20 )
                 continue;
 
             correlationMap[ mIt->compare( *projIt ) ] = &(*projIt);
@@ -94,13 +138,19 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
         if ( correlationMap.size() )
         {
             // TODO Move the mim value to a more apropriate place
-            if ( correlationMap.rbegin()->first > 0.60 )
+            if ( correlationMap.rbegin()->first > 0.0 )
             {
                 associatedMarks.push_back( *mIt );
                 associatedProjs.push_back( *(correlationMap.rbegin()->second) );
             }
         }
     }
+}
+
+
+const MarkVector &MarkAssociator::getMarks() const
+{
+    return m_marks;
 }
 
 #else

@@ -61,14 +61,13 @@ namespace sauron
 	ISonarDataAsyncProvider* LocalizationManager::buildDefaultSonarDataProvider()
 	{
 		return new PhysicalSonars(mp_robot);
-		//return 0;
 	}
 
 	void LocalizationManager::buildDefaultSensors()
 	{
 		//buildDefaultSonars();
 		buildDefaultSimpleSonars();
-		//buildDefaultVision();
+		buildDefaultVision();
 	}
 
 	void LocalizationManager::buildDefaultSonars()
@@ -92,6 +91,8 @@ namespace sauron
 	void LocalizationManager::buildDefaultVision()
 	{
         //m_sensors.push_back( ISensorModelPtr( new SensorVision( m_visionMarksFilename ) ) );
+        m_visionSensor = ISensorModelPtr( new SensorVision( m_visionMarksFilename ) );
+        m_visionSensor->setLocalizationManager( *this );
 	}
 
 	void LocalizationManager::invokePoseChangedCallbacks() {

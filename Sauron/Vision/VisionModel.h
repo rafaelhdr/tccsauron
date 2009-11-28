@@ -30,18 +30,18 @@ class VisionModel
         void getLastFrame( Image &frame );
         void getLastFrameWithProjections( Image &frame );
         //void getLastFrameWithTrackedProjections( Image &frame );
-        void getLastFrameWithMarks( Image &frame );
+        void getLastFrameWithMarks( Image &frame, const Pose &lastPose );
 
         // Main method - triggers all vision processes
         bool updateCaptureDetectTrackAssociate( const Pose &lastPose );
 
     private:
-        void drawProjection( Image &im, const Projection &p, byte r, byte g, byte b );
+        void drawProjection( Image &im, const Projection &p, byte r, byte g, byte b, std::string &text = std::string() );
 
     private:
         Camera                          m_camera;
         MarkAssociator                  m_associator;
-        ProjectionTracker               m_tracker;
+        //ProjectionTracker               m_tracker;
         VerticalProjectionDetector      m_detector;
         VerticalLineConvolutionOperator m_convolutor;
 

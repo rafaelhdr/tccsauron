@@ -47,7 +47,7 @@ int testCamera()
     unsigned int meanCount   = 0;
     unsigned int framesCount = 0;
 
-    sauron::ProjectionTracker               tracker;
+    //sauron::ProjectionTracker               tracker;
     sauron::VerticalProjectionDetector      detector;
     sauron::VerticalLineConvolutionOperator conv;
 
@@ -56,17 +56,22 @@ int testCamera()
 
     sauron::Image fromfile( "0_step_0.bmp" );
 
-    //camera.setSize( 320, 240 );
+    camera.setSize( 320, 240 );
 
     char key = 0;
     while ( key != 'q' && key != 'Q' && key != 27 )
     {
         cameraStartTime = clock();
-        camera.getFrame( image );
+        if ( !camera.getFrame( image ) )
+            continue;
         cameraMeanTime += clock() - cameraStartTime;
         
         /*image = fromfile;*/
         original = image;
+
+        if ( original.getFormat() == sauron::Pixel::PF_GRAY )
+            std::cout << "Nao devia ocorrer isso." << std::endl;
+
         image.convertToGray();
 
         sobelStartTime = clock();
@@ -84,20 +89,20 @@ int testCamera()
         for ( register unsigned int i = 0; i < projections.size(); ++i )
             drawProjection( original, projections[ i ], font, 255, 0, 0 );
 
-        original.save( "projections.jpg" );
+        //original.save( "projections.jpg" );
 
-        trackStartTime = clock();
-        tracker.track( projections, projectionsTracked );
-        trackMeanTime += clock() - trackStartTime;
+        //trackStartTime = clock();
+        //tracker.track( projections, projectionsTracked );
+        //trackMeanTime += clock() - trackStartTime;
 
-        std::vector< sauron::uint > ids = tracker.debug_getTrackedIDs();
+        //std::vector< sauron::uint > ids = tracker.debug_getTrackedIDs();
 
-        for ( register unsigned int i = 0; i < projectionsTracked.size(); ++i )
-        {
-            std::stringstream ss;
-            ss << ids[i];
-            drawProjection( original, projectionsTracked[ i ], font, 255, 255, 255, ss.str() );
-        }
+        //for ( register unsigned int i = 0; i < projectionsTracked.size(); ++i )
+        //{
+        //    std::stringstream ss;
+        //    ss << ids[i];
+        //    drawProjection( original, projectionsTracked[ i ], font, 255, 255, 255, ss.str() );
+        //}
 
         ++meanCount;
         if ( clock() - fpsStartTime > CLOCKS_PER_SEC )
@@ -108,7 +113,7 @@ int testCamera()
             std::cout << "Camera: "  << (double)cameraMeanTime / meanCount;
             std::cout << "  Sobel: " << (double)sobelMeanTime / meanCount;
             std::cout << "  Lines: " << (double)lineMeanTime  / meanCount;
-            std::cout << "  Track: " << (double)trackMeanTime / meanCount;
+            //std::cout << "  Track: " << (double)trackMeanTime / meanCount;
             std::cout << "  Total: " << total;
             std::cout << "  FPS: " << 1000.0 / total;
             fpsStartTime = clock();

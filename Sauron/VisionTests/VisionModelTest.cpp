@@ -25,7 +25,7 @@ int testVisionModel()
     while ( key != 'q' && key != 'Q' && key != 27 )
     {
         //visionModel.getLastFrame( frame );
-        visionModel.getLastFrameWithTrackedProjections( frame );
+        //visionModel.getLastFrameWithTrackedProjections( frame );
         cvShowImage( "Frame", frame );
 
         if ( clock() - fpsStartTime > CLOCKS_PER_SEC )

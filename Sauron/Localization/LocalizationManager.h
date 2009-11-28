@@ -70,6 +70,7 @@ private:
 	IKalmanFilterPtr mp_ekf;
 	std::vector<ISensorSonarModelPtr> m_sonars;
 	std::vector<ISensorModelPtr> m_simpleSonars;
+    ISensorModelPtr m_visionSensor;
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
 

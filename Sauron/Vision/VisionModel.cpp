@@ -1,6 +1,8 @@
 #include "VisionModel.h"
+#include "CoordinateConverter.h"
 
 #include <iostream>
+#include <sstream>
 
 namespace sauron
 {
@@ -10,7 +12,7 @@ VisionModel::VisionModel()
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB )
 {
     // Empirical values
-    m_sigmaVert = 1.0f;
+    m_sigmaVert = 20.0f;
 
     m_camera.setSize( 320, 240 );
 
@@ -40,12 +42,29 @@ void VisionModel::getLastFrame( sauron::Image &frame )
 }
 
 
-void VisionModel::getLastFrameWithMarks( sauron::Image &frame )
+void VisionModel::getLastFrameWithMarks( sauron::Image &frame, const Pose &lastPose )
 {
     frame = m_lastMarksFrame;
 
+    CvFont font;
+    cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0 );
+
     for ( register uint i = 0; i < m_marksAssociatedProjections.size(); ++i )
         drawProjection( frame, m_marksAssociatedProjections[i], 255, 255, 0 );
+
+    const MarkVector marks = m_associator.getMarks();
+    for ( register uint i = 0; i < marks.size(); ++i )
+    {
+        double posU = CoordinateConverter::Wordl2Cam_U( marks[i].getPosition().X() - lastPose.X(), 
+                                                        marks[i].getPosition().Y() - lastPose.Y() );
+
+        for ( uint h = 0; h < frame.getHeight(); ++h )
+            frame( posU, h ).set( 0, 0, 255 );        
+
+        std::stringstream ss;
+        ss << marks[i].getDescription();       
+        cvPutText( frame, ss.str().c_str(), cvPoint( (int)posU, 10 ), &font, CV_RGB( 0, 0, 255 ) );
+    }   
 }
 
 
@@ -67,13 +86,30 @@ void VisionModel::getLastFrameWithProjections( sauron::Image &frame )
 //}
 
 
-void VisionModel::drawProjection( Image &im, const Projection &proj, byte r, byte g, byte b )
+void VisionModel::drawProjection( Image &im, const Projection &proj, byte r, byte g, byte b, std::string &text )
 {
+    CvFont font;
+    cvInitFont( &font, CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0 );
+
     sauron::DiscretizedLine line = proj.getDiscretizedLine();
     for ( register sauron::uint k = 0; k < line.getNumPoints(); ++k )
     {   
         sauron::Point2DInt point = line.getPoint( k );
         im( point.X(), point.Y() ).set( r, g, b );
+    }
+
+    std::stringstream ss;
+    if ( text.size() )
+        ss << text;
+    if ( ss.str().size() > 5 )
+    {
+        sauron::Point2DInt point = line.getPoint( line.getNumPoints() / 2 );
+        cvPutText( im, ss.str().c_str(), cvPoint( point.X() - 4 * ss.str().size(), point.Y() ), &font, CV_RGB( r, g, b ) );
+    }
+    else
+    {
+        sauron::Point2DInt point = line.getPoint( 0 );
+        cvPutText( im, ss.str().c_str(), cvPoint( point.X() + 3, point.Y() + 10 ), &font, CV_RGB( r, g, b ) );
     }
 }
 
@@ -83,9 +119,12 @@ bool VisionModel::updateCaptureDetectTrackAssociate( const Pose &lastPose )
     static Image frame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
     static Image grayFrame( m_camera.getWidth(), m_camera.getHeight(), 8, Pixel::PF_RGB );
 
-    m_camera.getFrame( frame );   
+    if ( !m_camera.getFrame( frame ) )
+        return false;
+
     grayFrame = frame;
     m_lastFrame = frame;
+    m_lastMarksFrame = frame;
 
     m_convolutor.convolve( grayFrame );
     grayFrame.convertToGray();

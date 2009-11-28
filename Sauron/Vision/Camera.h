@@ -21,7 +21,7 @@ class Camera
         Camera();
         ~Camera();
 
-        void getFrame( Image &im );
+        bool getFrame( Image &im );
         
         void setSize( uint width, uint height );
         uint getWidth() const;

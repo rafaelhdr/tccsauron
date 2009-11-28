@@ -18,7 +18,7 @@ Camera::Camera()
 
     m_videoInput.setIdealFramerate( 0, 60 );
 
-    //m_videoInput.showSettingsWindow( 0 );
+    m_videoInput.showSettingsWindow( 0 );
 
     while ( !m_videoInput.isDeviceSetup( 0 ) );
 }
@@ -29,7 +29,7 @@ Camera::~Camera()
 }
 
 
-void Camera::getFrame( Image &im )
+bool Camera::getFrame( Image &im )
 {
     if ( m_videoInput.isFrameNew( 0 ) )
     {
@@ -37,7 +37,11 @@ void Camera::getFrame( Image &im )
             im = Image( m_width, m_height, 8, Pixel::PF_RGB );
 
         m_videoInput.getPixels( 0, (byte *)((IplImage*)im)->imageData, false, true ); 
+
+        return true;
     }
+
+    return false;
 }
 
 void Camera::setSize( uint width, uint height )
@@ -79,10 +83,15 @@ Camera::~Camera(void)
 }
 
 
-void Camera::getFrame( Image &im )
+bool Camera::getFrame( Image &im )
 {
     IplImage *frame = cvQueryFrame( m_capture );
     im = frame;
+
+    if ( frame )
+        return true;
+
+    return false;
 }
 
 
