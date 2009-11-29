@@ -41,23 +41,22 @@ void MarkAssociator::filterMarksByAngleOfView( const Pose &lastPose, MarkVector 
     double coneY = sin( lastPose.Theta() );
     coneHalfAngle /= 2.0;
 
-    double crossProduct;
+    double dotProduct;
 
     possibleMarks.clear();
 
     MarkVector::const_iterator it;
     for ( it = m_marks.begin(); it != m_marks.end(); ++it )
     {
-
         deltaX = it->getPosition().X() - lastPose.X();
         deltaY = it->getPosition().Y() - lastPose.Y();
         length = sqrt( deltaX * deltaX + deltaY * deltaY );
         deltaX /= length;
         deltaY /= length;
 
-        crossProduct = coneX * deltaY - coneY * deltaX;//deltaX * coneY - deltaY * coneX;
-        double angle = asin( crossProduct );
-        if ( asin( crossProduct ) <= coneHalfAngle )
+        dotProduct = coneX * deltaX + coneY * deltaY;
+        double angle = acos( dotProduct );
+        if ( angle <= coneHalfAngle )
             possibleMarks.push_back( *it );
     }
 }
@@ -83,37 +82,6 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
     if ( !possibleMarks.size() )
         return;
 
-    //std::map< Mark, std::map< const Projection *, double > > correlationMap;
-    //std::map< Mark, std::map< const Projection *, double > >::iterator cmIt;
-
-    //for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
-    //{
-    //    double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() - lastPose.X(),
-    //                                                    mIt->getPosition().Y() - lastPose.Y() );
-
-    //    for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
-    //    {
-    //        if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 10 )
-    //            continue;
-
-    //        correlationMap[ mark ][ *projIt ] = mIt->compare( *projIt );
-    //    }
-    //}
-
-    //if ( correlationMap.size() )
-    //{
-    //    std::map< Mark, const Projection * > selectedAssociationsMap;
-    //    std::map< Mark, 
-
-    //    for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
-    //    {
-    //        for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
-    //        {
-
-    //        }
-    //    }
-    //}
-
     for ( mIt = possibleMarks.begin(); mIt != possibleMarks.end(); ++mIt )
     {
         //double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() * cos( lastPose.Theta() ) - lastPose.X(), 
@@ -138,7 +106,7 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
         if ( correlationMap.size() )
         {
             // TODO Move the mim value to a more apropriate place
-            if ( correlationMap.rbegin()->first > 0.0 )
+            if ( correlationMap.rbegin()->first > 0.3 )
             {
                 associatedMarks.push_back( *mIt );
                 associatedProjs.push_back( *(correlationMap.rbegin()->second) );

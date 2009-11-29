@@ -28,7 +28,7 @@ class MarkAssociator
 
         const MarkVector &getMarks() const;
 
-    private:
+    /*private:*/
         void filterMarksByAngleOfView( const Pose &lastPose, MarkVector &possibleMarks ) const;
 
     private:

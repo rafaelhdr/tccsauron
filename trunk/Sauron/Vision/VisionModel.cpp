@@ -42,7 +42,7 @@ void VisionModel::getLastFrame( sauron::Image &frame )
 }
 
 
-void VisionModel::getLastFrameWithMarks( sauron::Image &frame, const Pose &lastPose )
+void VisionModel::getLastFrameWithMarks( Image &frame, const Pose &lastPose )
 {
     frame = m_lastMarksFrame;
 
@@ -52,18 +52,25 @@ void VisionModel::getLastFrameWithMarks( sauron::Image &frame, const Pose &lastP
     for ( register uint i = 0; i < m_marksAssociatedProjections.size(); ++i )
         drawProjection( frame, m_marksAssociatedProjections[i], 255, 255, 0 );
 
-    const MarkVector marks = m_associator.getMarks();
+    MarkVector marks; 
+    m_associator.filterMarksByAngleOfView( lastPose, marks );
     for ( register uint i = 0; i < marks.size(); ++i )
     {
-        double posU = CoordinateConverter::Wordl2Cam_U( marks[i].getPosition().X() - lastPose.X(), 
-                                                        marks[i].getPosition().Y() - lastPose.Y() );
+        double camX = marks[i].getPosition().X() - lastPose.X();
+        double camY = marks[i].getPosition().Y() - lastPose.Y();
+        double rotCamX = camX * cos( lastPose.Theta() ) - camY * sin( lastPose.Theta() );
+        double rotCamY = camX * sin( lastPose.Theta() ) + camY * cos( lastPose.Theta() );
+        double posU = sauron::CoordinateConverter::Wordl2Cam_U( -rotCamX, rotCamY );
 
-        for ( uint h = 0; h < frame.getHeight(); ++h )
-            frame( posU, h ).set( 0, 0, 255 );        
+        if ( posU >= 0 && posU <= frame.getWidth() )
+        {
+            for ( uint h = 0; h < frame.getHeight(); ++h )
+                frame( posU, h ).set( 0, 0, 255 );        
 
-        std::stringstream ss;
-        ss << marks[i].getDescription();       
-        cvPutText( frame, ss.str().c_str(), cvPoint( (int)posU, 10 ), &font, CV_RGB( 0, 0, 255 ) );
+            std::stringstream ss;
+            ss << marks[i].getDescription();       
+            cvPutText( frame, ss.str().c_str(), cvPoint( (int)posU, 10 * (i+1) ), &font, CV_RGB( 0, 0, 255 ) );
+        }
     }   
 }
 
