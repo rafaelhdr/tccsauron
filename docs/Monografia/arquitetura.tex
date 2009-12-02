@@ -1,17 +1,17 @@
 \subsection{Arquitetura}\label{subsec:arquitetura}
 
-A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Navegação, Localização, Sensores e Motores, como pode ser observado na figura \ref{arquitetura:global} abaixo. O módulo de Navegação pode ser dividido em Planejamento, Execução e Camada Reativa.
+A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Navegação, Localização e Sensores e Motores, como pode ser observado na figura \ref{arquitetura:global}. O módulo de Navegação pode ser dividido em Planejamento, Execução e Camada Reativa.
  
 \begin{figure}[h]%
 \begin{center}
 \includegraphics[width=.5\columnwidth]{imagens/arquiteturaGeral.jpg}
-\caption{Arquitetura do Sistema completo.}%
+\caption{Arquitetura do sistema completo, descrevendo as interrelações entre os módulos de localização, navegação e sensores}%
 \label{arquitetura:global}%
 \end{center}
 \end{figure}
 
-A Interface Gráfica apresenta ao usuário os possíveis destinos do robô e repassa a escolha do usuário ao submódulo Planejamento, dentro do módulo de Navegação. O Planejamento processa continuamente obtendo os dados do Módulo de Localização até chegar ao destino final desejado.
+A interface gráfica apresenta ao usuário os possíveis destinos do robô e repassa a escolha do usuário ao submódulo de planejamento, dentro do módulo de navegação. A tarefa desse submódulo é calcular a melhor rota entre a postura atual e o destino. Como descrito na seção \ref{subsec:navegacao}, utiliza-se um grafo de pontos chamados \textit{waypoints}. Cada waypoint é uma meta intermediária, e um conjunto deles compõe um caminho. O processo de locomoção até o próximo \textit{waypoint} do caminho é coordenado pelo submódulo de execução, que dita à camada reativa a rota que deverá ser seguida, e monitora seu correto cumprimento. A camada reativa, por fim, é responsável por controlar os motores e monitorar as leituras dos sonares, de modo a detectar obstáculos dinâmicos e impedir colisões.
 
-Os Sensores (Sonares, Odômetro e Camêra) fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas $x$, $y$ e $\theta$). A cada iteração do módulo de Planejamento, ele cria um plano de execução, que é passado à Camada Reativa. A Camada Reativa tem a função de evitar colisões e pode seguir ou não o plano de execução, baseada na informação que os sensores, mais especificamente os Sonares, fornecem.
+A estimativa da postura (i.e, coordenadas $x$, $y$ e $\theta$) é realizada pelo módulo de localização, que se vale dos dados dos sensores, além de seu conhecimento do ambiente. Neste caso, são fornecidos uma planta geométrica e um mapa de marcos visuais. A arquitetura do módulo de localização é descrita na seção \ref{subsec:arqloc}.
 
-Por fim, a Camada Reativa envia o comando para os Motores do SAURON.
+Finalmente, o módulo de sensores é composto por sonares, odômetro e uma câmera, que fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas $x$, $y$ e $\theta$). 

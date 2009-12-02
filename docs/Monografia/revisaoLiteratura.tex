@@ -1,11 +1,21 @@
 \section{Revisão da literatura}\label{sec:revisaoLiteratura}
 
-% Colocar do Robox, Rhino e Minerva, toda nossa pesquisa bibliográfica %
+\todo[inline]{Colocar do Robox, Rhino e Minerva, toda nossa pesquisa bibliográfica}%
+\subsection{Rhino}
+\todo{Falar sobre Rhino - pegar coisas dos docs antigos}%
+\subsection{Minerva}
+\todo{Falar sobre Minerva}%
+\subsection{RoboX}
+\todo{falar sobre Robox}%
+\subsection{ELViS}
+Em \cite{barra}, é desenvolvido um sistema de localização que utiliza oito sonares frontais, aliados a uma câmera monocular. Esse é o trabalho que serviu de base para o módulo de localização do projeto descrito, pois combinou elementos de baixo custo a resultados experimentais promissores utilizando a mesma plataforma deste projeto.
 
-\subsection{Sonar} \label{sec:sonarbarra}
-O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro de alta frequência e sua recepção depois do mesmo ter sido refletido em uma superfície. Conhecendo a velocidade do pulso sonoro no ambiente, é possivel determinar a distância do objeto refletor.
+\subsubsection{Sonares}  \label{subsec:sonarbarra}
+O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro de alta frequência
+\todo{Colocar mais detalhes, em especial os que foram modificados no nosso projeto}%
+ e sua recepção depois de ter sido refletido em uma superfície. Conhecendo a velocidade do pulso sonoro no ambiente, é possivel determinar a distância do objeto refletor.
 
-Em \cite{barra} são utilizados oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente. Assim, são considerados oito sensores distintos, podendo-se desativar individualmente cada sonar conforme a necessidade.
+Para o ELViS são utilizados oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente. Assim, são considerados oito sensores distintos, podendo-se desativar individualmente cada sonar conforme a necessidade.
 
 \begin{figure}[ht]
   \centering
@@ -14,6 +24,10 @@ Em \cite{barra} são utilizados oito sonares frontais. Devido à sua distribuição 
 	\label{fig:modelosonarbarra}
 \end{figure}
 
+\missingfigure{A figura dos sonares perpendiculares do Barra}
+
 O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. Suponha-se uma parede infinita paralela ao eixo $x$. Independentemente da leitura do sonar e do ângulo de incidência do mesmo na parede, é impossível determinar qual é sua posição relativa à abcissa do plano, visto que a resposta fornecida pelo sonar é a mesma para qualquer $x$. Entretanto, a leitura do sonar é capaz de fornecer uma estimativa de $y$ segundo o seguinte exeomplo: Caso o pulso incida perpendicularmente à parede, sua leitura fornecerá a distância do mesmo à parede. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$, como mostrado na figura \ref{fig:modelosonarbarra}.
 
+\subsubsection{Visão}
+\todo{Falar sobre a visão do Barra}
 

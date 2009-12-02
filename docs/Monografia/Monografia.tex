@@ -30,6 +30,8 @@
 \usepackage{amsmath, amsthm, amssymb, bm}
 \usepackage[ruled,vlined,portugues]{algorithm2e}
 \usepackage{array}
+%\usepackage[colorlinks]{hyperref}
+\usepackage[colorinlistoftodos, textwidth=4cm, shadow]{todonotes}
 \usepackage[latin1]{inputenc}
 \usepackage{helvet} \renewcommand{\familydefault}{\sfdefault}
 \usepackage{ae}
@@ -84,7 +86,7 @@
 
 
 \capa
-
+\listoftodos
 \setcounter{page}{1}
 
 \falsafolhaderosto
@@ -107,14 +109,14 @@
 %
 \pretextualchapter{Dedicatória}
 
-\ \ \ \ \ Dedico essa monografia ao presidente Lula.
+\todo{Dedicatória} %
 
 %
 % Agradecimentos (opcional)
 %
 \pretextualchapter{Agradecimentos}
 
-\ \ \ \ \ Agradeço ao Governador Serra por utilizar o twitter.
+\todo{Agradecimentos}
 
 
 %
@@ -124,12 +126,12 @@
 %
 
 \begin{resumo}
-Este documento versa sobre o desenvolvimento de um robô guia de baixo custo desenvolvido para ambientes fechados.
+\todo{Resumo}Este documento versa sobre o desenvolvimento de um robô guia de baixo custo desenvolvido para ambientes fechados.
 \end{resumo}
 
 \begin{abstract}
 \selectlanguage{english}
-This document is about the development of a low cost auto-guided robot for closed environments.
+\todo{Abstract}This document is about the development of a low cost auto-guided robot for closed environments.
 \end{abstract}
 
 
@@ -178,7 +180,7 @@ This document is about the development of a low cost auto-guided robot for close
 \bibliographystyle{abnt-alf} % estilo da ABNT
 %\bibliographystyle{plain} % sem estilo da ABNT
 \bibliography{jomi-abnt} % arquivo bibtex
-
+\todo[inline]{Precisamos de mais referências}
 %
 % Índice
 %

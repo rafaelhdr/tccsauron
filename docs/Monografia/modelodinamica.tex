@@ -2,27 +2,25 @@
 
 
 O Modelo de Dinâmica é o responsável por fazer a predição da postura no filtro de Kalman. Existem duas possibilidades para a realização da predição:
+\todo[inline]{falar mais sobre o que são modelos de dinâmica, como funcionam e seu papel no filtro de kalman}
 
 \begin{enumerate}
-	\item Através dos sinais de controle do robô, ou seja, qual a velocidade linear do motor, a velocidade rotacional do motor e outros parâmetros.
+	\item Através dos sinais de controle do robô, ou seja, a velocidade linear do motor, a velocidade rotacional do motor e outros parâmetros.
 	\item Através de sinais observados por sensores, como o odômetro.
 \end{enumerate}
 
+No SAURON, o modelo de dinâmica foi realizado utilizando-se a segunda alternativa, por ser mais simples e menos dependente dos parâmetros do robô. Essa é a mesma abordagem utilizada em \cite{barra}.
 
-No SAURON, o Modelo de Dinâmica foi realizado utilizando-se a segunda alternativa, por ser mais simples e menos dependente dos parâmetros do robô.
-
-A obtenção da nova postura será realizada, portanto, com os dados do odômetro e da última estimativa.
-
-De fato, por uma limitação dos odômetros do Pionner 2DX, o sinal de controle foi usado para se obter o sinal das variações do odômetro, ou seja, para saber se o robô deslocava-se positivamente ou negativamente pelo eixo x, por exemplo, usou-se o sinal do valor de controle da velocidade.
+A obtenção da nova postura será realizada, portanto, com os dados do odômetro e da última estimativa. De fato, por uma limitação dos odômetros do Pionner 2DX, o sinal de controle foi usado para se obter o sinal das variações do odômetro, ou seja, para saber se o robô deslocava-se positivamente ou negativamente pelo eixo x, por exemplo, utilizou-se o sinal do valor de controle da velocidade.
 
 \subsubsection{Modelagem}
 
-A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:modelorobo} abaixo.
+A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:modelorobo}.
 
 \begin{figure}[h]%
 \begin{center}
 \includegraphics[width=.5\columnwidth]{imagens/modelorobo.jpg}
-\caption{Arquitetura do Sistema completo.}%
+\caption{Modelo geométrico do robô utilizado.}%
 \label{figura:modelorobo}%
 \end{center}
 \end{figure}
@@ -35,29 +33,31 @@ As equações para se obter a postura estimada do robô, a partir da última estimat
 	\theta(n)=\theta(n-1)+\delta\theta(n)
 \end{gather}
 
-Essas equações formam a chamada matriz f do Filtro de Kalman, responsável diretamente pela etapa de predição.
+Essas equações formam a matriz $\bm{f}$ do Filtro de Kalman, responsável diretamente pela etapa de predição.
 
-Além disso, por exigência do filtro de Kalman Extendido, é necessário calcular a matriz de covariâncias Q e a matriz F, de propagação das incertezas pelas derivadas da matriz f. 
+Além disso, por exigência do EKF, é necessário calcular a matriz de covariâncias $\bm{Q}$ e a matriz $\bm{F}$, de propagação das incertezas pelas derivadas da matriz $\bm{f}$. 
 
 \subsubsection{Incertezas e Covariâncias}
 
-A propagação de incertezas, representada pela matriz F, é calculada através da matriz das derivadas da matriz f (conhecida por jacobiano de f). Pela simplicidade de f, a matriz F é facilmente deduzida para:
+A propagação de incertezas, representada pela matriz $\bm{F}$, é calculada através da matriz das derivadas da matriz $\bm{f}$ em relação à postura (conhecida por jacobiano de $\bm{f}$). Pela simplicidade de $\bm{f}$, $\bm{F}$ é facilmente deduzida como:
 
-
-\[ F(n) = \left( \begin{array}{ccc}
+\begin{equation}
+\bm{F}(n) = \left( \begin{array}{ccc}
 1 & 0 & -\delta_{m}(n)sin(\Theta_{m}(n-1)) \\
 0 & 1 & \delta_{m}(n)cos(\Theta_{m}(n-1)) \\
-0 & 0 & 1 \end{array} \right).\] 
-  
+0 & 0 & 1 \end{array} \right)
+\end{equation}
  
-A matriz Q, da variância do Modelo de Dinâmica, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear e angular.
+A matriz $\bm{Q}$, da variância do modelo de dinâmica, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear e angular.
 
 
-\[ Q(n) = \left( \begin{array}{ccc}
+\begin{equation}
+ \bm{Q(n)} = \left( \begin{array}{ccc}
 \sigma^{2}_{d_{m}} cos^2(\Theta_{m}(n-1))  & \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & 0 \\
 \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & \sigma^{2}_{d_{m}} sin^2(\Theta_{m}(n-1)) & 0 \\
-0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right).\]   
-
+0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right) 
+\end{equation}
+ 
 
 
 
