@@ -102,19 +102,26 @@ bool SensorVision::getEstimate( Matrix &hValue, Measure &z, Model &H, Covariance
             diffX = markPos.X() - last.X();
             diffY = markPos.Y() - last.Y();
 
-            aux_v  = cosTheta * diffY - sinTheta * diffX;
-            aux_z  = cosTheta * diffX + sinTheta * diffY;
+            //aux_v  = cosTheta * diffY - sinTheta * diffX;
+            //aux_z  = cosTheta * diffX + sinTheta * diffY;
+            aux_v = diffX * sinTheta + diffY * cosTheta;
+            aux_z = diffX * cosTheta - diffY * sinTheta;
             aux_z2 = aux_z * aux_z;
 
-            hValue( index, 0 ) = fu * aux_v / aux_z + u0;
+            hValue( index, 0 ) = -fu * aux_v / aux_z + u0;
 
-            H( index, 0 ) = -fu * (sinTheta * aux_z + cosTheta * aux_v) / aux_z2;
-            H( index, 1 ) =  fu * (cosTheta * aux_z - sinTheta * aux_v) / aux_z2;
-            H( index, 2 ) =  fu * ( (aux_v * aux_v) / aux_z2 + 1 );
+            //H( index, 0 ) =  -fu * (sinTheta * aux_z + cosTheta * aux_v) / aux_z2;
+            //H( index, 1 ) =  fu * (cosTheta * aux_z - sinTheta * aux_v) / aux_z2;
+            //H( index, 2 ) =  fu * ( (aux_v * aux_v) / aux_z2 + 1 );
+            H( index, 0 ) = fu * (sinTheta * aux_z - cosTheta * aux_v ) / aux_z2;
+            H( index, 1 ) = fu * (cosTheta * aux_z + sinTheta * aux_v ) / aux_z2;
+            H( index, 2 ) = fu * ( -(aux_v * aux_v) / aux_z2 + 1.0 );
 
             R( index, index ) = sigma;
 
             z( index, 0 ) = itP->getDiscretizedLine().getMeanX();
+            //z( index, 0 ) = hValue( index, 0 ) + rand() % 10 * (rand() % 2 > 0 ? 1 : -1);
+
         }
         
         return true;
@@ -215,8 +222,8 @@ void SensorVision::updateEstimate()
 		Model           H; 
 		Covariance      R;
 
-		/*if( getEstimate( hValue, z, H, R ) ) 
-			m_localization->update( hValue, z, H, R );*/
+		if( getEstimate( hValue, z, H, R ) ) 
+			m_localization->update( hValue, z, H, R );
 	}
 }
 
