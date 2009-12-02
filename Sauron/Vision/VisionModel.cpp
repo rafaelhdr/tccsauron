@@ -12,7 +12,7 @@ VisionModel::VisionModel()
       m_lastMarksFrame( 320, 240, 8, sauron::Pixel::PF_RGB )
 {
     // Empirical values
-    m_sigmaVert = 20.0f;
+    m_sigmaVert = 60.0f;
 
     m_camera.setSize( 320, 240 );
 
@@ -56,11 +56,7 @@ void VisionModel::getLastFrameWithMarks( Image &frame, const Pose &lastPose )
     m_associator.filterMarksByAngleOfView( lastPose, marks );
     for ( register uint i = 0; i < marks.size(); ++i )
     {
-        double camX = marks[i].getPosition().X() - lastPose.X();
-        double camY = marks[i].getPosition().Y() - lastPose.Y();
-        double rotCamX = camX * cos( lastPose.Theta() ) - camY * sin( lastPose.Theta() );
-        double rotCamY = camX * sin( lastPose.Theta() ) + camY * cos( lastPose.Theta() );
-        double posU = sauron::CoordinateConverter::Wordl2Cam_U( -rotCamX, rotCamY );
+        double posU = m_associator.predictMarkPositionAtCamera( lastPose, marks[i] );
 
         if ( posU >= 0 && posU <= frame.getWidth() )
         {
@@ -152,7 +148,6 @@ bool VisionModel::updateCaptureDetectTrackAssociate( const Pose &lastPose )
 
 void VisionModel::getAssociatedMarks( MarkVector &marks, ProjectionVector &projs )
 {
-    //m_associator.associateMarks( m_projectionsTracked, m_marksAssociated, m_marksAssociatedProjections );
     marks = m_marksAssociated;
     projs = m_marksAssociatedProjections;
     m_lastMarksFrame = m_lastFrame;

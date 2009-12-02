@@ -66,7 +66,7 @@ namespace sauron
 	void LocalizationManager::buildDefaultSensors()
 	{
 		//buildDefaultSonars();
-		buildDefaultSimpleSonars();
+		//buildDefaultSimpleSonars();
 		buildDefaultVision();
 	}
 

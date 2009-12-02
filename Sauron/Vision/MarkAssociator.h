@@ -30,6 +30,7 @@ class MarkAssociator
 
     /*private:*/
         void filterMarksByAngleOfView( const Pose &lastPose, MarkVector &possibleMarks ) const;
+        pose_t predictMarkPositionAtCamera( const Pose &lastPose, const Mark &mark ) const;
 
     private:
         MarkVector m_marks;

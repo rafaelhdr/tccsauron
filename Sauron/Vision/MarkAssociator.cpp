@@ -37,9 +37,9 @@ void MarkAssociator::filterMarksByAngleOfView( const Pose &lastPose, MarkVector 
     double deltaY;
     double length;
 
-    double coneHalfAngle = CameraParams::getAngleOfView();    double coneX = cos( lastPose.Theta() );
+    double coneHalfAngle = CameraParams::getAngleOfView() / 2.0;
+    double coneX = cos( lastPose.Theta() );
     double coneY = sin( lastPose.Theta() );
-    coneHalfAngle /= 2.0;
 
     double dotProduct;
 
@@ -87,12 +87,7 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
         //double posU = CoordinateConverter::Wordl2Cam_U( mIt->getPosition().X() * cos( lastPose.Theta() ) - lastPose.X(), 
         //                                                mIt->getPosition().Y() * sin( lastPose.Theta() ) - lastPose.Y() );
 
-        double camX = mIt->getPosition().X() - lastPose.X();
-        double camY = mIt->getPosition().Y() - lastPose.Y();
-        double rotCamX = camX * cos( lastPose.Theta() ) - camY * sin( lastPose.Theta() );
-        double rotCamY = camX * sin( lastPose.Theta() ) + camY * cos( lastPose.Theta() );
-        double posU = CoordinateConverter::Wordl2Cam_U( -rotCamX, rotCamY );
-
+        double posU = predictMarkPositionAtCamera( lastPose, *mIt );
         std::map< double, const Projection* >  correlationMap;
 
         for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
@@ -105,13 +100,15 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
 
         if ( correlationMap.size() )
         {
-            // TODO Move the mim value to a more apropriate place
+            // TODO Move the mim value to a more appropriate place
             if ( correlationMap.rbegin()->first > 0.3 )
             {
                 associatedMarks.push_back( *mIt );
                 associatedProjs.push_back( *(correlationMap.rbegin()->second) );
             }
         }
+
+        //associatedMarks.push_back( *mIt );
     }
 }
 
@@ -119,6 +116,16 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
 const MarkVector &MarkAssociator::getMarks() const
 {
     return m_marks;
+}
+
+
+pose_t MarkAssociator::predictMarkPositionAtCamera( const Pose &lastPose, const Mark &mark ) const
+{
+    double camX = mark.getPosition().X() - lastPose.X();
+    double camY = mark.getPosition().Y() - lastPose.Y();
+    double rotCamX = camX * cos( lastPose.Theta() ) - camY * sin( lastPose.Theta() );
+    double rotCamY = camX * sin( lastPose.Theta() ) + camY * cos( lastPose.Theta() );
+    return CoordinateConverter::Wordl2Cam_U( -rotCamX, rotCamY );
 }
 
 #else
