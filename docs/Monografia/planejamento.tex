@@ -48,10 +48,9 @@ O módulo de navegação também possui um Controle de Rota, para determinar quando 
 
 Como um adendo final ao projeto, adicionou-se uma camada para permitir a navegação entre Múltiplos Mapas, permitindo, por exemplo, subir uma rampa em direção a um outro andar de um prédio.
 
-Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de novos \textit{waypoints} chamados portais. De fato, basta que um waypoint em um mapa tenha o mesmo nome de outro waypoint em outro mapa para que seja estabelecido um portal entre eles.
+Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de \textit{waypoints} especiais chamados portais. De fato, basta que um waypoint em um mapa tenha o mesmo nome de outro waypoint em outro mapa para que seja estabelecido um portal entre eles.
 
 Esta camada passou a ser o ponto de entrada do módulo de Navegação e executa o algoritmo abaixo. A referência \textbf{pathPlanner} indica o algoritmo de Navegação para um mapa simples.
-
    
  \begin{algorithm}
 	\dontprintsemicolon
@@ -74,3 +73,5 @@ Esta camada passou a ser o ponto de entrada do módulo de Navegação e executa o a
 	\caption{Algoritmo de navegação entre Múltiplos Mapas}
 		\label{algo:intermapas}
 \end{algorithm}
+
+Para determinação da rota entre mapas utilizou-se um simples algoritmo de Busca em Profundidade aplicado no grafo da relação entre os mapas. Um último ponto que deve ser ressaltado é que, ao realizar a troca de mapas, a postura do robô deve ser atualizada para o sistema de coordenadas do novo mapa.
