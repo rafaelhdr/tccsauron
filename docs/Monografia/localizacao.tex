@@ -15,7 +15,7 @@ Essas estimativas, corrigidas pelos modelos de observação dos sensores externos,
 O filtro de Kalman estendido (EKF) é um filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de coordenação, que liga os demais componentes do sistema de localização, iniciando os sensores e associando-os ao EKF.
 
 
-A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}, onde inicialmente tem-se uma postura estimada $\hat{\textbf{x_{t-1}}}$ que é utilizada pelo Modelo de Dinâmica, junto da leitura do odômetro, na predição de uma nova postura $\bar{\textbf{x_{t}}}$. O sistema então utiliza as medidas da visão e dos sonares para efetuar uma correção na predição $\bar{\textbf{x_{t}}}$, estimando a nova postura do robô, $\hat{\textbf{x_{t}}}$, que é a saída do sistema. O processo se repete enquanto for necessário.
+A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}, onde inicialmente tem-se uma postura estimada $\hat{\textbf{x}_{t-1}}$ que é utilizada pelo Modelo de Dinâmica, junto da leitura do odômetro, na predição de uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas da visão e dos sonares para efetuar uma correção na predição $\bar{\textbf{x}_{t}}$, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto for necessário.
 
 \todo{colocar aqui embaixo a figura bem visão geral do kalman, Predição (modelo de dinâmica) gera x barra para a Correção (modelos de observação), que recebe x barra e alimenta com um atraso para o modelo de dinamica - A camera e os sonares conversam com a Correção. O odômetro conversa com a Predição.}
 
@@ -27,7 +27,7 @@ A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada
 \end{figure}
 
 
-A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
+A figura \ref{fig:arquiteturalocalizacao} ilustra a arquitetura do módulo de localização. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
 
 
 \todo{mudar figura abaixo puxando o odômetro para cima e criando um quadrado chamado "Localizacao"}
@@ -36,7 +36,7 @@ A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As in
 	\centering
 		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
 	\caption{Arquitetura do sistema de localização}
-	\label{fig:arquitetura}
+	\label{fig:arquiteturalocalizacao}
 \end{figure}
 
 \subsubsection{Implementação}
