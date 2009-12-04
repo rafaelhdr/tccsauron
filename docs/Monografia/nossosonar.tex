@@ -35,11 +35,10 @@ Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor 
 
 \subsubsection{Modelo Baseado em Associações}
 \label{sec:nossosonar}
-A seção \label{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação basedado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
+A seção \label{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
 Este modelo é chamado de baseado em associações porque, antes de gerar observações esperadas e corrigir a postura estimada, é necessária uma confirmação de que um sonar está de fato observando uma determinada parede. A tarefa de relacionar as últimas leituras com uma parede do mapa chama-se associação. A principal motivação de um modelo deste tipo é diminuir os erros causados pelos sonares, dispositivos imprecisos.
 
-\subsubsection{Visão Geral}
 De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Primeiramente, as últimas $k$ observações são validadas e é determinado se uma parede está sendo vista pelo sonar. Se isso for verdade, consulta-se o mapa do ambiente de modo a se associar as leituras mais recentes a uma parede no mapa. Por fim, quando a associação é realizada com sucesso, determina-se a observação que seria esperada para a postura estimada do robô. A associação é registrada e o modelo tenta mantê-la nas próximas iterações, atribuindo uma pontuação para seu grau de confiança.
 
 \paragraph{Validação das observações} As últimas $k$ observações são armazenadas, juntamente com a postura estimada em cada uma delas. Determina-se, através de um teste estatístico, se as observações podem corresponder a uma superfície plana. Também nesta fase, curvas realizadas pelo robô são detectadas. Nesse caso, o \textit{buffer} é limpo e a associação atual, se houver, é desfeita.
@@ -54,7 +53,7 @@ De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Prime
 \label{sec:validacao}
 Define-se $k$ como o número de observações coletadas pelo sonar, e $k_{min}$ como o número mínimo de observações para que seja possível a validação de uma superfície plana. Enquanto $k<k_{min}$ a validação falhará. Quando $k=k_{min}$, inicia-se o processo de validação.
 
-Para determinar se as útlimas \textit{k} observações correspondem a uma parede, calcula-se a relação entre a diferença entre observações sucessivas e a distância percorrida pelo robô entre elas. A figura \ref{fig:modelo_sonar} ilustra que, caso um sonar esteja observando uma superfície plana, as leituras do sensor se alinharão em um segmento de reta. Isso equivale a dizer que a relação entre as diferenças de leituras consecutivas e a distância percorrida entre essas leituras é constante. Matematicamente, seja $z_{i,j} = z^{(i)} - z^{(j)}$ a diferença entre duas medidas sucessivas e $d_{i,j}$ a distância percorrida entre elas, então:
+Para determinar se as últimas \textit{k} observações correspondem a uma parede, calcula-se a relação entre a diferença entre observações sucessivas e a distância percorrida pelo robô entre elas. A figura \ref{fig:modelo_sonar} ilustra que, caso um sonar esteja observando uma superfície plana, as leituras do sensor se alinharão em um segmento de reta. Isso equivale a dizer que a relação entre as diferenças de leituras consecutivas e a distância percorrida entre essas leituras é constante. Matematicamente, seja $z_{i,j} = z^{(i)} - z^{(j)}$ a diferença entre duas medidas sucessivas e $d_{i,j}$ a distância percorrida entre elas, então:
 
 \begin{equation}
 \frac{z_{2,1}}{d_{2,1}} = \frac{z_{3,2}}{d_{3,2}} = \dots = \frac{z_{i,j}}{d_{i,j}} = \gamma
@@ -239,7 +238,7 @@ K = \left\{
 \end{array} \right.
 \end{equation}
 
-A função da pontuação é representar a confiança que se tem naquela associação. Se os erros entre a observação esperada e a observação real diminuirem ou se mantiverem constantes, é sinal de que a associação não está tendo efeito negativo, e aumenta-se a pontuação. Por outro lado, se os erros estiverem aumentando, é desejado que a associação seja interrompida, pois é possível que não se esteja mais observando a mesma parede. De modo geral, deseja-se que $K_{piora} > K_{melhora}$ para evitar associações errôneas.
+A função da pontuação é representar a confiança que se tem naquela associação. Se os erros entre a observação esperada e a observação real diminuírem ou se mantiverem constantes, é sinal de que a associação não está tendo efeito negativo, e aumenta-se a pontuação. Por outro lado, se os erros estiverem aumentando, é desejado que a associação seja interrompida, pois é possível que não se esteja mais observando a mesma parede. De modo geral, deseja-se que $K_{piora} > K_{melhora}$ para evitar associações errôneas.
 
 A pontuação de uma associação afeta também a covariância do erro do modelo de observação, $\bm{R}$:
 
@@ -328,9 +327,7 @@ Há diversos parâmetros utilizados no modelo de associações. Nesta seção, os valo
 
 \subsection{Modelo Simples de Observação dos Sonares}\label{subsec:modeloSimplesSonar}
 
-O desempenho do modelo de observação baseado em associações, descrito na seção anterior, nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequencia de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz. Esta seção descreve sua operação.
-
-\subsubsection{Visão Geral}
+O desempenho do modelo de observação baseado em associações, descrito na seção anterior, nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequência de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz. Esta seção descreve sua operação.
 
 O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição estimada do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a estimativa da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
 

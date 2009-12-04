@@ -32,7 +32,7 @@ Já um ponto no sistema de coordenadas global, isto é, no mesmo sistema de coorde
 	{\bf p_{cam}} = {\bf R^T\left( p_{real} - C \right)}
 \end{equation}
 	
-onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas da câmera e o global, enquanto ${\bf C}$ é a translação entre esses sistemas de coordenadas.
+onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas da câmera e o global, enquanto ${\bf C}$ é a translação entre esses sistemas de coordenadas. Assim como $f_u$ e $f_v$, ${\bf R}$ e ${\bf C}$ também são determinados durante a calibração da câmera.
 	
 
 \subsubsection{Realce de Projeções Verticais}
@@ -80,16 +80,16 @@ Uma vez que o estímulo de interesse são as projeções verticais, utiliza-se apena
 
 O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
 
-Ele considera uma região da imagem centrada na sequência de pixels que pertencem a uma projeção identificada, estendendo-se por uma faixa de \textit{n} pixels para a direita e para a esquerda de cada pixel da projeção.
+Ele considera uma região da imagem centrada na sequência de pixels que pertencem a uma projeção, estendendo-se por uma faixa de \textit{n} pixels a direita e a esquerda de cada pixel da projeção.
 
-As informações que se mostraram relevantes sobre o perfil de cor são os valores médios, para cada componente de cor, dos lados esquerdo e direito em relação ao centro da região.
+As informações que se mostraram relevantes sobre o perfil de cor são os valores médios, para cada componente de cor, denominados $R_{esq}$, $R_{dir}$, $G_{esq}$, $G_{dir}$, $B_{esq}$ e $B_{dir}$ dos lados esquerdo e direito em relação ao centro da região.
 
-A comparação de dois perfis de cor, logo, de duas projeções, resulta num fator de correlação normalizado que indica quão semelhantes são os perfis. O cálculo desse fator segue as seguintes equações:
+A comparação de dois perfis de cor resulta num fator de correlação normalizado que indica quão semelhantes são os perfis. O cálculo desse fator segue as seguintes equações:
 
 \begin{eqnarray*}
-R & = & \left( \delta - \vert R_{1_{esq}} - R_{2_{esq}} \vert \right) + \left( \delta - \vert R_{1_{dir}} - R_{2_{dir}} \vert \right) \\
-G & = & \left( \delta - \vert G_{1_{esq}} - G_{2_{esq}} \vert \right) + \left( \delta - \vert G_{1_{dir}} - G_{2_{dir}} \vert \right) \\
-B & = & \left( \delta - \vert B_{1_{esq}} - B_{2_{esq}} \vert \right) + \left( \delta - \vert B_{1_{dir}} - B_{2_{dir}} \vert \right)
+R & = & \left( \delta - \vert R^{(1)}_{esq} - R^{(2)}_{esq} \vert \right) + \left( \delta - \vert R^{(1)}_{dir} - R^{(2)}_{dir} \vert \right) \\
+G & = & \left( \delta - \vert G^{(1)}_{esq} - G^{(2)}_{esq} \vert \right) + \left( \delta - \vert G^{(1)}_{dir} - G^{(2)}_{dir} \vert \right) \\
+B & = & \left( \delta - \vert B^{(1)}_{esq} - B^{(2)}_{esq} \vert \right) + \left( \delta - \vert B^{(1)}_{dir} - B^{(2)}_{dir} \vert \right)
 \end{eqnarray*}
 \begin{displaymath}
 C = \frac{\left( R + G + B \right)}{6\delta} 
@@ -120,7 +120,7 @@ Ao final, cada projeção será representada a partir da posição no eixo horizontal
 \begin{figure}[ht]
 	\centering
 		\includegraphics[width=.6\columnwidth]{imagens/projections.jpg}
-	\caption{Projeções detectadas a partir da imagem mostrada na Figura ~\ref{visao:original}}
+	\caption{Projeções detectadas, assinalada em vermelho, a partir da imagem apresentada na Figura ~\ref{visao:original}}
 	\label{visao:projecoes}
 \end{figure}
 
@@ -135,10 +135,10 @@ Os marcos são usados, primeiramente, para que se tente estabelecer um vínculo en
 
 A fase de associação visa determinar quais marcos conhecidos do ambiente estão sendo observados em um dado momento, a partir da lista de projeções detectadas no quadro da câmera. Ela pode ser segregada em três passos, conforme descrito a seguir.
 
-\paragraph{Filtragem de marcos}
+\paragraph{Restrição de marcos}
 Para reduzir o conjunto de marcos com os quais tentar-se-á estabelecer novas associações, e com isso, diminuindo a chance de ocorrerem falsos positivos, o conjunto de todos os marcos conhecidos do ambiente passa por um filtro que, usando a última postura conhecida do robô, calcula quais marcos estão dentro do campo de visão da câmera. 
 
-Tendo-se determinado o ângulo $alfa_{cam}$ relativo a abertura do campo de visão da câmera, na horizontal, traça-se um setor circular de raio infinito, centrado na posição $\left[x_{robo}, y_{robo}\right]^T$, apontando para a mesma direção indicada por $\theta_{robo}$, com ângulo igual a $alfa_{cam}$. Em seguida, é verificado se o ponto ${\bf p_{marco}} = \left[x_{marco}, y_{marco}\right]^T$ de cada marco encontra-se dentro desse setor circular. 
+Tendo-se determinado o ângulo $alfa_{cam}$ relativo a abertura do campo de visão da câmera, na horizontal, traça-se um setor circular de raio infinito, centrado nas coordenadas $\left[x, y\right]^T$ da postura do robô, apontando para a mesma direção indicada por $\theta$, com ângulo do setor igual a $alfa_{cam}$. Em seguida, é verificado se o ponto ${\bf p_{marco}} = \left[x_{marco}, y_{marco}\right]^T$ de cada marco encontra-se dentro desse setor circular. 
 
 É importante observar que o filtro não remove marcos que possam estar ocluídos, já que o filtro não tem informações suficientes para tal procedimento, nem leva em consideração a distância entre o robô e o marco como um parâmetro de restrição, pois, apesar da probabilidade de uma associação ser concretizada diminui conforme essa distância aumenta, ela não pode ser completamente descartada neste passo inicial.
 
@@ -155,14 +155,14 @@ As projeções que sobraram terão seus perfis de cor comparados com o do marco, re
 
 \subsubsection{Obtenção da observação esperada}
 
-Após a fase de associações, tem-se a lista de marcos que estão sendo observados e que devem ser usados para atualizar a postura do robô. O próximo passo é fornecer ao filtro estendido de Kalman as informações de postura estimada ${\bf x}$, a observação real obtida ${\bf z}$, a matriz de covariância $\bm{R}$, e o jacobiano de ${\bf h}$, a matriz $\bm{H}$.
+Após a fase de associações, tem-se a lista de marcos que estão sendo observados e que devem ser usados para atualizar a postura do robô. O próximo passo é fornecer ao filtro de Kalman estendido as informações de observação real obtida ${\bf z}$, os valores esperados para as observações ${\bf h}$, a matriz de covariância $\bm{R}$, e o jacobiano de ${\bf h}$, a matriz $\bm{H}$.
 
 \paragraph{Cálculo da observação esperada}
 
-Seja a postura do robô descrita como ${\bf p_{robo}} = \left[ x_{robo}, y_{robo}, \theta_{robô}\right]^T$ e ${\bf p^{(i)}_{marco}} = \left[ x^{(i)}_{marco}, y^{(i)}_{marco}\right]^T$ as coordenadas de cada marco \textit{i} observado, tem-se:
+Seja a postura do robô descrita como ${\bf x}} = \left[ x, y, \theta\right]^T$ e ${\bf p^{(i)}_{marco}} = \left[ x^{(i)}_{marco}, y^{(i)}_{marco}\right]^T$ as coordenadas de cada marco \textit{i} observado, tem-se:
 
 \begin{equation*}
-h^{(i)}({\bf p_{robo}}) = -f_u \frac{ \sin(\theta_{robo})\left(x^{(i)}_{marco} - x_{robo} \right) + \cos( \theta_{robo}) \left( y^{(i)}_{marco} - y_{robo} \right) } { \cos(\theta_{robo}) \left(x^{(i)}_{marco} - x_{robo} \right) - \sin(\theta_{robo}) \left( y^{(i)}_{marco} - y_{robo} \right) } + u_0 
+h^{(i)}({\bf x}) = -f_u \frac{ \sin(\theta)\left(x^{(i)}_{marco} - x \right) + \cos( \theta) \left( y^{(i)}_{marco} - y \right) } { \cos(\theta) \left(x^{(i)}_{marco} - x \right) - \sin(\theta) \left( y^{(i)}_{marco} - y \right) } + u_0 
 \end{equation*}
 
 onde $f_u$ é a distância focal na direção horizontal enquanto $u_0$ é o centro horizontal do plano de projeção da câmera.
@@ -180,9 +180,9 @@ O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cad
 \bm{H} = 
 	\left(
     	\begin{array}{>{\displaystyle}c}
-    		f_u \frac{ \sin(\theta_{robo})Z - \cos(\theta_{robo})V}{Z^2} \\
+    		f_u \frac{ \sin(\theta)Z - \cos(\theta)V}{Z^2} \\
     		\\
-    		f_u \frac{ \cos(\theta_{robo})Z + \sin(\theta_{robo})V}{Z^2} \\
+    		f_u \frac{ \cos(\theta)Z + \sin(\theta)V}{Z^2} \\
     		\\
     		f_u \left[ -\frac{V^2}{Z^2} + 1 \right]
 		\end{array}
@@ -192,11 +192,11 @@ O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cad
 onde $V$ e $Z$ são variáveis auxiliares dadas por:
 
 \begin{equation*}
-	V = \sin(\theta_{robo})\left(x^{(i)}_{marco} - x_{robo} \right) + \cos( \theta_{robo}) \left( y^{(i)}_{marco} - y_{robo} \right)
+	V = \sin(\theta)\left(x^{(i)}_{marco} - x \right) + \cos( \theta) \left( y^{(i)}_{marco} - y \right)
 \end{equation*}
 
 \begin{equation*}
-	Z = \cos(\theta_{robo}) \left(x^{(i)}_{marco} - x_{robo} \right) - \sin(\theta_{robo}) \left( y^{(i)}_{marco} - y_{robo} \right)	
+	Z = \cos(\theta) \left(x^{(i)}_{marco} - x \right) - \sin(\theta) \left( y^{(i)}_{marco} - y \right)
 \end{equation*}
 
 Cada linha da matriz $\bm{H}$ diz respeito a um marco observado, devendo ter o número de linhas igual ao número de marcos. 
