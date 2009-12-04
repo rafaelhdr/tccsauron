@@ -2,19 +2,35 @@
 
 A localização é o módulo mais complexo dentro da arquitetura deste trabalho. Ela foi projetada com base no filtro bayesiano EKF (\textit{Extended Kalman Filter}), melhor descrito no Apêndice \ref{sec:apendicea}.
 \todo{Consertar a referência do apêndice}
-Nesta seção, encontra-se a visão geral dessa arquitetura e sua implementação. 
+Nesta seção, encontra-se a visão geral deste módulo e sua implementação. 
 
 \subsubsection{Visão Geral}
 
-O sistema de localização estima a posição do robô a partir dos dados de seus sensores. No SAURON, os sensores são os oito sonares e uma câmera de vídeo. Cada sensor tem associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma série de leituras a uma parede no mapa. Nesta seção, quando for um sensor for mencionado, entenda-se seu modelo de observação.
+O sistema de localização estima a posição do robô a partir dos dados de seus sensores. O odômetro, sensor interno, é utilizado como uma medida da execução dos comandos de navegação do sistema, estando relacionado com um Modelo da Dinâmica do Sistema. Os sensores externos têm associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma leitura a uma parede no mapa. 
 
-Cada sensor sabe qual é a observação esperada para uma dada postura do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
+O modelo de observação de cada sensor externo sabe qual é a observação esperada para uma dada postura do robô, uma vez que ele conhece o mapa do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se esses erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, atualizar a estimativa da postura.
 
-Essas estimativas, que são corrigidas pelos sensores, são previstas pelo modelo de dinâmica. Seu papel é gerar uma estimativa a partir da última postura do robô, sabendo o quanto ele andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada neste trabalho, é obter as informações a partir do odômetro do robô.
+Essas estimativas, corrigidas pelos modelos de observação dos sensores externos, são previstas pelo modelo de dinâmica. Seu papel é gerar uma predição a partir da última postura estimada do robô, sabendo o quanto ele andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada neste trabalho, é obter as informações a partir do odômetro do robô.
 
-O filtro estendido de Kalman (EKF) é filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de coordenação, que liga os demais componentes do sistema de localização, iniciando os sensores e associando-os ao EKF.
+O filtro de Kalman estendido (EKF) é um filtro matemático capaz de realizar a previsão e correção das estimativas de postura. Por fim, o último componente do sistema é o módulo de coordenação, que liga os demais componentes do sistema de localização, iniciando os sensores e associando-os ao EKF.
+
+
+A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}, onde inicialmente tem-se uma postura estimada \hat{\textbf{x_{t-1}}} que é utilizada pelo Modelo de Dinâmica, junto da leitura do odômetro, na predição de uma nova postura \bar{\textbf{x_{t}}}. O sistema então utiliza as medidas da visão e dos sonares para efetuar uma correção na predição \bar{\textbf{x_{t}}}, estimando a nova postura do robô, \hat{\textbf{x_{t}}}, que é a saída do sistema. O processo se repete enquanto for necessário.
+
+\todo{colocar aqui embaixo a figura bem visão geral do kalman, Predição (modelo de dinâmica) gera x barra para a Correção (modelos de observação), que recebe x barra e alimenta com um atraso para o modelo de dinamica - A camera e os sonares conversam com a Correção. O odômetro conversa com a Predição.}
+
+\begin{figure}[ht]
+	\centering
+		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
+	\caption{Dinâmica do módulo de localização, usando EKF.}
+	\label{fig:dinamicaekf}
+\end{figure}
+
 
 A figura \ref{fig:arquitetura} ilustra a disposição dos módulos do SAURON. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
+
+
+\todo{mudar figura abaixo puxando o odômetro para cima e criando um quadrado chamado "Localizacao"}
 
 \begin{figure}[ht]
 	\centering

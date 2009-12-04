@@ -4,6 +4,7 @@ O módulo de Navegação não estava inicialmente previsto no projeto. A intenção er
 
 O comportamento não desejado apresentado pelo SonarNL era o de realizar constantes mudanças no $\theta$ do robô. É provável que esse comportamento tivesse a intenção de melhorar a precisão do módulo de localização, através da identificação de novos pontos de interesse para os sonares. Porém, de fato, isso gerava altas incertezas, prejudicando o desempenho da localização.
 
+O módulo de navegação têm conhecimento prévio do mapa do ambiente. Este mapa é marcado com alguns pontos, permitindo a formação de um grafo e utilização de algoritmos de busca em grafos para planejamento da rota.
 
 \subsubsection{Algoritmo}
 O módulo de Navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se "A estrela"). Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado do custo de se locomover do nó adjacente até o nó destino. 
