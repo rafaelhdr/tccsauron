@@ -9,9 +9,9 @@ Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e
 Suponha-se um conjunto de medições sobre uma determinada constante, adquiridas com um equipamento ruidoso. Cada medida é adquirida de forma independente e possui variâncias distintas.
 Pode-se modelar o problema como:
 \begin{equation}
-	y = Hx + v
+	\textbf{y} = H\textbf{x} + \textbf{v}
 \end{equation}
-Onde \bf{y} é um vetor com as medições, \bf{x} é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e \bf{v} é o ruído da medição.
+Onde $\textbf{y}$ é um vetor com as medições, $\textbf{x}$ é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e $\textbf{v}$ é o ruído da medição.
 
 Suponha-se também que as medições são independentes e com média nula. A matriz da covariância fica então com a seguinte forma:
 \begin{equation}
@@ -26,7 +26,7 @@ Suponha-se também que as medições são independentes e com média nula. A matriz d
 \end{equation}
 Considerando-se que o erro de cada medida é, em forma vetorial
 \begin{equation}
-	\epsilon_{y}=y-H\widehat{x}
+	\epsilon_{y}=\textbf{y}-H\widehat{\textbf{x}}
 \end{equation}
 o método dos mínimos quadrados consiste na minimização da seguinte função de custo:
 \begin{equation}
@@ -35,25 +35,25 @@ o método dos mínimos quadrados consiste na minimização da seguinte função de cus
 \end{equation}
 Este é o método dos mínimos quadrados aplicado quando cada medição possui variância distinta. Sua principal característica é ser a forma ótima de minimizar os erros provenientes de medições imprecisas.
 
-O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de $H$ por \bf{x} e minimizar $J$ novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
+O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de $H$ por $\textbf{x}$ e minimizar $J$ novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
 
 \section{método dos mínimos quadrados recursivo}
 Um estimador linear recursivo pode ser escrito na forma:
 \begin{gather}
-	y_{k} = H_{k}x+v_{k} \nonumber \\
-	\hat{x}_{k} = \hat{x}_{k-1} + K_{k}(y_{k}-H_{k}\hat{x}_{k-1})
+	\textbf{y}_{k} = H_{k}\textbf{x}+\textbf{v}_{k} \nonumber \\
+	\hat{\textbf{x}}_{k} = \hat{\textbf{x}}_{k-1} + K_{k}(\textbf{y}_{k}-H_{k}\hat{\textbf{x}}_{k-1})
 \end{gather}
-$K_{k}$ é uma matriz a ser determinada, chamada na literatura de matriz de ganho do estimador. O termo $(y_{k}-H_{k}\hat{x}_{k-1})$ é chamado de termo de correção. Se a matriz de ganho ou termo de correção forem nulos a estimativa do estado não muda.
+$K_{k}$ é uma matriz a ser determinada, chamada na literatura de matriz de ganho do estimador. O termo $(\textbf{y}_{k}-H_{k}\hat{\textbf{x}}_{k-1})$ é chamado de termo de correção. Se a matriz de ganho ou termo de correção forem nulos a estimativa do estado não muda.
 
 Calculando o erro da da estimativa, temos que:
 \begin{align}
-	E(\epsilon_{x,k})& = E(x-\hat{x}_{k}) \nonumber \\
-	                 & = E[x-\hat{x}_{k-1}-K_{k}(y_{k}-H_{k}\hat{x}_{k-1})] \nonumber \\
-	                 & = E[\epsilon_{x,k-1}-K_{k}(H_{k}x+v_{k}-H_{k}\hat{x}_{k-1})] \nonumber \\
-	                 & = E[\epsilon_{x,k-1}-K_{k}H_{k}(x-\hat{x}_{k-1})-K_{k}v_{k}] \nonumber \\
-	                 & = (I - K_{k}H_{k})E(\epsilon_{x,k-1})-K_{k}E(v_{k}) \label{eq:erroestimativarecursivo}
+	E(\epsilon_{x,k})& = E(\textbf{x}-\hat{\textbf{x}}_{k}) \nonumber \\
+	                 & = E[\text{x}-\hat{\textbf{x}}_{k-1}-K_{k}(\textbf{y}_{k}-H_{k}\hat{\textbf{x}}_{k-1})] \nonumber \\
+	                 & = E[\epsilon_{x,k-1}-K_{k}(H_{k}\textbf{x}+\textbf{v}_{k}-H_{k}\hat{\textbf{x}}_{k-1})] \nonumber \\
+	                 & = E[\epsilon_{x,k-1}-K_{k}H_{k}(\textbf{x}-\hat{\textbf{x}}_{k-1})-K_{k}\textbf{v}_{k}] \nonumber \\
+	                 & = (I - K_{k}H_{k})E(\epsilon_{\textbf{x},k-1})-K_{k}E(\textbf{v}_{k}) \label{eq:erroestimativarecursivo}
 \end{align}
-Verifica-se que $\epsilon_{x,k} = 0$ se $E(\epsilon_{x,k-1}) = 0$ e $E(v_{k}) = 0$. É importante salientar que isto é válido para qualquer $K_{k}$, o que fornece liberdade na hora de calcular $K_{k}$.
+Verifica-se que $\epsilon_{x,k} = 0$ se $E(\epsilon_{x,k-1}) = 0$ e $E(\textbf{v}_{k}) = 0$. É importante salientar que isto é válido para qualquer $K_{k}$, o que fornece liberdade na hora de calcular $K_{k}$.
 
 Para calcular a matriz $K_{k}$ de maneira ótima, o método utilizado é o da minimização da soma das variâncias no tempo $k$. Assim, de forma análoga à \ref{eq:funcaodecusto}:
 \begin{align}
@@ -68,7 +68,7 @@ Substituindo \ref{eq:erroestimativarecursivo} em \ref{eq:custorecursivo}, obtem-
 	P_{k} = (I-K_{k}H_{k})P_{k-1}(I-K_{k}H_{k})^{T} + K_{k}R_{k}K_{k}^{T}
 	\label{eq:calculocovariancia}
 \]
-onde $R_{k} = E(v_{k}v_{k}^{T})$.
+onde $R_{k} = E(\textbf{v}_{k}\textbf{v}_{k}^{T})$.
 
 Tomando-se $\frac{\partial J_{k}}{\partial K_{k}} = 0$ obtemos:
 \[
@@ -77,45 +77,44 @@ Tomando-se $\frac{\partial J_{k}}{\partial K_{k}} = 0$ obtemos:
 \]
 Assim, o método dos mínimos quadrados recursivo é obtido através das seguintes equações:
 \begin{align}
-	K_{k} & = P_{k-1}H_{k}^{T}(H_{k}P_{k-1}H_{k}^{T} + R_{k})^{-1} \nonumber \\
-	\hat{x}_{k} & = \hat{x}_{k-1} + K_{k}(y_{k}-H_{k}\hat{x}_{k-1}) \nonumber \\
-	P_{k} & = (I-K_{k}H_{k})P_{k-1}(I-K_{k}H_{k})^{T} + K_{k}R_{k}K_{k}^{T}
+	K_{k} 		& = P_{k-1}H_{k}^{T}(H_{k}P_{k-1}H_{k}^{T} + R_{k})^{-1} \nonumber \\
+	\hat{\textbf{x}}_{k} & = \hat{\textbf{x}}_{k-1} + K_{k}(\textbf{y}_{k}-H_{k}\hat{\textbf{x}}_{k-1}) \nonumber \\
+	P_{k} 		& = (I-K_{k}H_{k})P_{k-1}(I-K_{k}H_{k})^{T} + K_{k}R_{k}K_{k}^{T}
 \end{align}
 
 \section{Propagação de estados e covariâncias}
 Para se obter uma estimativa correta do estado e da covariância após um determinado intervalo de tempo decorrido, suponha-se o seguinte sistema diferencial linear genérico:
 \[
-	\dot{x}=Ax+Bu+w
+	\dot{\textbf{x}}=A\textbf{x}+B\textbf{u}+\textbf{w}
 \]
-Onde $\bf{x}$ é o estado do sistema, $\bf{u}$ é uma variável de controle e $\bf{w}$ é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo $t_{k}$ é:
+Onde $\textbf{x}$ é o estado do sistema, $\textbf{u}$ é uma variável de controle e $\textbf{w}$ é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo $t_{k}$ é:
 \begin{equation}
-	x(t_{k})=e^{A(t_{k}-t_{k-1})}x(t_{k-1})+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}[B(\tau)u(\tau)+w(\tau)]d\tau
+	\textbf{x}(t_{k})=e^{A(t_{k}-t_{k-1})}\textbf{x}(t_{k-1})+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}[B(\tau)\textbf{u}(\tau)+\textbf{w}(\tau)]d\tau
 	\label{eq:solDiferencial}
 \end{equation}
 Agora fazendo-se a seguinte hipótese
 \[
-	u(t)=u_{k}, t \in [t_{k-1},t_{k}]
+	\textbf{u}(t)=\textbf{u}_{k}, t \in [t_{k-1},t_{k}]
 \]
 e as seguintes definições
 \begin{gather*}
 	\Delta t=t_{k}-t_{k-1} \\
-	x_{k}=x(t_{k}) \\
-	u_{k}=u(t_{k}) \\
+	\textbf{x}_{k}=\textbf{x}(t_{k}) \\
+	\textbf{u}_{k}=\textbf{u}(t_{k}) \\
 	F_{k}=e^{A\Delta t} \\
 	G_{k}=\int^{t_{k+1}}_{t_{k}}e^{A(t_{k+1}-\tau)}B(\tau)d\tau
 \end{gather*}
 A equação \eqref{eq:solDiferencial} é reescrita como:
-\[
-	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}w(\tau)d\tau
+\[	\textbf{x}_{k}=F_{k-1}\textbf{x}_{k-1}+G_{k-1}\textbf{u}_{k-1}+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}\textbf{w}(\tau)d\tau
 \]
 Obtendo-se a média da equação acima, e lembrando-se que o ruído possui média nula, obtemos finalmente
 \begin{equation}
-	\bar{x}_{k}=F_{k-1}\bar{x}_{k-1}+G_{k-1}u_{k-1}
+	\bar{\textbf{x}}_{k}=F_{k-1}\bar{\textbf{x}}_{k-1}+G_{k-1}\textbf{u}_{k-1}
 	\label{eq:estimativaX}
 \end{equation}
 A propagação da matriz de covariâncias é dada pela seguinte fórmula:
 \[
-	P_{k}=E[(x_{k}-\bar{x}_{k})(x_{k}-\bar{x}_{k})^{T}]
+	P_{k}=E[(\textbf{x}_{k}-\bar{\textbf{x}}_{k})(\textbf{x}_{k}-\bar{\textbf{x}}_{k})^{T}]
 \]
 Utilizando-se a equação \eqref{eq:estimativaX} e assumindo como hipótese que $w(t)$ é um ruído branco de covariância $Q_{c}(t)$ obtém-se, após alguma manipulação matemática, a sequinte equação para $P_{k}$:
 \begin{equation}
@@ -136,38 +135,38 @@ De posse da base teórica acima pode-se descrever o filtro de Kalman, que opera p
 \end{itemize}
 Assim, o sistema é modelado da seguinte forma
 \begin{gather}
-	x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1} \nonumber \\
-	y_{k}=H_{k}x_{k}+v_{k}
+	\textbf{x}_{k}=F_{k-1}\textbf{x}_{k-1}+G_{k-1}\textbf{u}_{k-1}+\textbf{w}_{k-1} \nonumber \\
+	\textbf{y}_{k}=H_{k}\textbf{x}_{k}+\textbf{v}_{k}
 \end{gather}
-onde os ruídos $w_{k-1}$ e $v_{k}$ são brancos, centrados no zero, não correlatos e possuem matrizes de covariância $Q$ e $R$ respectivamente.
+onde os ruídos $\textbf{w}_{k-1}$ e $\textbf{v}_{k}$ são brancos, centrados no zero, não correlatos e possuem matrizes de covariância $Q$ e $R$ respectivamente.
 
-Para estimar o valor de $x_{k}$ divide-se $x_{k}$ em dois valores distintos, $\hat{x}_{k}^{-}$ e $\hat{x}_{k}^{+}$, onde o primeiro corresponde a um valor antes de uma observação e o segundo após a observação, i.e., $\hat{x}_{k}^{-}$ corresponde ao valor estimado baseado na dinâmica do sistema em um instante $k$ instantâneamente antes de uma medição ser realizada, enquanto que $\hat{x}_{k}^{+}$ corresponde ao valor estimado no mesmo instante $k$ após a obtenção de uma estimativa $y_{k}$. De forma semelhante, $P_{k}$ é dividido em $P_{k}^{-}$ e $P_{k}^{+}$, sendo estas as matrizes de covariâncias antes e depois de uma observação no instante $k$ respectivamente.
+Para estimar o valor de $\textbf{x}_{k}$ divide-se $\textbf{x}_{k}$ em dois valores distintos, $\hat{\textbf{x}}_{k}^{-}$ e $\hat{\textbf{x}}_{k}^{+}$, onde o primeiro corresponde a um valor antes de uma observação e o segundo após a observação, i.e., $\hat{\textbf{x}}_{k}^{-}$ corresponde ao valor estimado baseado na dinâmica do sistema em um instante $k$ instantâneamente antes de uma medição ser realizada, enquanto que $\hat{\textbf{x}}_{k}^{+}$ corresponde ao valor estimado no mesmo instante $k$ após a obtenção de uma estimativa $\textbf{y}_{k}$. De forma semelhante, $P_{k}$ é dividido em $P_{k}^{-}$ e $P_{k}^{+}$, sendo estas as matrizes de covariâncias antes e depois de uma observação no instante $k$ respectivamente.
 
 Tendo definido estes estados e de posse da teoria previamente discutida, pode-se descrever o processo de estimação através do filtro de Kalman com o seguinte processo:
 \begin{itemize}
 	\item Descreve-se matematicamente o sistema:
 		\begin{gather}
-			x_{k}=F_{k-1}x_{k-1}+G_{k-1}u_{k-1}+w_{k-1} \nonumber \\
-			y_{k}=H_{k}x_{k}+v_{k} \nonumber \\
-			E(w_{k}w^{T}_{j})=Q_{k}\delta_{k-j} \\
-			E(v_{k}v^{T}_{j})=R_{k}\delta_{k-j} \nonumber \\
-			E(w_{k}v^{T}_{j})=0 \nonumber 
+			\textbf{x}_{k}=F_{k-1}\textbf{x}_{k-1}+B_{k-1}\textbf{u}_{k-1}+\textbf{w}_{k-1} \nonumber \\
+			\textbf{y}_{k}=H_{k}\textbf{x}_{k}+\textbf{v}_{k} \nonumber \\
+			E(\textbf{w}_{k}\textbf{w}^{T}_{j})=Q_{k}\delta_{k-j} \\
+			E(\textbf{v}_{k}\textbf{v}^{T}_{j})=R_{k}\delta_{k-j} \nonumber \\
+			E(\textbf{w}_{k}\textbf{v}^{T}_{j})=0 \nonumber 
 		\end{gather}	
 	\item Inicia-se o filtro:
 		\begin{gather}
-			\hat{x}^{+}_{0}=E(x_{0}) \nonumber \\
-			P^{+}_{0}=E[(x_{0}-\hat{x}^{+}_{0})(x_{0}-\hat{x}^{+}_{0})^{T}]
+			\hat{\textbf{x}}^{+}_{0}=E(\textbf{x}_{0}) \nonumber \\
+			P^{+}_{0}=E[(\textbf{x}_{0}-\hat{\textbf{x}}^{+}_{0})(\textbf{x}_{0}-\hat{\textbf{x}}^{+}_{0})^{T}]
 		\end{gather}
 	\item Itera-se o filtro para cada uma das seguintes equações:
 		\begin{gather}
 			P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1} \nonumber \\
-			\hat{x}^{-}_{k}=F_{k-1}\hat{x}^{+}_{k-1}+G_{k-1}u_{k-1} \nonumber \\
+			\bar{\textbf{x}}^{-}_{k}=F_{k-1}\hat{\textbf{x}}^{+}_{k-1}+B_{k-1}\textbf{u}_{k-1} \nonumber \\
 			K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1} \\
-			\hat{x}^{+}_{k}=\hat{x}^{-}_{k}+K_{k}(y_{k}-H_{k}\hat{x}^{-}_{k}) \nonumber \\
-			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k}(I-K_{k}H_{k})^{T}+K_{k}R_{k}K^{T}_{k} \nonumber
+			\hat{\textbf{x}}^{+}_{k}=\bar{\textbf{x}}^{-}_{k}+K_{k}(\textbf{y}_{k}-H_{k}\bar{\textbf{x}}^{-}_{k}) \nonumber \\
+			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k} \nonumber
 		\end{gather}
 \end{itemize}
-Ou seja, o sistema é suprido de uma estimativa inicial do estado e da covariância da estimativa. Se o estado é conhecido, $P_{0}^{+}=0$. A partir daí, propaga-se o sistema no tempo até o momento da primeira medição, obtendo-se $P_{1}^{-}$ e $\hat{x}_{1}^{-}$. Após isto, o valor da estimativa $y_{1}$ é utilizado para atualizar a estimativa e covariância, obtendo-se assim $\hat{x}_{1}^{+}$ e $P_{1}^{+}$.
+Ou seja, o sistema é suprido de uma estimativa inicial do estado e da covariância da estimativa. Se o estado é conhecido, $P_{0}^{+}=0$. A partir daí, propaga-se o sistema no tempo até o momento da primeira medição, obtendo-se $P_{1}^{-}$ e $\hat{\textbf{x}}_{1}^{-}$. Após isto, o valor da estimativa $\textbf{y}_{1}$ é utilizado para atualizar a estimativa e covariância, obtendo-se assim $\hat{\textbf{x}}_{1}^{+}$ e $P_{1}^{+}$.
 
 \section{Filtro Estendido de Kalman}
 O filtro de Kalman desenvolvido anteriormente é matematicamente o método ótimo de estimação de estados para sistemas lineares. No entanto, na natureza existem poucos sistemas lineares, a maioria são sistemas lineares, e o problema de estimação da posição do robô com sonares e visão computacional não é linear. Assim, é necessário um outro filtro para isso.
@@ -178,10 +177,10 @@ No filtro extendido, os estados de transição e modelos de observação não precisa
 
 No EKF, o sistema é modelado da seguinte forma:
 \begin{gather}
-	\dot{x}	= f(x,u,w,t) \nonumber \\
-	y = h(x,v,t)
+	\dot{\textbf{x}}	= f(\textbf{x},\textbf{u},\textbf{w},t) \nonumber \\
+	\textbf{y} = h(\textbf{x},\textbf{v},t)
 \end{gather}
-Onde $x$ é o estado, $u$ é uma força de controle, $w$ o ruído do processo e $v$ o ruído da medição.
+Onde $\textbf{x}$ é o estado, $\textbf{u}$ é uma força de controle, $\textbf{w}$ o ruído do processo e $\textbf{v}$ o ruído da medição.
 
 Estas equações bastam para predizer a estimativa e atualizá-la com a nova medida. No entanto, não há como diretamente aplicá-las na obtenção da covariância. Para obter a covariância, é realizada uma expansão de taylor de primeira ordem ao redor de cada estimativa, linearizando o sistema segundo uma função normalizada, e após isto o filtro de Kalman discreto anteriormente descrito é utilizado no sistema agora linear.
 
