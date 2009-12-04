@@ -78,34 +78,76 @@ Os testes foram feitos no mapa da figura \ref{fig:pavsup}, o pavimento superior 
 	\label{fig:pavsup}
 \end{figure}
 
+\paragraph{Caso simples}
 
-Em testes simples, como andar em linha reta, o sistema se sai bem. Especificamente, o erro no eixo $y$ foi de cerca de 3 cm, e em $\theta$, abaixo de 0.05 radianos. Contudo, um comportamento estranho é visto no erro no eixo $x$, como ilustrado na figura \ref{fig:xzoado}\footnote{Note, também, que os erros em $x$ acabam causando prejuízos em $y$.}. A causa dessa oscilação não é conhecida e está sendo objeto de investigações.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=.9\columnwidth]{imagens/sonar/xzoado.png}
-	\caption{Erros nas componentes $x$, $y$ e $\theta$ durante um teste do sonar. Os erros em $y$ e $\theta$ se mantêm dentro do esperado, mas o comportamento das estimativas no eixo $x$ não é correto.}
-	\label{fig:xzoado}
-\end{figure}
-
-Testamos também a capacidade do sistema de se recuperar de associações erradas (figura \ref{fig:associacaoinvalida}) e erros na estimativa inicial (figura \ref{fig:estimativainicial}). Como pode ser visto na seção \ref{sec:sonar}, os sonares são mais adequados para corrigir a componente $y$ da postura\footnote{Pois o vetor $H$ depende, na coordenada $y$, do seno de $\theta_{wall}$. Na maior parte das vezes, $\theta_{wall}$ é $\frac{\pi}{2}$ -- existem mais paredes paralelas
-ao eixo $x$ do que ao eixo $y$}, de modo que é nesse eixo que concentramos nossas avaliações. Note que em ambos os casos o sistema convergiu para a posição correta.
+Em testes simples, como a da figura \ref{fig:trajetonormal}, o sistema se sai bem. A figura \ref{fig:normal_y} compara a estimativa do sistema de localização com a postura verdadeira, fornecida pelo simulador, a cada instante. Como pode ser visto na seção \ref{sec:sonar}, os sonares são mais adequados para corrigir a componente $y$ da postura\footnote{Pois o vetor $H$ depende, na coordenada $y$, do seno de $\theta_{wall}$. Na maior parte das vezes, $\theta_{wall}$ é $\frac{\pi}{2}$ -- existem mais paredes paralelas ao eixo $x$ do que ao eixo $y$}, de modo que é o eixo de maior interesse no momento. Note que, mesmo acumulando um certo erro ao ultrapassar a porta, o sistema convergiu.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacaoestimativainicial.png}
-	\caption{Sistema se recuperando de uma estimativa inicial de 1,17 metros.}
-	\label{fig:estimativainicial}
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/percursosimples.png}
+	\caption{Um exemplo de trajeto simples.}
+	\label{fig:trajetonormal}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=.9\columnwidth]{imagens/sonar/associacaoinvalida.png}
-	\caption{Sistema se recuperando após acreditar estar vendo uma parede errada.}
-	\label{fig:associacaoinvalida}
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/normal_y.pdf}
+	\caption{Comportamento do sistema durante o trajeto da figura \ref{fig:trajetonormal}}
+	\label{fig:normal_y}
 \end{figure}
 
-\subsection{Cronograma e RePlanejamento} 
+\paragraph{Curvas abruptas}
+Foi testada também a capacidade do módulo de localização de de lidar com trajetos sinuosos, em forma de zigue-zague. A figura \ref{fig:zigzag_y} mostra que o sistema tem dificuldade em acompanhar as curvas. Contudo, quando a orientação do robô se estabiliza, a postura estimada converge para a correta rapidamente.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/zigzag_y.pdf}
+	\caption{Localização no eixo durante trajeto em forma de zigue-zague}
+	\label{fig:zigzag_y}
+\end{figure}
+
+A figura \ref{fig:zigzag_th} exibe os valores da orientação $\theta$ estimada e real durante um trajeto em zigue-zague.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/zigzag_theta.pdf}
+	\caption{Inclinação estimada e real durante trajeto em forma de zigue-zague}
+	\label{fig:zigzag_th}
+\end{figure}
+
+\paragraph{Erros na estimativa inicial}
+
+O sistema apresentou capacidade adequada. de corrigir erros na estimativa inicial. A figura \ref{fig:recup_y_y} mostra que após 15 segundos o erro inicial de 117 centímetros foi corrigido pelos sonares. Já a figura \ref{fig:recup_x_x} corrobora o ponto exposto anteriormente, de que os sonares não são úteis para correção da estimativa no eixo $x$, especialmente em ambientes simétricos como o usado nos testes. Nesse experimento, a estimativa inicial estava 162 cm para a esquerda, e o sistema não foi capaz de corrigi-la. Por fim, as figuras \ref{fig:recup_th_th} e \ref{fig:recup_th_y} mostram o comportamento visto quando a estimativa inicial possuía um erro de 17°. A recuperação acontece, mas é mais lenta do que aquela vista para erros no eixo Y.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacao_y_y.pdf}
+	\caption{Comportamento do sistema quando sujeito a um erro na estimativa inicial no eixo Y}
+	\label{fig:recup_y_y}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacao_x_x.pdf}
+	\caption{Comportamento do sistema quando sujeito a um erro na estimativa inicial no eixo X}
+	\label{fig:recup_x_x}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacao_theta_theta.pdf}
+	\caption{Comportamento do sistema quando sujeito a um erro na estimativa inicial na orientação do robô}
+	\label{fig:recup_th_th}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\columnwidth]{imagens/sonar/recuperacao_theta_y.pdf}
+	\caption{Comportamento do sistema quando sujeito a um erro na estimativa inicial na orientação do robô}
+	\label{fig:recup_th_y}
+\end{figure}
+
+\subsection{Cronograma e Replanejamento} 
 
 Uma visão alto-nível do cronograma, que mostra claramente os atrasos inesperados com o Módulo de Localização, principalmente pelo componente de Sonar, que teve seu modelo totalmente recalculado, está disponível na figura \ref{fig:cronograma} abaixo.
 
