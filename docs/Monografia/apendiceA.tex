@@ -11,7 +11,7 @@ Pode-se modelar o problema como:
 \begin{equation}
 	y = Hx + v
 \end{equation}
-Onde y é um vetor com as medições, x é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e v é o ruído da medição.
+Onde \bf{y} é um vetor com as medições, \bf{x} é a constante a ser determinada, mas que também se apresenta em forma de vetor (iguais) e \bf{v} é o ruído da medição.
 
 Suponha-se também que as medições são independentes e com média nula. A matriz da covariância fica então com a seguinte forma:
 \begin{equation}
@@ -35,7 +35,7 @@ o método dos mínimos quadrados consiste na minimização da seguinte função de cus
 \end{equation}
 Este é o método dos mínimos quadrados aplicado quando cada medição possui variância distinta. Sua principal característica é ser a forma ótima de minimizar os erros provenientes de medições imprecisas.
 
-O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de H por x e minimizar J novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
+O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de $H$ por \bf{x} e minimizar $J$ novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
 
 \section{método dos mínimos quadrados recursivo}
 Um estimador linear recursivo pode ser escrito na forma:
@@ -87,7 +87,7 @@ Para se obter uma estimativa correta do estado e da covariância após um determin
 \[
 	\dot{x}=Ax+Bu+w
 \]
-Onde $x$ é o estado do sistema, $u$ é uma variável de controle e $w$ é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo $t_{k}$ é:
+Onde $\bf{x}$ é o estado do sistema, $\bf{u}$ é uma variável de controle e $\bf{w}$ é o ruído do sistema, com média nula e com distribuição gaussiana. Por ser uma equação diferencial, sabemos que a solução do sistema acima para um determinado tempo $t_{k}$ é:
 \begin{equation}
 	x(t_{k})=e^{A(t_{k}-t_{k-1})}x(t_{k-1})+\int^{t_{k}}_{t_{k-1}}e^{A(t_{k}-\tau)}[B(\tau)u(\tau)+w(\tau)]d\tau
 	\label{eq:solDiferencial}
