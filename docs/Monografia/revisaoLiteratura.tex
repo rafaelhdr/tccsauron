@@ -1,12 +1,55 @@
 \section{Revisão da literatura}\label{sec:revisaoLiteratura}
 
-\todo[inline]{Colocar do Robox, Rhino e Minerva, toda nossa pesquisa bibliográfica}%
 \subsection{Rhino}
-\todo{Falar sobre Rhino - pegar coisas dos docs antigos}%
+O Rhino foi o primeiro robô guia de museu realizado pela equipe de Sebastian Thrun, talvez um dos maiores especialistas na área de robótica e visão computacional. O RHINO foi utilizado durante 6 dias no Museu Bonn, tendo contato com mais de 2000 visitantes.
+
+Para a localização, os desenvolvedores tiveram três grandes prioridades: representações probabilísticas para dar maior robustez ao robô, flexibilidade quanto à disponibilidade de recursos e programação distribuída com tomada de decisões decentralizada. Seus principais módulos para isto eram o modelo de markov utilizado para estimar sua localização, juntamente com uma computação seletiva que realizava os cálculos apenas para os pontos de maior probabilidade. Esta seleção era mais ou menos restritiva de acordo com os recursos computacionais disponíveis.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRhino.png}
+	\caption{Arquitetura de software utilizada em Rhino. \cite{Rhino}}
+	\label{fig:arquiteturaRhino}
+\end{figure}
+
+Para a navegação, ou seja, planejamento de rotas e execução, foi criada uma hierarquia que pode ser vista em \ref{fig:arquiteturaRhino}. O módulo de evitar colisões é o nível mais baixo, ou seja, têm prioridade sobre os demais. Este é responsável para que o robô não atingisse qualquer objeto e principalmente transeuntes. Acima deste existe o módulo de planejamento de movimento pelo menor caminho, e por fim o módulo controlador, que controla a ordem das ações do robô.
+
+O Rhino possui como diferencial a criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar o mapa do ambiente. Em \cite{Rhino} é descrito como o Rhino realiza o mapeamento e como este funde os mapas construídos por cada sensor para obter um mapa integrado.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRhino.png}
+	\caption{Mapas gerado pelos diverss sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Rhino}}
+	\label{fig:mapaRhino}
+\end{figure}
+
+Os projetistas do Rhino descrevem em \cite{Rhino} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
+
 \subsection{Minerva}
 \todo{Falar sobre Minerva}%
 \subsection{RoboX}
-\todo{falar sobre Robox}%
+O RoboX, desenvolvido por uma equipe liderada por Roland Seigwart, descrito em \cite{Robox} foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
+
+\begin{figure}
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRobox.png}
+	\caption{Arquitetura de software utilizada em RoboX. \cite{Robox}}
+	\label{fig:arquiteturarobox}
+\end{figure}
+
+O sistema de navegação utilizado no RoboX emprega um mapeamento topológico, representando o ambiente sob a forma de grafos com arestas ponderadas. Com isso, conseguiu-se reduzir a quantidade de informações para representar um metro quadrado do ambiente e melhorar a capacidade de filtragem de landmarks que não são associados a nenhum ponto de interesse bem definido. O grafo é constituído por três tipos de nós: o primeiro são nós estação, que indicam posições diretamente ligada à aplicação do robô; nós de caminho que representam localizações topologicamente relevantes, como portas e cruzamentos de corredores, e também atuam na simplificação da escolha de rotas em área abertas, uma vez que sinalizam posições que não apresentam dificuldade de percorrer; e, por fim, pontos fantasmas, que indicam obstáculos que não podem ser percebidos pelos sensores do robô, como paredes de vidro, escada, etc. Uma visão do mapa utilizado pelo RoboX pode ser vista em \ref{fig:mapaRobox}.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/MapaRobox.png}
+	\caption{mapa utilizado pelo RoboX, com o grafo gerado incluindo pontos fantasmas. \cite{Robox}}
+	\label{fig:mapaRobox}
+\end{figure}
+
+A determinação de rotas é feita por meio de uma combinação de um sistema de desvio de obstáculos reativo, aquele que decide por uma ação de desvio baseado puramente no que está observando em um dado instante, e uma camada de planejamento de rotas, que fornece diretrizes ao sistema de desvio. O conjunto permitiu que o algoritmo se tornasse mais eficiente, diminuindo o tempo de processamento necessário.
+
+A localização usa uma variação do EKF, visando compensar a fragilidade de uma técnica de crença em hipótese única. Ao contrário de métodos como o de Markov, em que a posição é calculada antes de ser validada por meio das informações dos sensores, os projetistas decidiram usar uma abordagem na qual a localização resultado direto da informação sensorial. Assim, é possível manter quantas hipóteses forem necessárias.
+
 \subsection{ELViS}
 Em \cite{barra}, é desenvolvido um sistema de localização que utiliza oito sonares frontais, aliados a uma câmera monocular. Esse é o trabalho que serviu de base para o módulo de localização do projeto descrito, pois combinou elementos de baixo custo a resultados experimentais promissores utilizando a mesma plataforma deste projeto.
 
@@ -19,14 +62,21 @@ Para o ELViS são utilizados oito sonares frontais. Devido à sua distribuição fís
 
 \begin{figure}[ht]
   \centering
+    \includegraphics[width=.9\columnwidth]{imagens/sonar/FiguraPerpendicularDoBarra.png}
+	\caption{Representação de observações do sonar em diferentes posições ao longo de um movimento retilínio. \cite{barra}}
+	\label{fig:modeloSonarPerpendicular}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
     \includegraphics[width=.9\columnwidth]{imagens/sonar/ModeloSonarParede.png}
 	\caption{Uma parede é representada pela sua distância à origem, $r_{wall}$, e sua inclinação, $\theta_{wall}$ em relação ao eixo $x$. \cite{barra}}
 	\label{fig:modelosonarbarra}
 \end{figure}
 
-\missingfigure{A figura dos sonares perpendiculares do Barra}
-
 O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. Suponha-se uma parede infinita paralela ao eixo $x$. Independentemente da leitura do sonar e do ângulo de incidência do mesmo na parede, é impossível determinar qual é sua posição relativa à abcissa do plano, visto que a resposta fornecida pelo sonar é a mesma para qualquer $x$. Entretanto, a leitura do sonar é capaz de fornecer uma estimativa de $y$ segundo o seguinte exeomplo: Caso o pulso incida perpendicularmente à parede, sua leitura fornecerá a distância do mesmo à parede. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$, como mostrado na figura \ref{fig:modelosonarbarra}.
+
+O modelo utilizado em ELViS considerava que era oneroso ao sistema a correção de medidas incorretas. Para minimizá-las, este utiliza um sistema de bufferização das medidas do sonar, seguidas de um processo de associação da parede com as medidas obtidas.
 
 \subsubsection{Visão}
 \todo{Falar sobre a visão do Barra}
