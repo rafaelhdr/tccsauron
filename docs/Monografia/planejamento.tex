@@ -2,7 +2,7 @@
 
 O módulo de Navegação não estava inicialmente previsto no projeto. A intenção era utilizar um software de navegação que acompanha a plataforma robô Pioneer 2DX, chamado SonARNL. Porém, ao longo dos testes, percebeu-se que o comportamento do SonarNL atrapalhava o módulo de Localização, e, portanto, decidiu-se por implementar um módulo de navegação simplista, mas sobre o qual houvesse total controle.
 
-O comportamento não desejado apresentado pelo SonarNL era o de realizar constantes mudanças no \theta do robô. É provável que esse comportamento tivesse a intenção de melhorar a precisão do módulo de localização, através da identificação de novos pontos de interesse para os sonares. Porém, de fato, isso gerava altas incertezas, prejudicando o desempenho da localização.
+O comportamento não desejado apresentado pelo SonarNL era o de realizar constantes mudanças no $\theta$ do robô. É provável que esse comportamento tivesse a intenção de melhorar a precisão do módulo de localização, através da identificação de novos pontos de interesse para os sonares. Porém, de fato, isso gerava altas incertezas, prejudicando o desempenho da localização.
 
 
 \subsubsection{Algoritmo}
@@ -37,7 +37,7 @@ Assim que definida uma rota de waypoints até o destino final, passa-se ao Execut
 	\item Desloca-se em linha reta até alcançar o próximo waypoint.
 \end{itemize} 
 
-Essa estratégia de execução visa minimizar as incertezas em \theta, realizando o menor número possível de curvas, que foi a grande motivação para a realização deste módulo de Navegação.
+Essa estratégia de execução visa minimizar as incertezas em $\theta$, realizando o menor número possível de curvas, que foi a grande motivação para a realização deste módulo de Navegação.
 
 Além disso, o Executor de Rota também possui um comportamento de Evitar Colisões, ou seja, o robô interrompe seu deslocamento caso detecte um obstáculo à frente.
 
