@@ -1,2 +1,75 @@
 \subsection{Navegação}\label{subsec:navegacao}
-\todo[color=red!40]{Escrever sobre a navegação}
+
+O módulo de Navegação não estava inicialmente previsto no projeto. A intenção era utilizar um software de navegação que acompanha a plataforma robô Pioneer 2DX, chamado SonARNL. Porém, ao longo dos testes, percebeu-se que o comportamento do SonarNL atrapalhava o módulo de Localização, e, portanto, decidiu-se por implementar um módulo de navegação simplista, mas sobre o qual houvesse total controle.
+
+O comportamento não desejado apresentado pelo SonarNL era o de realizar constantes mudanças no \theta do robô. É provável que esse comportamento tivesse a intenção de melhorar a precisão do módulo de localização, através da identificação de novos pontos de interesse para os sonares. Porém, de fato, isso gerava altas incertezas, prejudicando o desempenho da localização.
+
+
+\subsubsection{Algoritmo}
+O módulo de Navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se "A estrela"). Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado do custo de se locomover do nó adjacente até o nó destino. 
+
+Para possibilitar essa navegação de busca em grafos, foram inseridos pontos de rota (ou \textit{waypoints}) no mapa utilizado pelo SAURON. Assim, os nós do grafo utilizado pelo algoritmo são os \textit{waypoints} e os objetivos (ou \textit{goals}). Os \textit{goals} representam os pontos de interesse para os usuários (e.g., "sala C2-50", sala "D1-30", e etc.) e já existiam no mapa originalmente. Os \textit{waypoints} são pontos artificiais, criados para servir de rota para a navegação.
+
+Os \textit{waypoints} são colocados afastados das bordas do mapa e em pontos estratégicos escolhidos para permitir a realização de curvas e facilitar a locomoção a qualquer um dos objetivos.
+
+Apesar do grafo A* conter esses dois tipos de nós: nó inicial, \textit{waypoints} e \textit{goals}, apenas os \textit{waypoints} são usados para estabelecer a rota. O \textit{goal} só servirá como nó final, ou seja, destino da navegação. O nó inicial é um nó temporário, inexistente no mapa, criado no início da execução do algoritmo com as coordenadas atuais do robô. 
+
+Com a estrutura do grafo pronta, basta aplicar o algoritmo A* para obter a sua rota.
+
+\subsubsection{Controle de Retrocessos} 
+
+Um problema que logo se manifestou para a navegação era o cuidado especial com retrocessos. Algumas vezes, é necessário  afastar-se um pouco do destino antes de poder alcançá-lo.  A figura abaixo ilustra essa situação. Para ir do ponto A ao ponto D, deve-se contornar a parede, passando por exemplo, pelo ponto B, que está mais distante do destino D do que o próprio A.
+
+\missingfigure{Criar um mapazinho onde o texto acima é verdade, colocar distancia pontos e distancia rota}
+
+Para resolver esse problema basta considerar o custo de um nó até o destino como sendo o custo da rota e não como a distância cartesiana entre esses dois pontos. Além disso é preciso determinar que os nós adjacentes só poderão ser nós alcançáveis, ou seja, nós entre os quais é possível traçar uma linha reta, sem nenhum obstáculo entre eles. De fato, foi determinado que um nó poderia ter, no máximo, 4 nós adjacentes. As quatro possibilidades de adjacência são: cima, baixo, esquerda e direita.
+
+O problema de retrocessos, entretanto, ainda poderia existir. O módulo de navegação recalcula sua rota o tempo todo, e como foi visto anteriormente, uma das primeiras etapas é a criação de um nó temporário, para representar a posição inicial do robô. O problema é que esse nó temporário não possui adjacência bem definida no mapa, então é necessário buscar os nós adjacentes desse nó temporário inicial.
+
+Definiu-se que o nó temporário inicial possuiria um único nó adjacente. A busca desse nó adjacente é feita entre todos os nós alcançáveis pelo nó inicial. A partir disso, o nó adjacente será aquele cujo custo de rota até o destino seja o menor.
+
+\subsubsection{Execução e Controle de Rota} 
+
+Assim que definida uma rota de waypoints até o destino final, passa-se ao Executor de Rota, que opera da seguinte forma:
+
+\begin{itemize}
+	\item Realiza um giro até ficar direcionado ao próximo waypoint.
+	\item Desloca-se em linha reta até alcançar o próximo waypoint.
+\end{itemize} 
+
+Essa estratégia de execução visa minimizar as incertezas em \theta, realizando o menor número possível de curvas, que foi a grande motivação para a realização deste módulo de Navegação.
+
+Além disso, o Executor de Rota também possui um comportamento de Evitar Colisões, ou seja, o robô interrompe seu deslocamento caso detecte um obstáculo à frente.
+
+O módulo de navegação também possui um Controle de Rota, para determinar quando ele se afastou da rota prevista. Quando isso ocorre, um callback é enviado para recálculo da rota.
+
+\subsubsection{Navegação InterMapas}
+
+Como um adendo final ao projeto, adicionou-se uma camada para permitir a navegação entre Múltiplos Mapas, permitindo, por exemplo, subir uma rampa em direção a um outro andar de um prédio.
+
+Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de novos \textit{waypoints} chamados portais. De fato, basta que um waypoint em um mapa tenha o mesmo nome de outro waypoint em outro mapa para que seja estabelecido um portal entre eles.
+
+Esta camada passou a ser o ponto de entrada do módulo de Navegação e executa o algoritmo abaixo. A referência \textbf{pathPlanner} indica o algoritmo de Navegação para um mapa simples.
+
+   
+ \begin{algorithm}
+	\dontprintsemicolon
+	
+	\Entrada{destino}
+	
+	\Inicio{
+		\Se{destino está neste mapa}{\ pathPlaner vai até destino \;}
+		\Senao{
+			descobre próximo mapa na rota de mapas \;
+			achar portal em relação ao mapa atual \;
+			\Se{pathPlanner chega em portal}
+			{\ realiza troca de mapas \;
+  		\ recomeça  \;}
+  		\Senao{
+			 erro \;
+		}
+	}
+	}
+	\caption{Algoritmo de navegação entre Múltiplos Mapas}
+		\label{algo:intermapas}
+\end{algorithm}
