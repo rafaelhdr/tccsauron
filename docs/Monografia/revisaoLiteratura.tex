@@ -1,7 +1,7 @@
 \section{Revisão da literatura}\label{sec:revisaoLiteratura}
 
 \subsection{Rhino}
-O Rhino foi o primeiro robô guia de museu realizado pela equipe de Sebastian Thrun, talvez um dos maiores especialistas na área de robótica e visão computacional. O RHINO foi utilizado durante 6 dias no Museu Bonn, tendo contato com mais de 2000 visitantes.
+O RHINO foi o primeiro robô guia de museu realizado pela equipe de Sebastian Thrun, talvez um dos maiores especialistas na área de robótica e visão computacional. O RHINO foi utilizado durante 6 dias no Museu Bonn, tendo contato com mais de 2000 visitantes.
 
 Para a localização, os desenvolvedores tiveram três grandes prioridades: representações probabilísticas para dar maior robustez ao robô, flexibilidade quanto à disponibilidade de recursos e programação distribuída com tomada de decisões decentralizada. Seus principais módulos para isto eram o modelo de markov utilizado para estimar sua localização, juntamente com uma computação seletiva que realizava os cálculos apenas para os pontos de maior probabilidade. Esta seleção era mais ou menos restritiva de acordo com os recursos computacionais disponíveis.
 
@@ -14,19 +14,40 @@ Para a localização, os desenvolvedores tiveram três grandes prioridades: represe
 
 Para a navegação, ou seja, planejamento de rotas e execução, foi criada uma hierarquia que pode ser vista em \ref{fig:arquiteturaRhino}. O módulo de evitar colisões é o nível mais baixo, ou seja, têm prioridade sobre os demais. Este é responsável para que o robô não atingisse qualquer objeto e principalmente transeuntes. Acima deste existe o módulo de planejamento de movimento pelo menor caminho, e por fim o módulo controlador, que controla a ordem das ações do robô.
 
-O Rhino possui como diferencial a criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar o mapa do ambiente. Em \cite{Rhino} é descrito como o Rhino realiza o mapeamento e como este funde os mapas construídos por cada sensor para obter um mapa integrado.
+O RHINO possui como diferencial a criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar o mapa do ambiente. Em \cite{Rhino} é descrito como o RHINO realiza o mapeamento e como este funde os mapas construídos por cada sensor para obter um mapa integrado.
 
 \begin{figure}[ht]
   \centering
-    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRhino.png}
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/mapasRhino.png}
 	\caption{Mapas gerado pelos diverss sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Rhino}}
 	\label{fig:mapaRhino}
 \end{figure}
 
-Os projetistas do Rhino descrevem em \cite{Rhino} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
+Os projetistas do RHINO descrevem em \cite{Rhino} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
 
 \subsection{Minerva}
-\todo{Falar sobre Minerva}%
+O MINERVA é a segunda geração do robô-guia RHINO descrito anteriormente. Por ter sido desenvolvido pela mesma equipe, nota-se muitas semelhanças entre os dois projetos. O MINERVA foi utilizado no Smithsonian's National Museum of American History por duas semanas em 1998.
+
+A equipe se focou na resolução dos seguintes problemas:
+\begin{itemize}
+	\item Navegação em ambientes dinâmicos.
+	\item Navegação em ambientes não modificados.
+	\item Interação com seres humanos.
+	\item Interação com o robô através da internet.
+\end{itemize}
+As principais diferenças com o RHINO são que esta geração aprende os mapas gerados ao invés de simplesmente utilizar o mapa gerado para planejar a rota pontualmente, ele planeja seu caminho de forma a não percorrer regiões onde não há muitos objetos dos quais ele pode se aproveitar para localizar-se e utiliza aprendizado por reforço para aprimorar sua interação com os visitantes com o tempo.
+
+Como este museu era muito mais populoso que o museu Bonn, alternativas distintas foram utilizadas para localização, sendo a principal diferença a utilização de uma câmera que apontava para o teto do museu. Foi gerado um mapa da textura do teto de forma que este possa corrigir a posição fornecida pelos outros sensores de forma eficaz e mais independente das pessoas que o cercam, que eventualmente escondiam todas as outras propriedades necessárias aos outros sensores.
+
+Para o sistema de localização o MINERVA utiliza uma versão modificada da localização de markov. Utilizando seus sensores (lasers, sonares, câmeras e odômetro) e realizando a fusão destes através do teorema de bayes, ele é capaz de se localizar globalmente no mapa, sem ser necessário que um usuário informe sua posição inicial. A modificação a este sistema é devido ao fato que o processo de localização de markov tradicional exige que o ambiente seja estático, o que é completamente diferente do ambiente em um museu. A fim de adaptar este processo ao ambiente de museu, O MINERVA calcula uma medida experada pelo sensor. Toda vez que a medida calculada é menor que a esperada, esta é excluída.
+
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=.9\columnwidth]{imagens/bibliografia/leiturasCorrompidas.png}
+	\caption{Mapas obtidos de um sensor. O primeiro mostra apenas leituras autênticas, o segundo mostra leituras excluídas devido à presença de pessoas interferindo a leitura. Mesmo que estas medidas sejam excluídas do processo de localização, elas ainda são utilizadas pelo sistema que evita colisões. \cite{Minerva}}
+	\label{fig:mapasMinerva}
+\end{figure}
+
 \subsection{RoboX}
 O RoboX, desenvolvido por uma equipe liderada por Roland Seigwart, descrito em \cite{Robox} foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
 
