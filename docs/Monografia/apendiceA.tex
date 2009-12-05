@@ -1,8 +1,8 @@
-\chapter{Apêndice A - Filtro extendido de Kalman} \label{sec:apendicea}
+\chapter{Apêndice A - Filtro de Kalman Estendido} \label{sec:apendicea}
 
 A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
 
-Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{Simon06OptimalState}.
+Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro de kalman estendido, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{Simon06OptimalState}.
 
 \section{Método dos mínimos quadrados}
 
@@ -168,12 +168,12 @@ Tendo definido estes estados e de posse da teoria previamente discutida, pode-se
 \end{itemize}
 Ou seja, o sistema é suprido de uma estimativa inicial do estado e da covariância da estimativa. Se o estado é conhecido, $P_{0}^{+}=0$. A partir daí, propaga-se o sistema no tempo até o momento da primeira medição, obtendo-se $P_{1}^{-}$ e $\hat{\textbf{x}}_{1}^{-}$. Após isto, o valor da estimativa $\textbf{y}_{1}$ é utilizado para atualizar a estimativa e covariância, obtendo-se assim $\hat{\textbf{x}}_{1}^{+}$ e $P_{1}^{+}$.
 
-\section{Filtro Estendido de Kalman}
+\section{Filtro de Kalman Estendido}
 O filtro de Kalman desenvolvido anteriormente é matematicamente o método ótimo de estimação de estados para sistemas lineares. No entanto, na natureza existem poucos sistemas lineares, a maioria são sistemas lineares, e o problema de estimação da posição do robô com sonares e visão computacional não é linear. Assim, é necessário um outro filtro para isso.
 
 Foi desenvolvido uma versão extendida para estimação de sistemas não lineares, usado inicialmente para o sistema de navegação de espaçonaves, e atualmente é o filtro padrão para estimação de sistemas não lineares.
 
-No filtro extendido, os estados de transição e modelos de observação não precisam ser funções lineares, podendo ser equações diferenciais. Em nossa formulação, usaremos o método hibrido de filtragem, que consiste em propagação de estado de forma contínua e atualização de estado com medidas de forma discreta. Isto porque nosso poder computacional nos permite propagar o estado segundo nosso modelo de dinâmica várias vezes entre duas medidas de sonares estarem disponíveis.
+No filtro estendido, os estados de transição e modelos de observação não precisam ser funções lineares, podendo ser equações diferenciais. Em nossa formulação, usaremos o método hibrido de filtragem, que consiste em propagação de estado de forma contínua e atualização de estado com medidas de forma discreta. Isto porque nosso poder computacional nos permite propagar o estado segundo nosso modelo de dinâmica várias vezes entre duas medidas de sonares estarem disponíveis.
 
 No EKF, o sistema é modelado da seguinte forma:
 \begin{gather}
