@@ -1,7 +1,8 @@
-\chapter{Arquitetura}\label{subsec:arquitetura}
+\chapter{SAURON: Arquitetura}\label{subsec:arquitetura}
 
-A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Navegação, Localização e Sensores e Motores, como pode ser observado na figura \ref{arquitetura:global}. O módulo de Navegação pode ser dividido em Planejamento, Execução e Camada Reativa.
- 
+Conforme mencionado na seção \ref{sec:introducao}, o objetivo deste trabalho é construir um robô-guia de baixo-custo, capaz de se localizar e navegar em um ambiente previamente conhecido. Em comparação com a maioria dos trabalhos descritos na seção \ref{sec:revisaoLiteratura}, este projeto difere significativamente na qualidade dos sensores utilizados: oito sonares e uma câmera, sensores ruidosos se comparados a um laser. Já em relação a \cite{barra}, há uma diferença nas propostas dos trabalhos. Enquanto \cite{barra} criou um sistema de localização \textit{off-line}, o SAURON é constituído por um sistema de navegação e localização robótica \textit{on-line}.
+
+A arquitetura geral do sistema possui 5 grandes módulos: interface gráfica, navegação, localização, sensores e motores, como pode ser observado na figura \ref{arquitetura:global}. O módulo de navegação pode ser dividido em planejamento e execução.
  
 \begin{figure}[h]%
 \begin{center}
@@ -11,11 +12,11 @@ A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Nave
 \end{center}
 \end{figure}
 
-A interface gráfica apresenta ao usuário os possíveis destinos do robô e repassa a escolha do usuário ao submódulo de planejamento, dentro do módulo de navegação. A tarefa desse submódulo é calcular a melhor rota entre a postura atual e o destino. Como descrito na seção \ref{subsec:navegacao}, utiliza-se um grafo de pontos chamados \textit{waypoints}. Cada waypoint é uma meta intermediária, e um conjunto deles compõe um caminho. O processo de locomoção até o próximo \textit{waypoint} do caminho é coordenado pelo submódulo de execução, que dita à camada reativa a rota que deverá ser seguida, e monitora seu correto cumprimento. A camada reativa, por fim, é responsável por controlar os motores e monitorar as leituras dos sonares, de modo a detectar obstáculos dinâmicos e impedir colisões.
+A interface gráfica apresenta ao usuário os possíveis destinos do robô e repassa a escolha do usuário ao submódulo de planejamento, dentro do módulo de navegação. A tarefa desse submódulo é calcular a melhor rota entre a postura atual e o destino. Como descrito na seção \ref{subsec:navegacao}, utiliza-se um grafo de pontos chamados \textit{waypoints}. Cada waypoint é uma meta intermediária, e um conjunto deles compõe um caminho. O processo de locomoção até o próximo \textit{waypoint} do caminho é coordenado pelo submódulo de execução, que é responsável por controlar os motores, monitorar o correto cumprimento da rota, e verificar as leituras dos sonares, de modo a detectar obstáculos dinâmicos e impedir colisões.
 
-A estimativa da postura (i.e, coordenadas $x$, $y$ e $\theta$) é realizada pelo módulo de localização, que se vale dos dados dos sensores, além de seu conhecimento do ambiente. Neste caso, são fornecidos uma planta geométrica e um mapa de marcos visuais. A arquitetura do módulo de localização é descrita na seção \ref{subsec:arqloc}.
+A estimativa da postura atual é realizada pelo módulo de localização, que se vale dos dados dos sensores, dos modelos de como eles funcionam, e do conhecimento do ambiente. Neste caso, são fornecidos uma planta geométrica e um mapa de marcos visuais. A arquitetura do módulo de localização é descrita na seção \ref{subsec:arqloc}.
 
-Finalmente, o módulo de sensores é composto por sonares, odômetro e uma câmera, que fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas $x$, $y$ e $\theta$).
+Finalmente, o módulo de sensores é composto por sonares, odômetro e uma câmera, que fornecem as informações necessárias para que o módulo de localização prediga e corrija a postura.
 
 \input{localizacao}
 \input{planejamento}
