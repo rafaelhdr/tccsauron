@@ -101,9 +101,12 @@ O modelo utilizado em ELViS considerava que era oneroso ao sistema a correção de
 
 Caso o teste seja aceito, a próxima etapa é a determinação da parede observada, que é feita utilizando a posição do sonar e das retas. Por fim, realiza-se a associação das observações realizadas com o mapa, obtendo assim uma estimativa atualizada da posição.
 
-O método descrito em \ref{subsec:modelosonares} baseia-se no modelo de sonar descrito acima, e pode-se ter uma idéia matemática de como funciona. O desenvolvimento completo pode ser verificado em \cite{barra}.
+O método descrito em \ref{subsec:modelosonares} baseia-se no modelo de sonar descrito acima, e pode-se ter uma ideia matemática de como funciona. O desenvolvimento completo pode ser verificado em \cite{barra}.
 
 \subsubsection{Visão}
+O modelo de observação adotado no sistema ELViS busca associar observações feitas a elementos do ambiente, sendo esses elementos retas verticais. Após a extração das retas verticais de um quadro da câmera, o modelo determina a correspondência entre conjunto de de retas verticais obtidas no quadro atual e o conjunto obtido no quadro anterior. Tal correspondência consiste na busca e determinação de pares de retas verticais, com uma reta de cada conjunto, que são projeções de um mesmo elemento do ambiente.
+
+Tendo um conjunto de retas verticais, o modelo de visão tenta associar cada reta a um marco conhecido do ambiente, descrito em um mapa. As retas que forem associadas a marcos passam ainda por uma etapa de validação, na qual é confirmada a presença das retas em uma sequência de quadros. Somente após a validação é que as retas são usadas para corrigir a estimativa da postura do robô.
 
 \begin{figure}[hp]
 	\centering
@@ -111,6 +114,3 @@ O método descrito em \ref{subsec:modelosonares} baseia-se no modelo de sonar des
 	\caption{Diagrama de blocos do modelo de observação para a visão monocular usada no sistema ELViS}
 	\label{fig:barra_arquitetura_visão}
 \end{figure}
-
-\todo{Falar sobre a visão do Barra}
-
