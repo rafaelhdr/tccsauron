@@ -1,21 +1,16 @@
 \subsection{Modelo de Dinâmica}\label{subsec:modelodinamica}
 
+A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sistema (no caso, o robô) desde a última estimativa, ou seja, realizar a predição para o filtro de Kalman. Para isso, o modelo pode levar em conta o funcionamento do sistema, como ele opera, como os sinais de controle gerados atuam e como o ambiente interage com o sistema \cite{barra}. 
 
-O Modelo de Dinâmica é o responsável por fazer a predição da postura no filtro de Kalman. Existem duas possibilidades para a realização da predição:
-\todo[inline]{falar mais sobre o que são modelos de dinâmica, como funcionam e seu papel no filtro de kalman}
+A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, pudesse-se prever a postura do robô na iteração atual. Essa é a mesma abordagem utilizada em \cite{barra}.
 
-\begin{enumerate}
-	\item Através dos sinais de controle do robô, ou seja, a velocidade linear do motor, a velocidade rotacional do motor e outros parâmetros.
-	\item Através de sinais observados por sensores, como o odômetro.
-\end{enumerate}
+Esse modelo é mais simplista, pois não leva em consideração todos os sinais de controle do robô e operação interna do mesmo. Dessa forma, ele apresenta menor possibilidade de erros, mas também menor acurácia na predição.
 
-No SAURON, o modelo de dinâmica foi realizado utilizando-se a segunda alternativa, por ser mais simples e menos dependente dos parâmetros do robô. Essa é a mesma abordagem utilizada em \cite{barra}.
-
-A obtenção da nova postura será realizada, portanto, com os dados do odômetro e da última estimativa. De fato, por uma limitação dos odômetros do Pionner 2DX, o sinal de controle foi usado para se obter o sinal das variações do odômetro, ou seja, para saber se o robô deslocava-se positivamente ou negativamente pelo eixo x, por exemplo, utilizou-se o sinal do valor de controle da velocidade.
+De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sinal desse deslocamento. Assim não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
 
 \subsubsection{Modelagem}
 
-A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:modelorobo}.
+A plataforma-robô Pionner 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}, modelagem retirada de \cite{barra}, onde utiliza-se o mesmo robô. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor b representa a distância entre os centros das rodas e os valores $d_{m}$ e $\Delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
 
 \begin{figure}[h]%
 \begin{center}
@@ -25,39 +20,41 @@ A plataforma-robô Pionner 2DX foi modelada de acordo com a figura~\ref{figura:mo
 \end{center}
 \end{figure}
 
-As equações para se obter a postura estimada do robô, a partir da última estimativa, estão descritas abaixo:
+Os valores de deslocamento médio linear e angular são os valores fornecidos pelo firmware de interface com o robô. Assim, a modelagem das equações de dinâmica foi feita em cima desses valores. 
 
 \begin{gather}
-	x(n)=x(n-1)+dt_{m}(n)cos(\theta(n))\\
-	y(n)=y(n-1)+dt_{m}(n)sen(\theta(n))\\
-	\theta(n)=\theta(n-1)+\delta\theta(n)
+	x(t)=x(t-1)+d_{m}(t)cos(\theta(t))\\
+	y(t)=y(t-1)+d_{m}(t)sen(\theta(t))\\
+	\theta(t)=\theta(t-1)+\delta\theta(t)
 \end{gather}
 
-Essas equações formam a matriz $\bm{f}$ do Filtro de Kalman, responsável diretamente pela etapa de predição.
-
-Além disso, por exigência do EKF, é necessário calcular a matriz de covariâncias $\bm{Q}$ e a matriz $\bm{F}$, de propagação das incertezas pelas derivadas da matriz $\bm{f}$. 
-
-\subsubsection{Incertezas e Covariâncias}
-
-A propagação de incertezas, representada pela matriz $\bm{F}$, é calculada através da matriz das derivadas da matriz $\bm{f}$ em relação à postura (conhecida por jacobiano de $\bm{f}$). Pela simplicidade de $\bm{f}$, $\bm{F}$ é facilmente deduzida como:
+Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman. A matriz F de propagação de incertezas será o jacobiano desse vetor, e está representada abaixo.
 
 \begin{equation}
-\bm{F}(n) = \left( \begin{array}{ccc}
-1 & 0 & -\delta_{m}(n)sin(\Theta_{m}(n-1)) \\
-0 & 1 & \delta_{m}(n)cos(\Theta_{m}(n-1)) \\
+\bm{F}(t) = \left( \begin{array}{ccc}
+1 & 0 & -d_{m}(t)sin(\theta_{m}(t)) \\
+0 & 1 & d_{m}(t)cos(\theta_{m}(t)) \\
 0 & 0 & 1 \end{array} \right)
 \end{equation}
- 
-A matriz $\bm{Q}$, da variância do modelo de dinâmica, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear e angular.
 
+
+\subsubsection{Incertezas}
+
+Para finalizar a modelagem exigida pelo EKF, é necessário calcular a matriz de incertezas Q, pois já temos a modelagem do vetor \textbf{f} e a propagação dessas incertezas pela matriz F.
+
+A matriz Q, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear ($\sigma^{2}_{d_{m}}$) e angular ($\sigma^{2}_{\theta_{m}}$).
 
 \begin{equation}
- \bm{Q(n)} = \left( \begin{array}{ccc}
-\sigma^{2}_{d_{m}} cos^2(\Theta_{m}(n-1))  & \sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & 0 \\
-\sigma^{2}_{d_{m}} cos(\Theta_{m}(n-1)) sin(\Theta_{m}(n-1)) & \sigma^{2}_{d_{m}} sin^2(\Theta_{m}(n-1)) & 0 \\
+ \bm{Q(t)} = \left( \begin{array}{ccc}
+\sigma^{2}_{d_{m}} cos^2(\theta_{m}(t))  & \sigma^{2}_{d_{m}} cos(\theta_{m}(t)) sin(\theta_{m}(t)) & 0 \\
+\sigma^{2}_{d_{m}} cos(\theta_{m}(t)) sin(\theta_{m}(t)) & \sigma^{2}_{d_{m}} sin^2(\theta_{m}(t)) & 0 \\
 0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right) 
 \end{equation}
- 
+
+Essas incertezas quadráticas dependem das medições realizadas e de coeficientes que foram medidos experimentalmente.
 
 
-
+\begin{gather}
+	\sigma^{2}_{d_{m}}(t) = (d_{m}(t) \sigma^{d_{m}}_{d_{m}})^2 + (\delta\theta(t) \sigma^{\delta\theta}_{d_{m}})^2 \\
+	\sigma^{2}_{\theta_{m}} = (d_{m}(t) \sigma^{\delta\theta}_{\delta\theta})^2 + (\delta\theta(t) \sigma^{d_{m}}_{\delta\theta})^2\\
+\end{gather}

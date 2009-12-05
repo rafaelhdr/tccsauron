@@ -17,7 +17,6 @@ O filtro de Kalman estendido (EKF) é um filtro matemático capaz de realizar a pr
 
 A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}, onde inicialmente tem-se uma postura estimada $\hat{\textbf{x}_{t-1}}$ que é utilizada pelo Modelo de Dinâmica, junto da leitura do odômetro, na predição de uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas da visão e dos sonares para efetuar uma correção na predição $\bar{\textbf{x}_{t}}$, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto for necessário.
 
-\todo{colocar aqui embaixo a figura bem geral do kalman, Predição (modelo de dinâmica) gera x barra para a Correção (modelos de observação), que recebe x barra e alimenta com um atraso para o modelo de dinamica - A camera e os sonares conversam com a Correção. O odômetro conversa com a Predição.}
 
 \begin{figure}[ht]
 	\centering
@@ -30,18 +29,16 @@ A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada
 A figura \ref{fig:arquiteturalocalizacao} ilustra a arquitetura do módulo de localização. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
 
 
-\todo{mudar figura abaixo puxando o odômetro para cima e criando um quadrado chamado Localizacao, e trocar o que eh localizacao por Gerenciador de Localização}
-
 \begin{figure}[ht]
 	\centering
-		\includegraphics[width=.8\columnwidth]{imagens/arquitetura.pdf}
-	\caption{Arquitetura do sistema de localização}
+		\includegraphics[width=.8\columnwidth]{imagens/arquiteturaModuloLocalizacao.jpg}
+	\caption{Arquitetura do módulo de localização}
 	\label{fig:arquiteturalocalizacao}
 \end{figure}
 
 \subsubsection{Implementação}
 
-Uma dificuldade em se implementar um sistema como esse é o controle do fluxo de execução. Para explicar o problema, pode-se observar o algoritmo \ref{algo:localizacao}, um esboço do funcionamento básico do módulo de localização.
+Uma dificuldade em se implementar um sistema como o resumido acima é o controle do fluxo de execução. Para explicar o problema, pode-se observar o algoritmo \ref{algo:localizacao}, um esboço do funcionamento básico do módulo de localização.
 
 \begin{algorithm}
 \dontprintsemicolon
@@ -50,35 +47,36 @@ Uma dificuldade em se implementar um sistema como esse é o controle do fluxo de 
 \SetKw{recebe}{$\leftarrow$}
 \SetKwBlock{RepitaSempre}{repita}{fim}
 \SetKwData{ekf}{ekf}
-\SetKwData{dinamica}{dinâmica}
 \SetKwData{sensor}{sensor}
+\SetKwData{dinamica}{dinâmica}
+\SetKwData{modeloObservacao}{modeloObservacao}
 \SetKw{Em}{em}
 \SetKwData{postura}{postura}
 \RepitaSempre{
 	\postura \recebe \ekf.previsao(\dinamica.novaEstimativa()) \;
-	\ParaCada{\sensor}{
+	\ParaCada{\modeloObservacao}{
 		\Se{ \sensor.temMedidaNova()}{
-			\postura \recebe \ekf.update(\sensor.observacaoEsperada()) \;
+			\postura \recebe \ekf.update(\modeloObservacao.observacaoEsperada()) \;
 		}
 	}
 	}\end{algorithm}
 
-A implementação ingênua desse algoritmo percorre os passos do pseudocódigo sequencialmente, ou seja, itera por todos os sensores à procura daqueles que estejam prontos. A tabela \ref{tab:frequenciaSensores} mostra que os diferentes tempos de atualização de cada sensor tornam essa abordagem inviável: na grande maioria das vezes, não haverá nenhum sensor pronto, e a única estimativa será aquela fornecida pelo modelo de dinâmica. Além disso, o laço de processamento é executado o tempo todo, consumindo CPU e aumentando ainda mais o tempo de resposta dos sensores.
+A implementação ingênua desse algoritmo percorre os passos do pseudocódigo sequencialmente, ou seja, percorre pelo modelo de dinâmica e por todos modelos de observação à procura daqueles que estejam prontos. A tabela \ref{tab:frequenciaSensores} mostra que os diferentes tempos de atualização de cada modelo tornam essa abordagem inviável: na grande maioria das vezes, não haverá nenhum modelo de observação pronto, e a única estimativa será aquela fornecida pelo modelo de dinâmica. Além disso, o laço de processamento é executado o tempo todo, consumindo CPU e aumentando ainda mais o tempo de resposta dos modelos de observação.
 
 \begin{table}[htbp]
 	\centering
 		\begin{tabular}{ | l | r | }
 		\hline
-		Sensor & Tempo de atualização (ms) \\ \hline
-		Odômetro & 5 \\ \hline
-		Visão & 25 \\ \hline
-		Sonar & 100 \\ \hline			
+		Modelo & Tempo de atualização (ms) \\ \hline
+		Dinâmica (Odômetro) & 5 \\ \hline
+		Observação (Visão) & 25 \\ \hline
+		Observação (Sonar) & 100 \\ \hline			
 		\end{tabular}
-	\caption{Frequência de atualização dos sensores e do odômetro}
+	\caption{Frequência de atualização dos modelos de dinâmica e observação}
 	\label{tab:frequenciaSensores}
 \end{table}
 
-A solução é transferir o controle do fluxo de execução de um módulo central para os sensores. Quando um sensor receber novas medidas e for capaz de gerar uma observação esperada, ele chama o módulo de localização, que então invoca o EKF e computa a nova estimativa. Esse processo é muito mais eficiente do que o \textit{polling}, pois não há recursos desperdiçados enquanto se espera inutilmente. A desvantagem do método distribuído é que um certo tempo deve ser perdido realizando a sincronização de todas as \textit{threads} (para evitar, por exemplo, que dois sensores atualizem a estimativa ao mesmo tempo, corrompendo-a). A tabela \ref{tab:usoProcessador} relata os resultados obtidos para cada abordagem.
+A solução é transferir o controle do fluxo de execução de um módulo central para os modelos. Quando um sensor receber novas medidas e for capaz de gerar uma observação esperada, ele chama o Gerenciador de Localização, que então invoca o EKF e computa a nova estimativa. Esse processo é muito mais eficiente do que o \textit{polling}, pois não há recursos desperdiçados enquanto se espera inutilmente. A desvantagem do método distribuído é que um certo tempo deve ser perdido realizando a sincronização de todas as \textit{threads} (para evitar, por exemplo, que dois sensores atualizem a estimativa ao mesmo tempo, corrompendo-a). A tabela \ref{tab:usoProcessador} relata os resultados obtidos, em termos do uso médio dos processadores, para cada abordagem, centraliada e distribuída.
 
 \begin{table}[htbp]
 	\centering
