@@ -1,16 +1,16 @@
 \chapter{Modelo de Dinâmica}\label{subsec:modelodinamica}
 
-A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sistema (no caso, o robô) desde a última estimativa, ou seja, realizar a predição para o filtro de Kalman. Para isso, o modelo pode levar em conta o funcionamento do sistema, como ele opera, como os sinais de controle gerados atuam e como o ambiente interage com o sistema \cite{barra}. 
+A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sistema (neste caso, o robô) desde a última estimativa, ou seja, realizar a etapa de predição do EKF. Para isso, o modelo pode levar em conta o funcionamento do sistema, como ele opera, como os sinais de controle gerados atuam e como o ambiente interage com o sistema \cite{barra}. 
 
-A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, pudesse-se prever a postura do robô na iteração atual. Essa é a mesma abordagem utilizada em \cite{barra}.
+A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, prever a postura do robô no instante atual. Essa é a mesma abordagem utilizada em \cite{barra}.
 
-Esse modelo é mais simplista, pois não leva em consideração todos os sinais de controle do robô e operação interna do mesmo. Dessa forma, ele apresenta menor possibilidade de erros, mas também menor acurácia na predição.
+Esse modelo é mais simples, pois não leva em consideração todos os sinais de controle do robô e os detalhes de sua operação interna. Dessa forma, ele apresenta menor possibilidade de erros, mas também menor acurácia na predição.
 
-De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sinal desse deslocamento. Assim não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
+De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sinal desse deslocamento. Assim, não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
 
 \section{Modelagem}
 
-A plataforma-robô Pionner 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}, modelagem retirada de \cite{barra}, onde utiliza-se o mesmo robô. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor b representa a distância entre os centros das rodas e os valores $d_{m}$ e $\Delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
+A plataforma-robô Pioneer 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor $b$ representa a distância entre os centros das rodas e os valores $d_{m}$ e $\Delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
 
 \begin{figure}[h]%
 \begin{center}
@@ -20,7 +20,7 @@ A plataforma-robô Pionner 2DX é uma plataforma diferencial (com motores independ
 \end{center}
 \end{figure}
 
-Os valores de deslocamento médio linear e angular são os valores fornecidos pelo firmware de interface com o robô. Assim, a modelagem das equações de dinâmica foi feita em cima desses valores. 
+Os valores de deslocamento médio linear e angular são os valores fornecidos pelo \textit{firmware} de interface com o robô. A modelagem das equações de dinâmica foi feita com base nesses valores. 
 
 \begin{gather}
 	x(t)=x(t-1)+d_{m}(t)cos(\theta(t))\\
@@ -28,7 +28,7 @@ Os valores de deslocamento médio linear e angular são os valores fornecidos pelo
 	\theta(t)=\theta(t-1)+\delta\theta(t)
 \end{gather}
 
-Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman. A matriz F de propagação de incertezas será o jacobiano desse vetor, e está representada abaixo.
+Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman estendido. A matriz F de propagação de incertezas será o jacobiano desse vetor, e está representada abaixo.
 
 \begin{equation}
 \bm{F}(t) = \left( \begin{array}{ccc}
@@ -40,7 +40,7 @@ Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman. A matr
 
 \section{Incertezas}
 
-Para finalizar a modelagem exigida pelo EKF, é necessário calcular a matriz de incertezas Q, pois já temos a modelagem do vetor \textbf{f} e a propagação dessas incertezas pela matriz F.
+De posse do vetor \textbf{f} e a propagação dessas incertezas pela matriz F, deve-se calcular a matriz de incertezas Q.
 
 A matriz Q, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear ($\sigma^{2}_{d_{m}}$) e angular ($\sigma^{2}_{\theta_{m}}$).
 
