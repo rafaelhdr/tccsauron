@@ -1,9 +1,6 @@
 \section{Navegação}\label{subsec:navegacao}
 
-O módulo de Navegação não estava inicialmente previsto no projeto. A intenção era utilizar um software de navegação que acompanha a plataforma robô Pioneer 2DX, chamado SonARNL. Porém, ao longo dos testes, percebeu-se que o comportamento do SonARNL atrapalhava o módulo de Localização, e, portanto, decidiu-se por implementar um módulo de navegação simplista, mas sobre o qual houvesse total controle.
-\todo{Devemos falar sobre isso?}
-
-O comportamento não desejado apresentado pelo SonarNL era o de realizar constantes mudanças no $\theta$ do robô. É provável que esse comportamento tivesse a intenção de melhorar a precisão do módulo de localização, através da identificação de novos pontos de interesse para os sonares. Porém, de fato, isso gerava altas incertezas, prejudicando o desempenho da localização.
+O objetivo do módulo de navegação é guiar o SAURON até destinos escolhidos por um usuário, em um mapa previamente informado. Além disso, o módulo deve trabalhar de modo a otimizar o resultado do módulo de localização, essencial ao bom funcionamento do sistema.
 
 O módulo de navegação tem conhecimento prévio do mapa do ambiente. Este mapa é marcado com alguns pontos, formando um grafo e permitindo a utilização de algoritmos de busca em grafos para planejamento da rota.
 
