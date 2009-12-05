@@ -33,13 +33,15 @@ Como descrito na seção \ref{subsec:arqloc}, a localização bayesiana por filtro d
 
 Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 
-\section{Modelo Baseado em Associações}
+\subsection{Modelo Baseado em Associações}
 \label{sec:nossosonar}
-A seção \label{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
+A seção \ref{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
 Este modelo é chamado de baseado em associações porque, antes de gerar observações esperadas e corrigir a postura estimada, é necessária uma confirmação de que um sonar está de fato observando uma determinada parede. A tarefa de relacionar as últimas leituras com uma parede do mapa chama-se associação. A principal motivação de um modelo deste tipo é diminuir os erros causados pelos sonares, dispositivos imprecisos.
 
 De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Primeiramente, as últimas $k$ observações são validadas e é determinado se uma parede está sendo vista pelo sonar. Se isso for verdade, consulta-se o mapa do ambiente de modo a se associar as leituras mais recentes a uma parede no mapa. Por fim, quando a associação é realizada com sucesso, determina-se a observação que seria esperada para a postura estimada do robô. A associação é registrada e o modelo tenta mantê-la nas próximas iterações, atribuindo uma pontuação para seu grau de confiança.
+
+\todo{A parte acima está quase idêntica à realizada na revisão de literatura, melhor so falar a diferença}}
 
 \paragraph{Validação das observações} As últimas $k$ observações são armazenadas, juntamente com a postura estimada em cada uma delas. Determina-se, através de um teste estatístico, se as observações podem corresponder a uma superfície plana. Também nesta fase, curvas realizadas pelo robô são detectadas. Nesse caso, o \textit{buffer} é limpo e a associação atual, se houver, é desfeita.
 
@@ -222,13 +224,13 @@ Para a operação bem-sucedida do sistema de localização, é importante fornecer da
 Uma associação sendo rastreada tem associada a si uma pontuação numérica, iniciada com um valor pré-definido. A cada nova leitura gerada pelo sonar em um instante $i$, a pontuação $p$ é recalculada, do seguinte modo:
 
 \begin{equation*}
-	erro_i = (z_i-h(\hat{x}_i))^2
+	\epsilon_{i} = (z_i-h(\hat{x}_i))^2
 \end{equation*}
 \begin{equation*}
-	\Delta_{erro} = erro_{i-1} - erro_i
+	\Delta_{\epsilon} = \epsilon_{i-1} - \epsilon_{i}
 \end{equation*}
 \begin{equation}
-	p_i = p_{i-1} + K\Delta_{erro},
+	p_i = p_{i-1} + K\Delta_{\epsilon},
 \end{equation}
 
 onde:
@@ -265,24 +267,24 @@ Conhecida a parede que se está observando, o próximo passo é fornecer ao filtro 
 Sejam $r_{wall}$ e $\theta_{wall}$ os parâmetros da reta sendo observada, e seja $(x_{sonar}, y_{sonar}, \theta_{sonar})$ a postura global do sonar. Nessas condições, a observação esperada pelo modelo de observação é:
 
 \begin{equation*}
-h(x) = \frac{R_{wall} - x_{sonar}\cos \theta_{wall} - y_{sonar}\sin \theta_{wall}}{\sin(\beta)},
+h(x) = \frac{r_{wall} - x_{sonar}\cos \theta_{wall} - y_{sonar}\sin \theta_{wall}}{\sin(\beta)},
 \end{equation*}
 
-onde $\beta$ é o ângulo de incidência do feixe do sonar com a parede. Seja $(x', y', \theta')$ a postura relativa do sonar, em relação ao centro do robô. Então $\beta = \theta' + \alpha$, onde $\alpha$ é o ângulo formado pela trajetória do robô e a parede sendo observada. Como $\alpha= \pi/2 - \theta_{wall} + \theta$, tem-se:
+onde $\beta$ é o ângulo de incidência do feixe do sonar com a parede. Seja $(x'_{sonar}, y'_{sonar}, \theta'_{sonar})$ a postura relativa do sonar, em relação ao centro do robô. Então $\beta = \theta'_{sonar} + \alpha$, onde $\alpha$ é o ângulo formado pela trajetória do robô e a parede sendo observada. Como $\alpha= \pi/2 - \theta_{wall} + \theta$, tem-se:
 
 \begin{equation}
-\beta=\theta'+ \frac{\pi}{2} - \theta_{wall} + \theta
+\beta=\theta'_{sonar}+ \frac{\pi}{2} - \theta_{wall} + \theta
 \label{eq:beta}
 \end{equation}
 
 \begin{equation*}
-h(x) = \frac{R_{wall} - x_{sonar}\cos \theta_{wall} - y_{sonar}\sin \theta_{wall}}{\sin(\theta' + (\frac{\pi}{2} - \theta_{wall}) + \theta)}
+h(x) = \frac{r_{wall} - x_{sonar}\cos \theta_{wall} - y_{sonar}\sin \theta_{wall}}{\sin(\theta'_{sonar} + (\frac{\pi}{2} - \theta_{wall}) + \theta)}
 \end{equation*}
 
 Por fim, passando para o sistema de coordenadas do robô, que está na posição $(x, y, \theta)$, chega-se à equação final:
 
 \begin{equation}
-h(x) = \frac{r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}}{\sin(\theta' + (\frac{\pi}{2} - \theta_{wall}) + \theta)}
+h(x) = \frac{r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}}{\sin(\theta'_{sonar} + (\frac{\pi}{2} - \theta_{wall}) + \theta)}
 \end{equation}
 
 \paragraph{Cálculo da covariância do erro da observação} A obtenção da matriz $\bm{R}$ é dada na equação \ref{eq:matrizr}.
@@ -313,7 +315,7 @@ H_\theta = \frac{\partial h(x)}{\partial\theta} = \frac{f'\sin\beta-f\cos\beta}{
 \end{equation}
 
 \begin{equation}
-f' = x' \sin(\theta-\theta_{wall}) + y' \cos(\theta-\theta_{wall})
+f' = x'_{sonar} \sin(\theta-\theta_{wall}) + y'_{sonar} \cos(\theta-\theta_{wall})
 \end{equation}
 \begin{equation}
 f = r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}
@@ -334,9 +336,9 @@ O desempenho do modelo de observação baseado em associações, descrito na seção a
 
 O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição estimada do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a estimativa da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
 
-\subsection{Filtro de leituras}
+\subsection{Eliminação de leituras}
 
-No modelo anterior, um filtro sofisticado é descrito para garantir que as últimas $k$ leituras correspondam a uma distribuição normal, como explicado na seção \ref{sec:validacao}. Já este modelo garante apenas que leituras erradas não sejam consideradas. Por erradas, entende-se medidas acima de 5 metros, o valor utilizado pelos sensores para indicar que nenhum obstáculo foi encontrado.
+No modelo anterior, um modelo sofisticado é descrito para garantir que as últimas $k$ leituras correspondam a uma distribuição normal, como explicado na seção \ref{sec:validacao}. Já este modelo garante apenas que leituras erradas não sejam consideradas. Por erradas, entende-se medidas acima de 5 metros, o valor utilizado pelos sensores para indicar que nenhum obstáculo foi encontrado.
 
 É importante notar que essa diferença de abordagem torna o modelo simples muito mais suscetível a leituras espúrias, e a obstáculos dinâmicos.
 
@@ -382,7 +384,7 @@ Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de
 	\label{algo:modelosimples}
 \end{algorithm}
 
-\subsubsection{Obtenção da matriz de covariância e do jacobiano}
+\subsection{Obtenção da matriz de covariância e do jacobiano}
 O passo final do modelo de observação é fornecer ao EKF a matriz de covariância e o jacobiano $\bm{H}$:
 
 \begin{equation}
