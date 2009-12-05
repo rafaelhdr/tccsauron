@@ -7,7 +7,13 @@ Neste trabalho, emprega-se a visão monocular, cujo sensor é uma câmera de vídeo 
 \subsubsection{Modelo da Câmera}
 Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webcam} convencional, baseada na tecnologia CCD. O modelo da câmera segui o modelo de câmera de orifício, também conhecido como \textit{pinhole}. Neste modelo, a câmera possui um centro focal C e um plano de projeção, onde as imagens são formadas, representado como um espaço discreto cujo tamanho indica a resolução da câmera e cada elemento discreto é um pixel da imagem. 
 
-\missingfigure{Figura do modelo pinhole}
+\begin{figure}[htbp]
+	\centering
+		\includegraphics{imagens/pinhole.jpg}
+	\caption{Modelo de câmera pinhole, composto pelo centro focal C e pelo plano de projeção}
+	\label{fig:pinhole}
+\end{figure}
+
 
 As cores são representadas segundo o modelo RGB, em que uma cor é descrita por meio das intensidades nos componentes vermelho, verde e azul do espectro de luz. 
 
@@ -165,7 +171,7 @@ Seja a postura do robô descrita como ${\bf {x}} = \left[ x, y, \theta\right]^T$ 
 h^{(i)}({\bf x}) = -f_u \frac{ \sin(\theta)\left(x^{(i)}_{marco} - x \right) + \cos( \theta) \left( y^{(i)}_{marco} - y \right) } { \cos(\theta) \left(x^{(i)}_{marco} - x \right) - \sin(\theta) \left( y^{(i)}_{marco} - y \right) } + u_0 
 \end{equation*}
 
-onde $f_u$ é a distância focal na direção horizontal enquanto $u_0$ é o centro horizontal do plano de projeção da câmera.
+onde $f_u$ é a distância focal na direção horizontal enquanto $u_0$ é o centro horizontal do plano de projeção da câmera. Maiores detalhes sobre a determinação da equação $h\left( {\bf x} \right)$ podem ser obtidos em \cite{barra}.
 
 O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cada um dos marcos observados, tendo dimensão $1Xi$. 
 
