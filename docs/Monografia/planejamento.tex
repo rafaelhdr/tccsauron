@@ -1,4 +1,4 @@
-\subsection{Navegação}\label{subsec:navegacao}
+\section{Navegação}\label{subsec:navegacao}
 
 O módulo de Navegação não estava inicialmente previsto no projeto. A intenção era utilizar um software de navegação que acompanha a plataforma robô Pioneer 2DX, chamado SonARNL. Porém, ao longo dos testes, percebeu-se que o comportamento do SonarNL atrapalhava o módulo de Localização, e, portanto, decidiu-se por implementar um módulo de navegação simplista, mas sobre o qual houvesse total controle.
 
@@ -6,10 +6,10 @@ O comportamento não desejado apresentado pelo SonarNL era o de realizar constant
 
 O módulo de navegação têm conhecimento prévio do mapa do ambiente. Este mapa é marcado com alguns pontos, permitindo a formação de um grafo e utilização de algoritmos de busca em grafos para planejamento da rota.
 
-\subsubsection{Algoritmo}
+\subsection{Algoritmo}
 O módulo de Navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se "A estrela"). Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado do custo de se locomover do nó adjacente até o nó destino. 
 
-Para possibilitar essa navegação de busca em grafos, foram inseridos pontos de rota (ou \textit{waypoints}) no mapa utilizado pelo SAURON. Assim, os nós do grafo utilizado pelo algoritmo são os \textit{waypoints} e os objetivos (ou \textit{goals}). Os \textit{goals} representam os pontos de interesse para os usuários (e.g., "sala C2-50", sala "D1-30", e etc.) e já existiam no mapa originalmente. Os \textit{waypoints} são pontos artificiais, criados para servir de rota para a navegação.
+Para possibilitar essa navegação de busca em grafos, foram inseridos pontos de rota (ou \textit{waypoints}) no mapa utilizado pelo SAURON. Assim, os nós do grafo utilizado pelo algoritmo são os \textit{waypoints} e os objetivos (ou \textit{goals}). Os \textit{goals} representam os pontos de interesse para os usuários (e.g., ``sala C2-50'', sala ``D1-30'', e etc.) e já existiam no mapa originalmente. Os \textit{waypoints} são pontos artificiais, criados para servir de rota para a navegação.
 
 Os \textit{waypoints} são colocados afastados das bordas do mapa e em pontos estratégicos escolhidos para permitir a realização de curvas e facilitar a locomoção a qualquer um dos objetivos.
 
@@ -35,7 +35,7 @@ O problema de retrocessos, entretanto, ainda poderia existir. O módulo de navega
 
 Definiu-se que o nó temporário inicial possuiria um único nó adjacente. A busca desse nó adjacente é feita entre todos os nós alcançáveis pelo nó inicial. A partir disso, o nó adjacente será aquele cujo custo de rota até o destino seja o menor.
 
-\subsubsection{Execução e Controle de Rota} 
+\subsection{Execução e Controle de Rota} 
 
 Assim que definida uma rota de waypoints até o destino final, passa-se ao Executor de Rota, que opera da seguinte forma:
 
@@ -50,7 +50,7 @@ Além disso, o Executor de Rota também possui um comportamento de Evitar Colisões
 
 O módulo de navegação também possui um Controle de Rota, para determinar quando ele se afastou da rota prevista. Quando isso ocorre, um callback é enviado para recálculo da rota.
 
-\subsubsection{Navegação InterMapas}
+\subsection{Navegação InterMapas}
 
 Como um adendo final ao projeto, adicionou-se uma camada para permitir a navegação entre Múltiplos Mapas, permitindo, por exemplo, subir uma rampa em direção a um outro andar de um prédio.
 

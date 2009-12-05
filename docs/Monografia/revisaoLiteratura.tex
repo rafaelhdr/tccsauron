@@ -1,6 +1,8 @@
-\section{Revisão da literatura}\label{sec:revisaoLiteratura}
+\chapter{Revisão da literatura}\label{sec:revisaoLiteratura}
 
-\subsection{Rhino}
+Há, na literatura, alguns robôs-guias construídos e implantados com sucesso, em ambientes desafiadores. As técnicas utilizadas variam significativamente. Nesta seção, são descritas as abordagens adotadas por três desses projetos. Além disso, explica-se o projeto de \cite{barra}, a base deste trabalho.
+
+\section{Rhino}
 O RHINO foi o primeiro robô guia de museu realizado pela equipe de Sebastian Thrun, talvez um dos maiores especialistas na área de robótica e visão computacional. O RHINO foi utilizado durante 6 dias no Museu Bonn, tendo contato com mais de 2000 visitantes.
 
 Para a localização, os desenvolvedores tiveram três grandes prioridades: representações probabilísticas para dar maior robustez ao robô, flexibilidade quanto à disponibilidade de recursos e programação distribuída com tomada de decisões decentralizada. Seus principais módulos para isto eram o modelo de markov utilizado para estimar sua localização, juntamente com uma computação seletiva que realizava os cálculos apenas para os pontos de maior probabilidade. Esta seleção era mais ou menos restritiva de acordo com os recursos computacionais disponíveis.
@@ -25,7 +27,7 @@ O RHINO possui como diferencial a criação dinâmica de mapas. Apesar do aumento d
 
 Os projetistas do RHINO descrevem em \cite{Burgard98experienceswith} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
 
-\subsection{Minerva}
+\section{Minerva}
 O MINERVA é a segunda geração do robô-guia RHINO descrito anteriormente. Por ter sido desenvolvido pela mesma equipe, nota-se muitas semelhanças entre os dois projetos. O MINERVA foi utilizado no Smithsonian's National Museum of American History por duas semanas em 1998.
 
 A equipe se focou na resolução dos seguintes problemas:
@@ -48,7 +50,7 @@ Para o sistema de localização o MINERVA utiliza uma versão modificada da localiz
 	\label{fig:mapasMinerva}
 \end{figure}
 
-\subsection{RoboX}
+\section{RoboX}
 O RoboX, desenvolvido por uma equipe liderada por Roland Seigwart, descrito em \cite{Siegwart02largescale} foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
 
 \begin{figure}
@@ -71,10 +73,10 @@ A determinação de rotas é feita por meio de uma combinação de um sistema de desv
 
 A localização usa uma variação do EKF, visando compensar a fragilidade de uma técnica de crença em hipótese única. Ao contrário de métodos como o de Markov, em que a posição é calculada antes de ser validada por meio das informações dos sensores, os projetistas decidiram usar uma abordagem na qual a localização resultado direto da informação sensorial. Assim, é possível manter quantas hipóteses forem necessárias.
 
-\subsection{ELViS}
+\section{ELViS}
 Em \cite{barra}, é desenvolvido um sistema de localização que utiliza oito sonares frontais, aliados a uma câmera monocular. Esse é o trabalho que serviu de base para o módulo de localização do projeto descrito, pois combinou elementos de baixo custo a resultados experimentais promissores utilizando a mesma plataforma deste projeto.
 
-\subsubsection{Sonares}  \label{subsec:sonarbarra}
+\subsection{Sonares}  \label{subsec:sonarbarra}
 O sonar funciona através do cálculo do tempo entre a emissão de um pulso sonoro de alta frequência
 \todo{Colocar mais detalhes, em especial os que foram modificados no nosso projeto}%
  e sua recepção depois de ter sido refletido em uma superfície. Conhecendo a velocidade do pulso sonoro no ambiente, é possivel determinar a distância do objeto refletor.
@@ -103,7 +105,7 @@ Caso o teste seja aceito, a próxima etapa é a determinação da parede observada, 
 
 O método descrito em \ref{subsec:modelosonares} baseia-se no modelo de sonar descrito acima, e pode-se ter uma ideia matemática de como funciona. O desenvolvimento completo pode ser verificado em \cite{barra}.
 
-\subsubsection{Visão}
+\subsection{Visão}
 O modelo de observação adotado no sistema ELViS busca associar observações feitas a elementos do ambiente, sendo esses elementos retas verticais. Após a extração das retas verticais de um quadro da câmera, o modelo determina a correspondência entre conjunto de de retas verticais obtidas no quadro atual e o conjunto obtido no quadro anterior. Tal correspondência consiste na busca e determinação de pares de retas verticais, com uma reta de cada conjunto, que são projeções de um mesmo elemento do ambiente.
 
 Tendo um conjunto de retas verticais, o modelo de visão tenta associar cada reta a um marco conhecido do ambiente, descrito em um mapa. As retas que forem associadas a marcos passam ainda por uma etapa de validação, na qual é confirmada a presença das retas em uma sequência de quadros. Somente após a validação é que as retas são usadas para corrigir a estimativa da postura do robô.

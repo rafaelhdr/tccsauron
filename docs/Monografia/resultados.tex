@@ -15,11 +15,11 @@
 \begin{document}
 \end{comment}
 
-\section{Resultados}\label{sec:resultados}
+\chapter{Resultados e Discussão}\label{sec:resultados}
 
 Nesta seção são descritos os resultados alcançados com os sistemas descritos de localização e navegação descritos anteriormente. São apresentados dados experimentais e simulados para o sistema completo.
 
-\subsection{Metodologia de testes}
+\section{Metodologia de testes}
 
 Sendo o SAURON um robô-guia, o resultado a ser medido é a sua capacidade de atingir os objetivos indicados pelo usuário. Deste modo, escolheu-se uma série de rotas que deveriam ser cumpridas pelo robô, simulando um visitante que deseja se locomover até algum ponto de interesse do ambiente. A medida de sucesso é a distância entre a postura real do robô e a posição do objetivo no mapa. Considera-se menos relevantes os erros de localização ou navegação durante o percurso, já que a meta do sistema é atingir com sucesso um ponto específico do mapa.
 
@@ -41,7 +41,7 @@ Para os testes, utilizou-se o mapa do pavimento superior, bloco C, do prédio de 
 \end{figure}
 
 
-\subsubsection{Cenários de teste}
+\section{Cenários de teste}
 
 Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descritas na tabela \ref{tab:rotasteste} e ilustradas nas figuras \ref{fig:rotasTeste}. Esses cenários são de interesse prático porque submetem o robô a situações difíceis, porém frequentes na operação cotidiana de um robô guia:
 
@@ -77,7 +77,7 @@ Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descri
 		\label{fig:rotasTeste}
 \end{figure}
 
-\subsection{Resultados simulados}
+\section{Resultados simulados}
 Os cinco cenários de teste foram executados no simulador MobileSim\cite{mobileSimsite}. Devido à natureza do simulador, o modelo de observação da visão não foi testado. Os resultados foram bons, e os erros apresentados mantiveram-se muito pequenos. Por exemplo, a figura \ref{fig:resultSimC266C213} é a trajetória ``real'' durante o trecho C2-66 $\rightarrow$ C2-13. Nota-se que o robô seguiu exatamente o plano ideal, e o módulo de localização manteve-se preciso por todo o percurso\footnote{Se tivesse havido um erro de localização, certamente a trajetória não seria suave. Como descrito na seção \ref{subsec:navegacao}, quando o módulo de navegação detecta um desvio significativo em relação à rota planejada, o robô é parado e dá-se início a um novo planejamento}. Os demais resultados possuem as mesmas características e são mostrados na figura \ref{fig:resultadosSimulador}.
 
 \begin{figure}
@@ -98,7 +98,7 @@ Os cinco cenários de teste foram executados no simulador MobileSim\cite{mobileSi
 \caption{Resultados no simulador para as cinco rotas de teste. As rotas ideais foram cumpridas com precisão e não houve reajustes de rota devido a erro de localização ou à presença de obstáculos não previstos.} \label{fig:resultadosSimulador}
 \end{figure}
 
-\subsection{Resultados experimentais}
+\section{Resultados experimentais}
 Para averiguar a precisão do sistema ao cumprir as rotas de teste, foram desenhados no chão do ambiente quadrados de aproximadamente 40 cm de lado, centrados em cada objetivo a ser cumprido. O objetivo desse método é fornecer um modo visual de verificação da qualidade do sistema. Além disso, mediu-se a distância entre o centro do robô no instante em que ele acreditou ter chegado ao destino e o centro do quadrado mencionado. Os resultados, realizados apenas com o modelo de observação dos sonares, encontram-se na figura \ref{fig:resultadosRealFotos} e na tabela \ref{tab:resultadosRealTabela}.
 
 \begin{figure}
@@ -152,5 +152,5 @@ Além disso, traçou-se a posição estimada do robô durante o percurso em cada rota
 }
 \caption{A rota estimada (isto é, o gráfico das posturas estimadas) em cada teste. O sistema atinge seus objetivos, mas muito mais ruidosamente do que no simulador} \label{fig:resultadosRealGrafico}
 \end{figure}
-
+\input{discussao}
 %\end{document}

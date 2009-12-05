@@ -1,9 +1,8 @@
-\subsection{Localização}\label{subsec:arqloc}.
-
+\section{Localização}\label{subsec:arqloc}.
 A localização é o módulo mais complexo dentro da arquitetura deste trabalho. Ela foi projetada com base no filtro bayesiano EKF (\textit{Extended Kalman Filter}), melhor descrito no Apêndice \ref{sec:apendicea}.
 Nesta seção, encontra-se a visão geral deste módulo e sua implementação. 
 
-\subsubsection{Visão Geral}
+\subsection{Visão Geral}
 
 O sistema de localização estima a posição do robô a partir dos dados de seus sensores. O odômetro, sensor interno, é utilizado como uma medida da execução dos comandos de navegação do sistema, estando relacionado com um Modelo da Dinâmica do Sistema. Os sensores externos têm associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma leitura a uma parede no mapa. 
 
@@ -49,7 +48,7 @@ A figura \ref{fig:arquiteturalocalizacao} ilustra a arquitetura do módulo de loc
 	\label{fig:arquiteturalocalizacao}
 \end{figure}
 
-\subsubsection{Implementação}
+\subsection{Implementação}
 
 Uma dificuldade em se implementar um sistema como o resumido acima é o controle do fluxo de execução. Para explicar o problema, pode-se observar o algoritmo \ref{algo:localizacao}, um esboço do funcionamento básico do módulo de localização.
 
@@ -102,7 +101,3 @@ A solução é transferir o controle do fluxo de execução de um módulo central para
 	\caption{Uso do processador nas duas abordagens de implementação (sistema com duas CPUs)}
 	\label{tab:usoProcessador}
 \end{table}
-
-\input{modelodinamica}
-\input{nossosonar}
-\input{modeloVisao}

@@ -1,4 +1,4 @@
-\subsection{Arquitetura}\label{subsec:arquitetura}
+\chapter{Arquitetura}\label{subsec:arquitetura}
 
 A Arquitetura Geral do Sistema possui 5 grandes módulos: Interface Gráfica, Navegação, Localização e Sensores e Motores, como pode ser observado na figura \ref{arquitetura:global}. O módulo de Navegação pode ser dividido em Planejamento, Execução e Camada Reativa.
  
@@ -15,4 +15,7 @@ A interface gráfica apresenta ao usuário os possíveis destinos do robô e repassa
 
 A estimativa da postura (i.e, coordenadas $x$, $y$ e $\theta$) é realizada pelo módulo de localização, que se vale dos dados dos sensores, além de seu conhecimento do ambiente. Neste caso, são fornecidos uma planta geométrica e um mapa de marcos visuais. A arquitetura do módulo de localização é descrita na seção \ref{subsec:arqloc}.
 
-Finalmente, o módulo de sensores é composto por sonares, odômetro e uma câmera, que fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas $x$, $y$ e $\theta$). 
+Finalmente, o módulo de sensores é composto por sonares, odômetro e uma câmera, que fornecem as informações necessárias para o Módulo de Localização estimar sua postura (i.e, coordenadas $x$, $y$ e $\theta$).
+
+\input{localizacao}
+\input{planejamento}

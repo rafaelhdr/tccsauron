@@ -1,4 +1,4 @@
-\subsection{Modelo de Dinâmica}\label{subsec:modelodinamica}
+\chapter{Modelo de Dinâmica}\label{subsec:modelodinamica}
 
 A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sistema (no caso, o robô) desde a última estimativa, ou seja, realizar a predição para o filtro de Kalman. Para isso, o modelo pode levar em conta o funcionamento do sistema, como ele opera, como os sinais de controle gerados atuam e como o ambiente interage com o sistema \cite{barra}. 
 
@@ -8,7 +8,7 @@ Esse modelo é mais simplista, pois não leva em consideração todos os sinais de c
 
 De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sinal desse deslocamento. Assim não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
 
-\subsubsection{Modelagem}
+\section{Modelagem}
 
 A plataforma-robô Pionner 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}, modelagem retirada de \cite{barra}, onde utiliza-se o mesmo robô. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor b representa a distância entre os centros das rodas e os valores $d_{m}$ e $\Delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
 
@@ -38,7 +38,7 @@ Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman. A matr
 \end{equation}
 
 
-\subsubsection{Incertezas}
+\section{Incertezas}
 
 Para finalizar a modelagem exigida pelo EKF, é necessário calcular a matriz de incertezas Q, pois já temos a modelagem do vetor \textbf{f} e a propagação dessas incertezas pela matriz F.
 

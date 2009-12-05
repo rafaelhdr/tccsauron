@@ -1,10 +1,10 @@
-\subsection{Modelo de Observação da Visão}\label{subsec:modeloVisao}
+\chapter{Modelo de Observação da Visão}\label{subsec:modeloVisao}
 
 O uso de visão é muito interessante para a obtenção da localização pois uma câmera de vídeo é capaz de captar uma grande quantidade de estímulos visuais. Dentre os vários tipos de estímulos, optou-se, baseado em \cite{barra}, como principal estímulo retas verticais presentes nos ambientes, tais como batentes de portas, colunas, janelas, etc. A denominação \textsl{reta vertical} será dada às retas presentes no mundo real, enquanto \textsl{projeções} são as observações dessas retas nas imagens.
 
 Neste trabalho, emprega-se a visão monocular, cujo sensor é uma câmera de vídeo montada sobre o robô, apontada na direção frontal dele. 
 
-\subsubsection{Modelo da Câmera}
+\section{Modelo da Câmera}
 Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webcam} convencional, baseada na tecnologia CCD. O modelo da câmera segui o modelo de câmera de orifício, também conhecido como \textit{pinhole}. Neste modelo, a câmera possui um centro focal C e um plano de projeção, onde as imagens são formadas, representado como um espaço discreto cujo tamanho indica a resolução da câmera e cada elemento discreto é um pixel da imagem. 
 
 \begin{figure}[htbp]
@@ -41,7 +41,7 @@ Já um ponto no sistema de coordenadas global, isto é, no mesmo sistema de coorde
 onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas da câmera e o global, enquanto ${\bf C}$ é a translação entre esses sistemas de coordenadas. Assim como $f_u$ e $f_v$, ${\bf R}$ e ${\bf C}$ também são determinados durante a calibração da câmera.
 	
 
-\subsubsection{Realce de Projeções Verticais}
+\section{Realce de Projeções Verticais}
 
 A primeira etapa do processamento da visão é ressaltar, nos quadros obtidos pela câmera, apenas os pixels que possam pertencer à projeções de retas verticais. Isso é feito através do uso de um Operador de Sobel modificado.
 
@@ -82,7 +82,7 @@ Uma vez que o estímulo de interesse são as projeções verticais, utiliza-se apena
 \end{figure}
 
 
-\subsubsection{Perfil de Cor}
+\section{Perfil de Cor}
 
 O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
 
@@ -105,7 +105,7 @@ C = \frac{\left( R + G + B \right)}{6\delta}
 onde $\delta$ é a maior diferença esperada entre os componentes, $R$, $G$ e $B$ são representam as diferenças nas intensidades dos componentes de cor entre o lado direito e esquerdo, em relação à reta considerada, e $C$ é o fator de correlação. 
 
 
-\subsubsection{Detecção de Projeções Verticais}
+\section{Detecção de Projeções Verticais}
 
 A partir da imagem resultante da etapa anterior, onde existem apenas linhas verticais demarcada, as projeções são detectadas e suas posições na imagem são determinadas, juntamente com outros parâmetros que são citados abaixo.
 
@@ -137,7 +137,7 @@ Um marco pode ser definido como uma reta vertical cuja posição no mundo real é c
 Os marcos são usados, primeiramente, para que se tente estabelecer um vínculo entre projeções que estão sendo observadas com retas verticais do ambiente. Aqueles com os quais foi possível realizar uma associação são usados para atualizar a estimativa da postura do robô, conforme será mostrado posteriormente.
 
 
-\subsubsection{Associação entre Projeções Verticais e Marcos}
+\section{Associação entre Projeções Verticais e Marcos}
 
 A fase de associação visa determinar quais marcos conhecidos do ambiente estão sendo observados em um dado momento, a partir da lista de projeções detectadas no quadro da câmera. Ela pode ser segregada em três passos, conforme descrito a seguir.
 
@@ -159,7 +159,7 @@ Para cada marco visível $i$, há uma janela de busca, centrada em $u^(i)_{previsa
 As projeções que sobraram terão seus perfis de cor comparados com o do marco, resultando em valores que indicam o nível de correlação entre uma projeção e o marco. Tal comparação faz uso da equação \ref{eqn:perfilcor}. Uma associação entre projeção vertical e marco será concretizada se existir pelo menos um valor de correlação maior do que 0 e a projeção associada ao marco será aquela que apresentar o maior valor de correlação.
 
 
-\subsubsection{Obtenção da observação esperada}
+\section{Obtenção da observação esperada}
 
 Após a fase de associações, tem-se a lista de marcos que estão sendo observados e que devem ser usados para atualizar a postura do robô. O próximo passo é fornecer ao filtro de Kalman estendido as informações de observação real obtida ${\bf z}$, os valores esperados para as observações ${\bf h}$, a matriz de covariância $\bm{R}$, e o jacobiano de ${\bf h}$, a matriz $\bm{H}$.
 

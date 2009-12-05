@@ -18,7 +18,7 @@
 
 \newcommand{\hx}{$h(\hat{x})$}
 
-\subsection{Modelos de Observação dos Sonares}\label{subsec:modelosonares}
+\chapter{Modelos de Observação dos Sonares}\label{subsec:modelosonares}
 
 No contexto de localização robótica, um modelo de observação é usado para representar o comportamento de sensores e, em especial, como as medidas obtidas se relacionam com grandezas do ambiente observado. 
 
@@ -33,7 +33,7 @@ Como descrito na seção \ref{subsec:arqloc}, a localização bayesiana por filtro d
 
 Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 
-\subsubsection{Modelo Baseado em Associações}
+\section{Modelo Baseado em Associações}
 \label{sec:nossosonar}
 A seção \label{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
@@ -51,7 +51,7 @@ De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Prime
 
 Cada uma destas etapas serão detalhadas nas próximas seções.
 
-\subsubsection{Validação das Observações}
+\subsection{Validação das Observações}
 \label{sec:validacao}
 Define-se $k$ como o número de observações coletadas pelo sonar, e $k_{min}$ como o número mínimo de observações para que seja possível a validação de uma superfície plana. Enquanto $k<k_{min}$ a validação falhará. Quando $k=k_{min}$, inicia-se o processo de validação.
 
@@ -134,7 +134,7 @@ Nas equações acima, $d_{k,1}$ é a distância percorrida pelo robô durante as últi
 \label{eq:novoalpha}
 \end{equation}
 
-\subsubsection{Associação das observações com o mapa}\label{sec:associacao}
+\subsection{Associação das observações com o mapa}\label{sec:associacao}
 Se as $k$ observações armazenadas passarem no teste estatístico da equação \ref{eq:chitest}, procede-se com a busca de uma parede mapeada que corresponda às leituras validadas. O algoritmo utilizado trata as paredes como retas infinitas, definidas em termos de $r_{wall}$, o comprimento do segmento perpendicular à reta e que passa pela origem, e $\theta_{wall}$, o ângulo deste segmento com relação à origem. A figura \ref{fig:retas} ilustra essa convenção.
 
 Duas etapas de eliminação são aplicadas sobre as paredes do mapa, de modo a reduzir o espaço de busca. Primeiramente, paredes que estejam fora do alcance do sonar são eliminadas; em seguida, paredes que estejam além do cone de visão do sonar também são desconsideradas.
@@ -216,7 +216,7 @@ O teste realizado é:
 
 onde $\sigma_{obs}^2$ é a variância das medidas e $g^2$ é um limite determinado experimentalmente. Se uma, e somente uma, parede do mapa passar pelo teste da equação \ref{eq:testeassoc}, considera-se a associação realizada com sucesso. Nesse caso, o modelo é capaz de produzir uma observação esperada, de acordo com a equação \label{eq:hx}, e dá-se início à fase de rastreamento da associação.
 
-\subsubsection{Rastreamento de associação}
+\subsection{Rastreamento de associação}
 Para a operação bem-sucedida do sistema de localização, é importante fornecer dados frequentemente, de modo a se corrigir a postura estimada com rapidez. É para aumentar essa taxa de correções que se desenvolveu o modo de rastreamento de associação, que entra em vigor assim que uma associação entre leituras e parede é realizada com sucesso.
 
 Uma associação sendo rastreada tem associada a si uma pontuação numérica, iniciada com um valor pré-definido. A cada nova leitura gerada pelo sonar em um instante $i$, a pontuação $p$ é recalculada, do seguinte modo:
@@ -256,7 +256,7 @@ onde $R_{base}$ e $C$ são constantes ajustadas experimentalmente.
 
 Quando a pontuação de um rastreamento cai abaixo de zero, a associação é desfeita. Na próxima iteração do algoritmo do modelo de observação, a fase de associação, descrita na seção \ref{sec:associacao} é realizada e, caso tenha sucesso, dá-se início a um novo rastreamento.
 
-\subsubsection{Obtenção da observação esperada}
+\subsection{Obtenção da observação esperada}
 \label{sec:obsesperada}
 Conhecida a parede que se está observando, o próximo passo é fornecer ao filtro estendido de Kalman (EKF) as seguintes informações: a observação esperada para a postura estimada, \hx; a observação real obtida, $z$; a matriz de covariância, $\bm{R}$ e o jacobiano de \hx, a matriz $\bm{H}$.
 
@@ -319,7 +319,7 @@ f' = x' \sin(\theta-\theta_{wall}) + y' \cos(\theta-\theta_{wall})
 f = r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}
 \end{equation}
 
-\subsubsection{Determinação dos parâmetros do modelo de associações}
+\subsection{Determinação dos parâmetros do modelo de associações}
 
 Há diversos parâmetros utilizados no modelo de associações. Nesta seção, os valores utilizados na implementação do projeto são listados.
 
@@ -328,19 +328,19 @@ Há diversos parâmetros utilizados no modelo de associações. Nesta seção, os valo
 
 \paragraph{Parâmetros de rastreamento} A pontuação de uma associação recém-iniciada foi definida como 50. As constantes $K_{piora}$ e $K_{melhora}$ utilizadas foram, respectivamente, 4 e 3. No cálculo da equação da covariância do erro, equação \ref{eq:matrizr}, $R_{base} = 10$ e $C=300$. Quando a pontuação é zero, define-se a covariância do erro como 500.
 
-\subsection{Modelo Simples de Observação dos Sonares}\label{subsec:modeloSimplesSonar}
+\section{Modelo Simples de Observação dos Sonares}\label{subsec:modeloSimplesSonar}
 
 O desempenho do modelo de observação baseado em associações, descrito na seção anterior, nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequência de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz. Esta seção descreve sua operação.
 
 O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição estimada do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a estimativa da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
 
-\subsubsection{Filtro de leituras}
+\subsection{Filtro de leituras}
 
 No modelo anterior, um filtro sofisticado é descrito para garantir que as últimas $k$ leituras correspondam a uma distribuição normal, como explicado na seção \ref{sec:validacao}. Já este modelo garante apenas que leituras erradas não sejam consideradas. Por erradas, entende-se medidas acima de 5 metros, o valor utilizado pelos sensores para indicar que nenhum obstáculo foi encontrado.
 
 É importante notar que essa diferença de abordagem torna o modelo simples muito mais suscetível a leituras espúrias, e a obstáculos dinâmicos.
 
-\subsubsection{Determinação da parede e observação esperada}
+\subsection{Determinação da parede e observação esperada}
 
 Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de modo a se obter a estimativa mais recente da postura, $\hat{x}$. O mapa é consultado para se obter a parede que, caso o robô de fato estivesse naquela posição, seria observada. Feito isso, a observação esperada pode ser obtida trivialmente. O algoritmo \ref{algo:modelosimples} descreve o funcionamento desta etapa.
 
@@ -393,7 +393,7 @@ O passo final do modelo de observação é fornecer ao EKF a matriz de covariância 
 
 O jacobiano $\bm{H}$ é o mesmo da equação \ref{eq:matrizh}.
 
-\subsubsection{Determinação dos parâmetros do modelo simples}
+\subsection{Determinação dos parâmetros do modelo simples}
 
 Os únicos parâmetros configuráveis no modelo simples são o limite máximo do alcance do sonar, e $R_{simples}$, a covariância. O limite máximo teórico do sonar é de 5 metros, mas estabeleceu-se 4 metros como o alcance do modelo. Acima dessa distância, experimentos relatam degeneração significativa da precisão das leituras. $R_{simples}$ foi definido como 60 $cm^2$.
 
