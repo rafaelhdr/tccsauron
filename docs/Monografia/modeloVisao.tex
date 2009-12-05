@@ -10,7 +10,7 @@ Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webc
 \begin{figure}[htbp]
 	\centering
 		\includegraphics{imagens/pinhole.jpg}
-	\caption{Modelo de câmera pinhole, composto pelo centro focal C e pelo plano de projeção}
+	\caption{Modelo de câmera pinhole, composto pelo centro focal C e pelo plano de projeção (figura retirada de \cite{barra})}
 	\label{fig:pinhole}
 \end{figure}
 
@@ -222,18 +222,3 @@ Cada linha da matriz $\bm{H}$ diz respeito a um marco observado, devendo ter o n
 \end{equation}
 
 onde $\sigma^2_{obs}$ é a variância medida empiricamente.
-%\subsubsection{Rastreamento e Associação}
-%A associação de projeções à marcos foi dividida em duas etapas: rastrear projeções em seqüências contínuas de quadros e relacionar projeções rastreadas à marcos descritos no mapa. 
-%
-%%Essa abordagem não é a mesma seguida por Barra\cite{barra}, que busca a melhor associação aos marcos usando todas as projeções observadas em um dado instante. Maiores detalhes sobre os motivos da divisão serão citados abaixo.
-%
-%O rastreamento de projeções é responsável por identificar projeções em diferentes quadros que são, na verdade, a mesma projeção vista em um momento e/ou posição diferente. A importância dessa etapa é que ela realiza uma filtragem pelas projeções que têm maior probabilidade de serem marcos. Isso decorre das características desejadas em marcos: altamente visíveis e facilmente identificáveis. Se uma mesma projeção pode ser vista por muito tempo, ela pode ser um marco. 
-%%Dessa forma, o rastreamento também age de maneira análoga ao buffer adotado por Barra\cite{barra}.
-%
-%O rastreamento é feito a partir da comparação dos perfis de cor entre as projeções que foram observadas no último quadro obtido da câmera com aquelas que foram vistas em quadros anteriores, fazendo uso do valor de correlação explicado na seção anterior. Com isso, consegue-se determinar qual projeção nova representa uma antiga no instante de tempo atual, sendo possível manter um histórico das diferentes projeções, que são na verdade a mesma observada em tempos diferentes.
-%
-%A implementação do rastreamento é iniciada com a comparação de todas as projeções que estão sendo rastreadas com todas as que acabaram de ser detectadas no último frame obtido da câmera. Essa comparação, baseada no perfil de cor, resulta num valor de correlação. Somente os valores acima de um dado limiar, determinado empiricamente, são aceitos. Em seguida, os valores são agrupados de acordo com a projeção rastreada que foi usada para gerá-lo, e ordenados, em ordem decrescente. Para cada grupo, calcula-se um fator de similaridade. O grupo que tiver o maior valor de similaridade, terá o direito de utilizar a projeção recém-observada, associada ao maior valor de correlação, para relacionar à sua projeção rastreada. Após isso, o grupo com maior similaridade é removido, assim como todos os valores de correlação, dos demais grupos, associados à projeção recém-observada que foi usada. O cáluclo de similaridade e a busca pelos grupos é repetida até que todas as projeções rastredas sejam relacionadas ou que ou o maior valor de similaridade encontrado esteja abaixo de um limiar.
-%
-%O efeito de buffer se deve ao fato do rastreador poder ser configurado para considerar que uma dada projeção só está sendo devidamente rastreada se ela for vista pelos n vezes nos últimos i quadros, sendo n e i facilmente ajustáveis.
-%
-%A associação de marcos é feita entre projeções rastreadas e marcos descritos num arquivo. Um marco foi modelado como um perfil de cor que se encontra em uma determinada coordenada $\left(x, y\right)$ do mundo real. O algoritmo de associação de marcos, segue, em essência, as mesmas idéias aplicadas no rastreamento de projeções, existindo apenas diferenças quanto as estruturas de dados empregadas na implementação do algoritmo. 
