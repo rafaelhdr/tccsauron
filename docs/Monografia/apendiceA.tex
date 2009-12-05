@@ -2,7 +2,7 @@
 
 A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
 
-Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{simon}.
+Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro estendido de kalman, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{Simon06OptimalState}.
 
 \section{Método dos mínimos quadrados}
 
@@ -135,22 +135,22 @@ De posse da base teórica acima pode-se descrever o filtro de Kalman, que opera p
 \end{itemize}
 Assim, o sistema é modelado da seguinte forma
 \begin{gather}
-	\textbf{x}_{k}=F_{k-1}\textbf{x}_{k-1}+G_{k-1}\textbf{u}_{k-1}+\textbf{w}_{k-1} \nonumber \\
-	\textbf{y}_{k}=H_{k}\textbf{x}_{k}+\textbf{v}_{k}
+	\textbf{x}_{t}=F_{t-1}\textbf{x}_{t-1}+B_{t-1}\textbf{u}_{t-1}+\textbf{w}_{t-1} \nonumber \\
+	\textbf{y}_{t}=H_{t}\textbf{x}_{t}+\textbf{v}_{t}
 \end{gather}
-onde os ruídos $\textbf{w}_{k-1}$ e $\textbf{v}_{k}$ são brancos, centrados no zero, não correlatos e possuem matrizes de covariância $Q$ e $R$ respectivamente.
+onde os ruídos $\textbf{w}_{t-1}$ e $\textbf{v}_{t}$ são brancos, centrados no zero, não correlatos e possuem matrizes de covariância $Q$ e $R$ respectivamente.
 
-Para estimar o valor de $\textbf{x}_{k}$ divide-se $\textbf{x}_{k}$ em dois valores distintos, $\hat{\textbf{x}}_{k}^{-}$ e $\hat{\textbf{x}}_{k}^{+}$, onde o primeiro corresponde a um valor antes de uma observação e o segundo após a observação, i.e., $\hat{\textbf{x}}_{k}^{-}$ corresponde ao valor estimado baseado na dinâmica do sistema em um instante $k$ instantâneamente antes de uma medição ser realizada, enquanto que $\hat{\textbf{x}}_{k}^{+}$ corresponde ao valor estimado no mesmo instante $k$ após a obtenção de uma estimativa $\textbf{y}_{k}$. De forma semelhante, $P_{k}$ é dividido em $P_{k}^{-}$ e $P_{k}^{+}$, sendo estas as matrizes de covariâncias antes e depois de uma observação no instante $k$ respectivamente.
+Para estimar o valor de $\textbf{x}_{t}$ divide-se $\textbf{x}_{t}$ em dois valores distintos, $\hat{\textbf{x}}_{t}^{-}$ e $\hat{\textbf{x}}_{t}^{+}$, onde o primeiro corresponde a um valor antes de uma observação e o segundo após a observação, i.e., $\hat{\textbf{x}}_{t}^{-}$ corresponde ao valor estimado baseado na dinâmica do sistema em um instante $t$ instantâneamente antes de uma medição ser realizada, enquanto que $\hat{\textbf{x}}_{t}^{+}$ corresponde ao valor estimado no mesmo instante $t$ após a obtenção de uma estimativa $\textbf{y}_{t}$. De forma semelhante, $P_{t}$ é dividido em $P_{t}^{-}$ e $P_{t}^{+}$, sendo estas as matrizes de covariâncias antes e depois de uma observação no instante $t$ respectivamente.
 
 Tendo definido estes estados e de posse da teoria previamente discutida, pode-se descrever o processo de estimação através do filtro de Kalman com o seguinte processo:
 \begin{itemize}
 	\item Descreve-se matematicamente o sistema:
 		\begin{gather}
-			\textbf{x}_{k}=F_{k-1}\textbf{x}_{k-1}+B_{k-1}\textbf{u}_{k-1}+\textbf{w}_{k-1} \nonumber \\
-			\textbf{y}_{k}=H_{k}\textbf{x}_{k}+\textbf{v}_{k} \nonumber \\
-			E(\textbf{w}_{k}\textbf{w}^{T}_{j})=Q_{k}\delta_{k-j} \\
-			E(\textbf{v}_{k}\textbf{v}^{T}_{j})=R_{k}\delta_{k-j} \nonumber \\
-			E(\textbf{w}_{k}\textbf{v}^{T}_{j})=0 \nonumber 
+			\textbf{x}_{t}=F_{t-1}\textbf{x}_{t-1}+B_{t-1}\textbf{u}_{t-1}+\textbf{w}_{t-1} \nonumber \\
+			\textbf{y}_{t}=H_{t}\textbf{x}_{t}+\textbf{v}_{t} \nonumber \\
+			E(\textbf{w}_{t}\textbf{w}^{T}_{j})=Q_{t}\delta_{t-j} \\
+			E(\textbf{v}_{t}\textbf{v}^{T}_{j})=R_{t}\delta_{t-j} \nonumber \\
+			E(\textbf{w}_{t}\textbf{v}^{T}_{j})=0 \nonumber 
 		\end{gather}	
 	\item Inicia-se o filtro:
 		\begin{gather}
@@ -159,11 +159,11 @@ Tendo definido estes estados e de posse da teoria previamente discutida, pode-se
 		\end{gather}
 	\item Itera-se o filtro para cada uma das seguintes equações:
 		\begin{gather}
-			P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1} \nonumber \\
-			\bar{\textbf{x}}^{-}_{k}=F_{k-1}\hat{\textbf{x}}^{+}_{k-1}+B_{k-1}\textbf{u}_{k-1} \nonumber \\
-			K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1} \\
-			\hat{\textbf{x}}^{+}_{k}=\bar{\textbf{x}}^{-}_{k}+K_{k}(\textbf{y}_{k}-H_{k}\bar{\textbf{x}}^{-}_{k}) \nonumber \\
-			P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k} \nonumber
+			P^{-}_{t}=F_{t-1}P^{+}_{t-1}F^{T}_{t-1}+Q_{t-1} \nonumber \\
+			\bar{\textbf{x}}^{-}_{t}=F_{t-1}\hat{\textbf{x}}^{+}_{t-1}+B_{t-1}\textbf{u}_{t-1} \nonumber \\
+			K_{k}=P^{-}_{t}H^{T}_{t}(H_{t}P^{-}_{t}H^{T}_{t}+R_{t})^{-1} \\
+			\hat{\textbf{x}}^{+}_{t}=\bar{\textbf{x}}^{-}_{k}+K_{t}(\textbf{y}_{t}-H_{t}\bar{\textbf{x}}^{-}_{t}) \nonumber \\
+			P^{+}_{t}=(I-K_{t}H_{t})P^{-}_{t} \nonumber
 		\end{gather}
 \end{itemize}
 Ou seja, o sistema é suprido de uma estimativa inicial do estado e da covariância da estimativa. Se o estado é conhecido, $P_{0}^{+}=0$. A partir daí, propaga-se o sistema no tempo até o momento da primeira medição, obtendo-se $P_{1}^{-}$ e $\hat{\textbf{x}}_{1}^{-}$. Após isto, o valor da estimativa $\textbf{y}_{1}$ é utilizado para atualizar a estimativa e covariância, obtendo-se assim $\hat{\textbf{x}}_{1}^{+}$ e $P_{1}^{+}$.
@@ -178,7 +178,7 @@ No filtro extendido, os estados de transição e modelos de observação não precisa
 No EKF, o sistema é modelado da seguinte forma:
 \begin{gather}
 	\dot{\textbf{x}}	= f(\textbf{x},\textbf{u},\textbf{w},t) \nonumber \\
-	\textbf{y} = h(\textbf{x},\textbf{v},t)
+	\textbf{y}			= h(\textbf{x},\textbf{v},t)
 \end{gather}
 Onde $\textbf{x}$ é o estado, $\textbf{u}$ é uma força de controle, $\textbf{w}$ o ruído do processo e $\textbf{v}$ o ruído da medição.
 
@@ -186,8 +186,8 @@ Estas equações bastam para predizer a estimativa e atualizá-la com a nova medida
 
 Para o processo de linearização do entorno da estimativa, é necessário o cálculo do jacobiano de $f$ e $h$, obtendo-se $F_{k-1}$ e $H_{k}$ respectivamente, que serão utilizados nas equações de filtro linear, a saber:
 \begin{gather}
-	P^{-}_{k}=F_{k-1}P^{+}_{k-1}F^{T}_{k-1}+Q_{k-1} \nonumber \\
-	K_{k}=P^{-}_{k}H^{T}_{k}(H_{k}P^{-}_{k}H^{T}_{k}+R_{k})^{-1} \\
-	P^{+}_{k}=(I-K_{k}H_{k})P^{-}_{k} \nonumber
+	P^{-}_{k}=F_{t-1}P^{+}_{t-1}F^{T}_{t-1}+Q_{t-1} \nonumber \\
+	K_{t}=P^{-}_{k}H^{T}_{t}(H_{t}P^{-}_{t}H^{T}_{k}+R_{t})^{-1} \\
+	P^{+}_{t}=(I-K_{t}H_{t})P^{-}_{t} \nonumber
 \end{gather}
 É importante notar que para sistemas com não-linearidades muito grandes a expansão apresenta erros muito grandes. No entanto, para o problema de estimativa de localização de um robô o EKF apresenta performance satisfatória.

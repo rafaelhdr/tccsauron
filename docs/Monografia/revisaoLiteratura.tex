@@ -8,22 +8,22 @@ Para a localização, os desenvolvedores tiveram três grandes prioridades: represe
 \begin{figure}[ht]
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRhino.png}
-	\caption{Arquitetura de software utilizada em Rhino. \cite{Rhino}}
+	\caption{Arquitetura de software utilizada em Rhino. \cite{Burgard98experienceswith}}
 	\label{fig:arquiteturaRhino}
 \end{figure}
 
 Para a navegação, ou seja, planejamento de rotas e execução, foi criada uma hierarquia que pode ser vista em \ref{fig:arquiteturaRhino}. O módulo de evitar colisões é o nível mais baixo, ou seja, têm prioridade sobre os demais. Este é responsável para que o robô não atingisse qualquer objeto e principalmente transeuntes. Acima deste existe o módulo de planejamento de movimento pelo menor caminho, e por fim o módulo controlador, que controla a ordem das ações do robô.
 
-O RHINO possui como diferencial a criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar o mapa do ambiente. Em \cite{Rhino} é descrito como o RHINO realiza o mapeamento e como este funde os mapas construídos por cada sensor para obter um mapa integrado.
+O RHINO possui como diferencial a criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar o mapa do ambiente. Em \cite{Burgard98experienceswith} é descrito como o RHINO realiza o mapeamento e como este funde os mapas construídos por cada sensor para obter um mapa integrado.
 
 \begin{figure}[ht]
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/mapasRhino.png}
-	\caption{Mapas gerado pelos diverss sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Rhino}}
+	\caption{Mapas gerado pelos diverss sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Burgard98experienceswith}}
 	\label{fig:mapaRhino}
 \end{figure}
 
-Os projetistas do RHINO descrevem em \cite{Rhino} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
+Os projetistas do RHINO descrevem em \cite{Burgard98experienceswith} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
 
 \subsection{Minerva}
 O MINERVA é a segunda geração do robô-guia RHINO descrito anteriormente. Por ter sido desenvolvido pela mesma equipe, nota-se muitas semelhanças entre os dois projetos. O MINERVA foi utilizado no Smithsonian's National Museum of American History por duas semanas em 1998.
@@ -44,17 +44,17 @@ Para o sistema de localização o MINERVA utiliza uma versão modificada da localiz
 \begin{figure}[ht]
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/leiturasCorrompidas.png}
-	\caption{Mapas obtidos de um sensor. O primeiro mostra apenas leituras autênticas, o segundo mostra leituras excluídas devido à presença de pessoas interferindo a leitura. Mesmo que estas medidas sejam excluídas do processo de localização, elas ainda são utilizadas pelo sistema que evita colisões. \cite{Minerva}}
+	\caption{Mapas obtidos de um sensor. O primeiro mostra apenas leituras autênticas, o segundo mostra leituras excluídas devido à presença de pessoas interferindo a leitura. Mesmo que estas medidas sejam excluídas do processo de localização, elas ainda são utilizadas pelo sistema que evita colisões. \cite{Thrun99minerva}}
 	\label{fig:mapasMinerva}
 \end{figure}
 
 \subsection{RoboX}
-O RoboX, desenvolvido por uma equipe liderada por Roland Seigwart, descrito em \cite{Robox} foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
+O RoboX, desenvolvido por uma equipe liderada por Roland Seigwart, descrito em \cite{Siegwart02largescale} foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
 
 \begin{figure}
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/ArquiteturaRobox.png}
-	\caption{Arquitetura de software utilizada em RoboX. \cite{Robox}}
+	\caption{Arquitetura de software utilizada em RoboX. \cite{Siegwart02largescale}}
 	\label{fig:arquiteturarobox}
 \end{figure}
 
@@ -63,7 +63,7 @@ O sistema de navegação utilizado no RoboX emprega um mapeamento topológico, repr
 \begin{figure}[ht]
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/MapaRobox.png}
-	\caption{mapa utilizado pelo RoboX, com o grafo gerado incluindo pontos fantasmas. \cite{Robox}}
+	\caption{mapa utilizado pelo RoboX, com o grafo gerado incluindo pontos fantasmas. \cite{Siegwart02largescale}}
 	\label{fig:mapaRobox}
 \end{figure}
 
