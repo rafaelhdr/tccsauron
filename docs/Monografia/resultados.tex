@@ -1,3 +1,155 @@
+\begin{comment}
+\documentclass[a4paper,11pt]{article}
+\usepackage{graphicx}
+\usepackage[brazilian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{amsmath, amsthm, amssymb, bm}
+\usepackage[ruled,vlined,portugues]{algorithm2e}
+\usepackage{array}
+\usepackage{subfigure}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+\end{comment}
+
 \section{Resultados}\label{sec:resultados}
 
-Os resultados obtidos devem ser apresentados, em ordem cronológica, de forma a objetiva, exata e lógica, estejam ou não de acordo com o ponto de vista do pesquisador. Podem ser acompanhados por tabelas, gráficos, figuras etc. para maior facilidade de exposição. Os dados numéricos, sempre que possível, devem ser submetidos à análise estatística.
+Nesta seção são descritos os resultados alcançados com os sistemas descritos de localização e navegação descritos anteriormente. São apresentados dados experimentais e simulados para o sistema completo.
+
+\subsection{Metodologia de testes}
+
+Sendo o SAURON um robô-guia, o resultado a ser medido é a sua capacidade de atingir os objetivos indicados pelo usuário. Deste modo, escolheu-se uma série de rotas que deveriam ser cumpridas pelo robô, simulando um visitante que deseja se locomover até algum ponto de interesse do ambiente. A medida de sucesso é a distância entre a postura real do robô e a posição do objetivo no mapa. Considera-se menos relevantes os erros de localização ou navegação durante o percurso, já que a meta do sistema é atingir com sucesso um ponto específico do mapa.
+
+Para os testes, utilizou-se o mapa do pavimento superior, bloco C, do prédio de Engenharia Elétrica da Escola Politécnica. O mapa resultante e seus \textit{waypoints} estão representados na figura \ref{fig:mapatestes1} e \ref{fig:mapa2testes}.
+
+
+\begin{figure}[bp]
+	\centering
+		\includegraphics[height=0.8\textheight]{imagens/pavsupmod_1_goals.PNG}
+	\label{fig:mapatestes1}
+	\caption{Parte do mapa de testes. Nós amarelos indicam \textit{waypoint}; nós verdes são objetivos. Linhas pretas representam paredes, e linhas laranjas são limites do mapa (que não necessariamente correspondem a paredes). Os destinos das rotas de teste estão assinalados. O vão formado pelo cruzamento do corredor com a saída da rampa é uma área difícil para o módulo de localização.}
+\end{figure}
+
+\begin{figure}[bp]
+	\centering
+		\includegraphics[height=0.8\textheight]{imagens/pavsupmod_2_goals.PNG}
+	\label{fig:mapa2testes}
+	\caption{Segunda parte do mapa de testes. Nós amarelos indicam \textit{waypoint}; nós verdes são objetivos. Linhas pretas representam paredes, e linhas laranjas são limites do mapa (que não necessariamente correspondem a paredes). Os destinos das rotas de teste estão assinalados.}
+\end{figure}
+
+
+\subsubsection{Cenários de teste}
+
+Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descritas na tabela \ref{tab:rotasteste} e ilustradas nas figuras \ref{fig:rotasTeste}. Esses cenários são de interesse prático porque submetem o robô a situações difíceis, porém frequentes na operação cotidiana de um robô guia:
+
+\paragraph{Navegação em reta extensa} Em um dos testes realizados, o robô percorreu 108 metros. Sem a correção provida pelos sensores, a única estimativa de posição seria a predição do odômetro. O erro na estimativa tenderia, então, a se acumular. Portanto, este teste verifica a capacidade do módulo de localização de corrigir os erros inerentes à predição.
+
+\paragraph{Passagem por vão} Há um vão no ambiente de testes, no cruzamento entre o corredor e a saída da rampa. Este é um lugar crítico para o módulo de localização, pois não há paredes que sirvam de referência para os sonares\footnote{Pela característica do modelo de observação dos sonares, a \textit{ausência} de paredes não pode ser utilizada como característica do ambiente.}. Por exemplo, durante um dos testes, a passagem de uma transeunte na frente do robô logo antes da entrada do vão causou perda subsequente de localização. Isso ocorreu porque as leituras espúrias causadas por essa interferência foram utilizadas para corrigir (erroneamente) a estimativa, e como o robô adentrou o vão logo após, não houve tempo de corrigi-la. Ao chegar novamente em uma região com paredes, o erro havia se tornado tão grande que não foi mais possível corrigi-lo.
+
+\paragraph{Curvas} A imprecisão do odômetro aumenta significativamente quando o robô efetua uma curva. De fato, na maior parte das vezes em que o robô gira, há uma diferença significativa entre a mudança angular predita e a real\footnote{Testes preliminares indicam que essa diferença não tem média zero e, portanto, poderia ser compensada no modelo de dinâmica. Essa possibilidade não foi desenvolvida neste trabalho.}. Para que o módulo de localização conserte a predição incorreta é necessário que os sensores atuem. Particularmente delicadas são curvas realizadas no vão, pelos motivos expostos acima.
+
+\paragraph{Navegação por corredor estreito} Passagens estreitas são desafiadoras para o módulo de navegação. É necessário manter uma distância de segurança às paredes, ao mesmo tempo em que se avança em direção à meta. Pelo mesmo motivo, passagem por porta também é um cenário interessante de teste.
+
+\paragraph{Rampas} Descer ou subir uma rampa como a do mapa de testes apresenta três desafios. Primeiro, há o problema cartográfico da planificação da rampa . Em segundo lugar -- e especificamente para o ambiente de testes --, o chão das rampas é recoberto de material antiderrapante, com sulcos espessos. Isso se revelou um problema para o robô, pois, além da trepidação, as rodas podem aderir aos sulcos, desviando-o da rota planejada. Um outro problema, também específico e talvez o mais importante, é que as rampas são cercadas por grades vazadas. Em certos momentos, como na descida da rampa, o sonar incide exatamente sobre uma das grades (representadas no mapa como paredes). Contudo, há ocasiões em que o ângulo de incidência dos sonares é tal que os raios refletem na parede situada atrás da grade. Naturalmente, esse é um grave problema para o módulo de localização, pois essas medidas são interpretadas como erros e resultam em correções incorretas na postura estimada.
+
+\begin{table}[hbf]
+	\centering
+		\begin{tabular}{ | l | r | }
+		\hline
+		\textbf{Rota} & \textbf{Cenário de teste} \\ \hline
+		C2-66~$\rightarrow$~C2-13 & Navegação em reta extensa; passagem por \\ &  vão e por duas portas estreitas \\ \hline
+		C2-13~$\rightarrow$~Secretaria & Curva no vão\\ \hline
+		Secretaria $\rightarrow$~C2-43 & Curvas no vão e no corredor; navegação \\ &  em corredor estreito\\ \hline
+		C2-43~$\rightarrow$~pavimento entre rampas & Navegação em corredor estreito; \\ &  curva no vão; descida na rampa \\ \hline
+		Entrada da rampa~$\rightarrow$~C2-66 & Navegação  em reta extensa; curva no \\ &  vão \\ \hline
+		\end{tabular}
+	\caption{Rotas de testes e os cenários de testes por elas cobertas. As rotas estão ilustradas na figura \ref{fig:rotasTeste}}
+	\label{tab:rotasteste}
+\end{table}
+
+\begin{figure}
+	\centering
+		\includegraphics[width=0.9\columnwidth]{imagens/rotasTeste.pdf}
+	\label{fig:rotasTeste}
+	\caption{As cinco rotas de teste testadas.}
+\end{figure}
+
+\subsection{Resultados simulados}
+Os cinco cenários de teste foram executados no simulador MobileSim\cite{mobileSimsite}. Devido à natureza do simulador, o modelo de observação da visão não foi testado. Os resultados foram bons, e os erros apresentados mantiveram-se muito pequenos. Por exemplo, a figura \ref{fig:resultSimC266C213} é a trajetória ``real'' durante o trecho C2-66 $\rightarrow$ C2-13. Nota-se que o robô seguiu exatamente o plano ideal, e o módulo de localização manteve-se preciso por todo o percurso\footnote{Se tivesse havido um erro de localização, certamente a trajetória não seria suave. Como descrito na seção \ref{subsec:navegacao}, quando o módulo de navegação detecta um desvio significativo em relação à rota planejada, o robô é parado e dá-se início a um novo planejamento}. Os demais resultados possuem as mesmas características e são mostrados na figura \ref{fig:resultadosSimulador}.
+
+\begin{figure}
+\centering
+\mbox{
+\subfigure[C2-66~$\rightarrow$~C2-13]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-66_C2-13.jpg}
+\label{fig:resultSimC266C213}}\quad
+\subfigure[C2-13~$\rightarrow$~Secretaria]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-13Secretaria.jpg}}
+}
+\mbox{
+\subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/SimuladoSecretaria_C2-43.jpg}\quad
+\subfigure[C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-43_Rampa.jpg}}\quad
+}}
+
+\mbox{
+\subfigure[Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/SimuladoRampa_C2-66.jpg}}}
+}
+\caption{Resultados no simulador para as cinco rotas de teste. As rotas ideais foram cumpridas com precisão e não houve reajustes de rota devido a erro de localização ou à presença de obstáculos não previstos.} \label{fig:resultadosSimulador}
+\end{figure}
+
+\subsection{Resultados experimentais}
+Para averiguar a precisão do sistema ao cumprir as rotas de teste, foram desenhados no chão do ambiente quadrados de aproximadamente 40 cm de lado, centrados em cada objetivo a ser cumprido. O objetivo desse método é fornecer um modo visual de verificação da qualidade do sistema. Além disso, mediu-se a distância entre o centro do robô no instante em que ele acreditou ter chegado ao destino e o centro do quadrado mencionado. Os resultados, realizados apenas com o modelo de observação dos sonares, encontram-se na figura \ref{fig:resultadosRealFotos} e na tabela \ref{tab:resultadosRealTabela}.
+
+\begin{figure}
+\centering
+\mbox{
+\subfigure[Em C2-13, após percorrer C2-66~$\rightarrow$~C2-13]{\includegraphics[width=3in]{imagens/resultados/C2-66_C2-13.jpg}}\quad
+\subfigure[Na secretaria, após percorrer C2-13~$\rightarrow$~Secretaria]{\includegraphics[width=3in]{imagens/resultados/C2-13_Secretaria_v2.jpg}}
+}
+
+\mbox{
+\subfigure[Em C2-43, após percorrer Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/Secretaria_C2-43.jpg}}\quad
+\subfigure[Na Rampa, após percorrer C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/C2-43_Rampa.jpg}}\quad
+}
+
+\mbox{
+\subfigure[Na C2-66, após percorrer Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/Rampa_C2-66.jpg}}}
+}
+\caption{Fotografias da postura real e ideal do robô após chegar a um destino de uma rota de teste.} \label{fig:resultadosRealFotos}
+\end{figure}
+
+\begin{table}[hbf]
+	\centering
+		\begin{tabular}{ | l | r | }
+		\hline
+		\textbf{Rota} & \textbf{Erro no destino (cm)} \\ \hline
+		C2-66~$\rightarrow$~C2-13 & 43  \\ \hline
+		C2-13~$\rightarrow$~Secretaria & 21 \\ \hline
+		Secretaria~$\rightarrow$~C2-43 &46 \\ \hline
+		C2-43~$\rightarrow$~Rampa & 49 \\ \hline
+		Rampa~$\rightarrow$~C2-66 & 45 \\ \hline
+		\end{tabular}
+	\caption{Os erros no destino após a execução de cada rota de teste.}
+	\label{tab:resultadosRealTabela}
+\end{table}
+
+Além disso, traçou-se a posição estimada do robô durante o percurso em cada rota de teste. Os resultados, na figura \ref{fig:resultadosRealGrafico}.
+
+\begin{figure}
+\centering
+\mbox{
+\subfigure[C2-66~$\rightarrow$~C2-13]{\includegraphics[width=3in]{imagens/resultados/grafico_C2-66_C2-13.pdf}}\quad
+\subfigure[C2-13~$\rightarrow$~Secretaria]{\includegraphics[width=3in]{imagens/resultados/grafico_C2-13_Secretaria.pdf}}
+}
+\mbox{
+\subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/grafico_Secretaria_C2-43.pdf}}\quad
+\subfigure[C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/grafico_C2-43_Rampa.pdf}}\quad
+}
+\mbox{
+\subfigure[Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/grafico_Rampa_C2-66.pdf}}}
+}
+\caption{Resultados no simulador para as cinco rotas de teste. As rotas ideais foram cumpridas com precisão e não houve reajustes de rota devido a erro de localização ou à presença de obstáculos não previstos.} \label{fig:resultadosRealGrafico}
+\end{figure}
+
+%\end{document}
