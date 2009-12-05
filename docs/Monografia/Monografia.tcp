@@ -4,9 +4,9 @@ Version=4
 
 [ProjectInfo]
 MainFile=Monografia.tex
-UseBibTeX=1
+UseBibTeX=0
 UseMakeIndex=0
 ActiveProfile=LaTeX => PDF
-ProjectLanguage=de
-ProjectDialect=DE
+ProjectLanguage=
+ProjectDialect=
 

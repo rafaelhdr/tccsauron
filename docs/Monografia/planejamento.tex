@@ -55,7 +55,7 @@ No intuito de possibilitar a navegação em ambientes complexos e interligados, ad
 
 Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de \textit{waypoints} especiais chamados portais. A lógica de ligação entre portais é simples: basta que um \textit{waypoint} em um mapa tenha o mesmo nome de outro \textit{waypoint} em outro mapa para que seja estabelecido um portal entre eles.
 
-A camada intermapas passa, então, a ser o ponto de entrada ao módulo de navegação, pois é responsável por gerenciar a navegação intramapa, utilizando as técnicas descritas cima. O algoritmo \ref{algo:intermapas} ilustra seu funcionamento. executa o algoritmo abaixo. Nele, a referência \textbf{pathPlanner} indica o algoritmo de navegação intramapa.
+A camada intermapas passa, então, a ser o ponto de entrada ao módulo de navegação, pois é responsável por gerenciar a navegação intramapa, utilizando as técnicas descritas acima. O algoritmo \ref{algo:intermapas} ilustra seu funcionamento. Nele, a referência \textbf{pathPlanner} indica o algoritmo de navegação intramapa.
    
  \begin{algorithm}
 	\dontprintsemicolon

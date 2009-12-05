@@ -10,7 +10,7 @@ De fato, os odômetros informam apenas o módulo da distância percorrida, sem info
 
 \section{Modelagem}
 
-A plataforma-robô Pioneer 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor $b$ representa a distância entre os centros das rodas e os valores $d_{m}$ e $\Delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
+A plataforma-robô Pioneer 2DX é uma plataforma diferencial (com motores independentes em cada roda e alinhados em um eixo). Ela foi modelada de acordo com a figura~\ref{figura:modelorobo}. Na figura, $d_{L}$ e $d_{R}$ significam os deslocamentos das rodas esquerda e direita, respectivamente. O valor $b$ representa a distância entre os centros das rodas e os valores $d_{m}$ e $\delta\theta_{m}$ são os deslocamentos médios linear e angular, respectivamente.
 
 \begin{figure}[h]%
 \begin{center}
@@ -46,9 +46,9 @@ A matriz Q, por sua vez, dependerá das influências que o deslocamento linear cau
 
 \begin{equation}
  \bm{Q(t)} = \left( \begin{array}{ccc}
-\sigma^{2}_{d_{m}} cos^2(\theta_{m}(t))  & \sigma^{2}_{d_{m}} cos(\theta_{m}(t)) sin(\theta_{m}(t)) & 0 \\
-\sigma^{2}_{d_{m}} cos(\theta_{m}(t)) sin(\theta_{m}(t)) & \sigma^{2}_{d_{m}} sin^2(\theta_{m}(t)) & 0 \\
-0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right) 
+\sigma^{2}_{d_{m}}(t) cos^2(\theta_{m}(t))  & \sigma^{2}_{d_{m}}(t) cos(\theta_{m}(t)) sin(\theta_{m}(t)) & 0 \\
+\sigma^{2}_{d_{m}}(t) cos(\theta_{m}(t)) sin(\theta_{m}(t)) & \sigma^{2}_{d_{m}}(t) sin^2(\theta_{m}(t)) & 0 \\
+0 & 0 & \sigma^{2}_{\theta_{m}}(t) \end{array} \right) 
 \end{equation}
 
 Essas incertezas quadráticas dependem das medições realizadas e de coeficientes que foram medidos experimentalmente.
@@ -56,5 +56,5 @@ Essas incertezas quadráticas dependem das medições realizadas e de coeficientes 
 
 \begin{gather}
 	\sigma^{2}_{d_{m}}(t) = (d_{m}(t) \sigma^{d_{m}}_{d_{m}})^2 + (\delta\theta(t) \sigma^{\delta\theta}_{d_{m}})^2 \\
-	\sigma^{2}_{\theta_{m}} = (d_{m}(t) \sigma^{\delta\theta}_{\delta\theta})^2 + (\delta\theta(t) \sigma^{d_{m}}_{\delta\theta})^2
+	\sigma^{2}_{\theta_{m}}(t) = (d_{m}(t) \sigma^{\delta\theta}_{\delta\theta})^2 + (\delta\theta(t) \sigma^{d_{m}}_{\delta\theta})^2
 \end{gather}
