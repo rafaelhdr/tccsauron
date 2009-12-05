@@ -63,7 +63,7 @@ Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descri
 		C2-66~$\rightarrow$~C2-13 & Navegação em reta extensa; passagem por \\ &  vão e por duas portas estreitas \\ \hline
 		C2-13~$\rightarrow$~Secretaria & Curva no vão\\ \hline
 		Secretaria $\rightarrow$~C2-43 & Curvas no vão e no corredor; navegação \\ &  em corredor estreito\\ \hline
-		C2-43~$\rightarrow$~pavimento entre rampas & Navegação em corredor estreito; \\ &  curva no vão; descida na rampa \\ \hline
+		C2-43~$\rightarrow$~Rampa (entre pavimentos) & Navegação em corredor estreito; \\ &  curva no vão; descida na rampa \\ \hline
 		Entrada da rampa~$\rightarrow$~C2-66 & Navegação  em reta extensa; curva no \\ &  vão \\ \hline
 		\end{tabular}
 	\caption{Rotas de testes e os cenários de testes por elas cobertas. As rotas estão ilustradas na figura \ref{fig:rotasTeste}}
@@ -89,11 +89,11 @@ Os cinco cenários de teste foram executados no simulador MobileSim\cite{mobileSi
 }
 \mbox{
 \subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/SimuladoSecretaria_C2-43.jpg}}\quad
-\subfigure[C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-43_Rampa.jpg}}\quad
+\subfigure[C2-43~$\rightarrow$~Rampa(entre pavimentos)]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-43_Rampa.jpg}}\quad
 }
 
 \mbox{
-\subfigure[Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/SimuladoRampa_C2-66.jpg}}}
+\subfigure[Entrada da Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/SimuladoRampa_C2-66.jpg}}}
 }
 \caption{Resultados no simulador para as cinco rotas de teste. As rotas ideais foram cumpridas com precisão e não houve reajustes de rota devido a erro de localização ou à presença de obstáculos não previstos.} \label{fig:resultadosSimulador}
 \end{figure}
@@ -110,11 +110,11 @@ Para averiguar a precisão do sistema ao cumprir as rotas de teste, foram desenha
 
 \mbox{
 \subfigure[Em C2-43, após percorrer Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/Secretaria_C2-43.jpg}}\quad
-\subfigure[Na Rampa, após percorrer C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/C2-43_Rampa.jpg}}\quad
+\subfigure[Na Rampa, na seção entre os pavimentos, após percorrer C2-43~$\rightarrow$~Rampa(entre pavimentos)]{\includegraphics[width=3in]{imagens/resultados/C2-43_Rampa.jpg}}\quad
 }
 
 \mbox{
-\subfigure[Na C2-66, após percorrer Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/Rampa_C2-66.jpg}}}
+\subfigure[Na C2-66, após percorrer Entrada da Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/Rampa_C2-66.jpg}}}
 }
 \caption{Fotografias da postura real e ideal do robô após chegar a um destino de uma rota de teste.} \label{fig:resultadosRealFotos}
 \end{figure}
@@ -127,8 +127,8 @@ Para averiguar a precisão do sistema ao cumprir as rotas de teste, foram desenha
 		C2-66~$\rightarrow$~C2-13 & 43  \\ \hline
 		C2-13~$\rightarrow$~Secretaria & 21 \\ \hline
 		Secretaria~$\rightarrow$~C2-43 &46 \\ \hline
-		C2-43~$\rightarrow$~Rampa & 49 \\ \hline
-		Rampa~$\rightarrow$~C2-66 & 45 \\ \hline
+		C2-43~$\rightarrow$~Rampa (entre pavimentos)& 49 \\ \hline
+		Entrada da Rampa~$\rightarrow$~C2-66 & 45 \\ \hline
 		& \textbf{Média:} 40,8 \\ \hline
 		\end{tabular}
 	\caption{Os erros no destino após a execução de cada rota de teste.}
@@ -145,10 +145,10 @@ Além disso, traçou-se a posição estimada do robô durante o percurso em cada rota
 }
 \mbox{
 \subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/grafico_Secretaria_C2-43.pdf}}\quad
-\subfigure[C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/grafico_C2-43_Rampa.pdf}}\quad
+\subfigure[C2-43~$\rightarrow$~Rampa (entre pavimentos)]{\includegraphics[width=3in]{imagens/resultados/grafico_C2-43_Rampa.pdf}}\quad
 }
 \mbox{
-\subfigure[Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/grafico_Rampa_C2-66.pdf}}}
+\subfigure[Entrada da Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/grafico_Rampa_C2-66.pdf}}}
 }
 \caption{A rota estimada (isto é, o gráfico das posturas estimadas) em cada teste. O sistema atinge seus objetivos, mas muito mais ruidosamente do que no simulador} \label{fig:resultadosRealGrafico}
 \end{figure}

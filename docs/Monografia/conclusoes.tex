@@ -1,18 +1,16 @@
 \chapter{Conclusões} \label{chp:Conclusoes}
 
+O objetivo do projeto de construir um robô-guia de baixo custo foi alcançado, tendo em vista que este é capaz de navegar pelo prédio da elétrica com erro aproximadamente constante independentemente da distância percorrida \ref{tab:resultadosRealTabela}.
 
 O modelo simples de observação dos sonares surgiu como uma alternativa ao modelo original, que buscava validar as medidas para que somente as mais, apresentando características, como a elevada frequência com que novas medidas são fornecidas, que permitem aproveitar o principal aspecto do filtro de Kalman, que é a capacidade de correção de estimativas mesmo com medidas de baixa qualidade dos sensores.
 
 A arquitetura de software desenvolvida apresentou uma grande eficiência, sendo capaz de realizar todas as tarefas necessárias (execução da navegação, calculo de estimativas, análise dos quadros da câmera), sem consumir toda a capacidade de processamento do computador embarcado no robô, e com isso, possibilitando que a taxa de obtenção de medidas dos sensores pudesse ser alta, ficando limitada apenas pela capacidade física deles.
 
-O objetivo do projeto de construir um robô-guia de baixo custo foi alcançado, tendo em vista que este é capaz de navegar-se pelo prédio da elétrica com erro aproximadamente constante independentemente da distância percorrida \ref{tab:resultadosRealTabela}.
 
 \section{Propostas de melhorias}
 
-Algumas melhorias ao projeto podem ser realizadas. A primeira é a realização de testes práticos em um ambiente completo, visto que neste trabalho foram realizados apenas testes com imagens retiradas estaticamente do ambiente onde o SAURON navega.
+Dentre as melhorias que podem ser realizadas, a primeira é a integração completa do modelo da visão ao módulo de localização, buscando confirmar que o modelo desenvolvido aprimora a qualidade da postura estimada, uma vez que a teoria associada ao uso de visão indica que há uma maior precisão em todas as variáveis que compõe a postura do robô. Assim, a visão seria capaz de compensar a principal fraqueza do modelo dos sonares, que é a imprecisão inerente no valor do ângulo $\theta$ da postura, o que levaria a uma diminuição nos erros da posição indicada do destino.
 
-Outra proposta é um estudo mais  detalhado dos modelos de odometria do Pioneer-2DX, de sonar e de visão desenvolvido neste trabalho. O Filtro de kalman baseia-se na acurácia do modelo fornecido, podendo gerar saídas muito inconsistentes com o esperado caso o modelo seja falho. No presente trabalho, os erros $w$ e $v$ foram determinados de forma heurística, e podem ser melhorados grandemente com a adoção de um modelo melhor estudado.
+Sobre o EKF, propõe-se uma comparação da abordagem empregada com a abordagem clássica de utilização do EKF. Isto significa a utilização de um modelo de propagação de estados no tempo, utilizando posição e velocidade, assim como uma variável de controle, para a realizar a etapa de predição, de forma que o odômetro passa a ser empregado como um sensor externo, no sentido que ele também participaria da fase de correção da estimativa de postura do robô.
 
-Ainda sobre o EKF, é proposto a comparação da arquitetura proposta com a arquitetura clássica de utilização do EKF. Isto significa a utilização de um modelo de propagação de estados no tempo de maneira clássico, utilizando posição e velocidade bem como a variável de controle utilizada de forma a realizar a etapa de predição, e utilizando o odômetro como um sensor, no sentido que ele também participaria da etapa de correção da estimativa do robô.
-
-Na área de navegação, propõe-se a utilização da criação dinâmica de mapas de forma semelhante à realizada em \cite{Burgard98experienceswith} e \cite{Thrun99minerva}, através da técnica conhecida como SLAM. Isto permitiria que o robô conseguisse solucionar problemas nos quais o SAURON não é capaz de sair de forma eficiente, como obstrução do caminho planejado.
+Na área de navegação, propõe-se a utilização da criação dinâmica de mapas de forma semelhante à realizada em \cite{Burgard98experienceswith} e \cite{Thrun99minerva}, através da técnica conhecida como Simultaneous Localization and Mapping (SLAM). Isto permitiria que o robô fosse capaz de solucionar problemas com as quais ele não lida de forma eficiente, como tentar um rota diferente devido uma obstrução no caminho inicialmente planejado.

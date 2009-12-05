@@ -37,7 +37,7 @@ Este é o método dos mínimos quadrados aplicado quando cada medição possui variân
 
 O problema com a abordagem acima é que todas as vezes que uma nova estimativa é acrescida ao sistema é necessário efetuar a multiplicação de $H$ por $\textbf{x}$ e minimizar $J$ novamente. Para poucas medições isto é pouco oneroso, mas para o caso de muitas medidas, e.g., 10000 medições, a adição de uma medida implica na multiplicação de uma matriz 10001xN por outra Nx1, não aproveitando-se a estimativa obtida com as medições antigas. O método dos mínimos quadrados recursivo resolve esta questão, e é a forma utilizada para atualização do estado no filtro de kalman.
 
-\section{método dos mínimos quadrados recursivo}
+\section{Método dos mínimos quadrados recursivo}
 Um estimador linear recursivo pode ser escrito na forma:
 \begin{gather}
 	\textbf{y}_{k} = H_{k}\textbf{x}+\textbf{v}_{k} \nonumber \\
