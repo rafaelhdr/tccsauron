@@ -29,15 +29,15 @@ Para os testes, utilizou-se o mapa do pavimento superior, bloco C, do prédio de 
 \begin{figure}[bp]
 	\centering
 		\includegraphics[height=0.8\textheight]{imagens/pavsupmod_1_goals.PNG}
-	\label{fig:mapatestes1}
 	\caption{Parte do mapa de testes. Nós amarelos indicam \textit{waypoint}; nós verdes são objetivos. Linhas pretas representam paredes, e linhas laranjas são limites do mapa (que não necessariamente correspondem a paredes). Os destinos das rotas de teste estão assinalados. O vão formado pelo cruzamento do corredor com a saída da rampa é uma área difícil para o módulo de localização.}
+		\label{fig:mapatestes1}
 \end{figure}
 
 \begin{figure}[bp]
 	\centering
 		\includegraphics[height=0.8\textheight]{imagens/pavsupmod_2_goals.PNG}
-	\label{fig:mapa2testes}
 	\caption{Segunda parte do mapa de testes. Nós amarelos indicam \textit{waypoint}; nós verdes são objetivos. Linhas pretas representam paredes, e linhas laranjas são limites do mapa (que não necessariamente correspondem a paredes). Os destinos das rotas de teste estão assinalados.}
+		\label{fig:mapa2testes}
 \end{figure}
 
 
@@ -57,7 +57,7 @@ Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descri
 
 \begin{table}[hbf]
 	\centering
-		\begin{tabular}{ | l | r | }
+		\begin{tabular}{ | c | c | }
 		\hline
 		\textbf{Rota} & \textbf{Cenário de teste} \\ \hline
 		C2-66~$\rightarrow$~C2-13 & Navegação em reta extensa; passagem por \\ &  vão e por duas portas estreitas \\ \hline
@@ -72,9 +72,9 @@ Estabeleceram-se cinco rotas, que buscam cobrir certos cenários de teste, descri
 
 \begin{figure}
 	\centering
-		\includegraphics[width=0.9\columnwidth]{imagens/rotasTeste.pdf}
-	\label{fig:rotasTeste}
-	\caption{As cinco rotas de teste testadas.}
+		\includegraphics[width=1\columnwidth]{imagens/rotasTeste.pdf}
+	\caption{As cinco rotas de teste.}
+		\label{fig:rotasTeste}
 \end{figure}
 
 \subsection{Resultados simulados}
@@ -88,9 +88,9 @@ Os cinco cenários de teste foram executados no simulador MobileSim\cite{mobileSi
 \subfigure[C2-13~$\rightarrow$~Secretaria]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-13Secretaria.jpg}}
 }
 \mbox{
-\subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/SimuladoSecretaria_C2-43.jpg}\quad
+\subfigure[Secretaria~$\rightarrow$~C2-43]{\includegraphics[width=3in]{imagens/resultados/SimuladoSecretaria_C2-43.jpg}}\quad
 \subfigure[C2-43~$\rightarrow$~Rampa]{\includegraphics[width=3in]{imagens/resultados/SimuladoC2-43_Rampa.jpg}}\quad
-}}
+}
 
 \mbox{
 \subfigure[Rampa~$\rightarrow$~C2-66]{\includegraphics[width=3in]{{imagens/resultados/SimuladoRampa_C2-66.jpg}}}

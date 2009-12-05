@@ -14,17 +14,16 @@ Essas estimativas, corrigidas pelos modelos de observação dos sensores externos,
 O filtro de Kalman estendido (EKF) é um filtro matemático capaz de realizar a previsão e correção das estimativas de postura. As equações para cada uma das etapas podem ser vistas em \ref{table:kalman}, e são executadas na ordem da tabela. O EKF prevê a linearização do sistema em sua borda a fim de que o filtro de kalman possa ser utilizado com sucesso. Como o método de linearização utilizado no EKF é a expansão de taylor de primeira ordem, são geradas as matrizes $F$, jacobiano de $f(\textbf{x},\textbf{u})$, e $H$, jacobiano de $h(\textbf{x})$. 
 
 \begin{table}[ht]
-\caption{KalmanFilter}
 \centering
-\begin{tabular}{c c }
-\hline \hline
-\textbf{Predição} &  \textbf{Correção} \\ [0.5ex]
+\begin{tabular}{ |c | c | }
 \hline
-$\bar{\textbf{x}} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{-}H_{t}^{T}(H_{t}P_{t}^{-}H_{t}^{T}+R_{t})^{-1}$ \\
+\textbf{Predição} &  \textbf{Correção} \\ \hline
+$\bar{\textbf{x}} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{-}H_{t}^{T}(H_{t}P_{t}^{-}H_{t}^{T}+R_{t})^{-1}$ \\ \hline
 $P_{t}^{-} = F_{t-1}P_{t-1}^{+}F_{k-1}^{T} + Q_{t-1}$ & $\hat{\textbf{x}}_{t}^{+} = \hat{\textbf{x}}_{t}^{-} + K_{t}(\textbf{z}_{t}-h(\textbf{x}_{t}^{-}))$ \\
-& $P_{t}^{+} = (I - K_{t}H_{t})P_{t}^{-}$
+& $P_{t}^{+} = (I - K_{t}H_{t})P_{t}^{-}$ \\ \hline
 \end{tabular}
 \label{table:kalman}
+\caption{As equações principais do filtro de Kalman estendido (EKF).}
 \end{table}
 
 A dinâmica de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}, onde inicialmente tem-se uma postura estimada $\hat{\textbf{x}_{t-1}}$ que é utilizada pelo Modelo de Dinâmica, junto da leitura do odômetro, na predição de uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas da visão e dos sonares para efetuar uma correção na predição $\bar{\textbf{x}_{t}}$, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto for necessário.
