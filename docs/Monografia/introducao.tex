@@ -1,6 +1,6 @@
 \chapter{Introdução}
 $\bar{x}$
-O campo da robótica é dos mais pesquisados, e avanços notáveis foram feitos nas últimas décadas. Graças ao avanço no poder de computação e a novos algoritmos, o progresso na área é notável e promissor. A indústria se utiliza largamente de robôs nos dias atuais para produção, e muitos produtos modernos são possíveis somente graças à precisão de braços mecânicos que realizam operações com precisão milimétrica. Segundo \cite{siegwart}: 
+O campo da robótica é dos mais pesquisados, e avanços notáveis foram feitos nas últimas décadas. Graças ao avanço no poder de computação e a novos algoritmos, o progresso na área é notável e promissor. A indústria se utiliza largamente de robôs nos dias atuais para produção, e muitos produtos modernos são possíveis somente graças à precisão de braços mecânicos que realizam operações com precisão milimétrica. Segundo \cite{Siegwart06Introductionto}: 
 
 "A robótica conseguiu seu maior nível de sucesso até o momento na área de manufatura industrial. Braços robóticos, ou manipuladores, consistem em uma indústria de dois bilhões de dólares. Presos em seus ombros numa posição específica da linha de montagem, o braço robótico pode se mover com grande velocidade e acurácia para realizar tarefas repetitivas como soldagem e pintura. Na indústria eletrônica, manipuladores inserem componentes em placas com precisão sobrehumanas, fazendo com que sejam possíveis objetos como laptops e telefones celulares.
 
@@ -10,7 +10,7 @@ Os desafios e oportunidades da robótica móvel tornam-na um campo interessante de
 
 \section{Objetivo}
 
-O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visitantes em ambientes fechados. A aplicação típico dessa classe de agentes é o acompanhamento de visitantes em exposições, como fazem \cite{rhino}, \cite{minerva} e \cite{robox}. Para alcançar seus objetivos, esse robô deve ser capaz de efetuar:
+O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visitantes em ambientes fechados. A aplicação típico dessa classe de agentes é o acompanhamento de visitantes em exposições, como fazem \cite{Burgard98experienceswith}, \cite{Thrun99minerva} e \cite{Siegwart02largescale}. Para alcançar seus objetivos, esse robô deve ser capaz de efetuar:
 \begin{itemize}
   \item localização em seu mapa interno;
   \item planejamento uma rota para seu destino final partindo de sua localização;
@@ -18,6 +18,6 @@ O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visi
   \item desvio ou detecção de obstáculos dinâmicos.
 \end{itemize}
 
-Para que realize essas ações, um agente móvel deve extrair informações sensoriais de seu estado atual, e relacioná-las com seu conhecimento do ambiente. Neste trabalho, são utilizados um anel de oito sonares e uma câmera de vídeo doméstica. Em relação ao encontrado na literatura, em que orçamentos para tarefas semelhantes ultrapassam as centenas de milhares de dólares \cite{robox}, o projeto apresentado neste texto tem a seu favor o custo mais baixo.
+Para que realize essas ações, um agente móvel deve extrair informações sensoriais de seu estado atual, e relacioná-las com seu conhecimento do ambiente. Neste trabalho, são utilizados um anel de oito sonares e uma câmera de vídeo doméstica. Em relação ao encontrado na literatura, em que orçamentos para tarefas semelhantes ultrapassam as centenas de milhares de dólares \cite{Siegwart02largescale}, o projeto apresentado neste texto tem a seu favor o custo mais baixo.
 
 As técnicas de localização utilizadas neste trabalho são adaptadas de \cite{barra}. O planejamento da rota é feito utilizando-se o algoritmo de busca A*, e a navegação busca criar rotas retas, adequadas ao bom funcionamento do sistema de localização.
