@@ -1,24 +1,24 @@
 \chapter{Introdução}
 
-Desde a publicação de Alan Turing, em 1936, da sua Máquina de Turing capaz de computar qualquer função efetivamente computável buscou-se construir formas ou técnicas para resolver os problemas não eficientemente computáveis usando-se o computador. O campo da Inteligência Artificial apresenta algumas técnicas e algoritmos para solução computacional desses problemas de grande complexidade, muitas vezes sem a garantia da solução ótima, mas resultados na maioria das vezes satisfatórios.
+Desde a publicação de Alan Turing, em 1936, da sua Máquina de Turing capaz de computar qualquer função efetivamente computável buscou-se construir formas ou técnicas para resolver os problemas não eficientemente computáveis usando-se o computador. O campo da Inteligência Artificial apresenta algumas técnicas e algoritmos para solução computacional desses problemas de grande complexidade, muitas vezes sem a garantia da solução ótima, mas resultados, na maioria das vezes, satisfatórios.
 
 O SAURON é um robô móvel designado a guiar pessoas em museus. Ele deve utilizar algumas das técnicas de IA para conseguir navegar e se localizar em um ambiente conhecido, problema caracterizado como de grande complexidade computacional. Esta monografia é parte do trabalho de conclusão do curso de Engenharia de Computação da Escola Politécnica da Universidade de São Paulo (POLI). Como demonstração prática, o SAURON guiará os visitantes pelo prédio da área de Elétrica da POLI.
 
-Para possibilitar a tarefa de localização, o SAURON deve coletar informações acerca de si e do ambiente ao seu redor utilizando seus sensores: odômetro, sonares e câmera de vídeo de baixo custo. Essas informações coletadas devem ser suficiente para determinar sua própria localização nesse ambiente.
+Para possibilitar a tarefa de localização, o SAURON deve coletar informações acerca de si e do ambiente ao seu redor utilizando seus sensores: odômetro, sonares e câmera de vídeo de baixo custo. Essas informações coletadas devem ser suficientes para determinar sua própria localização nesse ambiente.
 
 A técnica principal empregada na determinação de sua localização é um filtro Bayesiano conhecido por Filtro de Kalman Estendido (EKF). Os filtros bayesianos são filtros criados sobre a teoria de Bayes, a partir da qual é possível dizer a probabilidade de um determinado evento considerando que um segundo evento tenha ocorrido. Os filtros bayesianos aplicados em localização são capazes de apurar uma nova estimativa de posição conhecendo-se a estimativa anterior. De forma básica, esses filtros calculam a probabilidade de se estar em uma determinada posição (x(t),y(t)), sabendo-se que no instante anterior estava-se em (x(t-1), y(t-1)).
 
 Outro problema de grande complexidade computacional é a navegação por um ambiente. O SAURON ainda permite, além da tradicional navegação em um único mapa, uma navegação entre múltiplos mapas. Esses dois planejadores utilizam, cada um, técnicas diferentes para escolha da melhor rota: enquanto o planejador de rota de um único mapa deve lidar com diversos pontos navegáveis em um mapa e deve garantir a escolha do melhor caminho, o planejador de rota entre mapas pode ser simplista, pois sabe-se que, durante sua utilização, ele ficará restrito a dois ou três mapas distintos.
 
+A navegação inclui também uma camada de execução de rota, que além de controlar o caminho percorrido, deve evitar colisões do robô com obstáculos. O ambiente para o qual o SAURON foi projetado é um museu, assim, ao evitar obstáculos o SAURON está preservando as obras de arte do museu, mas, acima de tudo, preservando a integridade física dos visitantes. 
+
+Ao longo deste trabalho, o sistema completo do SAURON será descrito e os problemas incipientes da localização e da navegação serão tratados em maiores detalhes.
 
 
 
-
-
- 
 \section{Objetivo}
 
-O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visitantes em ambientes fechados. A aplicação típico dessa classe de agentes é o acompanhamento de visitantes em exposições, como fazem \cite{Burgard98experienceswith}, \cite{Thrun99minerva} e \cite{Siegwart02largescale}. Para alcançar seus objetivos, esse robô deve ser capaz de efetuar:
+O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visitantes em ambientes fechados. A aplicação típica dessa classe de agentes é o acompanhamento de visitantes em exposições, como fazem \cite{Burgard98experienceswith}, \cite{Thrun99minerva} e \cite{Siegwart02largescale}. Para alcançar seus objetivos, esse robô deve ser capaz de efetuar:
 \begin{itemize}
   \item localização em seu mapa interno;
   \item planejamento uma rota para seu destino final partindo de sua localização;
