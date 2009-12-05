@@ -41,7 +41,7 @@ Este modelo é chamado de baseado em associações porque, antes de gerar observaçõ
 
 De modo geral, a operação deste modelo pode ser dividida em quatro etapas. Primeiramente, as últimas $k$ observações são validadas e é determinado se uma parede está sendo vista pelo sonar. Se isso for verdade, consulta-se o mapa do ambiente de modo a se associar as leituras mais recentes a uma parede no mapa. Por fim, quando a associação é realizada com sucesso, determina-se a observação que seria esperada para a postura estimada do robô. A associação é registrada e o modelo tenta mantê-la nas próximas iterações, atribuindo uma pontuação para seu grau de confiança.
 
-\todo{A parte acima está quase idêntica à realizada na revisão de literatura, melhor so falar a diferença}}
+\todo{A parte acima está quase idêntica à realizada na revisão de literatura, melhor so falar a diferença}
 
 \paragraph{Validação das observações} As últimas $k$ observações são armazenadas, juntamente com a postura estimada em cada uma delas. Determina-se, através de um teste estatístico, se as observações podem corresponder a uma superfície plana. Também nesta fase, curvas realizadas pelo robô são detectadas. Nesse caso, o \textit{buffer} é limpo e a associação atual, se houver, é desfeita.
 

@@ -1,12 +1,21 @@
 \chapter{Introdução}
-O campo da robótica é dos mais pesquisados, e avanços notáveis foram feitos nas últimas décadas. Graças ao avanço no poder de computação e a novos algoritmos, o progresso na área é notável e promissor. 
 
-A indústria se utiliza largamente de robôs nos dias atuais para produção, e muitos produtos modernos são possíveis somente graças à precisão de braços mecânicos que realizam operações com precisão milimétrica. No entanto,estes robôs sofrem de um problema grave - falta de mobilidade. Isto faz com que os objetos nos quais eles irão operar venham até eles, fazendo com que muitas vezes robôs fiquem ociosos enquanto aqueles transitam até o local onde o robô está localizado. Caso o robô pudesse se locomover pelo chão da fábrica, notaria-se ganho de produtividade, visto que não seria mais necessário aguardar estes objetos.
+Desde a publicação de Alan Turing, em 1936, da sua Máquina de Turing capaz de computar qualquer função efetivamente computável buscou-se construir formas ou técnicas para resolver os problemas não eficientemente computáveis usando-se o computador. O campo da Inteligência Artificial apresenta algumas técnicas e algoritmos para solução computacional desses problemas de grande complexidade, muitas vezes sem a garantia da solução ótima, mas resultados na maioria das vezes satisfatórios.
 
-No entanto, o grande poder de prover mobilidade a um robô está em atividades que um robô fixo é incapaz de realizar ou realiza marginalmente. Exemplos disto é o robô aspirador, que percorre um ambiente autonomamente aspirando o pó, os VANTs, veículos aéreos não tripulados, que por não necessitarem de um piloto a bordo reduzem a zero o risco de óbito do mesmo em caso de acidente, e principalmente robôs capazes de operar onde o ser humano é impossibilitado, como certas minas, onde a concentração de gás impossibilita a exploração por uma equipe humana.
+O SAURON é um robô móvel designado a guiar pessoas em museus. Ele deve utilizar algumas das técnicas de IA para conseguir navegar e se localizar em um ambiente conhecido, problema caracterizado como de grande complexidade computacional. Esta monografia é parte do trabalho de conclusão do curso de Engenharia de Computação da Escola Politécnica da Universidade de São Paulo (POLI). Como demonstração prática, o SAURON guiará os visitantes pelo prédio da área de Elétrica da POLI.
 
-Os desafios e oportunidades da robótica móvel tornam-na um campo interessante de estudos. Há aplicações variadas, de robôs operando em Marte \cite{nasa} a um agente autônomo miniaturizado de 2 x 2 x 2 cm \cite{alicesugarcube}, que exploram diferentes nichos do campo.
+Para possibilitar a tarefa de localização, o SAURON deve coletar informações acerca de si e do ambiente ao seu redor utilizando seus sensores: odômetro, sonares e câmera de vídeo de baixo custo. Essas informações coletadas devem ser suficiente para determinar sua própria localização nesse ambiente.
 
+A técnica principal empregada na determinação de sua localização é um filtro Bayesiano conhecido por Filtro de Kalman Estendido (EKF). Os filtros bayesianos são filtros criados sobre a teoria de Bayes, a partir da qual é possível dizer a probabilidade de um determinado evento considerando que um segundo evento tenha ocorrido. Os filtros bayesianos aplicados em localização são capazes de apurar uma nova estimativa de posição conhecendo-se a estimativa anterior. De forma básica, esses filtros calculam a probabilidade de se estar em uma determinada posição (x(t),y(t)), sabendo-se que no instante anterior estava-se em (x(t-1), y(t-1)).
+
+Outro problema de grande complexidade computacional é a navegação por um ambiente. O SAURON ainda permite, além da tradicional navegação em um único mapa, uma navegação entre múltiplos mapas. Esses dois planejadores utilizam, cada um, técnicas diferentes para escolha da melhor rota: enquanto o planejador de rota de um único mapa deve lidar com diversos pontos navegáveis em um mapa e deve garantir a escolha do melhor caminho, o planejador de rota entre mapas pode ser simplista, pois sabe-se que, durante sua utilização, ele ficará restrito a dois ou três mapas distintos.
+
+
+
+
+
+
+ 
 \section{Objetivo}
 
 O objetivo deste trabalho é a construção de um robô que seja capaz de guiar visitantes em ambientes fechados. A aplicação típico dessa classe de agentes é o acompanhamento de visitantes em exposições, como fazem \cite{Burgard98experienceswith}, \cite{Thrun99minerva} e \cite{Siegwart02largescale}. Para alcançar seus objetivos, esse robô deve ser capaz de efetuar:
