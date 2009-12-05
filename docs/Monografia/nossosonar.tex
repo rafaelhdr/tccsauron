@@ -35,7 +35,6 @@ Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor 
 
 \subsubsection{Modelo Baseado em Associações}
 \label{sec:nossosonar}
-\todo{consertar referencia ao sonar barra}
 A seção \label{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
 Este modelo é chamado de baseado em associações porque, antes de gerar observações esperadas e corrigir a postura estimada, é necessária uma confirmação de que um sonar está de fato observando uma determinada parede. A tarefa de relacionar as últimas leituras com uma parede do mapa chama-se associação. A principal motivação de um modelo deste tipo é diminuir os erros causados pelos sonares, dispositivos imprecisos.

@@ -1,14 +1,17 @@
 \section{Discussão}\label{sec:discussao}
 
-Recomenda-se que seja uma objetiva consideração dos resultados apresentados anteriormente e que conduza às principais conclusões.\\
-Neste item o autor tem maior liberdade de expressão, o que coloca em evidência a sua maturidade intelectual.\\
-Na discussão dos resultados, o autor deve:
-\begin{itemize}
-	\item relacionar causas e efeitos;
-	\item estabelecer, a partir dos experimentos, a dedução das generalizações e princípios básicos;
-	\item elucidar contradições, teorias e princípios relativos ao trabalho;
-	\item indicar a aplicabilidade dos resultados obtidos e suas limitações;
-	\item elaborar, se possível, uma teoria para justificar os resultados obtidos
-	\item sugerir novas pesquisas, a partir das experiências adquiridas no desenrolar do trabalho, visando sua complementação.
-\end{itemize}
-Não é aconselhável a junção dos resultados com a discussão, formando um único capítulo. Entretanto, se esta forma for adotada, os resultados devem ser discutidos na medida em que forem apresentados.
+\todo{Revisar este texto - já estava meio grogue na metade dele}
+\todo{Arranjar um parágrafo melhor para começar a seção}
+O SAURON foi capaz de lidar com as adversidades do ambiente, adversidades estas abrangidas pelos cenários de teste, chegando aos destinos indicados com precisão suficiente.
+
+Em todos os cenários de teste, SAURON foi capaz chegar até o destino desejado, com precisão suficiente para que o local indicado por ele como fim do percurso esteja coerente com a região do ambiente para o qual uma pessoa desejava ser guiada, como uma sala específica em um corredor. 
+
+Nos testes em simulador, uma vez que praticamente não existem imprecisões nos sensores, a localização estimada é muito próxima da real, observando-se erros médios nas coordenadas de postura que não ultrapassavam cinco centímetros. Além disso, e o sentido de movimento do robô é ajustado com elevado grau de precisão, de maneira que cada correção da navegação durante a percurso não leva a uma correção secundária decorrente de erro no ajuste do ângulo desejado. São estes os fatos que explicam a grande diferença existente caminhos seguidos pelo robô nos cenários de teste no mundo real e no simulador.
+
+O padrão de zigue-zague, que pode ser observado nos gráficos do deslocamento do robô nos testes realizados fisicamente, decorre diretamente da atuação do módulo de navegação. Quando o robô se afasta além de uma distância máxima permitida do centro da rota ideal, a navegação corrige o sentido do movimento translacional do robô. Dadas as imprecisões na determinação desse sentido, além da influência que as imperfeições do chão têm sobre o movimento do robô, os desvios acabam ocorrendo, forçando a navegação a fazer várias correções. São essas múltiplas correções do trajeto que determinam o padrão zigue-zague.
+
+O modelo dos sonares se mostrou pouco robusto na presença de obstáculos dinâmicos (pessoas andando). Quando uma pessoa passa próxima a ele, a estimativa da localização é influenciada, levando a uma postura estimada que não condiz com postura real do robô. Caso o obstáculo dinâmico fique pouco tempo na área coberta pelos sonares e seja detectado por um número pequeno de sonares, a postura incorreta será corrigida tão logo o obstáculo se afaste do robô. Isto decorre do fato de que nesse intervalo em que o obstáculo prejudicou a medição das distâncias pelos sonares, as posturas estimadas incorretas não se distanciaram muito da postura real, de forma que o Filtro de Kalman foi capaz de corrigir as estimativas. No entanto, se o obstáculo permanecer por um período longo à frente dos sonares e/ou prejudicar a medição de muitos sonares, as estimativas de postura decorrentes de tais medidas inválidas vão se afastar muito da postura real, indo além das capacidades do filtro de Kalman de corrigir, fazendo com que o robô fique perdido.
+
+As rampas são a região do ambiente que tornam o SAURON mais suscetível a falhas. Conforme comentado anteriormente, os sonares do robô nem sempre são capazes de detectar as grades existentes ao redor delas, detectando, ao invés, as paredes localizadas após as grades, prejudicando fortemente a localização. Para contornar tais problemas, uma solução seria indicar, por meio do mapa do ambiente, que aquela região não possibilita a obtenção de dados confiáveis para os sonares, de maneira que eles devem ser temporariamente desativados. Ora, se os sonares forem desativados, haverá apenas estimativa preditas do modelo de dinâmica enquanto o robô trafegar pelas rampas, caracterizando um movimento cego, já que nessa região do ambiente não existem referência visuais significativas para que o modelo de visão possa assumir inteiramente a localização, e assim, não haverá qualquer correção na localização. 
+
+Uma segunda solução seria modificar o ambiente, de forma a cobrir as grades para que elas sejam efetivamente detectadas pelos sonares. Mas, como este trabalho tem como meta que o robô se movimente por um ambiente que não tenha sido preparado especificamente para ele, esta alternativa deve ser descartada.
