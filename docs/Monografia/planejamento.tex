@@ -19,9 +19,15 @@ Com a estrutura do grafo pronta, basta aplicar o algoritmo A* para obter a sua r
 
 \subsubsection{Controle de Retrocessos} 
 
-Um problema que logo se manifestou para a navegação era o cuidado especial com retrocessos. Algumas vezes, é necessário  afastar-se um pouco do destino antes de poder alcançá-lo.  A figura abaixo ilustra essa situação. Para ir do ponto A ao ponto D, deve-se contornar a parede, passando por exemplo, pelo ponto B, que está mais distante do destino D do que o próprio A.
+Um problema que logo se manifestou para a navegação era o cuidado especial com retrocessos. Algumas vezes, é necessário  afastar-se um pouco do destino antes de poder alcançá-lo.  A figura \ref{navegacao:mapaObstaculo} abaixo ilustra essa situação. Para ir do ponto A ao ponto D, deve-se contornar a parede, passando por exemplo, pelo ponto B, que está mais distante do destino D do que o próprio A.
 
-\missingfigure{Criar um mapazinho onde o texto acima é verdade, colocar distancia pontos e distancia rota}
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/mapaObstaculo.jpg}
+\caption{Mapa que ilustra um problema comum a ser resolvido pela Navegação}%
+\label{navegacao:mapaObstaculo}%
+\end{center}
+\end{figure}
 
 Para resolver esse problema basta considerar o custo de um nó até o destino como sendo o custo da rota e não como a distância cartesiana entre esses dois pontos. Além disso é preciso determinar que os nós adjacentes só poderão ser nós alcançáveis, ou seja, nós entre os quais é possível traçar uma linha reta, sem nenhum obstáculo entre eles. De fato, foi determinado que um nó poderia ter, no máximo, 4 nós adjacentes. As quatro possibilidades de adjacência são: cima, baixo, esquerda e direita.
 
@@ -74,4 +80,16 @@ Esta camada passou a ser o ponto de entrada do módulo de Navegação e executa o a
 		\label{algo:intermapas}
 \end{algorithm}
 
-Para determinação da rota entre mapas utilizou-se um simples algoritmo de Busca em Profundidade aplicado no grafo da relação entre os mapas. Um último ponto que deve ser ressaltado é que, ao realizar a troca de mapas, a postura do robô deve ser atualizada para o sistema de coordenadas do novo mapa.
+Para determinação da rota entre mapas utilizou-se um simples algoritmo de Busca em Profundidade aplicado no grafo da relação entre os mapas. Decidiu-se por esse algoritmo pela sua simplicidade e por saber-se que o grafo de mapas nunca seria muito extenso.
+
+Um último ponto que deve ser ressaltado é que, ao realizar a troca de mapas, a postura do robô deve ser atualizada para o sistema de coordenadas do novo mapa, este é um ponto interessante e que pode passar despercebido.
+
+Assim, a arquitetura final do módulo de navegação ficou como abaixo representada na figura \ref{navegacao:arquitetura}, constando dos Planejamentos Inter Mapa e Planejamento 
+
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaNavegacao.jpg}
+\caption{Arquitura do Módulo de Navegação}%
+\label{navegacao:arquitetura}%
+\end{center}
+\end{figure}
