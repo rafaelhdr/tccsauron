@@ -173,7 +173,7 @@ h^{(i)}({\bf x}) = -f_u \frac{ \sin(\theta)\left(x^{(i)}_{marco} - x \right) + \
 
 onde $f_u$ é a distância focal na direção horizontal enquanto $u_0$ é o centro horizontal do plano de projeção da câmera. Maiores detalhes sobre a determinação da equação $h\left( {\bf x} \right)$ podem ser obtidos em \cite{barra}.
 
-O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cada um dos marcos observados, tendo dimensão $1~x~i$. 
+O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cada um dos marcos observados, tendo dimensão $1 \times i$. 
 
 
 \paragraph{Cálculo do jacobiano} A matriz H é necessária para que o EKF corrija a postura corretamente em cada componente. Ela é dada por:
@@ -207,7 +207,7 @@ onde $V$ e $Z$ são variáveis auxiliares dadas por:
 
 Cada linha da matriz H diz respeito a um marco observado, devendo ter o número de linhas igual ao número de marcos. 
 
-\paragraph{Cálculo da matriz de covariância} A matriz Ré uma matriz quadrada que contém as covariâncias que são passadas para o EKF durante a etapa de atualização da estimativa. Sendo $n$ o número de marcos observadas em um determinado ciclo da visão, a matriz terá dimensão $n~x~n$, com os seguintes valores:
+\paragraph{Cálculo da matriz de covariância} A matriz Ré uma matriz quadrada que contém as covariâncias que são passadas para o EKF durante a etapa de atualização da estimativa. Sendo $n$ o número de marcos observadas em um determinado ciclo da visão, a matriz terá dimensão $n \times n$, com os seguintes valores:
 
 \begin{equation}
 	R = 

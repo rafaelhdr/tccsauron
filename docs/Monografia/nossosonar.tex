@@ -141,7 +141,7 @@ Duas etapas de eliminação são aplicadas sobre as paredes do mapa, de modo a redu
 
 \paragraph{Eliminação de paredes distantes}
 
-Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$, calcula-se a distância perpendicular até a última posição predita do robô, $\bar{\bf{{x}}$. Caso essa distância seja maior do que um dado limite -- a faixa de operação do sonar utilizado --, rejeita-se esta parede como candidata a associação.
+Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$, calcula-se a distância perpendicular até a última posição predita do robô, $\bar{\bf{{x}}}$. Caso essa distância seja maior do que um dado limite -- a faixa de operação do sonar utilizado --, rejeita-se esta parede como candidata a associação.
 
 \paragraph{Eliminação de paredes pelo ângulo do sonar}
 
@@ -222,7 +222,7 @@ Para a operação bem-sucedida do sistema de localização, é importante fornecer da
 Uma associação sendo rastreada tem associada a si uma pontuação numérica, iniciada com um valor pré-definido. A cada nova leitura gerada pelo sonar em um instante $t$, a pontuação $p$ é recalculada, do seguinte modo:
 
 \begin{equation*}
-	\epsilon_{t} = (z_t-h(\bar{\bf{x}}}_t))^2
+	\epsilon_{t} = (z_t-h(\bar{\bf{x}}_t))^2
 \end{equation*}
 \begin{equation*}
 	\Delta_{\epsilon} = \epsilon_{t-1} - \epsilon_{t}
