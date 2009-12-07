@@ -17,8 +17,8 @@ $\bar{\textbf{x}}_{t} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{
 $P_{t}^{-} = F_{t-1}P_{t-1}^{+}F_{t-1}^{T} + Q_{t-1}$ & $\hat{\textbf{x}}_{t}^{+} = \hat{\textbf{x}}_{t}^{-} + K_{t}(\textbf{z}_{t}-h(\bar{\textbf{x}}_{t}^{-}))$ \\
 & $P_{t}^{+} = (I - K_{t}H_{t})P_{t}^{-}$ \\ \hline
 \end{tabular}
-\label{table:kalman}
 \caption{As equações principais do filtro de Kalman estendido (EKF).}
+\label{table:kalman}
 \end{table}
 
 Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}}_{t-1}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção nessa predição, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo.

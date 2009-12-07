@@ -35,10 +35,10 @@ onde $f_u$ e $f_v$ indicam a distância focal, horizontal e vertical, da câmera, 
 Já um ponto no sistema de coordenadas global, isto é, no mesmo sistema de coordenadas na qual a postura do robô é representada, dado por ${\bf p_{real}} = \left[x, y, z\right]^T$, precisa ser previamente convertido para o sistema de coordenadas intrínseco à câmera, resultando em um ponto ${\bf p_{cam}} = \left[ x_{cam}, y_{cam}, z_{cam} \right]^T$, antes que as equações acima possam ser aplicadas. Tal conversão é feita por meio de:
 
 \begin{equation}
-	{\bf p_{cam}} = {\bf R^T\left( p_{real} - C \right)}
+	{\bf p_{cam}} = {\bf R^T\left( p_{real} - C_{trans} \right)}
 \end{equation}
 	
-onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas da câmera e o global, enquanto ${\bf C}$ é a translação entre esses sistemas de coordenadas. Assim como $f_u$ e $f_v$, ${\bf R}$ e ${\bf C}$ também são determinados durante a calibração da câmera.
+onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas da câmera e o global, enquanto ${\bf C}$ é a translação entre esses sistemas de coordenadas. Assim como $f_u$ e $f_v$, ${\bf R}$ e ${\bf C_{trans}}$ também são determinados durante a calibração da câmera.
 	
 
 \section{Realce de Projeções Verticais}
@@ -98,11 +98,11 @@ G & = & \left( \delta - \vert G^{(1)}_{esq} - G^{(2)}_{esq} \vert \right) + \lef
 B & = & \left( \delta - \vert B^{(1)}_{esq} - B^{(2)}_{esq} \vert \right) + \left( \delta - \vert B^{(1)}_{dir} - B^{(2)}_{dir} \vert \right)
 \end{eqnarray*}
 \begin{equation}
-C = \frac{\left( R + G + B \right)}{6\delta} 
+C_{corr} = \frac{\left( R + G + B \right)}{6\delta} 
 \label{eqn:perfilcor}
 \end{equation}
 
-onde $\delta$ é a maior diferença esperada entre os componentes, $R$, $G$ e $B$ são representam as diferenças nas intensidades dos componentes de cor entre o lado direito e esquerdo, em relação à reta considerada, e $C$ é o fator de correlação. 
+onde $\delta$ é a maior diferença esperada entre os componentes, $R$, $G$ e $B$ são representam as diferenças nas intensidades dos componentes de cor entre o lado direito e esquerdo, em relação à reta considerada, e $C_{corr}$ é o fator de correlação. 
 
 
 \section{Detecção de Projeções Verticais}

@@ -33,7 +33,7 @@ Como descrito na seção \ref{subsec:arqloc}, a localização bayesiana por filtro d
 
 Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
 
-\subsection{Modelo Baseado em Associações}
+\section{Modelo Baseado em Associações}
 \label{sec:nossosonar}
 A seção \ref{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
@@ -283,6 +283,7 @@ Por fim, passando para o sistema de coordenadas do robô, que está na posição $(x
 
 \begin{equation}
 h(x) = \frac{r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}}{\sin(\theta'_{sonar} + (\frac{\pi}{2} - \theta_{wall}) + \theta)}
+\label{eq:hx}
 \end{equation}
 
 \paragraph{Cálculo da covariância do erro da observação} A obtenção da matriz $\bm{R}$ é dada na equação \ref{eq:matrizr}.

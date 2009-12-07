@@ -1,8 +1,8 @@
 \chapter{Filtro de Kalman Estendido} \label{sec:apendicea}
 
-A fim de estimar o posicionamento do robô a partir dos diversos sensores previamente descritos, uma técnica frequentemente utilizada é o filtro de Kalman. Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
+A fim de estimar o posicionamento do robô a partir de diversos sensores, uma técnica frequentemente utilizada é o filtro de Kalman (KF). Este filtro opera de forma a minimizar o erro entre a estimativa de um estado e o estado real do processo por meio de duas técnicas: o método dos mínimos quadrados e a propagação de estados e covariâncias.
 
-Nesta seção é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Após isto, é discutido o filtro de kalman discreto para sistemas lineares e finalmente o filtro de kalman estendido, utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{Simon06OptimalState}.
+Nesta seção, é descrito o método dos mínimos quadrados e a propagação de estado e sua covariância no tempo. Em seguida, descreve-se o filtro de Kalman discreto para sistemas lineares e, finalmente, o filtro de Kalman estendido (EKF), utilizado neste trabalho. O desenvolvimento deste capítulo foi baseado no trabalho de \cite{Simon06OptimalState}.
 
 \section{Método dos mínimos quadrados}
 

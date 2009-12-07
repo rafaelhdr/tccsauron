@@ -1,11 +1,11 @@
 Na notação das formulas, as seguintes convenções são utilizadas:
 
 \begin{itemize}
-	\item letras maiúsculas em negrito são matrizes, exemplo ${\bf M}$
-	\item letras minúsculas em negrito são vetors, exemplo ${\bf x}$
-	\item símbolos com uma barra em cima representam estimativas preditas, exemplo $\bar{\bf{x}}$
-	\item símbolos com um acento circunflexo em cima representam estimativas corrigidas, exemplo $\hat{\bf{x}}$
-	\item índice superescrito em vetor ou escalar indica elemento de um conjunto; em uma matriz pode indicar coluna ou linha, exemplo: ${\bf X^{(i)}}$, ${\bf p^{(i)}}$
+    \item letras maiúsculas são matrizes, exemplo M
+    \item letras minúsculas em negrito são vetores, exemplo ${\bf x}$
+    \item símbolos com uma barra em cima representam estimativas preditas, exemplo $\bar{\bf{x}}$
+    \item símbolos com um acento circunflexo em cima representam estimativas corrigidas, exemplo $\hat{\bf{x}}$
+    \item índice superescrito em vetor ou escalar indica elemento de um conjunto; em uma matriz pode indicar coluna ou linha, exemplo: ${X^{(i)}}$, ${\bf p^{(i)}}$
 \end{itemize}
 
 \begin{tabular}{ll}
@@ -13,14 +13,40 @@ Na notação das formulas, as seguintes convenções são utilizadas:
 Símbolo & Descrição \\ 
 \hline
 $H$ & jacobiano da função observação esperada $h(\bar{\bf{x}})$ \\
-$\sigma^2_{obs}$ & desvio-padrão das observações do sonar \\
+$F$ & jacobiano da função de descrição do sistema $f(\bf{x}, \bf{u})$ \\
+$R$ & matriz de covariância \\
+$Q$ & matriz de incertezas \\
+$z$ & observação real \\
+$x, y e \theta$ & variáveis que descrevem a posição do SAURON \\
+$\bf{x}$ & estado do sistema, representado pela sua postura \\
+$d_{L}$ & deslocamento da roda esquerda do Pioneer 2DX \\
+$d_{R}$ & deslocamento da roda direita do Pioneer 2DX  \\
+$b$ & distancia entre os centros das rodas do Pioneer 2DX  \\
+$d_{m}$ & deslocamento médio linear do Pioneer 2DX  \\
+$\delta\theta$ & deslocamento médio angular do Pioneer 2DX  \\
+$\sigma^2_{d_{m}}$ & incerteza quadrática linear  \\
+$\sigma^2_{\theta_{m}}$ & incerteza quadrática angular  \\
+
+$\sigma^{d_{m}}_{d_{m}}$ & influencia do deslocamento linear sobre a medida do deslocamento linear  \\
+$\sigma^{\theta_{m}}_{\theta_{m}}$ & influencia do deslocamento angular sobre a medida do deslocamento angular  \\
+$\sigma^{d_{m}}_{\theta_{m}}$ & influencia do deslocamento linear sobre a medida do deslocamento angular  \\
+$\sigma^{\theta_{m}}_{d_{m}}$ & influencia do deslocamento angular sobre a medida do deslocamento linear  \\
+
+$x'_{sonar}, y'_{sonar} e \theta'_{sonar}$ coordenadas relativas do sonar em relação ao robô \\
+$\beta$ & angulo de incidência do feixe do sonar na parede \\
+$\alpha$ & angulo de incidência do robô com a parede \\
+$d_{ji}$ & distancia percorrida entre as observações i e j do sonar \\
+
+$r_{wall}$ & distancia entre uma parede e a origem \\
+$\theta_{wall}$ & angulo formado pelo segmento que une a origem à parede, perpendicularmente \\
+
+
+$\sigma^2_{obs}$ & desvio-padrão das observações em cada modelo de observação \\
 $\phi$ & ângulo de abertura do sonar \\
 $g^2$ & valor limite para associação de paredes com leituras do sonar \\
 $K_{piora}$, $K_{melhora}$ & constante de ganho no rastreamento de associações \\
 $R_{base}$ & covariância base do modelo de observação do sonar baseado \\ 
            & em associações \\
-$C$ & constante de relação da covariância base do modelo de observação \\
-    & do sonar baseado em associações \\
 $R_{simples}$ & covariância do modelo simples de observação dos sonares \\
 $X_c$, $Y_c$, $Z_c$ & sistema de coordenadas intrínseco à câmera \\
 $f_u$ & distância focal horizontal da câmera \\
@@ -29,5 +55,22 @@ $u_0$, $v_0$ & centro do plano de projeção no sistema de coordenadas do plano, \
              & em pixels \\
 $R$ & parâmetro de rotação relativa entre o sistema de coordenadas da \\ 
           & câmera e o global \\
-$C$ & translação entre o sistema de coordenadas da câmera e o global \\
+$\bf{filtro_{vertical}}$: o kernel do Operador de Sobel modificado \\
+$R_{esq}$, $G_{esq}$, $B_{esq}$: valores médios das três componentes de cor do lado esquerdo de uma projeção \\
+$R_{dir}$, $G_{dir}$, $B_{dir}$: valores médios das três componentes de cor do lado direito de uma projeção \\
+$lim_{inicio}$: limiar de início de detecção de pixel \\
+$lim_{termino}$: limiar de término de detecção de pixel \\
+$u_{vert}$: posição de uma projeção no eixo horizontal de projeção da câmera \\
+$\alpha_{cam}$: abertura do campo de visão da câmera \\
+$u_{previsao}$: coordenada em que a projeção de um marco deveria estar localizada na imagem \\
+$larg_{janela}$: largura da janela de busca por marcos \\ 
+$C_{trans}$ & translação entre o sistema de coordenadas da câmera e o global \\
+$C$ & constante de relação da covariância base do modelo de observação \\
+    & do sonar baseado em associações \\
+
+$C$ & centro focal da câmera \\
+
+$C_{corr}$ & fator de correlacao \\
+
+
 \end{tabular}
