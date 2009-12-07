@@ -39,7 +39,8 @@
 
 \usepackage{algorithmic}
 
-\usepackage[disable]{todonotes}
+%\usepackage[disable]{todonotes}
+\usepackage{todonotes}
 
 %\versaofinal % descomente para gerar a versão final
               % sem as notas de pendencias, margens laterais, \ldots
@@ -103,10 +104,13 @@
   I. Godoy, Felipe II. Barbuda, Pedro d'Aquino F. F. de Sá III. Da Silva, Rafael de Oliveira IV. Ruiz, Rafael Ruppel
   \PoliDepartamentoData. II. t.}
 
-\fichacatalografica % formata a ficha
-\todo{Confirmar se está igual à enviada pela biblioteca}
+%\fichacatalografica % formata a ficha
+\begin{figure}[fb]
+		\includegraphics[width=1.00\textwidth]{imagens/FichaCatalografica.png}
+	\label{fig:FichaCatalografica}
+\end{figure}
 
-
+%\input{ficha-catalografica}
 %
 % Dedicatória (opcional)
 %
@@ -137,9 +141,6 @@
 \todo{Abstract}This document is about the development of a low cost auto-guided robot for closed environments.
 \end{abstract}
 
-
-
-
 %
 % Listas
 %
@@ -151,7 +152,7 @@
 \cleardoublepage\listoftables
 
 % abreviaturas
-\cleardoublepage\pretextualchapter{Lista de Abreviaturas}% e Siglas}
+\cleardoublepage\pretextualchapter{Lista de Abreviaturas}
 \todo{Lista de Abreviaturas}
 
 % lista de símbolos
