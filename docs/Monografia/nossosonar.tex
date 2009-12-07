@@ -16,7 +16,7 @@
 \begin{document}
 \end{comment}
 
-\newcommand{\hx}{$h(\hat{\bf{x}})$}
+\newcommand{\hx}{$h(\bar{\bf{x}})$}
 
 \chapter{Modelos de Observação dos Sonares}\label{subsec:modelosonares}
 \todo[inline]{Revisar a notação matemática das equações do sonar}
@@ -141,7 +141,7 @@ Duas etapas de eliminação são aplicadas sobre as paredes do mapa, de modo a redu
 
 \paragraph{Eliminação de paredes distantes}
 
-Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$, calcula-se a distância perpendicular até a última posição estimada do robô, $\hat{x}$. Caso essa distância seja maior do que um dado limite -- a faixa de operação do sonar utilizado --, rejeita-se esta parede como candidata a associação. Empiricamente, determinou-se 400 cm como um limite razoável.
+Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$, calcula-se a distância perpendicular até a última posição predita do robô, $\bar{\bf{{x}}$. Caso essa distância seja maior do que um dado limite -- a faixa de operação do sonar utilizado --, rejeita-se esta parede como candidata a associação.
 
 \paragraph{Eliminação de paredes pelo ângulo do sonar}
 
@@ -168,17 +168,17 @@ Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$
 	\SetKw{ou}{ou}
 	\SetKwData{falso}{falso}
 	\SetKwData{interbu}{interseçãoBorda1}
-	\SetKwData{interbd}{interseçãoBorda1}
+	\SetKwData{interbd}{interseçãoBorda2}
 	
-	\Entrada{A postura global estimada do sonar, $(\hat{x}_{sonar}, \hat{y}_{sonar}, \hat{\theta}_{sonar})$, e seu ângulo de abertura, $\phi$}
+	\Entrada{A postura global predita do sonar, $(\bar{x}_{sonar}, \bar{y}_{sonar}, \bar{\theta}_{sonar})$, e seu ângulo de abertura, $\phi$}
 	\Entrada{A parede, representada por um segmento de reta (\parede)}
 	\Saida{\verdade se a parede for visível pelo sonar; \falso caso contrário}
 	
 	\Inicio{
 		\pareta $\leftarrow$ a reta que contém \parede \;
-		\bordau $\leftarrow$ a semireta com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclinação $\hat{\theta}_{sonar} + \phi/2$ \;
-		\bordad $\leftarrow$ a semireta com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclinação $\hat{\theta}_{sonar} - \phi/2$ \;
-		\eixo $\leftarrow$ a semireta  com origem em $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e inclinação $\hat{\theta}_{sonar}$ \;
+		\bordau $\leftarrow$ a semireta com origem em $(\bar{x}_{sonar}, \bar{y}_{sonar})$ e inclinação $\bar{\theta}_{sonar} + \phi/2$ \;
+		\bordad $\leftarrow$ a semireta com origem em $(\bar{x}_{sonar}, \bar{y}_{sonar})$ e inclinação $\hat{\theta}_{sonar} - \phi/2$ \;
+		\eixo $\leftarrow$ a semireta  com origem em $(\bar{x}_{sonar}, \bar{y}_{sonar})$ e inclinação $\hat{\theta}_{sonar}$ \;
 		\interbu $\leftarrow$ a interseção, se existir, entre \bordau e \pareta \;
 		\interbd $\leftarrow$ a interseção, se existir, entre \bordad e \pareta \;
 		\Se{\lp \interbu  \ou \interbd\ \rp \e \parede contém o ponto de interseção}{\Retorna{\verdade} \;}
@@ -200,35 +200,35 @@ Para cada parede do mapa, representada em termos de $r_{wall}$ e $\theta_{wall}$
 		}
 		\Senao{ \Retorna{\falso}}	
 	}
-	\caption{Algoritmo de filtro de uma parede pelo ângulo do sonar}
+	\caption{Algoritmo de eliminação de uma parede pelo ângulo do sonar}
 		\label{algo:cone}
 \end{algorithm}
 
-As paredes que passarem por ambos as etapas são candidatas à associação. Para que se possa selecionar a parede correta, é calculada a observação esperada para aquela parede, dado que considera-se estar em uma postura $\bar{\textbf{x}}$. Dá-se a essa observação esperada o nome de \hx, e seu cálculo é explicado na seção \ref{sec:obsesperada}. Averigua-se, então, a diferença entre \hx e $z$, a observação mais recente obtida do sonar. A ideia é rejeitar associações que produzam erros grandes demais.
+As paredes que passarem por ambos as etapas são candidatas à associação. Para que se possa selecionar a parede correta, é calculada a observação esperada para aquela parede, supondo correta a predição $\bar{\textbf{x}}$. Dá-se a essa observação esperada o nome de \hx, e seu cálculo é explicado na seção \ref{sec:obsesperada}. Averigua-se, então, a diferença entre \hx e $z$, a observação mais recente obtida do sonar. A ideia é rejeitar associações que produzam erros grandes demais.
 
 
 O teste realizado é:
 
 \begin{equation}
-\frac{(z-h(\hat{x}))^2}{\sigma_{obs}^2} < g^2,
+\frac{(z-h(\bar{\bf{x}}))^2}{\sigma_{obs}^2} < g^2,
 \label{eq:testeassoc}
 \end{equation}
 
-onde $\sigma_{obs}^2$ é a variância das medidas e $g^2$ é um limite determinado experimentalmente. Se uma, e somente uma, parede do mapa passar pelo teste da equação \ref{eq:testeassoc}, considera-se a associação realizada com sucesso. Nesse caso, o modelo é capaz de produzir uma observação esperada, de acordo com a equação \label{eq:hx}, e dá-se início à fase de rastreamento da associação.
+onde $\sigma_{obs}^2$ é a variância das medidas e $g^2$ é um limite determinado experimentalmente. Se uma, e somente uma, parede do mapa passar pelo teste da equação \ref{eq:testeassoc}, considera-se a associação realizada com sucesso. Nesse caso, o modelo é capaz de produzir uma observação esperada, de acordo com a equação \ref{eq:hx}, e dá-se início à fase de rastreamento da associação.
 
 \subsection{Rastreamento de associação}
 Para a operação bem-sucedida do sistema de localização, é importante fornecer dados frequentemente, de modo a se corrigir a postura estimada com rapidez. É para aumentar essa taxa de correções que se desenvolveu o modo de rastreamento de associação, que entra em vigor assim que uma associação entre leituras e parede é realizada com sucesso.
 
-Uma associação sendo rastreada tem associada a si uma pontuação numérica, iniciada com um valor pré-definido. A cada nova leitura gerada pelo sonar em um instante $i$, a pontuação $p$ é recalculada, do seguinte modo:
+Uma associação sendo rastreada tem associada a si uma pontuação numérica, iniciada com um valor pré-definido. A cada nova leitura gerada pelo sonar em um instante $t$, a pontuação $p$ é recalculada, do seguinte modo:
 
 \begin{equation*}
-	\epsilon_{i} = (z_i-h(\hat{x}_i))^2
+	\epsilon_{t} = (z_t-h(\bar{\bf{x}}}_t))^2
 \end{equation*}
 \begin{equation*}
-	\Delta_{\epsilon} = \epsilon_{i-1} - \epsilon_{i}
+	\Delta_{\epsilon} = \epsilon_{t-1} - \epsilon_{t}
 \end{equation*}
 \begin{equation}
-	p_i = p_{i-1} + K\Delta_{\epsilon},
+	p_t = p_{t-1} + K\Delta_{\epsilon},
 \end{equation}
 
 onde:
@@ -236,17 +236,17 @@ onde:
 \begin{equation}
 K = \left\{ 
 \begin{array}{l l}
-  K_{piora} & \quad \text{se $\Delta_{erro} > 0$}\\
-  K_{melhora} & \quad \text{se $\Delta_{erro} < 0$}\\
+  K_{piora} & \quad \text{se $\Delta_{\epsilon} > 0$}\\
+  K_{melhora} & \quad \text{se $\Delta_{\epsilon} < 0$}\\
 \end{array} \right.
 \end{equation}
 
 A função da pontuação é representar a confiança que se tem naquela associação. Se os erros entre a observação esperada e a observação real diminuírem ou se mantiverem constantes, é sinal de que a associação não está tendo efeito negativo, e aumenta-se a pontuação. Por outro lado, se os erros estiverem aumentando, é desejado que a associação seja interrompida, pois é possível que não se esteja mais observando a mesma parede. De modo geral, deseja-se que $K_{piora} > K_{melhora}$ para evitar associações errôneas.
 
-A pontuação de uma associação afeta também a covariância do erro do modelo de observação, $\bm{R}$:
+A pontuação de uma associação afeta também a covariância do erro do modelo de observação, R:
 
 \begin{equation}
-\bm{R}= \begin{bmatrix}
+R = \begin{bmatrix}
 	R_{base} + \frac{C}{p}
 \end{bmatrix},
 \label{eq:matrizr}
@@ -254,11 +254,11 @@ A pontuação de uma associação afeta também a covariância do erro do modelo de ob
 
 onde $R_{base}$ e $C$ são constantes ajustadas experimentalmente.
 
-Quando a pontuação de um rastreamento cai abaixo de zero, a associação é desfeita. Na próxima iteração do algoritmo do modelo de observação, a fase de associação, descrita na seção \ref{sec:associacao} é realizada e, caso tenha sucesso, dá-se início a um novo rastreamento.
+Quando a pontuação de um rastreamento cai abaixo de zero, a associação é desfeita. Na próxima iteração do algoritmo do modelo de observação do sonar, a fase de associação descrita na seção \ref{sec:associacao} é realizada e, caso tenha sucesso, dá-se início a um novo rastreamento.
 
-\subsection{Obtenção da observação esperada}
+\subsection{Obtenção da Observação Esperada}
 \label{sec:obsesperada}
-Conhecida a parede que se está observando, o próximo passo é fornecer ao filtro estendido de Kalman (EKF) as seguintes informações: a observação esperada para a postura estimada, \hx; a observação real obtida, $z$; a matriz de covariância, $\bm{R}$ e o jacobiano de \hx, a matriz $\bm{H}$.
+Conhecida a parede que se está observando, o próximo passo é fornecer ao EKF as seguintes informações: a observação esperada para a postura estimada, \hx; a observação real obtida, $z$; a matriz de covariância, R e o jacobiano de \hx, a matriz G.
 
 \paragraph{Cálculo da observação esperada}
 
@@ -287,14 +287,14 @@ h(x) = \frac{r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\co
 
 \paragraph{Cálculo da covariância do erro da observação} A obtenção da matriz $\bm{R}$ é dada na equação \ref{eq:matrizr}.
 
-\paragraph{Cálculo do jacobiano} A matriz $\bm{H}$ é necessária para que o EKF corrija a postura corretamente em cada componente. Ela é dada por:
+\paragraph{Cálculo do jacobiano} A matriz H é necessária para que o EKF corrija a postura corretamente em cada componente. Ela é dada por:
 
 \begin{equation*}
-\bm{H} = \left. \frac{\partial h(\vec{x})}{\partial \vec{x}}\right|_{\hat{x}}
+H = \left. \frac{\partial h(\vec{x})}{\partial \vec{x}}\right|_{\hat{x}}
 \end{equation*}
 
 \begin{equation}
-\bm{H} = \left(
+H = \left(
     \begin{array}{>{\displaystyle}c}
 			-\frac{\cos(\theta_{wall})}{\sin\beta} \\
 			\\
@@ -319,30 +319,30 @@ f' = x'_{sonar} \sin(\theta-\theta_{wall}) + y'_{sonar} \cos(\theta-\theta_{wall
 f = r_{wall} - (x + x'_{sonar} \cos \theta - y'_{sonar} \sin \theta)\cos \theta_{wall} - (y + x'_{sonar} \sin \theta + y'_{sonar} \cos \theta)\sin \theta_{wall}
 \end{equation}
 
-\subsection{Determinação dos parâmetros do modelo de associações}
+\subsection{Determinação dos Parâmetros do Modelo de Associações}
 
 Há diversos parâmetros utilizados no modelo de associações. Nesta seção, os valores utilizados na implementação do projeto são listados.
 
 \paragraph{Parâmetros do robô} A incerteza nas observações, $\sigma^2_{obs}$, foi determinada por \cite{barra}, utilizando a mesma plataforma deste trabalho, como 625 $mm^2$. Da mesma maneira, foi estabelecido $\sigma^2_{deslocamento}$ como 0.05 m. O ângulo de abertura do sonar, denotado $\phi$, foi estabelecido por \cite{barra} como 30º.
-\paragraph{Parâmetros de validação e associação} A quantidade mínima de observações, $k_{min}$, foi determinada através de testes como 4. Além disso, as últimas 10 observações são armazenadas. A taxa de confiança no teste da equação \ref{eq:chitest} foi determinada por \cite{barra} como 50\% -- um valor baixo, mas que corresponde bem à realidade das incertezas do sonar. Descobriu-se que um valor para $g^2$, utilizado no teste de associação da equação \ref{eq:testeassoc}, igual a 15 gera resultados bons.
+\paragraph{Parâmetros de validação e associação} A quantidade mínima de observações, $k_{min}$, foi determinada através de testes como 4. Além disso, as últimas 10 observações são armazenadas. A taxa de confiança no teste da equação \ref{eq:chitest} foi determinada por \cite{barra} como 50\% -- um valor baixo, mas que corresponde bem à realidade das incertezas do sonar. Determinou-se-se que um valor para $g^2$, utilizado no teste de associação da equação \ref{eq:testeassoc}, igual a 15 gera resultados bons. Também empiricamente, determinou-se 400 cm como um limite para a eliminação de paredes distantes candidatas à associação.
 
 \paragraph{Parâmetros de rastreamento} A pontuação de uma associação recém-iniciada foi definida como 50. As constantes $K_{piora}$ e $K_{melhora}$ utilizadas foram, respectivamente, 4 e 3. No cálculo da equação da covariância do erro, equação \ref{eq:matrizr}, $R_{base} = 10$ e $C=300$. Quando a pontuação é zero, define-se a covariância do erro como 500.
 
 \section{Modelo Simples de Observação dos Sonares}\label{subsec:modeloSimplesSonar}
 
-O desempenho do modelo de observação baseado em associações, descrito na seção anterior, nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequência de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz. Esta seção descreve sua operação.
+O desempenho do modelo de observação baseado em associações nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequência de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz.
 
-O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição estimada do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a estimativa da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
+O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição predita do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a predição da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
 
-\subsection{Eliminação de leituras}
+\subsection{Eliminação de Leituras Espúrias}
 
-No modelo anterior, um modelo sofisticado é descrito para garantir que as últimas $k$ leituras correspondam a uma distribuição normal, como explicado na seção \ref{sec:validacao}. Já este modelo garante apenas que leituras erradas não sejam consideradas. Por erradas, entende-se medidas acima de 5 metros, o valor utilizado pelos sensores para indicar que nenhum obstáculo foi encontrado.
+No modelo anterior, um método sofisticado é descrito para garantir que as últimas $k$ leituras correspondam a uma distribuição normal, como explicado na seção \ref{sec:validacao}. Já este modelo garante apenas que leituras erradas não sejam consideradas. Por erradas, entende-se medidas acima de 5 metros, o valor utilizado pelos sensores para indicar que nenhum obstáculo foi encontrado.
 
-É importante notar que essa diferença de abordagem torna o modelo simples muito mais suscetível a leituras espúrias, e a obstáculos dinâmicos.
+É importante notar que essa diferença de abordagem torna o modelo simples muito mais suscetível a leituras espúrias geradas por obstáculos dinâmicos.
 
-\subsection{Determinação da parede e observação esperada}
+\subsection{Determinação da Parede e Observação Esperada}
 
-Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de modo a se obter a estimativa mais recente da postura, $\hat{\bf{x}}$. O mapa é consultado para se obter a parede que, caso o robô de fato estivesse naquela posição, seria observada. Feito isso, a observação esperada pode ser obtida trivialmente. O algoritmo \ref{algo:modelosimples} descreve o funcionamento desta etapa.
+Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de modo a se obter a predição da postura. O mapa é consultado para se obter a parede que, caso o robô de fato estivesse naquela posição, seria observada. Feito isso, a observação esperada pode ser obtida facilmente. O algoritmo \ref{algo:modelosimples} descreve o funcionamento desta etapa.
 
 \begin{algorithm}[h]
 \dontprintsemicolon
@@ -358,13 +358,13 @@ Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de
 	\SetKw{recebe}{$\leftarrow$}
 	\SetKw{Em}{em}
 	\SetKw{Ou}{ou}
-	\Entrada{A postura global estimada do sonar, $(\hat{x}_{sonar}, \hat{y}_{sonar}, \hat{\theta}_{sonar})$}
+	\Entrada{A postura global estimada do sonar, $(\bar{x}_{sonar}, \bar{y}_{sonar}, \bar{\theta}_{sonar})$}
 	\Entrada{A lista de paredes do mapa, \paredes }
 	\Entrada{O alcance máximo do sonar, \tamanho }
 	\Saida{A observação esperada}
-	\deltaX \recebe \tamanho * $\cos\hat{\theta}_{sonar}$ \;
-	\deltaY \recebe \tamanho * $\sin\hat{\theta}_{sonar}$ \;
-	\feixe \recebe segmento com extremos $(\hat{x}_{sonar}, \hat{y}_{sonar})$ e $(\hat{x}_{sonar} + \deltaX, \hat{y}_{sonar} + \deltaY)$ \;
+	\deltaX \recebe \tamanho * $\cos\bar{\theta}_{sonar}$ \;
+	\deltaY \recebe \tamanho * $\sin\bar{\theta}_{sonar}$ \;
+	\feixe \recebe segmento com extremos $(\bar{x}_{sonar}, \bar{y}_{sonar})$ e $(\bar{x}_{sonar} + \deltaX, \bar{y}_{sonar} + \deltaY)$ \;
 	\distmin \recebe $-1$ \;
 	\ParaCada{\parede \Em \paredes}{
 		\Se{\feixe intersecta \parede}{
@@ -382,18 +382,18 @@ Quando o modelo recebe uma leitura, o gerenciador de localização é consultado de
 	\label{algo:modelosimples}
 \end{algorithm}
 
-\subsection{Obtenção da matriz de covariância e do jacobiano}
-O passo final do modelo de observação é fornecer ao EKF a matriz de covariância e o jacobiano $\bm{H}$:
+\subsection{Obtenção da Matriz de Covariância e do Jacobiano}
+O passo final do modelo de observação é fornecer ao EKF a matriz de covariância e o jacobiano H:
 
 \begin{equation}
-\bm{R}= \begin{bmatrix}
+R = \begin{bmatrix}
 	R_{simples}
 \end{bmatrix},
 \end{equation}
 
 O jacobiano $\bm{H}$ é o mesmo da equação \ref{eq:matrizh}.
 
-\subsection{Determinação dos parâmetros do modelo simples}
+\subsection{Determinação dos Parâmetros do Modelo Simples}
 
 Os únicos parâmetros configuráveis no modelo simples são o limite máximo do alcance do sonar, e $R_{simples}$, a covariância. O limite máximo teórico do sonar é de 5 metros, mas estabeleceu-se 4 metros como o alcance do modelo. Acima dessa distância, experimentos relatam degeneração significativa da precisão das leituras. $R_{simples}$ foi definido como 60 $cm^2$.
 
