@@ -1,11 +1,11 @@
 \chapter{Revisão da literatura}\label{sec:revisaoLiteratura}
 
-Há, na literatura, alguns robôs-guias construídos e implantados com sucesso em ambientes desafiadores. As técnicas utilizadas variam significativamente. Nesta seção, são descritas as abordagens adotadas por três desses projetos. Além disso, explica-se o projeto de \cite{barra}, a base deste trabalho.
+Há, na literatura, alguns robôs-guias construídos e implantados com sucesso em ambientes desafiadores. As técnicas utilizadas variam significativamente. Nesta seção, são descritas as abordagens adotadas por três desses projetos. Além disso, explica-se o projeto de \cite{barra}, a base do sistema de localização.
 
 \section{Rhino}
-O RHINO \cite{Burgard98experienceswith} foi o primeiro de dois robôs-guias de museu construídos pela equipe de Sebastian Thrun, especialista na área de robótica e visão computacional. O RHINO foi utilizado durante 6 dias no \textit{Deutsches Mueum Bonn} e contato com mais de 2000 visitantes.
+O RHINO \cite{Burgard98experienceswith} foi o primeiro de dois robôs-guias de museu construídos pela equipe de Sebastian Thrun, especialista na área de robótica e visão computacional. O robô foi utilizado durante 6 dias no \textit{Deutsches Museum Bonn} e teve contato com mais de 2000 visitantes.
 
-Para a localização, os desenvolvedores tiveram três grandes prioridades: representações probabilísticas para dar maior robustez ao robô, flexibilidade quanto à disponibilidade de recursos e programação distribuída com tomada de decisões decentralizada. Utilizaram para esse fim um modelo markoviano para estimar a localização, juntamente com uma computação seletiva, que realizava os cálculos apenas para os pontos de maior probabilidade. Essa seleção era mais ou menos restritiva de acordo com os recursos computacionais disponíveis.
+Para a localização, os desenvolvedores tiveram três grandes prioridades: representações probabilísticas para dar maior robustez ao robô, flexibilidade quanto à disponibilidade de recursos e programação distribuída com tomada de decisões descentralizadas. Utilizaram para esse fim um modelo markoviano para estimar a localização, juntamente com uma computação seletiva, que realizava os cálculos apenas para os pontos de maior probabilidade. Essa seleção era mais ou menos restritiva de acordo com os recursos computacionais disponíveis.
 
 \begin{figure}[ht]
   \centering
@@ -16,32 +16,32 @@ Para a localização, os desenvolvedores tiveram três grandes prioridades: represe
 
 Para a navegação, ou seja, planejamento de rotas e execução, foi criada uma hierarquia que pode ser vista na figura  \ref{fig:arquiteturaRhino}. O módulo de prevenção de colisões é o nível mais baixo, ou seja, tem prioridade sobre os demais porque age mais perto dos componentes físicos do robô. Esse é o sistema responsável por evitar que o robô atinja qualquer objeto ou, principalmente transeuntes. Acima dele está o módulo de planejamento de movimento pelo menor caminho, e por fim o módulo controlador, que coordena a ordem das ações do robô.
 
-O RHINO possui também a habilidade de criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal modificar a planta do ambiente. Cada sensor constrói um mapa, e o robô os combina em um mapa integrado.
+O RHINO possui também a habilidade de criação dinâmica de mapas. Apesar do aumento da complexidade, o modelo dinâmico de mapa é útil pois um caminho planejado pode ser bloqueado por grandes períodos de tempo por visitantes, ou um pedestal pode modificar a planta do ambiente. Cada sensor constrói um mapa, e o robô os combina em um mapa integrado \ref{fig:mapaRhino}.
 
 \begin{figure}[ht]
   \centering
     \includegraphics[width=.9\columnwidth]{imagens/bibliografia/mapasRhino.png}
-	\caption{Mapas gerado pelos diverss sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Burgard98experienceswith}}
+	\caption{Mapas gerado pelos diversos sensores, e o mapa integrado. O primeiro é o mapa gerado em CAD, o segundo o mapa gerado pelo sensor laser utilizado, o terceiro gerado por sonares e por fim o mapa integrado. \cite{Burgard98experienceswith}}
 	\label{fig:mapaRhino}
 \end{figure}
 
-Os projetistas do RHINO relatam em \cite{Burgard98experienceswith} um problema importante para robôs com esta finalidade: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com estes de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operar o robô rapidamente.
+Os projetistas do RHINO relatam em \cite{Burgard98experienceswith} um problema importante para robôs-guia: a interação com pessoas. É importante que o robô, além de não atingir os visitantes, também interaja com eles de forma amigável e que sua curva de aprendizado seja pequena, de forma que pessoas de distintos níveis de familiaridade com tecnologia sejam capazes de operâ-lo rapidamente.
 
 \section{Minerva}
 O MINERVA \cite{Thrun99minerva} é a segunda geração do robô-guia RHINO descrito anteriormente. Por ter sido desenvolvido pela mesma equipe, notam-se muitas semelhanças entre os dois projetos. O MINERVA foi utilizado no \textit{Smithsonian's National Museum of American History} por duas semanas em 1998.
 
-O foco da equipe foi na na resolução dos seguintes problemas:
+O foco dos pesquisadores foi na resolução dos seguintes problemas:
 \begin{itemize}
 	\item Navegação em ambientes dinâmicos.
 	\item Navegação em ambientes não modificados.
 	\item Interação com seres humanos.
 	\item Interação com o robô através da internet.
 \end{itemize}
-Entre as principais diferenças com o RHINO está o aprendizado dos mapas gerados. Ao invés de simplesmente utilizar o mapa para planejar a rota pontualmente, o MINERVA planeja seu caminho de forma a não percorrer regiões onde não há muitos objetos dos quais ele pode se aproveitar para a localização. Além disso, ele utiliza aprendizado por reforço para aprimorar sua interação com os visitantes com o passar do tempo.
+Uma das principais diferenças com o RHINO é o aprendizado dos mapas gerados. Em vez de simplesmente utilizar o mapa para planejar a rota pontualmente, o MINERVA planeja seu caminho de forma a não percorrer regiões onde não há muitos objetos dos quais ele pode se aproveitar para a localização. Além disso, é utilizado aprendizado por reforço para aprimorar sua interação com os visitantes com o passar do tempo.
 
-Como o \textit{Smithonian's} era muito mais populoso que o \textit{Deutsches Museum Bonn}, alternativas distintas foram utilizadas para localização. A principal diferença foi a utilização de uma câmera que apontava para o teto do museu, que foi mapeado. Dessa forma, o robô era capaz de corrigir a posição fornecida pelos outros sensores de forma eficaz e mais robusta, já que pessoas cercando-o não impediriam a visualização precisa do teto, por mais que escondessem todas as outras propriedades necessárias aos demais sensores.
+Como o \textit{Smithonian's} era muito mais populoso que o \textit{Deutsches Museum Bonn}, alternativas distintas foram utilizadas para localização. A principal inovação foi a utilização de uma câmera que apontava para o teto do museu, que foi mapeado. Dessa forma, o robô era capaz de corrigir a posição fornecida pelos outros sensores de forma eficaz e mais robusta, já que pessoas cercando-o não impediriam a visualização precisa do teto, por mais que escondessem todas as outras propriedades necessárias aos demais sensores.
 
-Para o sistema de localização, o MINERVA utiliza uma versão modificada da localização markoviana. Utilizando seus sensores (lasers, sonares, câmeras e odômetro) e realizando a fusão destes através do teorema de Bayes, ele é capaz de se localizar globalmente no mapa, sem ser necessário que um usuário informe sua posição inicial -- a isso dá-se o nome de problema da localização global, em oposição à localização local, em que a posição inicial é necessária. Contudo, a localização markoviana tradicional exige que o ambiente seja estático, o que é completamente diferente do ambiente em um museu. A fim de adaptar esse processo a um ambiente estático, O MINERVA calcula uma medida esperada pelo sensor. Toda vez que a medida calculada é menor que a esperada, esta é excluída.
+Para o sistema de localização, o MINERVA utiliza uma versão modificada da localização markoviana. Utilizando seus sensores (lasers, sonares, câmeras e odômetro) e realizando a fusão destes através do teorema de Bayes, ele é capaz de se localizar globalmente no mapa, sem ser necessário que um usuário informe sua posição inicial -- a isso dá-se o nome de problema da localização global, em oposição à localização local, em que a posição inicial é necessária. Contudo, a localização markoviana tradicional exige que o ambiente seja estático, o que é completamente diferente do ambiente em um museu. A fim de adaptar esse processo a um ambiente estático, ele calcula uma medida esperada pelo sensor. Toda vez que a medida calculada é menor que a esperada, ela é excluída \ref{fig:mapasMinerva}.
 
 \begin{figure}[ht]
   \centering
@@ -51,7 +51,7 @@ Para o sistema de localização, o MINERVA utiliza uma versão modificada da locali
 \end{figure}
 
 \section{RoboX}
-O RoboX\cite{Siegwart02largescale}, desenvolvido por uma equipe liderada por Roland Seigwart, foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
+Desenvolvido por uma equipe liderada por Roland Siegwart, foi utilizado durante uma exposição suíça por um período de 159 dias. As premissas adotadas no projeto do robô foram mobilidade, interatividade e segurança.
 
 \begin{figure}
   \centering
@@ -60,7 +60,7 @@ O RoboX\cite{Siegwart02largescale}, desenvolvido por uma equipe liderada por Rol
 	\label{fig:arquiteturarobox}
 \end{figure}
 
-O sistema de navegação utilizado no RoboX emprega um mapeamento topológico, que representa o ambiente sob a forma de grafos com arestas ponderadas. Com isso, conseguiu-se reduzir a quantidade de informações para representar um metro quadrado do ambiente, além de melhorar a capacidade de filtragem de marcos que não são associados a nenhum ponto de interesse bem definido. O grafo é constituído por três tipos de nós: o primeiro são nós estação, que indicam posições diretamente ligada à aplicação do robô; nós de caminho, que representam localizações topologicamente relevantes, como portas e cruzamentos de corredores, e também atuam na simplificação da escolha de rotas, uma vez que sinalizam posições de fácil percurso; e, por fim, pontos fantasmas, que indicam obstáculos que não podem ser percebidos pelos sensores do robô, como paredes de vidro, escadas etc. Um mapa utilizado pelo RoboX pode ser visto na figura \ref{fig:mapaRobox}.
+O sistema de navegação utilizado no RoboX emprega um mapeamento topológico, que representa o ambiente sob a forma de grafos com arestas ponderadas. Com isso, conseguiu-se reduzir a quantidade de informações para representar um metro quadrado do ambiente, além de melhorar a capacidade de eliminação de marcos que não são associados a nenhum ponto de interesse bem definido. O grafo é constituído por três tipos de nós: o primeiro são nós estação, que indicam posições diretamente ligada à aplicação do robô; nós de caminho, que representam localizações topologicamente relevantes, como portas e cruzamentos de corredores, e também atuam na simplificação da escolha de rotas, uma vez que sinalizam posições de fácil percurso; e, por fim, pontos fantasmas, que indicam obstáculos que não podem ser percebidos pelos sensores do robô, como paredes de vidro, escadas etc. Um mapa utilizado pelo RoboX pode ser visto na figura \ref{fig:mapaRobox}.
 
 \begin{figure}[ht]
   \centering
@@ -71,10 +71,10 @@ O sistema de navegação utilizado no RoboX emprega um mapeamento topológico, que 
 
 A determinação de rotas é feita por meio de uma combinação de um sistema reativo de desvio de obstáculos, que decide por uma ação de desvio baseado puramente no que se está observando em um dado instante, e uma camada de planejamento de rotas, que fornece diretrizes ao sistema de desvio. O conjunto tornou o algoritmo mais eficiente, diminuindo o tempo de processamento necessário.
 
-A localização é realizada através de uma variação do filtro de Kalman estendido, de modo a compensar a fragilidade de uma técnica de crença em hipótese única. Ao contrário de métodos como a localização markoviana, em que a posição é calculada antes de ser validada por meio das informações dos sensores, os projetistas optaram por uma abordagem na qual a localização é resultado direto da informação sensorial. Assim, é possível manter quantas hipóteses forem necessárias.
+A localização é realizada através de um EKF modificado, de modo a compensar a fragilidade de uma técnica de crença em hipótese única. Ao contrário de métodos como a localização markoviana, em que a posição é calculada antes de ser validada por meio das informações dos sensores, os projetistas optaram por uma abordagem na qual a localização é resultado direto da informação sensorial. Assim, é possível manter quantas hipóteses forem necessárias.
 
 \section{ELViS}
-Em \cite{barra}, é desenvolvido um sistema de localização que utiliza oito sonares frontais, aliados a uma câmera monocular. Esse é o trabalho que serviu de base para o módulo de localização deste trabalho, pois combinou elementos de baixo custo a resultados experimentais promissores na mesma plataforma robótica utilizada neste projeto.
+Em \cite{barra}, é desenvolvido um sistema de localização que utiliza oito sonares frontais, aliados a sistema de visão monocular. Esse é o trabalho que serviu de base para o módulo de localização deste trabalho, pois combinou elementos de baixo custo a resultados experimentais promissores na mesma plataforma robótica utilizada neste projeto.
 
 \subsection{Sonares}  \label{subsec:sonarbarra}
 O ELViS utiliza oito sonares frontais. Devido à sua distribuição física no robô, cada sonar é ativado separadamente, visto que um sonar pode causar interferência nos outros sonares caso sejam disparados simultaneamente. Segundo sua modelagem, o fato dos sonares serem disparados em momentos distintos e a possibilidade do robô estar em movimento significaria leituras em posições diferentes. Por isto, cada sonar é tratado de forma indepedente.
@@ -93,14 +93,14 @@ O ELViS utiliza oito sonares frontais. Devido à sua distribuição física no robô,
 	\label{fig:modelosonarbarra}
 \end{figure}
 
-O modelo do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. De posse da postura estimada, o sistema calcula qual seria a observação esperada, isto é, a leitura fornecida pelo sonar. A diferença entre a observação esperada e a de fato obtida sinaliza um erro na localização, e pode ser utilizada para corrigir a estimativa da postura. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, de posse da inclinação da parede, da posição da parede e da distância medida pelo sonar calcula-se a estimativa de $x$ e $y$, como mostrado na figura \ref{fig:modelosonarbarra}.
+O modelo de observação do sonar atualiza a estimativa do robô por meio da leitura do sonar e do conhecimento sobre a parede refletora. De posse da postura predita, o sistema calcula qual seria a observação esperada, isto é, a leitura fornecida pelo sonar caso o robô de fato estivesse nessa posição. A diferença entre a observação esperada e a de fato obtida sinaliza um erro na localização, e pode ser utilizada para corrigir a estimativa da postura. Em \cite{barra}, considera-se por simplicidade que todo pulso atinge de forma perpendicular a parede. Desta maneira, a partir da inclinação da parede, da posição da parede e da distância medida pelo sonar, calcula-se a estimativa de $x$ e $y$ como mostrado na figura \ref{fig:modelosonarbarra}.
 
-O modelo utilizado em ELViS considerava que erros ``grosseiros'' poderiam ocorrer se medidas erradas fossem alimentadas ao EKF. Para minimizá-las, este utiliza um sistema de \textit{buffer} das medidas do sonar, seguidas de um processo de associação da parede com as medidas obtidas. O processo funciona, simplificadamente, da seguinte forma. O sonar vai coletando medidas. Após obter uma quantidade $k$ de medidas mínimas, é feito um teste para validar se essas medidas correspondem a uma distribuição normal. Caso o teste seja aceito, a próxima etapa é a determinação da parede observada, o que é feito utilizando a posição do sonar e das retas. Por fim, realiza-se a associação das observações realizadas com o mapa, obtendo assim uma estimativa atualizada da posição. A associação é bastante conservadora: se mais de uma parede for candidata à associação, o sistema não considera nenhuma das duas, esperando mais dados para decidir.
+O modelo utilizado em ELViS considerava que erros "grosseiros" poderiam ocorrer se medidas erradas fossem alimentadas ao EKF. Para minimizá-las, utiliza-se um sistema de \textit{buffer} das medidas do sonar, seguidas de um processo de associação da parede observada com as medidas obtidas. O processo funciona, simplificadamente, da seguinte forma: O sonar coleta leituras até obter uma quantidade $k$ de medidas mínimas, é feito um teste para validar se essas medidas correspondem a uma distribuição normal. Caso o teste seja aceito, a próxima etapa é a determinação da parede observada, o que é feito utilizando a posição do sonar e das retas. Por fim, realiza-se a associação das observações realizadas com o mapa, obtendo assim uma estimativa corrigida da posição. A associação é bastante conservadora: se mais de uma parede for candidata à associação, o sistema não considera nenhuma das duas, esperando mais dados para decidir.
 
 \subsection{Visão}
-O modelo de observação adotado no sistema ELViS busca associar características de imagens vistas por uma câmera monocular a marcos do ambiente, previamente mapeados. O marco adotado pelo autor são retas verticais. Após a extração das retas verticais de um quadro da câmera, o modelo determina a correspondência entre conjunto de de retas verticais obtidas no quadro atual e o conjunto obtido no quadro anterior. A correspondência consiste em encontrar, na imagem, a projeção de uma reta vertical presente no ambiente.
+O modelo de observação da visão adotado no sistema ELViS busca associar características de imagens vistas por uma câmera monocular a marcos do ambiente, previamente mapeados. O tipo de marco adotado pelo autor são retas verticais. Após a extração das retas verticais de um quadro da câmera, o modelo determina a correspondência entre conjunto de de retas verticais obtidas no quadro atual e o conjunto obtido no quadro anterior. A correspondência consiste em encontrar, na imagem, a projeção de uma reta vertical presente no ambiente \ref{fig:barra_arquitetura_visão}.
 
-Tendo um conjunto de retas verticais, o modelo de visão procura associar cada reta a um marco conhecido do ambiente, descrito em um mapa. As retas que forem associadas a marcos passam ainda por uma etapa de validação, na qual os últimos $k$ quadros são analisados de modo a se confirmar a presença de terminada associação. Somente após a validação é que as retas são usadas para corrigir a estimativa da postura do robô.
+Tendo um conjunto de retas verticais, o modelo de visão procura associar cada reta a um marco conhecido do ambiente, descrito em um mapa. As retas que forem associadas a marcos passam ainda por uma etapa de validação, na qual os últimos $k$ quadros são analisados de modo a se confirmar a presença de determinada associação. Somente após a validação é que as retas são usadas para corrigir a estimativa da postura do robô.
 
 \begin{figure}[hp]
 	\centering
