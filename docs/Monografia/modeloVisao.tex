@@ -5,12 +5,12 @@ O uso de visão é muito interessante para a obtenção da localização pois uma câme
 Neste trabalho, emprega-se a visão monocular, cujo sensor é uma câmera de vídeo montada sobre o robô, apontada na direção frontal dele. 
 
 \section{Modelo da Câmera}
-Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webcam} convencional, baseada na tecnologia CCD. O modelo da câmera segui o modelo de câmera de orifício, também conhecido como \textit{pinhole}. Neste modelo, a câmera possui um centro focal C e um plano de projeção, onde as imagens são formadas, representado como um espaço discreto cujo tamanho indica a resolução da câmera e cada elemento discreto é um pixel da imagem. 
+Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webcam} convencional, baseada na tecnologia CCD. O modelo da câmera segue o modelo de câmera de orifício, também conhecido como \textit{pinhole}. Nesse modelo, a câmera possui um centro focal C e um plano de projeção, onde as imagens são formadas, representado como um espaço discreto cujo tamanho indica a resolução da câmera e em que cada elemento discreto é um pixel da imagem. 
 
 \begin{figure}[htbp]
 	\centering
 		\includegraphics{imagens/pinhole.jpg}
-	\caption{Modelo de câmera pinhole, composto pelo centro focal C e pelo plano de projeção (figura retirada de \cite{barra})}
+	\caption{Modelo de câmera pinhole, composto pelo centro focal C e pelo plano de projeção \cite{barra}.}
 	\label{fig:pinhole}
 \end{figure}
 
@@ -30,9 +30,9 @@ Considera-se o sistema de coordenadas $\left( X_c, Y_c, Z_c \right)$ intrínseco 
 	\label{coordv:pinhole}
 \end{equation}
 
-onde $f_u$ e $f_v$ indicam a distância focal da câmera horizontal e vertical, respectivamente, cujos valores são obtidos em uma etapa de calibração da câmera, assim como os valores de $u_0$ e $v_0$, que indicam o centro do plano de projeção, no sistema de coordenadas do plano de projeção $\left(U, V\right)$. Os valores de $u$ e $v$ são dados em pixels. 
+onde $f_u$ e $f_v$ indicam a distância focal, horizontal e vertical, da câmera, respectivamente, cujos valores são obtidos em uma etapa de calibração, assim como os valores de $u_0$ e $v_0$, que indicam o centro do plano de projeção, no sistema de coordenadas do plano de projeção $\left(U, V\right)$. Os valores de $u$ e $v$ são dados em pixels. 
 
-Já um ponto no sistema de coordenadas global, isto é, no mesmo sistema de coordenadas na qual a postura do robô é representada, dado por ${\bf p_real} = \left[x, y, z\right]^T$, precisa ser previamente convertido para o sistema de coordenadas intrínseco à câmera, resultando em um ponto ${\bf p_cam} = \left[ x_{cam}, y_{cam}, z_{cam} \right]^T$, antes que as equações acima possam ser aplicadas. Tal conversão é feita por meio de:
+Já um ponto no sistema de coordenadas global, isto é, no mesmo sistema de coordenadas na qual a postura do robô é representada, dado por ${\bf p_{real}} = \left[x, y, z\right]^T$, precisa ser previamente convertido para o sistema de coordenadas intrínseco à câmera, resultando em um ponto ${\bf p_{cam}} = \left[ x_{cam}, y_{cam}, z_{cam} \right]^T$, antes que as equações acima possam ser aplicadas. Tal conversão é feita por meio de:
 
 \begin{equation}
 	{\bf p_{cam}} = {\bf R^T\left( p_{real} - C \right)}
@@ -43,9 +43,9 @@ onde ${\bf R}$ é o parâmetro de rotação relativa entre o sistema de coordenadas 
 
 \section{Realce de Projeções Verticais}
 
-A primeira etapa do processamento da visão é ressaltar, nos quadros obtidos pela câmera, apenas os pixels que possam pertencer à projeções de retas verticais. Isso é feito através do uso de um Operador de Sobel modificado.
+A primeira etapa do processamento da visão é realçar, nos quadros obtidos pela câmera, apenas os pixels que possam pertencer a projeções de retas verticais. Isso é feito através do uso de um Operador de Sobel modificado.
 
-O Operador de Sobel é um algoritmo voltado para a detecção de bordas em imagens, cujo resultado é uma imagem em tons de cinza onde os pixels que representam bordas de objetos ficam demarcados em branco enquanto os demais assumem a tons próximos ao preto. 
+O Operador de Sobel é um algoritmo voltado para a detecção de bordas em imagens, cujo resultado é uma imagem em tons de cinza onde os pixels que representam bordas de objetos ficam demarcados em branco, enquanto os demais assumem a tons próximos ao preto. Como exemplo, o resultado da aplicação do Operador de Sobel na figura \ref{visao:original} está ilustrado na figura \ref{visao:convolucao}.
 
 Vale ressaltar que o Operador de Sobel é um tipo de convolução de imagens. A ideia básica da convolução de imagens, que é discreta e bidimensional, é a de uma janela que é deslizada sobre a imagem. O valor do pixel resultante é igual à soma ponderada dos pixels da imagem original que se encontram dentro da janela. Os pesos são os valores do filtro que foram estabelecidos para cada um dos pixels da janela. Tal janela é denominada \textit{kernel} da convolução. O Operador de Sobel permite que seu filtro seja divido em dois, sendo um para a direção horizontal e o outro, para a vertical.
 
@@ -65,7 +65,7 @@ Uma vez que o estímulo de interesse são as projeções verticais, utiliza-se apena
 	\right)
 \end{equation}
 
-É importante salientar que antes do Operador de Sobel ser aplicado, a imagem sofre uma operação de borramento, cujo objetivo é reduzir a influência que o ruído presente na captura das imagens possa ter sobre a qualidade do resultado do Operador de Sobel.
+É importante salientar que, antes do Operador de Sobel ser aplicado, a imagem sofre uma operação de borramento para reduzir a influência que o ruído presente na captura das imagens possa ter sobre a qualidade do resultado do Operador de Sobel.
 
 \begin{figure}[ht]
 	\centering
@@ -84,11 +84,11 @@ Uma vez que o estímulo de interesse são as projeções verticais, utiliza-se apena
 
 \section{Perfil de Cor}
 
-O perfil de cor segue a hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo.
+A hipótese que a distribuição de cores ao redor das retas verticais contém informação suficiente para ajudar a identificar projeções de uma mesma reta vertical em diferentes quadros do vídeo dá origem ao cálculo do filtro de cor.
 
-Ele considera uma região da imagem centrada na sequência de pixels que pertencem a uma projeção, estendendo-se por uma faixa de \textit{n} pixels a direita e a esquerda de cada pixel da projeção.
+Considera-se uma região da imagem centrada na sequência de pixels que pertencem a uma projeção, estendendo-se por uma faixa de $n$ pixels à direita e à esquerda de cada pixel da projeção.
 
-As informações que se mostraram relevantes sobre o perfil de cor são os valores médios, para cada componente de cor, denominados $R_{esq}$, $R_{dir}$, $G_{esq}$, $G_{dir}$, $B_{esq}$ e $B_{dir}$ dos lados esquerdo e direito em relação ao centro da região.
+As informações que se mostram relevantes sobre o perfil de cor são os valores médios para cada componente de cor, denominados $R_{esq}$, $R_{dir}$, $G_{esq}$, $G_{dir}$, $B_{esq}$ e $B_{dir}$ dos lados esquerdo e direito em relação ao centro da região.
 
 A comparação de dois perfis de cor resulta num fator de correlação normalizado que indica quão semelhantes são os perfis. O cálculo desse fator segue as seguintes equações:
 
@@ -97,10 +97,10 @@ R & = & \left( \delta - \vert R^{(1)}_{esq} - R^{(2)}_{esq} \vert \right) + \lef
 G & = & \left( \delta - \vert G^{(1)}_{esq} - G^{(2)}_{esq} \vert \right) + \left( \delta - \vert G^{(1)}_{dir} - G^{(2)}_{dir} \vert \right) \\
 B & = & \left( \delta - \vert B^{(1)}_{esq} - B^{(2)}_{esq} \vert \right) + \left( \delta - \vert B^{(1)}_{dir} - B^{(2)}_{dir} \vert \right)
 \end{eqnarray*}
-\begin{displaymath}
+\begin{equation}
 C = \frac{\left( R + G + B \right)}{6\delta} 
 \label{eqn:perfilcor}
-\end{displaymath}
+\end{equation}
 
 onde $\delta$ é a maior diferença esperada entre os componentes, $R$, $G$ e $B$ são representam as diferenças nas intensidades dos componentes de cor entre o lado direito e esquerdo, em relação à reta considerada, e $C$ é o fator de correlação. 
 
@@ -113,7 +113,7 @@ Antes de iniciar a detecção, aplica-se um procedimento que filtra pixels que não
 
 O procedimento de detecção é iniciado em um estado no qual a imagem é varrida, da esquerda para a direita, de cima para baixo, buscando um pixel que tenha intensidade maior do que um \textsl{limiar de início} ($lim_{inicio}$). Quando um pixel atende a esse requisito, passa-se a um estado secundário.
 
-Neste novo estado, supõe-se que o pixel acima do limiar é um ponto pertencente a um nova projeção, adicionando-o a uma lista de pontos que compõem a projeção. A partir dele, a imagem passa a ser varrida na direção vertical, seguindo as seguintes regras: compara-se o valor dos três pixels vizinhos que estão diretamente abaixo do pixel recém-adicionado na nova possível projeção. O pixel que será adicionado na lista da projeção será aquele com o maior valor. Contudo, existem algumas ressalvas:
+Neste novo estado, supõe-se que o pixel acima do limiar é um ponto pertencente a um nova projeção, adicionando-o a uma lista de pontos que compõem a projeção. A partir dele, a imagem passa a ser varrida na direção vertical, de acordo com as seguintes regras: compara-se o valor dos três pixels vizinhos que estão diretamente abaixo do pixel recém-adicionado na nova possível projeção. O pixel que será adicionado na lista da projeção será aquele com o maior valor. Contudo, existem algumas ressalvas:
 \begin{itemize}
 \item se o pixel de maior valor for um dos inferiores laterais, entra em ação um fator de inércia vertical cujo papel é forçar a projeção a ser o mais vertical possível. Enquanto este fator estiver ativo, é dada preferência para o pixel diretamente abaixo, mesmo que seu valor não seja o maior. Esse fator será desativado quando alguns pixels não máximos forem selecionados, evitando, assim, a formação de um projeção distorcida.
 \item se o maior valor for inferior a um \textsl{limiar de término} ($lim_{termino}$), o pixel é adicionado temporariamente à projeção e passa-se a contar quantos pixels abaixo do limiar foram inseridos em sequência. Caso essa contagem ultrapasse um valor máximo, todos os que foram adicionados temporariamente são removidos, a projeção obtida até então é considerada finalizada e o algoritmo de detecção volta ao estado inicial. Se após alguns pixels abaixo do limiar de término serem inseridos, mas com contagem menor do que a máxima permitida, for encontrado um pixel cuja intensidade é superior ao limiar de término, a adição deles é confirmada e a contagem é zerada.
@@ -121,7 +121,7 @@ Neste novo estado, supõe-se que o pixel acima do limiar é um ponto pertencente a
 
 Cada projeção detectada passa por algumas verificações, que incluem o tamanho da projeção, eliminando projeções muito pequenas, e a inclinação, descartando aquelas que não estão tão verticais quanto desejado. Aquelas que forem aceitas terão seus perfis de cor determinados, o que conclui a fase de detecção.
 
-Ao final, cada projeção será representada a partir da posição no eixo horizontal do plano de projeção da câmera (coordenada $u_vert$) e seu respectivo perfil de cor.
+Ao final, cada projeção será representada a partir da posição no eixo horizontal do plano de projeção da câmera (coordenada $u_{vert}$) e seu respectivo perfil de cor.
 
 \begin{figure}[ht]
 	\centering
@@ -130,11 +130,11 @@ Ao final, cada projeção será representada a partir da posição no eixo horizontal
 	\label{visao:projecoes}
 \end{figure}
 
-\subsubsection{Descrição de Marcos}
+\section{Descrição de Marcos}
 
 Um marco pode ser definido como uma reta vertical cuja posição no mundo real é conhecida. Sua representação inclui as coordenadas de sua posição ${\bf p_{marco}} = \left[x, y\right]$, no sistema de coordenadas absolutas (globais), e seu perfil de cor, que pode ser usado como forma de identificação.
 
-Os marcos são usados, primeiramente, para que se tente estabelecer um vínculo entre projeções que estão sendo observadas com retas verticais do ambiente. Aqueles com os quais foi possível realizar uma associação são usados para atualizar a estimativa da postura do robô, conforme será mostrado posteriormente.
+Os marcos são usados, primeiramente, para que se tente estabelecer um vínculo entre projeções que estão sendo observadas com retas verticais do ambiente. Os marcos com os quais foi possível realizar uma associação são usados para atualizar a estimativa da postura do robô, conforme será mostrado posteriormente.
 
 
 \section{Associação entre Projeções Verticais e Marcos}
@@ -142,26 +142,26 @@ Os marcos são usados, primeiramente, para que se tente estabelecer um vínculo en
 A fase de associação visa determinar quais marcos conhecidos do ambiente estão sendo observados em um dado momento, a partir da lista de projeções detectadas no quadro da câmera. Ela pode ser segregada em três passos, conforme descrito a seguir.
 
 \paragraph{Restrição de marcos}
-Para reduzir o conjunto de marcos com os quais tentar-se-á estabelecer novas associações, e com isso, diminuindo a chance de ocorrerem falsos positivos, o conjunto de todos os marcos conhecidos do ambiente passa por um filtro que, usando a última postura conhecida do robô, calcula quais marcos estão dentro do campo de visão da câmera. 
+Para reduzir o conjunto de marcos com os quais tentar-se-á estabelecer novas associações, e com isso, diminuir a chance de ocorrerem falsos positivos, o conjunto de todos os marcos conhecidos do ambiente passa por um filtro que, usando a última postura predita do robô, calcula quais marcos estão dentro do campo de visão da câmera. 
 
-Tendo-se determinado o ângulo $\alpha_{cam}$ relativo a abertura do campo de visão da câmera, na horizontal, traça-se um setor circular de raio infinito, centrado nas coordenadas $\left[x, y\right]^T$ da postura do robô, apontando para a mesma direção indicada por $\theta$, com ângulo do setor igual a $\alpha_{cam}$. Em seguida, é verificado se o ponto ${\bf p_{marco}} = \left[x_{marco}, y_{marco}\right]^T$ de cada marco encontra-se dentro desse setor circular. 
+Tendo-se determinado o ângulo $\alpha_{cam}$ relativo à abertura do campo de visão da câmera, na horizontal, traça-se um setor circular de raio infinito, centrado nas coordenadas $\left[x, y\right]^T$ da postura do robô, apontando para a mesma direção indicada por $\theta$, com ângulo do setor igual a $\alpha_{cam}$. Em seguida, é verificado se o ponto ${\bf p_{marco}} = \left[x_{marco}, y_{marco}\right]^T$ de cada marco encontra-se dentro desse setor circular. 
 
-É importante observar que o filtro não remove marcos que possam estar ocluídos, já que o filtro não tem informações suficientes para tal procedimento, nem leva em consideração a distância entre o robô e o marco como um parâmetro de restrição, pois, apesar da probabilidade de uma associação ser concretizada diminui conforme essa distância aumenta, ela não pode ser completamente descartada neste passo inicial.
+É importante observar que o filtro não remove marcos que possam estar ocluídos, já que o filtro não tem informações suficientes para tal procedimento. Também não é levada em consideração a distância entre o robô e o marco como um parâmetro de restrição, pois, apesar da probabilidade de uma associação ser concretizada diminuir conforme essa distância aumenta, ela não pode ser completamente descartada neste passo inicial.
 
 
 \paragraph{Janela de Busca por Previsão}
-Novamente, a partir da última postura conhecida do robô, é possível prever a coordenada $u_{previsao}$ que a projeção vertical de um marco deveria estar localizada na imagem, usando a equação \ref{coordu:pinhole} do modelo de câmera de orifício. 
+Novamente, a partir da última postura predita do robô, é possível prever a coordenada $u_{previsao}$ que a projeção vertical de um marco deveria estar localizada na imagem, usando a equação \ref{coordu:pinhole} do modelo de câmera de orifício. 
 
 Para cada marco visível $i$, há uma janela de busca, centrada em $u^{(i)}_{previsao}$, com largura igual a $larg_{janela}$, em que apenas as projeções contidas nesse janela têm chance de serem associadas ao marco dono da janela. Portanto, a janela de busca atua como uma restrição por disposição espacial, reduzindo o número de comparações que precisarão ser feitas até a conclusão da associação.
 
 
-\paragraph{Determinação da associação por Perfil de Cor}
+\paragraph{Determinação da Associação por Perfil de Cor}
 As projeções que sobraram terão seus perfis de cor comparados com o do marco, resultando em valores que indicam o nível de correlação entre uma projeção e o marco. Tal comparação faz uso da equação \ref{eqn:perfilcor}. Uma associação entre projeção vertical e marco será concretizada se existir pelo menos um valor de correlação maior do que 0 e a projeção associada ao marco será aquela que apresentar o maior valor de correlação.
 
 
-\section{Obtenção da observação esperada}
+\section{Obtenção da Observação Esperada}
 
-Após a fase de associações, tem-se a lista de marcos que estão sendo observados e que devem ser usados para atualizar a postura do robô. O próximo passo é fornecer ao filtro de Kalman estendido as informações de observação real obtida ${\bf z}$, os valores esperados para as observações ${\bf h}$, a matriz de covariância $\bm{R}$, e o jacobiano de ${\bf h}$, a matriz $\bm{H}$.
+Após a fase de associações, tem-se a lista de marcos que estão sendo observados e que devem ser usados para atualizar a postura do robô. O próximo passo é fornecer ao EKF as informações de observação real obtida ${\bf z}$, os valores esperados para as observações ${\bf h}$, a matriz de covariância R, e o jacobiano de ${\bf h}$, a matriz H.
 
 \paragraph{Cálculo da observação esperada}
 
@@ -173,17 +173,17 @@ h^{(i)}({\bf x}) = -f_u \frac{ \sin(\theta)\left(x^{(i)}_{marco} - x \right) + \
 
 onde $f_u$ é a distância focal na direção horizontal enquanto $u_0$ é o centro horizontal do plano de projeção da câmera. Maiores detalhes sobre a determinação da equação $h\left( {\bf x} \right)$ podem ser obtidos em \cite{barra}.
 
-O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cada um dos marcos observados, tendo dimensão $1Xi$. 
+O vetor ${\bf x}$ é composto pelo resultado da equação acima, aplicada sobre cada um dos marcos observados, tendo dimensão $1~x~i$. 
 
 
-\paragraph{Cálculo do jacobiano} A matriz $\bm{H}$ é necessária para que o EKF corrija a postura corretamente em cada componente. Ela é dada por:
+\paragraph{Cálculo do jacobiano} A matriz H é necessária para que o EKF corrija a postura corretamente em cada componente. Ela é dada por:
 
 \begin{equation*}
-\bm{H} = \left. \frac{\partial h(\vec{x})}{\partial \vec{x}}\right|_{\hat{x}}
+H = \left. \frac{\partial h(\vec{x})}{\partial \vec{x}}\right|_{\hat{x}}
 \end{equation*}
 
 \begin{equation}
-\bm{H} = 
+H = 
 	\left(
     	\begin{array}{>{\displaystyle}c}
     		f_u \frac{ \sin(\theta)Z - \cos(\theta)V}{Z^2} \\
@@ -205,9 +205,9 @@ onde $V$ e $Z$ são variáveis auxiliares dadas por:
 	Z = \cos(\theta) \left(x^{(i)}_{marco} - x \right) - \sin(\theta) \left( y^{(i)}_{marco} - y \right)
 \end{equation*}
 
-Cada linha da matriz $\bm{H}$ diz respeito a um marco observado, devendo ter o número de linhas igual ao número de marcos. 
+Cada linha da matriz H diz respeito a um marco observado, devendo ter o número de linhas igual ao número de marcos. 
 
-\paragraph{Cálculo da matriz de covariância} A matriz $\bm{R}$ é uma matriz quadrada que contém as covariâncias que são passadas para o EKF durante a etapa de atualização da estimativa. Sendo $n$ o número de marcos observadas em um determinado ciclo da visão, a matriz terá dimensão $nXn$, com os seguintes valores:
+\paragraph{Cálculo da matriz de covariância} A matriz Ré uma matriz quadrada que contém as covariâncias que são passadas para o EKF durante a etapa de atualização da estimativa. Sendo $n$ o número de marcos observadas em um determinado ciclo da visão, a matriz terá dimensão $n~x~n$, com os seguintes valores:
 
 \begin{equation}
 	R = 
