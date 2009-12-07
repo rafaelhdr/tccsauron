@@ -1,40 +1,50 @@
 \section{Navegação}\label{subsec:navegacao}
 
-O objetivo do módulo de navegação é guiar o SAURON até destinos escolhidos por um usuário, em um mapa previamente informado. Além disso, o módulo deve trabalhar de modo a otimizar o resultado do módulo de localização, essencial ao bom funcionamento do sistema.
+A arquitetura do módulo de navegação está representada na figura \ref{navegacao:arquitetura}, e possui os submódulos de planejamento intermapas, planejamento de rota e execução.
 
-O módulo de navegação tem conhecimento prévio do mapa do ambiente. Este mapa é marcado com alguns pontos, formando um grafo e permitindo a utilização de algoritmos de busca em grafos para planejamento da rota.
+\begin{figure}[h]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaNavegacao.jpg}
+\caption{Arquitura do módulo de navegação}%
+\label{navegacao:arquitetura}%
+\end{center}
+\end{figure}
 
-\subsection{Planejamento}
-O módulo de Navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se ``A estrela''). Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado ao custo de se locomover do nó adjacente até o nó destino. 
+O objetivo do módulo de navegação é guiar o SAURON até destinos escolhidos por um usuário, dentro de um conjunto de mapas previamente informados. Além disso, o módulo deve trabalhar de modo a otimizar o resultado do módulo de localização, essencial ao bom funcionamento do sistema.
 
-Para possibilitar essa navegação de busca em grafos, foram inseridos pontos de rota (ou \textit{waypoints}) no mapa utilizado pelo SAURON. Assim, os nós do grafo utilizado pelo algoritmo são os \textit{waypoints} e os objetivos (ou \textit{goals}). Os \textit{goals} representam os pontos de interesse para os usuários (e.g., ``sala C2-50'', sala ``D1-30'' etc.) e já existiam no mapa originalmente. Os \textit{waypoints} são pontos artificiais, criados para servir de rota para a navegação.
+Esses mapas sao marcados com alguns pontos, formando um grafo e permitindo a utilização de algoritmos de busca em grafos para planejamento de rota.
+
+\subsection{Planejamento de rota}
+O módulo de navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se "A estrela") \cite{Korf85depth-firstiterative-deepening}. Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo, a postura atual nesse caso, e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado ao custo de se locomover do nó adjacente até o nó destino. 
+
+Para possibilitar a busca em grafos, foram inseridos pontos de rota (ou \textit{waypoints}) no mapa utilizado pelo SAURON. Assim, os nós do grafo utilizado pelo algoritmo são os \textit{waypoints} e os objetivos (ou \textit{goals}). Os \textit{goals} representam os pontos de interesse para os usuários (e.g., ``sala C2-50'', sala ``D1-30'' etc.) e já existiam no mapa originalmente. Os \textit{waypoints} são pontos artificiais, criados para servir de rota para a navegação.
 
 Os \textit{waypoints} são colocados afastados das bordas do mapa e em pontos estratégicos escolhidos para permitir a realização de curvas e facilitar a locomoção a qualquer um dos objetivos.
 
-Apesar do grafo A* conter esses dois tipos de nó, apenas os \textit{waypoints} são usados para estabelecer a rota. O \textit{goal} só servirá como nó final, ou seja, destino da navegação. O nó inicial é um nó temporário, inexistente no mapa, criado no início da execução do algoritmo com as coordenadas atuais do robô. 
+Apesar do grafo de navegação conter esses dois tipos de nó, apenas os \textit{waypoints} são usados para estabelecer a rota. O \textit{goal} só servirá como nó final, ou seja, destino da navegação. O nó inicial é um nó temporário, inexistente no mapa, criado no início da execução do algoritmo com as coordenadas atuais do robô. 
 
 Com a estrutura do grafo pronta, basta aplicar o algoritmo A* para obter a sua rota.
 
 \subsubsection{Nó temporário e Controle de Retrocessos} 
 
-Imprecisões e incertezas são inerentes a problemas de localização e navegação robóticas. É improvável que, em um determinado instante, o robô esteja exatamente sobre um \textit{goal} ou \textit{waypoint} do mapa -- mesmo logo após ter completado o percurso até um desses nós. Desse modo, é necessário que a cada iteração do algoritmo de execução, o planejamento seja refeito a partir de um nó temporário correspondente à posição atual. Naturalmente, esse nó temporário precisa ser ligado a um \textit{waypoint}, para que um caminho possa ser planejado. Um algoritmo simples para encontrar esse \textit{waypoint} é escolher o mais próximo ao nó temporário. Essa ideia resulta, contudo, em um grave problema: muitas vezes, o nó mais próximo da posição atual está mais longe do destino final do que o próprio robô. Navegar até ele significa um retrocesso indesejado.
+Imprecisões e incertezas são inerentes a problemas de localização e navegação robóticas. É improvável que, em um determinado instante, o robô esteja exatamente sobre um \textit{goal} ou \textit{waypoint} do mapa -- mesmo logo após ter completado o percurso até um desses nós. Desse modo, é necessário que, a cada iteração do algoritmo de execução, o planejamento seja refeito a partir de um nó temporário correspondente à posição atual. Naturalmente, esse nó temporário precisa ser ligado a um \textit{waypoint}, para que um caminho possa ser planejado. Um algoritmo simples para encontrar esse \textit{waypoint} é escolher o mais próximo ao nó temporário. Essa ideia resulta, contudo, em um grave problema: muitas vezes, o nó mais próximo da posição atual está mais longe do destino final do que o próprio robô. Navegar até ele significa um retrocesso indesejado.
 
-Para resolver esse problema, não é suficiente considerar distância como distância euclidiana. Algumas vezes, é necessário  afastar-se um pouco (no sentido puro de distância euclidiana) do destino antes de poder alcançá-lo.  A figura \ref{navegacao:mapaObstaculo} ilustra essa situação. Para ir do ponto A ao ponto D, deve-se contornar a parede, passando por exemplo, pelo ponto B, que está mais distante do destino D do que o próprio A.
+Para resolver esse problema, não é suficiente considerar distância como distância euclidiana. Algumas vezes, é necessário afastar-se um pouco (afastamento no sentido puro de distância euclidiana) do destino antes de poder alcançá-lo.  A figura \ref{navegacao:mapaObstaculo} ilustra essa situação. Para ir do ponto A ao ponto D, deve-se contornar a parede, passando por exemplo, pelo ponto B, que está mais afastado do destino D do que o próprio A.
 
 \begin{figure}[h]%
 \begin{center}
 \includegraphics[width=.5\columnwidth]{imagens/mapaObstaculo.jpg}
-\caption{Mapa que ilustra um problema comum a ser resolvido pela navegação. Para navegar de A a D, é necessário se afastar do objetivo para poder depois alcançá-lo.}%
+\caption{Mapa que ilustra um problema comum a ser resolvido pela navegação. Para navegar de A a D, é necessário se afastar do objetivo para depois alcançá-lo.}%
 \label{navegacao:mapaObstaculo}%
 \end{center}
 \end{figure}
 
-Deve-se, então, considerar o custo de um nó até o destino como sendo o custo da rota e não como a distância euclidiana entre esses dois pontos. Além disso é preciso determinar que os nós adjacentes só poderão ser nós alcançáveis, ou seja, nós entre os quais é possível traçar uma linha reta, sem nenhum obstáculo entre ele. De fato, foi determinado que um nó poderia ter, no máximo, 4 nós adjacentes. As quatro possibilidades de adjacência são: cima, baixo, esquerda e direita.
+Deve-se, então, considerar o custo de um nó até o destino como sendo o custo da rota e não como a distância euclidiana entre esses dois pontos. Utilizando como exemplo a figura \ref{navegacao:mapaObstaculo}, o custo do nó B é menor que o custo do nó A.
 
-Desse modo, é possível resolver o problema de retrocessos com nós temporários. Descobre-se, para a posição atual, o nó alcançável que possua o menor custo até o destino, $Nó_{alcançável}$. Escolhe-se como o \textit{waypoint} adjacente ao nó temporário o \textit{waypoint} mais próximo da posição atual que não esteja mais distante, metricamente, de $Nó_{alcançável}$ do que a posição atual do robô.
+É possível resolver o problema de retrocessos com nós temporários. Descobre-se, para a posição atual, o nó alcançável, i.e., um nó navegável em linha reta sem obstáculos que possua o menor custo até o destino, $Nó_{alcancavel}$. Escolhe-se como o \textit{waypoint} adjacente ao nó temporário o \textit{waypoint} mais próximo da posição atual que não esteja mais distante, metricamente, de $Nó_{alcancavel}$ do que a posição atual do robô.
 
 
-\subsection{Execução e Controle de Rota} 
+\subsection{Execução e Controle de Rota} \label{sec:exec}}
 
 Assim que for definida uma rota de \textit{waypoints} até o destino final, passa-se ao executor de rota, que opera da seguinte forma:
 
@@ -43,19 +53,19 @@ Assim que for definida uma rota de \textit{waypoints} até o destino final, passa
 	\item Desloca-se em linha reta até alcançar o próximo \textit{waypoint}.
 \end{itemize} 
 
-Essa estratégia de execução visa minimizar as incertezas em $\theta$, realizando o menor número possível de curvas.A motivação para isso é auxiliar o módulo de localização, cujos sensores operam melhor sob movimento retilíneo.
+Essa estratégia de execução visa minimizar as incertezas em $\theta$, ao realizar o menor número possível de curvas. A motivação para isso é auxiliar o módulo de localização, cujos sensores operam melhor sob movimento retilíneo.
 
 Além disso, o submódulo executor também possui um comportamento de evitar colisões, para que o robô interrompa seu deslocamento caso detecte um obstáculo à frente.
 
-O submódulo executor também possui um controle de rota, que determina quando o SAURON se afastou da rota prevista entre dois \textit{waypoints}. Quando isso ocorre, o robô é parado e o planejamento recomeça.
+Por fim, o submódulo executor possui um controle de rota, que determina quando o SAURON se afastou da rota prevista entre dois \textit{waypoints}. Quando isso ocorre, o robô é parado e o planejamento recomeça.
 
 \subsection{Navegação Intermapas}
 
 No intuito de possibilitar a navegação em ambientes complexos e interligados, adicionou-se uma camada ao módulo de navegação, para permitir a transição entre múltiplos mapas. Isso permite, por exemplo, subir uma rampa em direção a um outro andar de um prédio.
 
-Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de \textit{waypoints} especiais chamados portais. A lógica de ligação entre portais é simples: basta que um \textit{waypoint} em um mapa tenha o mesmo nome de outro \textit{waypoint} em outro mapa para que seja estabelecido um portal entre eles.
+Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de \textit{waypoints} especiais chamados portais.
 
-A camada intermapas passa, então, a ser o ponto de entrada ao módulo de navegação, pois é responsável por gerenciar a navegação intramapa, utilizando as técnicas descritas acima. O algoritmo \ref{algo:intermapas} ilustra seu funcionamento. Nele, a referência \textbf{pathPlanner} indica o algoritmo de navegação intramapa.
+A camada intermapas é então o ponto de entrada do módulo de navegação, pois é responsável por gerenciar também a navegação intramapa, utilizando as técnicas descritas acima. O algoritmo \ref{algo:intermapas} ilustra seu funcionamento. Nele, a referência \textbf{pathPlanner} indica o algoritmo de planejamento e navegação intramapa.
    
  \begin{algorithm}
 	\dontprintsemicolon
@@ -63,10 +73,10 @@ A camada intermapas passa, então, a ser o ponto de entrada ao módulo de navegaçã
 	\Entrada{destino}
 	
 	\Inicio{
-		\Se{destino está neste mapa}{\ pathPlaner vai até destino \;}
+		\Se{destino está no mapa atual}{\ pathPlaner vai até destino \;}
 		\Senao{
 			descobre próximo mapa na rota de mapas \;
-			achar portal em relação ao mapa atual \;
+			acha portal em relação ao mapa atual \;
 			\Se{pathPlanner chega em portal}
 			{\ realiza troca de mapas \;
   		\ recomeça  \;}
@@ -75,20 +85,8 @@ A camada intermapas passa, então, a ser o ponto de entrada ao módulo de navegaçã
 		}
 	}
 	}
-	\caption{Algoritmo de navegação entre Múltiplos Mapas}
+	\caption{Algoritmo de navegação entre múltiplos mapas}
 		\label{algo:intermapas}
 \end{algorithm}
 
-Para determinação da rota entre mapas utilizou-se um algoritmo de busca em profundidade aplicado ao grafo da relação entre os mapas (isto é, um grafo formado pelos portais). Como o número de mapas será sempre pequeno, o tempo de busca é irrisório e algoritmos mais complexos, como de busca com profundidade limitada tornam-se desnecessários.
-
-\subsection{Arquitetura do módulo}
-
-Concluindo, a arquitetura final do módulo de navegação ficou como representada na figura \ref{navegacao:arquitetura}, constando dos Planejamentos intermapa, planejamento e execução.
-
-\begin{figure}[h]%
-\begin{center}
-\includegraphics[width=.5\columnwidth]{imagens/arquiteturaNavegacao.jpg}
-\caption{Arquitura do Módulo de Navegação}%
-\label{navegacao:arquitetura}%
-\end{center}
-\end{figure}
+Para determinação da rota entre mapas utilizou-se um algoritmo de busca em profundidade aplicado ao grafo da relação entre os mapas (isto é, um grafo formado pelos portais). Como o número de mapas será sempre pequeno, o tempo de busca é irrisório e algoritmos mais complexos, como busca com profundidade limitada, não são necessários.
