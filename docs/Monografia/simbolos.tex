@@ -1,0 +1,33 @@
+Na notação das formulas, as seguintes convenções são utilizadas:
+
+\begin{itemize}
+	\item letras maiúsculas em negrito são matrizes, exemplo ${\bf M}$
+	\item letras minúsculas em negrito são vetors, exemplo ${\bf x}$
+	\item símbolos com uma barra em cima representam estimativas preditas, exemplo $\bar{\bf{x}}$
+	\item símbolos com um acento circunflexo em cima representam estimativas corrigidas, exemplo $\hat{\bf{x}}$
+	\item índice superescrito em vetor ou escalar indica elemento de um conjunto; em uma matriz pode indicar coluna ou linha, exemplo: ${\bf X^{(i)}}$, ${\bf p^{(i)}}$
+\end{itemize}
+
+\begin{tabular}{ll}
+\hline
+Símbolo & Descrição \\ 
+\hline
+$H$ & jacobiano da função observação esperada $h(\bar{\bf{x}})$ \\
+$\sigma^2_{obs}$ & desvio-padrão das observações do sonar \\
+$\phi$ & ângulo de abertura do sonar \\
+$g^2$ & valor limite para associação de paredes com leituras do sonar \\
+$K_{piora}$, $K_{melhora}$ & constante de ganho no rastreamento de associações \\
+$R_{base}$ & covariância base do modelo de observação do sonar baseado \\ 
+           & em associações \\
+$C$ & constante de relação da covariância base do modelo de observação \\
+    & do sonar baseado em associações \\
+$R_{simples}$ & covariância do modelo simples de observação dos sonares \\
+$X_c$, $Y_c$, $Z_c$ & sistema de coordenadas intrínseco à câmera \\
+$f_u$ & distância focal horizontal da câmera \\
+$f_v$ & distância focal vertical da câmera \\
+$u_0$, $v_0$ & centro do plano de projeção no sistema de coordenadas do plano, \\ 
+             & em pixels \\
+$R$ & parâmetro de rotação relativa entre o sistema de coordenadas da \\ 
+          & câmera e o global \\
+$C$ & translação entre o sistema de coordenadas da câmera e o global \\
+\end{tabular}
