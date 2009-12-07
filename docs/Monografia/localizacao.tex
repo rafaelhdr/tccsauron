@@ -1,31 +1,27 @@
 \section{Localização}\label{subsec:arqloc}.
-A localização é o módulo mais complexo dentro da arquitetura deste trabalho. Ela foi projetada com base no filtro bayesiano EKF (\textit{Extended Kalman Filter}), descrito em detalhes no Apêndice \ref{sec:apendicea}.
-Nesta seção, encontra-se a visão geral deste módulo e alguns tópicos sobre sua implementação. 
 
-\subsection{Visão Geral}
+O sistema de localização estima a postura do robô a partir dos dados de seus sensores. O odômetro, sensor interno, é utilizado como uma medida da execução dos comandos de navegação do SAURON, estando relacionado com um Modelo da Dinâmica do Sistema. Os sensores externos têm associados a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma leitura a uma parede no mapa. No restante deste texto, a palavra "sensor" indicará um sensor externo.
 
-O sistema de localização estima a posição do robô a partir dos dados de seus sensores. O odômetro, sensor interno, é utilizado como uma medida da execução dos comandos de navegação do SAURON, estando relacionado com um Modelo da Dinâmica do Sistema. Os sensores externos têm associado a si um modelo de observação, que descreve a relação da medida lida com o mundo real. Por exemplo, o modelo de observação do sonar associa uma leitura a uma parede no mapa. No restante deste texto, a palavra ``sensor'' indicará um sensor externo.
+O modelo de observação de cada sensor sabe qual é a observação esperada para uma dada postura do robô, uma vez que conhece o mapa do ambiente. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se os erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O pontocentral do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, corrigir a predição da postura.
 
-O modelo de observação de cada sensor sabe qual é a observação esperada para uma dada postura do robô, uma vez que ele conhece o mapa do robô. Uma diferença entre a observação esperada e a observação de fato recebida indica um erro na estimativa do sistema. Se os erros forem pequenos, podem ser consequência das variações naturais dos sensores físicos. Contudo, diferenças grandes devem ser utilizadas para corrigir a postura. O ponto mais importante do algoritmo de localização é exatamente este: a partir da diferença entre as observações esperadas e reais, corrigir a predição da postura.
+Essas predições, que são corrigidas pelos modelos de observação dos sensores externos, são geradas pelo modelo de dinâmica. O papel deste modelo é predizer a postura atual a partir da última postura estimada do robô, sabendo o quanto se andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada neste trabalho, é obter as informações a partir do odômetro do robô.
 
-Essas predições, corrigidas pelos modelos de observação dos sensores externos, são geradas pelo modelo de dinâmica. Seu papel é predizer a postura atual a partir da última postura estimada do robô, sabendo o quanto ele andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada neste trabalho, é obter as informações a partir do odômetro do robô.
-
-O filtro de Kalman estendido (EKF) é um filtro matemático capaz de estimar o estado de um sistema não-linear a partir de predições do estado atual e de correções dessa predição. As equações para cada uma das etapas podem ser vistas na tabela \ref{table:kalman}, e são executadas na ordem da tabela. O EKF lineariza o sistema em sua borda a fim de que o filtro de Kalman comum possa ser utilizado com sucesso. Como o método de linearização utilizado no EKF é a expansão de Taylor de primeira ordem, são geradas as matrizes $F$, jacobiano de $f(\textbf{x},\textbf{u})$, e $H$, jacobiano de $h(\textbf{x})$. 
+O uso de modelos de observação e de dinâmica decorre da escolha pela utilização de uma arquitetura baseada no uso do EKF. O EKF é um filtro matemático capaz de estimar o estado de um sistema não-linear a partir de predições do estado atual e de correções dessa predição. As equações para cada uma das etapas podem ser vistas na tabela \ref{table:kalman}, e são executadas na ordem da tabela. O EKF lineariza o sistema em sua borda a fim de que o filtro de Kalman comum possa ser utilizado com sucesso. Como o método de linearização utilizado no EKF é a expansão de Taylor de primeira ordem, são geradas as matrizes $F$, jacobiano de $f(\textbf{x},\textbf{u})$, e $H$, jacobiano de $h(\textbf{x})$. 
 
 \begin{table}[ht]
 \centering
 \begin{tabular}{ |c | c | }
 \hline
 \textbf{Predição} &  \textbf{Correção} \\ \hline
-$\bar{\textbf{x}} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{-}H_{t}^{T}(H_{t}P_{t}^{-}H_{t}^{T}+R_{t})^{-1}$ \\ \hline
-$P_{t}^{-} = F_{t-1}P_{t-1}^{+}F_{k-1}^{T} + Q_{t-1}$ & $\hat{\textbf{x}}_{t}^{+} = \hat{\textbf{x}}_{t}^{-} + K_{t}(\textbf{z}_{t}-h(\textbf{x}_{t}^{-}))$ \\
+$\bar{\textbf{x}}_{t} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{-}H_{t}^{T}(H_{t}P_{t}^{-}H_{t}^{T}+R_{t})^{-1}$ \\ \hline
+$P_{t}^{-} = F_{t-1}P_{t-1}^{+}F_{t-1}^{T} + Q_{t-1}$ & $\hat{\textbf{x}}_{t}^{+} = \hat{\textbf{x}}_{t}^{-} + K_{t}(\textbf{z}_{t}-h(\bar{\textbf{x}}_{t}^{-}))$ \\
 & $P_{t}^{+} = (I - K_{t}H_{t})P_{t}^{-}$ \\ \hline
 \end{tabular}
 \label{table:kalman}
 \caption{As equações principais do filtro de Kalman estendido (EKF).}
 \end{table}
 
-Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}_{t-1}}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção na predição $\bar{\textbf{x}_{t}}$, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo.
+Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}}_{t-1}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção nessa predição, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo.
 
 O último componente do sistema é o módulo de gerenciamento, que liga os demais componentes do sistema de localização, iniciando os sensores e associando-os ao EKF.
 
@@ -38,7 +34,7 @@ O último componente do sistema é o módulo de gerenciamento, que liga os demais c
 \end{figure}
 
 
-A figura \ref{fig:arquiteturalocalizacao} ilustra a arquitetura do módulo de localização. As informações retornadas pelos modelos dos sensores são a observação real ($z$), observação esperada ($h$), matriz de observação -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- ($H$) e a covariância ($R$).
+A figura \ref{fig:arquiteturalocalizacao} ilustra a arquitetura do módulo de localização. As informações retornadas pelos modelos dos sensores são a observação real ($\textbf{z}$), observação esperada ($\textbf{h}$), matriz de observação ($H$) -- que descreve como a observação depende dos componentes $x$, $y$ e $\theta$ da postura estimada -- e da covariância($R$).
 
 
 \begin{figure}[ht]
@@ -65,10 +61,10 @@ Uma dificuldade em se implementar um sistema como o resumido acima é o controle 
 \SetKw{Em}{em}
 \SetKwData{postura}{postura}
 \RepitaSempre{
-	\postura \recebe \ekf.previsao(\dinamica.novaEstimativa()) \;
+	\postura \recebe \ekf.predição(\dinamica.novaPredição()) \;
 	\ParaCada{\modeloObservacao}{
 		\Se{ \sensor.temMedidaNova()}{
-			\postura \recebe \ekf.update(\modeloObservacao.observacaoEsperada()) \;
+			\postura \recebe \ekf.correção(\modeloObservacao.observacaoEsperada()) \;
 		}
 	}
 	}\end{algorithm}
@@ -88,7 +84,7 @@ A implementação ingênua desse algoritmo percorre os passos do pseudocódigo seque
 	\label{tab:frequenciaSensores}
 \end{table}
 
-A solução é transferir o controle do fluxo de execução de um módulo central para os modelos. Quando um sensor receber novas medidas e for capaz de gerar uma observação esperada, ele chama o Gerenciador de Localização, que então invoca o EKF e computa a correção da estimativa. Esse processo é muito mais eficiente do que o \textit{polling}, pois não há recursos desperdiçados enquanto se espera inutilmente. A desvantagem do método distribuído é que um certo tempo deve ser perdido realizando a sincronização de todas as \textit{threads} (para evitar, por exemplo, que dois sensores atualizem a estimativa ao mesmo tempo, corrompendo-a). A tabela \ref{tab:usoProcessador} relata os resultados obtidos, em termos do uso médio dos processadores, para cada abordagem, centralizada e distribuída.
+A solução é transferir o controle do fluxo de execução de um módulo central para os modelos de observação. Quando um sensor receber novas medidas e for capaz de gerar uma observação esperada, ele chama o Gerenciador de Localização, que então invoca o EKF e computa a correção da estimativa. Esse processo é muito mais eficiente do que o \textit{polling}, pois não há recursos desperdiçados enquanto se espera inutilmente. A desvantagem do método distribuído é que um certo tempo deve ser perdido realizando a sincronização de todas as \textit{threads} (para evitar, por exemplo, que dois sensores atualizem a estimativa ao mesmo tempo, corrompendo-a). A tabela \ref{tab:usoProcessador} relata os resultados obtidos, em termos do uso médio dos processadores, para cada abordagem, centralizada e distribuída.
 
 \begin{table}[htbp]
 	\centering
