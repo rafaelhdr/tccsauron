@@ -4,9 +4,9 @@ A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sist
 
 A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, prever a postura do robô no instante atual. Essa é a mesma abordagem utilizada em \cite{barra}.
 
-Esse modelo é mais simples, pois não leva em consideração todos os sinais de controle do robô e os detalhes de sua operação interna. Dessa forma, ele apresenta menor possibilidade de erros, mas também menor acurácia na predição.
+Esse modelo é mais simples, pois não leva em consideração todos os sinais de controle do robô e os detalhes de sua operação interna. Dessa forma, apresenta menor possibilidade de erros, mas também menor acurácia na predição.
 
-De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sinal desse deslocamento. Assim, não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
+De fato, os odômetros informam apenas o módulo da distância percorrida, sem informação alguma do sentido desse deslocamento. Assim, não é possível saber, por exemplo, se o robô deslocou-se para frente ou para trás desde a última leitura do odômetro. Neste único caso, utilizou-se o valor do sinal de controle da velocidade do robô para se obter esse sentido do deslocamento, uma vez que a velocidade do robô é representada por um inteiro com sinal (sinal positivo significa deslocamento no sentido dianteiro do robô).
 
 \section{Modelagem}
 
@@ -20,21 +20,22 @@ A plataforma-robô Pioneer 2DX é uma plataforma diferencial (com motores independ
 \end{center}
 \end{figure}
 
-Os valores de deslocamento médio linear e angular são os valores fornecidos pelo \textit{firmware} de interface com o robô. A modelagem das equações de dinâmica foi feita com base nesses valores. 
+Os valores fornecidos pela interface do odômetro do robô são o deslocamento médio linear e o deslocamento médio angular. A modelagem das equações de dinâmica foi feita com base nesses valores. 
 
 \begin{gather}
-	x(t)=x(t-1)+d_{m}(t)cos(\theta(t))\\
-	y(t)=y(t-1)+d_{m}(t)sen(\theta(t))\\
-	\theta(t)=\theta(t-1)+\delta\theta(t)
+	x_{t}=x_{t-1}+d_{m}cos(\theta_{t})\\
+	y_{t}=y_{t-1}+d_{m}sen(\theta_{t})\\
+	\theta_{t}=\theta_{t-1}+\delta\theta_{t}
 \end{gather}
 
-Essas equações formam o vetor \textbf{f} de predição do Filtro de Kalman estendido. A matriz F de propagação de incertezas será o jacobiano desse vetor, e está representada abaixo.
+Essas equações formam o vetor f de predição do Filtro de Kalman estendido. A matriz F de propagação de incertezas será o jacobiano desse vetor, e está representada na equação \ref{eq:Ft}.
 
 \begin{equation}
-\bm{F}(t) = \left( \begin{array}{ccc}
+F_{t} = \left( \begin{array}{ccc}
 1 & 0 & -d_{m}(t)sin(\theta_{m}(t)) \\
 0 & 1 & d_{m}(t)cos(\theta_{m}(t)) \\
 0 & 0 & 1 \end{array} \right)
+\label{eq:Ft}
 \end{equation}
 
 
@@ -45,16 +46,16 @@ De posse do vetor \textbf{f} e a propagação dessas incertezas pela matriz F, dev
 A matriz Q, por sua vez, dependerá das influências que o deslocamento linear causa sobre as estimativas linear e angular e da influência que o deslocamento angular causa também sobre as estimativas linear e angular. A soma quadrática desses componentes geram, respectivamente, a incerteza quadrática linear ($\sigma^{2}_{d_{m}}$) e angular ($\sigma^{2}_{\theta_{m}}$).
 
 \begin{equation}
- \bm{Q(t)} = \left( \begin{array}{ccc}
-\sigma^{2}_{d_{m}}(t) cos^2(\theta_{m}(t))  & \sigma^{2}_{d_{m}}(t) cos(\theta_{m}(t)) sin(\theta_{m}(t)) & 0 \\
-\sigma^{2}_{d_{m}}(t) cos(\theta_{m}(t)) sin(\theta_{m}(t)) & \sigma^{2}_{d_{m}}(t) sin^2(\theta_{m}(t)) & 0 \\
-0 & 0 & \sigma^{2}_{\theta_{m}}(t) \end{array} \right) 
+Q_{t} = \left( \begin{array}{ccc}
+\sigma^{2}_{d_{m}} cos^2(\theta_{m})  & \sigma^{2}_{d_{m}} cos(\theta_{m}) sin(\theta_{m}) & 0 \\
+\sigma^{2}_{d_{m}} cos(\theta_{m}) sin(\theta_{m}) & \sigma^{2}_{d_{m}} sin^2(\theta_{m}) & 0 \\
+0 & 0 & \sigma^{2}_{\theta_{m}} \end{array} \right) 
 \end{equation}
 
-Essas incertezas quadráticas dependem das medições realizadas e de coeficientes que foram medidos experimentalmente.
+Essas incertezas quadráticas dependem das medições realizadas e de coeficientes que foram determinados experimentalmente.
 
 
 \begin{gather}
-	\sigma^{2}_{d_{m}}(t) = (d_{m}(t) \sigma^{d_{m}}_{d_{m}})^2 + (\delta\theta(t) \sigma^{\delta\theta}_{d_{m}})^2 \\
-	\sigma^{2}_{\theta_{m}}(t) = (d_{m}(t) \sigma^{\delta\theta}_{\delta\theta})^2 + (\delta\theta(t) \sigma^{d_{m}}_{\delta\theta})^2
+	\sigma^{2}_{d_{m}} = (d_{m} \sigma^{d_{m}}_{d_{m}})^2 + (\delta\theta \sigma^{\delta\theta}_{d_{m}})^2 \\
+	\sigma^{2}_{\theta_{m}} = (d_{m} \sigma^{\delta\theta}_{\delta\theta})^2 + (\delta\theta \sigma^{d_{m}}_{\delta\theta})^2
 \end{gather}
