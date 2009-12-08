@@ -4,8 +4,11 @@
 #include "TestInfrastructure/SonarMatchServer.h"
 #include "TestInfrastructure/LocalizationMonitorConsole.h"
 #include "TestInfrastructure/NavigationMonitorConsole.h"
+#include "Localization/MapManager.h"
 
 #include "Navigation/PathPlanner.h"
+#include "Navigation/MapPlanner.h"
+
 
 #define TEST_LOG(level) FILE_LOG(level) << "LocalizationTests: "
 #include <windows.h>
@@ -77,12 +80,11 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
 }
 
-void testNavigation(ArMap& map, sauron::LocalizationManager& locManager, const std::string& mapName) {
-
-	sauron::PathPlanner planner(pRobot, &locManager, mapName);
-	std::cout << "Mapa lido com sucesso (" << planner.getGraph().size() << " nós)." << std::endl;
+void testNavigation(ArMap& arMap, sauron::LocalizationManager& locManager, sauron::MapPlanner& planner) {
 	
-	sauron::tests::NavigationMonitorConsole monitor(&planner);
+	
+	
+	sauron::tests::NavigationMonitorConsole monitor(&planner.getPathPlanner(), &planner);
 
 	while(true)
 	{
@@ -244,7 +246,14 @@ int principal(int argc, char** argv)
   printf("Server is now running...\n");
   clientSwitchManager.runAsync();
 #pragma endregion
-  sauron::LocalizationManager locManager( &robot, map, std::string("marks.map") );
+  std::vector<std::string> names;
+  names.push_back("horizontal.map");
+  names.push_back("vertical.map");
+  sauron::MapManager mapManager("horizontal.map", names);
+  sauron::MapPlanner planner(&robot, &mapManager); 
+  sauron::LocalizationManager locManager(&robot, mapManager, std::string(""));
+  planner.setLocalizationManager(&locManager);
+
   plocManager = &locManager;
 
   sauron::tests::LocalizationMonitorConsole locConsole(&locManager, &robot);
@@ -306,7 +315,7 @@ int principal(int argc, char** argv)
 			break;
 		case 'n':
 		case 'N':
-			testNavigation(map, locManager, mapName);
+			testNavigation(map, locManager, planner);
 			break;
 		case 't':
 		case 'T':
