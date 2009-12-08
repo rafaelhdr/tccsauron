@@ -17,7 +17,7 @@ public:
 	// variáveis de saída, se elas não forem nulas. Se não houver associação satisfatória, retorna false e o
 	// valor dos ponteiros de saída é indefinido.
 	virtual bool tryGetMatchingMapLine(
-		Map& map, // o mapa do ambiente
+		Map* map, // o mapa do ambiente
 		double sigmaError2, // o erro utilizado no portão de validação
 		/*out*/LineSegment* matchedMapLine, // variável de saída: a linha do mapa que foi associada, se alguma
 		/*out*/ SonarReading* expectedReading, // variável de saída: a leitura esperada para aquela linha

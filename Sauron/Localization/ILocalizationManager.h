@@ -12,7 +12,7 @@ class ILocalizationManager
     public:
         virtual void setInitialPose( const Pose &initial ) = 0;
         virtual Pose getPose() = 0;
-		virtual Map getMap() = 0;
+		virtual Map* getMap() = 0;
 		virtual boost::recursive_mutex* getPoseMutex() = 0;
 
 		virtual void update(const Matrix &hValue,

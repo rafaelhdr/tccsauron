@@ -10,7 +10,7 @@ namespace sauron
 	{
 	public:
 		SimpleSonarModel(int sonarNumber);
-		std::pair<double, LineSegment> getExpectedReading(Map& map, const Pose& pose);
+		std::pair<double, LineSegment> getExpectedReading(Map* map, const Pose& pose);
 
 	private:
 		int m_sonarNumber;

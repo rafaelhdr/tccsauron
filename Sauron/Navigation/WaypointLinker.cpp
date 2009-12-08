@@ -4,9 +4,9 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
-#include "Sonar/Map.h"
+#include "Map.h"
 #include "MathHelper.h"
-#include "Sonar/LineSegment.h"
+#include "LineSegment.h"
 #include "AStar.h"
 
 #define LINKER_LOG(level) FILE_LOG(level) << "WaypointLinker: " 
@@ -17,11 +17,14 @@ namespace sauron
 namespace util
 {
 
-void WaypointLinker::link( Graph &graph, Map& map )
+void WaypointLinker::link( Graph &graph, Map* map )
 {
+	if(map == 0)
+		return;
+
      Graph::iterator it;
     for ( it = graph.begin(); it != graph.end(); ++it )
-        linkNodeToNearest( graph, *it, map );
+        linkNodeToNearest( graph, *it, *map );
 
 	std::stringstream ss;
 	for( it = graph.begin(); it != graph.end(); ++it )
@@ -237,12 +240,14 @@ void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, Map& map )
 	}
 }
 
-void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map& map )
+void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map* map )
 {
 	// a ideia é nunca linkar a um nó que nos deixará mais longe de onde já estamos
 	// para isso, pegamos a distância até o nó diretamente alcançável (isto é, que enxergamos
 	// sem precisar atravessar paredes) mais próximo do destino.
 
+	if(map == 0)
+		return;
 	Graph::iterator closestToGoalIt;
 	Graph::iterator closestIt;
 	Graph::iterator tempIt;
@@ -257,7 +262,7 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 		if ( tempIt->Type() == Node::SECONDARY && *tempIt != goal )
 			continue;
 
-		if( !isLinkPossible( tempNode, *tempIt, map ) )
+		if( !isLinkPossible( tempNode, *tempIt, *map ) )
 			continue;
 
 		Path pathFromCurrentToGoal = AStar::searchPath(*tempIt, goal);
@@ -296,7 +301,7 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 		if ( tempIt->Type() == Node::SECONDARY && *tempIt != goal )
 			continue;
 
-		if( !isLinkPossible( tempNode, *tempIt, map ) )
+		if( !isLinkPossible( tempNode, *tempIt, *map ) )
 			continue;
 
 		Path pathFromCurrentToClosestToGoal = AStar::searchPath(*tempIt, *closestToGoalIt);

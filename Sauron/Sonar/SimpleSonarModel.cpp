@@ -36,12 +36,15 @@ namespace sauron
 		return ArLineSegment(x1, y1, x2, y2);
 	}
 
-	std::pair<double, LineSegment> SimpleSonarModel::getExpectedReading(Map& map, const Pose& pose)
+	std::pair<double, LineSegment> SimpleSonarModel::getExpectedReading(Map* pmap, const Pose& pose)
 	{
+		if(pmap == 0 || pmap->getLines()->size() == 0)
+			return std::pair<double, LineSegment>(-1, LineSegment());
+
 		Pose sonarPose = getSonarGlobalPose(pose);
 		ArLineSegment sonarSegment = getSonarSegment(sonarPose);
 
-		std::vector<LineSegment>* mapLines = map.getLines();
+		std::vector<LineSegment>* mapLines = pmap->getLines();
 		typedef std::pair<LineSegment, ArPose> LinePosePair;
 		typedef std::vector<LinePosePair> LinePoseVec;
 		LinePoseVec linesThatIntersect;

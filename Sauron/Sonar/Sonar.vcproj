@@ -263,23 +263,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Line.h"
-				>
-			</File>
-			<File
-				RelativePath=".\LineSegment.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Map.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MatchTracking.h"
 				>
 			</File>
 			<File
 				RelativePath=".\PhysicalSonars.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ReadingAndPose.h"
 				>
 			</File>
 			<File

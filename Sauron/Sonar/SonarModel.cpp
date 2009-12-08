@@ -245,7 +245,7 @@ namespace sauron
 		return trigonometry::correctImprecisions(sinAlpha);
 	}
 
-	bool SonarModel::tryGetMatchingMapLine(Map& map, double sigmaError2,
+	bool SonarModel::tryGetMatchingMapLine(Map* map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading*
 		actualReading, int* matchScore)
 	{
@@ -254,10 +254,12 @@ namespace sauron
 			matchedMapLine, expectedReading, actualReading, matchScore, &beta);
 	}
 
-	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map& map, double sigmaError2,
+	bool SonarModel::tryGetMatchingMapLine(const Pose& latestPose, Map* map, double sigmaError2,
 		LineSegment* matchedMapLine, SonarReading* expectedReading, SonarReading* actualReading,
 		int* matchScore, double* beta) {
 			SCOPED_READINGS_LOCK();
+			if(map == 0)
+				return false;
 
 			*beta = getSonarAngleOfIncidence();
 
@@ -269,7 +271,7 @@ namespace sauron
 			}
 
 			if(!m_isTracking) {
-				if(tryAssociateMapLine(latestPose, map, sigmaError2, matchedMapLine,
+				if(tryAssociateMapLine(latestPose, *map, sigmaError2, matchedMapLine,
 					expectedReading, actualReading)) {
 						m_isTracking = true;
 						m_tracking.reset();
@@ -281,7 +283,7 @@ namespace sauron
 					return false;
 				}
 			} else {
-				if(tryTrackMapLine(latestPose, map, expectedReading, actualReading)) {
+				if(tryTrackMapLine(latestPose, *map, expectedReading, actualReading)) {
 					*matchedMapLine = m_tracking.getSegment();
 					*matchScore = m_tracking.getScore();
 					SONAR_LOG(logDEBUG2) << "Manteve match de " << m_tracking.getSegment() << " com score de " << m_tracking.getScore();

@@ -5,14 +5,15 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include "ILocalizationManager.h"
-#include "CallbackHandler.h"
+#include "CallbackProvider.h"
 #include "ISensorModel.h"
 #include "ISensorSonarModel.h"
 #include "IDynamicModel.h"
 #include "IKalmanFilter.h"
 #include "Sonar/ISonarDataAsyncProvider.h"
-#include "Sonar/Map.h"
+#include "Map.h"
 #include "SonarMatch.h"
+#include "MapManager.h"
 
 class ArRobot;
 namespace sauron
@@ -26,11 +27,11 @@ typedef boost::shared_ptr<IDynamicModel> IDynamicModelPtr;
 typedef boost::shared_ptr<IKalmanFilter> IKalmanFilterPtr;
 typedef boost::shared_ptr<ISonarDataAsyncProvider> ISonarDataProviderPtr;
 
-class LocalizationManager : public ILocalizationManager, CallbackHandler<boost::function<void (const Pose&)> >
+class LocalizationManager : public ILocalizationManager, CallbackProvider<boost::function<void (const Pose&)> >
 {
 public:
-    LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &marksFile );
-    LocalizationManager(ArRobot* p_robot, const Map& map, const std::string &markFile, const Pose& initialPose);
+    LocalizationManager(ArRobot* p_robot, MapManager& mapManager, const std::string &marksFile );
+    LocalizationManager(ArRobot* p_robot, MapManager& mapManager, const std::string &markFile, const Pose& initialPose);
 	~LocalizationManager();
 
 	void setInitialPose(const Pose& initial){
@@ -51,7 +52,7 @@ public:
 
 	Pose getPose();
 	boost::recursive_mutex* getPoseMutex() { return &m_ekfMutex; }
-	Map getMap() { return m_map; }
+	Map* getMap() { return m_mapManager.getCurrentMap(); }
 	std::vector<SonarMatch> getSonarMatches();
 
 	void update(const Matrix &hValue,
@@ -65,8 +66,8 @@ public:
 
 private:
 	LocalizationManager(LocalizationManager& original);
+	MapManager& m_mapManager;
 	ArRobot* mp_robot;
-	Map m_map;
 	IKalmanFilterPtr mp_ekf;
 	std::vector<ISensorSonarModelPtr> m_sonars;
 	std::vector<ISensorModelPtr> m_simpleSonars;

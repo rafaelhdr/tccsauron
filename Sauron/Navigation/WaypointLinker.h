@@ -15,8 +15,8 @@ namespace util
 class WaypointLinker
 {
     public:
-        static void link( Graph &graph, Map& map );
-		static void linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map& map );
+        static void link( Graph &graph, Map* map );
+		static void linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map* map );
 
 private:
 		static void linkNodeToNearest( Graph &graph, Node &toLink, Map& map );

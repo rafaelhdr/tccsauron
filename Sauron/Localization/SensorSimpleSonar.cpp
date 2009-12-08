@@ -1,8 +1,8 @@
 #include "SensorSimpleSonar.h"
 #include "ILocalizationManager.h"
-#include "Sonar/Line.h"
+#include "Line.h"
 #include "Sonar/Configs.h"
-#include "Sonar/Map.h"
+#include "Map.h"
 #include "log.h"
 
 #define SONAR_LOG(level) FILE_LOG(level) << "SensorSimpleSonar #"<< m_sonarNumber << ": "

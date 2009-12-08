@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 #include "Localization/SonarMatch.h"
-#include "Sonar/LineSegment.h"
+#include "LineSegment.h"
 #include "ArDrawingData.h"
 #include "SonarMatchDrawing.h"
 namespace sauron

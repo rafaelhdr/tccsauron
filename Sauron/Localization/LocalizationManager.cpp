@@ -13,9 +13,9 @@
 
 namespace sauron
 {
-    LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile )
+    LocalizationManager::LocalizationManager(ArRobot* robot,  MapManager& mapManager, const std::string &marksFile )
 		: mp_robot(robot),  
-          m_map(map), 
+          m_mapManager(mapManager), 
           mp_dynamic(buildDefaultDynamic()), 
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
@@ -25,9 +25,9 @@ namespace sauron
 		addPoseChangedCallback(boost::bind(&LocalizationManager::updateArRobotPose, this, _1));
 	}
 
-    LocalizationManager::LocalizationManager(ArRobot* robot, const Map& map, const std::string &marksFile, const Pose& initialPose)
+    LocalizationManager::LocalizationManager(ArRobot* robot, MapManager& mapManager, const std::string &marksFile, const Pose& initialPose)
 		: mp_robot(robot),  
-          m_map(map), 
+          m_mapManager(mapManager), 
           mp_dynamic(buildDefaultDynamic(initialPose)), 
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
@@ -66,8 +66,8 @@ namespace sauron
 	void LocalizationManager::buildDefaultSensors()
 	{
 		//buildDefaultSonars();
-		//buildDefaultSimpleSonars();
-		buildDefaultVision();
+		buildDefaultSimpleSonars();
+		//buildDefaultVision();
 	}
 
 	void LocalizationManager::buildDefaultSonars()

@@ -1,5 +1,5 @@
 #pragma once
-#include "Sonar/LineSegment.h"
+#include "LineSegment.h"
 
 namespace sauron{
 class SonarMatch

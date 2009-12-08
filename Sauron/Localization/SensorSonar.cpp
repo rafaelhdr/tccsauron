@@ -11,7 +11,7 @@
 #include "Sonar/Configs.h"
 #include "Sonar/ISonarModel.h"
 #include "Sonar/SonarReading.h"
-#include "Sonar/Line.h"
+#include "Line.h"
 
 namespace sauron
 {
