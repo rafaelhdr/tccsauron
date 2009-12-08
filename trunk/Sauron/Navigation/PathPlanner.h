@@ -3,7 +3,7 @@
 #include "AStar.h"
 #include <string>
 #include <boost/function.hpp>
-#include "CallbackHandler.h"
+#include "CallbackProvider.h"
 
 class ArRobot;
 namespace sauron 
@@ -20,14 +20,12 @@ namespace sauron
 			GOAL_REACHED // Node = goal
 		};
 
-	class PathPlanner : CallbackHandler<boost::function<void (PathPlannerStatus, const Node*)> >
+	class PathPlanner : CallbackProvider<boost::function<void (PathPlannerStatus, const Node*)> >
 	{
 	public:
-		PathPlanner(ArRobot* robot, LocalizationManager* locManager, const std::string& mapFilename);
-		bool goTo(const Node& destination);
-		bool goTo(const std::string& goalName);
-
-		Graph getGraph() { return m_graph; }
+		PathPlanner(ArRobot* robot, LocalizationManager* locManager);
+		bool goTo(const Node& destination, Graph& graph);
+		bool goTo(const std::string& goalName, Graph& graph);
 
 		int addPathplanningCallback(boost::function<void (PathPlannerStatus, const Node*)> f)
 		{
@@ -42,10 +40,9 @@ namespace sauron
 	private:
 		ArRobot* mp_robot;
 		LocalizationManager* mp_localization;
-		Graph m_graph;
 
 		void removeNodesTooCloseFromPath(const Node& currentNode, Path &path);
-		void loadWaypointsGraphFromMap(const std::string& mapFilename);
+		//void loadWaypointsGraphFromMap(const std::string& mapFilename);
 		Node getCurrentPoseAsNode();
 		bool hasReachedDestination(const Node& destination);
 	};

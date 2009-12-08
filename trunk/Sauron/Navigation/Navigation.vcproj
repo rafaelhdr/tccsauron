@@ -231,6 +231,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MapPlanner.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NavigationManager.cpp"
 				>
 			</File>
@@ -270,6 +274,10 @@
 			</File>
 			<File
 				RelativePath=".\MapFileParser.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapPlanner.h"
 				>
 			</File>
 			<File

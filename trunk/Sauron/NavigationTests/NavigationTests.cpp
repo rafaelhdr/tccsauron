@@ -54,7 +54,7 @@ void testGoTo(sauron::LocalizationManager* locManager) {
 
 void testPathPlanner(ArMap& map, const std::string& mapName) {
 	LocalizationManager locManager(pRobot, map, std::string(""));
-	PathPlanner planner(pRobot, &locManager, mapName);
+	PathPlanner planner(pRobot, &locManager);
 	std::cout << "Mapa lido com sucesso." << std::endl;
 
 	while(true)

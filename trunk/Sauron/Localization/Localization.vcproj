@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MapManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Matrix.h"
 				>
 			</File>

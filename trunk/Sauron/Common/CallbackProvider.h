@@ -3,10 +3,10 @@
 #include <boost/thread/mutex.hpp>
 namespace sauron{
 
-template<typename Functor> class CallbackHandler
+template<typename Functor> class CallbackProvider
 {
 public:
-	CallbackHandler() :
+	CallbackProvider() :
 	  m_nextId(0){ }
 protected:
 	typedef std::map<int, Functor> mapType;

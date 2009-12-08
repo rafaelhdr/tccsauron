@@ -5,15 +5,14 @@
 #include "ArFunctor.h"
 
 #include "ISensorSonarModel.h"
-#include "CallbackHandler.h"
 #include "SonarMatch.h"
 
 
-#include "Sonar/Map.h"
+#include "Map.h"
 #include "Sonar/ISonarDataAsyncProvider.h"
 #include "Sonar/SonarModel.h"
 #include "Sonar/SonarReading.h"
-#include "Sonar/LineSegment.h"
+#include "LineSegment.h"
 
 namespace sauron
 {

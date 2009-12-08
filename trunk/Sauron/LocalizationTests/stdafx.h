@@ -7,6 +7,7 @@
 
 #include "targetver.h"
 #include "Localization/LocalizationManager.h"
+
 #include "Aria.h"
 #include "ArSilentTelop.h"
 #include "ArNetworking.h"

@@ -1,0 +1,30 @@
+2D-Map
+Resolution: 0
+LineMinPos: -8080 -1280
+LineMaxPos: 11311 4100
+NumLines: 5
+LinesAreSorted: true
+MapInfo: DockType "Name=Dock" "Label=Dock" "NameRequired=1" "Color0=0xffff00" "Color1=0x000000" "Color2=0x000000" "Heading=Required"
+MapInfo: GoalType "Name=Goal" "Label=Goal" "NameRequired=1" "Color0=0x008080" "Color1=0x00ffff" "Color2=0x008080"
+MetaInfo: Rotation "Value=0"
+MetaInfo: Feature "Name=changeprocessing"
+RouteInfo: EveryBefore "_everyBefore"
+RouteInfo: EveryAfter "_everyAfter"
+SchedInfo: Current "_Friday"
+SchedInfo: Current "_Monday"
+SchedInfo: Current "_Saturday"
+SchedInfo: Current "_Sunday"
+SchedInfo: Current "_Thursday"
+SchedInfo: Current "_Tuesday"
+SchedInfo: Current "_Wednesday"
+Cairn: Dock -5480 60 0.000000 "" ICON "W1"
+Cairn: Dock 820 60 0.000000 "" ICON "W3"
+Cairn: Dock 6880 60 0.000000 "" ICON "W5"
+Cairn: Goal 10141 60 0.000000 "" ICON "P1"
+LINES
+-8080 -740 11311 -740
+-7940 900 8900 900
+-740 -1280 -740 -1280
+8940 920 8940 3760
+11304 -701 11304 4100
+DATA
