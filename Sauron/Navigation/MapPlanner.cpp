@@ -156,8 +156,10 @@ namespace sauron
 					mp_mapManager->setCurrentMap(nextMap);
 					if(mp_localization != 0)
 					{
+						Point2DDouble newPosition = portalNodeOtherSide.getPosition();
+						double oldTheta = mp_localization->getPose().getTheta();
 						mp_localization->setInitialPose(
-							Pose(portalNodeOtherSide.getPosition()));
+							Pose(newPosition.X(), newPosition.Y(), oldTheta));
 					}
 					invokeCallbacks(MAP_CHANGED, nextMap);
 					return goTo(destination);

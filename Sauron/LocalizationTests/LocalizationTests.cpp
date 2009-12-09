@@ -80,12 +80,22 @@ void printEstimatedPose(const sauron::Pose& currentPose)
 		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
 }
 
+ArServerHandlerMap* p_mapHandler;
+void changeMap(sauron::MapPlannerStatus status, const sauron::Map* map)
+{
+	if(status == sauron::MAP_CHANGED)
+	{
+		p_mapHandler->loadMap(map->getOriginalMapFilename().c_str());
+	}
+}
+
+
 void testNavigation(ArMap& arMap, sauron::LocalizationManager& locManager, sauron::MapPlanner& planner) {
 	
 	
 	
 	sauron::tests::NavigationMonitorConsole monitor(&planner.getPathPlanner(), &planner);
-
+	planner.addMapPlannerCallback(changeMap);
 	while(true)
 	{
 		std::string goalName;
@@ -241,12 +251,14 @@ int principal(int argc, char** argv)
 
   // Provide the map to the client (and related controls):
   ArServerHandlerMap serverMap(&server, &map);
-
+  p_mapHandler = &serverMap;
   server.runAsync();
   printf("Server is now running...\n");
   clientSwitchManager.runAsync();
 #pragma endregion
   std::vector<std::string> names;
+  /*names.push_back("mezanino.map");
+  sauron::MapManager mapManager("mezanino.map", names);*/
   names.push_back("horizontal.map");
   names.push_back("vertical.map");
   sauron::MapManager mapManager("horizontal.map", names);
