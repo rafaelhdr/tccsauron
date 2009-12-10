@@ -9,12 +9,12 @@ namespace sauron
 namespace util
 {
 
-bool MapFileParser::loadWaypoints( const std::string &filename, Graph &graph )
+	bool MapFileParser::loadWaypoints( const sauron::Map* map, Graph &graph )
 {
     graph.clear();
 
     std::ifstream file;
-    file.open( filename.c_str() );
+    file.open( map->getOriginalMapFilename().c_str() );
     if ( !file.is_open() )
         return false;
 

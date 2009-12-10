@@ -27,7 +27,7 @@ namespace sauron
 			{
 				mp_mapManager->setCurrentMap(m_maps.back());
 			}
-			loadWaypointsGraph(m_maps.back(), *it);
+			loadWaypointsGraph(m_maps.back());
 		}
 
 		findLinksBetweenMaps();
@@ -64,10 +64,10 @@ namespace sauron
 		}
 	}
 
-	void MapPlanner::loadWaypointsGraph(Map* map, std::string mapFilename)
+	void MapPlanner::loadWaypointsGraph(Map* map)
 	{
 		m_mapGraphs[map] = Graph();
-		util::MapFileParser::loadWaypoints( mapFilename, m_mapGraphs[map] );
+		util::MapFileParser::loadWaypoints( map, m_mapGraphs[map] );
 		util::WaypointLinker::link(m_mapGraphs[map], map);
 		
 	}
