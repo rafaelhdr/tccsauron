@@ -2,7 +2,7 @@
 Resolution: 0
 LineMinPos: -29023 -10050
 LineMaxPos: 80863 13785
-NumLines: 148
+NumLines: 146
 LinesAreSorted: true
 MapInfo: DockType "Name=Dock" "Label=Dock" "NameRequired=1" "Color0=0xffff00" "Color1=0x000000" "Color2=0x000000" "Heading=Required"
 MapInfo: GoalType "Name=Goal" "Label=Goal" "NameRequired=1" "Color0=0x008080" "Color1=0x00ffff" "Color2=0x008080"
@@ -38,14 +38,14 @@ Cairn: Dock 2300 -3680 -84.400000 "" ICON "WP25"
 Cairn: Dock 2300 2000 0.000000 "" ICON "WP7"
 Cairn: Dock 2300 10445 94.700000 "" ICON "WP20"
 Cairn: Goal 3137 10481 0.000000 "" ICON "Rampa"
+Cairn: ForbiddenLine 3852 11866 0.000000 "" ICON "" 3852 11866 19502 11866
 Cairn: Goal 7870 900 0.000000 "" ICON "C2-28/C2-30"
 Cairn: Dock 8592 2000 0.000000 "" ICON "WP8"
-Cairn: Dock 10281 10445 0.000000 "" ICON "WP21"
-Cairn: Dock 10377 6600 -177.500000 "" ICON "PO1"
+Cairn: Dock 10377 6600 -179.296505 "" ICON "PO2"
 Cairn: Dock 15600 2000 0.000000 "" ICON "WP9"
 Cairn: Goal 15847 900 0.000000 "" ICON "C2-34"
 Cairn: Dock 18500 6600 178.100000 "" ICON "WP23"
-Cairn: Dock 18500 10445 -91.200000 "" ICON "WP22"
+Cairn: Dock 18500 10445 -86.137095 "" ICON "PO1"
 Cairn: Goal 18576 8639 0.000000 "" ICON "RampaEntreAndares"
 Cairn: Dock 23900 2000 0.000000 "" ICON "WP10"
 Cairn: Goal 24000 900 0.000000 "" ICON "C2-38"
@@ -130,9 +130,7 @@ LINES
 3849 8150 16999 8150
 3850 -200 3850 -10050
 3850 4100 3850 9050
-3850 5350 19650 5350
 3850 9050 17000 9050
-3850 11802 19650 11802
 3850 13450 3850 11800
 4100 0 4100 400
 4100 0 11750 0

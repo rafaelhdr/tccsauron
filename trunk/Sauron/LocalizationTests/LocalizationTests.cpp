@@ -257,11 +257,12 @@ int principal(int argc, char** argv)
   clientSwitchManager.runAsync();
 #pragma endregion
   std::vector<std::string> names;
-  /*names.push_back("mezanino.map");
-  sauron::MapManager mapManager("mezanino.map", names);*/
-  names.push_back("horizontal.map");
+  names.push_back("mezanino.map");
+  names.push_back("pavsup_mod.map");
+  sauron::MapManager mapManager("pavsup_mod.map", names);
+  /*names.push_back("horizontal.map");
   names.push_back("vertical.map");
-  sauron::MapManager mapManager("horizontal.map", names);
+  sauron::MapManager mapManager("horizontal.map", names);*/
   sauron::MapPlanner planner(&robot, &mapManager); 
   sauron::LocalizationManager locManager(&robot, mapManager, std::string(""));
   planner.setLocalizationManager(&locManager);
