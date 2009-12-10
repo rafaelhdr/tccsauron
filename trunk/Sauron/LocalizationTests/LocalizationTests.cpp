@@ -14,7 +14,6 @@
 #include <windows.h>
 #include <fstream>
 
-
 ULONGLONG epoch = -1;
 
 ULONGLONG getTimeMs()
@@ -103,8 +102,10 @@ void testNavigation(ArMap& arMap, sauron::LocalizationManager& locManager, sauro
 		std::cin >> goalName;
 		if(planner.goTo(goalName)) {
 			std::cout << "Chegamos em " << goalName << "!" << std::endl;
+			return;
 		} else {
 			std::cout << "Hoje nao vai dar errado, hoje nao, hoje nao, hoje nao... Hoje sim.. hoje sim?" << std::endl;
+			return;
 		}
 		std::cout << std::endl;
 	}
@@ -285,10 +286,12 @@ int principal(int argc, char** argv)
 	  std::cout << "Escolha a opção:"  << std::endl 
 		  << "1. (M) Mostrar Posicao;" << std::endl
 		  << "2. (P) Setar a Posição Inicial;" << std::endl
-		  << "2. (S) Pegar a Posicao do Simulador;" << std::endl
-		  << "3. (V) Setar Velocidades;" << std::endl
-		  << "4. (T) Modo teleoperação;" << std::endl
-		  << "5. (N) Navegacao automatica" << std::endl;
+	  	  << "3. (I) Setar Mapa Inicial" << std::endl
+		  << "4. (S) Pegar a Posicao do Simulador;" << std::endl
+		  << "5. (V) Setar Velocidades;" << std::endl
+		  << "6. (T) Modo teleoperação;" << std::endl
+		  << "7. (N) Navegacao automatica" << std::endl;
+
 
 	  std::cin >> c;
 	  ArPose arPose = robot.getTruePose();
@@ -309,6 +312,32 @@ int principal(int argc, char** argv)
 			std::cin >> th;
 			locManager.setInitialPose(sauron::Pose(x, y, th));
 			break;
+		case 'i':
+		case 'I':
+			{
+				std::string mapName;
+				std::cin >> mapName;
+				std::vector<sauron::Map*> maps = planner.getMaps();
+				std::vector<sauron::Map*>::iterator mapIt;
+				bool alterou = false;
+				for(mapIt = maps.begin(); mapIt != maps.end(); mapIt++)
+				{
+					if((*mapIt)->getOriginalMapFilename() == mapName)
+					{
+						alterou = true;
+						mapManager.setCurrentMap(*mapIt);
+						p_mapHandler->loadMap((*mapIt)->getOriginalMapFilename().c_str());
+						std::cout << "Mapa alterado com sucesso!"  << std::endl;
+						break;
+					}
+				}
+
+				if(!alterou)
+				{
+					std::cout << "Mapa nao encontrado!"  << std::endl;
+				}
+				break;
+			}
 		case 's':
 		case 'S':
 			locManager.setInitialPose(sauron::Pose(arPose.getX(), arPose.getY(),
