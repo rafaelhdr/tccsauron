@@ -73,10 +73,6 @@ bool MapFileParser::loadWaypoints( Map* p_map, Graph &graph )
 
 			pose_t x1, y1, x2, y2;
 			ss >> x1 >> y1 >> x2 >> y2;
-			x1 /= 10;
-			y1 /= 10;
-			x2 /= 10;
-			y2 /= 10;
 
 			std::vector<LineSegment>* pforbiddenLines = p_map->getForbiddenLines();
 			pforbiddenLines->push_back(LineSegment(ArLineSegment(x1, y1, x2, y2)));
