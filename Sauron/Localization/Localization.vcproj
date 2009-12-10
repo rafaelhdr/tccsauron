@@ -62,7 +62,6 @@
 			<Tool
 				Name="VCLibrarianTool"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="AriaStaticDebugVC9.lib"
 				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib"
 				IgnoreDefaultLibraryNames=""
 			/>
