@@ -20,9 +20,15 @@ public:
 	{
 		return &m_lines;
 	}
+	inline std::vector<LineSegment>* getForbidenLines()
+	{
+		return &m_forbidenLines;
+	}
 	inline std::string getOriginalMapFilename() const { return m_originalMapFilename; }
+	
 private:
 	std::vector<LineSegment> m_lines;
+	std::vector<LineSegment> m_forbidenLines;
 	std::string m_originalMapFilename;
 };
 }
