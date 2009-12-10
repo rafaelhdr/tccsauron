@@ -20,15 +20,15 @@ public:
 	{
 		return &m_lines;
 	}
-	inline std::vector<LineSegment>* getForbidenLines()
+	inline std::vector<LineSegment>* getForbiddenLines()
 	{
-		return &m_forbidenLines;
+		return &m_forbiddenLines;
 	}
 	inline std::string getOriginalMapFilename() const { return m_originalMapFilename; }
 	
 private:
 	std::vector<LineSegment> m_lines;
-	std::vector<LineSegment> m_forbidenLines;
+	std::vector<LineSegment> m_forbiddenLines;
 	std::string m_originalMapFilename;
 };
 }

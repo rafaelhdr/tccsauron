@@ -192,8 +192,8 @@ bool WaypointLinker::isLinkPossible(Node& node1, Node& node2, Map& map)
 		}
 	}
 
-	std::vector<LineSegment>& forbidenLines = *map.getForbidenLines();
-	for(std::vector<LineSegment>::iterator it = forbidenLines.begin(); it != forbidenLines.end(); it++)
+	std::vector<LineSegment>& forbiddenLines = *map.getForbiddenLines();
+	for(std::vector<LineSegment>::iterator it = forbiddenLines.begin(); it != forbiddenLines.end(); it++)
 	{
 		ArPose pose;
 		if(segmentBetweenNodes.intersects(&(*it), &pose)) {

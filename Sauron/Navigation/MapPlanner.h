@@ -60,7 +60,7 @@ namespace sauron
 		std::vector<Map*> findMapPath(Map* destinationMap);
 		Map* findMapByNode(std::string& nodeName);
 		bool isNodeInMap(Map& map, std::string nodeName);
-		void loadWaypointsGraph(Map* map, std::string mapName);
+		void loadWaypointsGraph(Map* map);
 		void findLinksBetweenMaps();
 	};
 

@@ -1,7 +1,9 @@
 #include "MapFileParser.h"
 #include <fstream>
 #include <sstream>
-
+#include <vector>
+#include "Map.h"
+#include "LineSegment.h"
 
 namespace sauron
 {
@@ -9,12 +11,12 @@ namespace sauron
 namespace util
 {
 
-	bool MapFileParser::loadWaypoints( const sauron::Map* map, Graph &graph )
+bool MapFileParser::loadWaypoints( Map* p_map, Graph &graph )
 {
     graph.clear();
 
     std::ifstream file;
-    file.open( map->getOriginalMapFilename().c_str() );
+	file.open( p_map->getOriginalMapFilename().c_str() );
     if ( !file.is_open() )
         return false;
 
@@ -61,6 +63,24 @@ namespace util
 
             graph.push_back( Node( Point2D<pose_t>(x, y), type, nodeName) );
         }
+		else if(line.find( "ForbiddenLine" ) != std::string::npos)
+		{
+			std::stringstream ss( line );
+			std::string temp;
+
+			// Cairn: ForbiddenLine x y theta "" ICON "Esacda" 28008 10143 31062 10143
+			ss >> temp >> temp >> temp >> temp >> temp >> temp >> temp >> temp;
+
+			pose_t x1, y1, x2, y2;
+			ss >> x1 >> y1 >> x2 >> y2;
+			x1 /= 10;
+			y1 /= 10;
+			x2 /= 10;
+			y2 /= 10;
+
+			std::vector<LineSegment>* pforbiddenLines = p_map->getForbiddenLines();
+			pforbiddenLines->push_back(LineSegment(ArLineSegment(x1, y1, x2, y2)));
+		}
     }
 
     file.close();

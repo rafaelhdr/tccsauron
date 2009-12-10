@@ -6,14 +6,14 @@
 
 namespace sauron
 {
-
+class Map;
 namespace util
 {
 
 class MapFileParser
 {
     public:
-        static bool loadWaypoints( const std::string &filename, Graph &graph );
+        static bool loadWaypoints( Map* p_map, Graph &graph );
 };
 
 }   // namespace util
