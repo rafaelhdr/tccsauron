@@ -39,6 +39,9 @@ namespace sauron
 		PathPlanner& getPathPlanner() { return *mp_pathPlanner; }
 		void setLocalizationManager(sauron::LocalizationManager *localizationManager);
 
+
+		std::vector<Map*> getMaps() { return m_maps; }
+
 		~MapPlanner()
 		{
 			delete mp_pathPlanner;
