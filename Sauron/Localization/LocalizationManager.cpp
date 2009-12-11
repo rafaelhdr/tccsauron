@@ -19,7 +19,8 @@ namespace sauron
           mp_dynamic(buildDefaultDynamic()), 
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
-          m_visionMarksFilename( marksFile )
+          m_visionMarksFilename( marksFile ),
+		  m_isTurning(false)
 	{
 		buildDefaultSensors();
 		addPoseChangedCallback(boost::bind(&LocalizationManager::updateArRobotPose, this, _1));
@@ -31,7 +32,8 @@ namespace sauron
           mp_dynamic(buildDefaultDynamic(initialPose)), 
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
-          m_visionMarksFilename( marksFile )
+          m_visionMarksFilename( marksFile ),
+		  m_isTurning(false)
 	{
 		buildDefaultSensors();
 		setInitialPose(initialPose);
@@ -115,11 +117,13 @@ namespace sauron
 									 const Model &H,
 									 const Covariance &R)
 	{
-		{
-			boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
-			mp_ekf->update(z, hValue, H, R);
+		if(!m_isTurning) {
+			{
+				boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
+				mp_ekf->update(z, hValue, H, R);
+			}
+			invokePoseChangedCallbacks();
 		}
-		invokePoseChangedCallbacks();
 	}
 
 	void LocalizationManager::predict(const Matrix &fValue,
