@@ -3,6 +3,7 @@
 #include <boost/function.hpp>
 #include "Pose.h"
 #include "RouteExecuter.h"
+
 namespace sauron
 {
 class LocalizationManager;
