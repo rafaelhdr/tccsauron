@@ -20,16 +20,17 @@ namespace sauron
 
 		// Pk = F*P*F'+Q
 		temp1 = prod(F,m_latestCovariance);
+		PREDICT_LOG(logDEBUG4) << "F*P = " << temp1;
 		temp1 = prod(temp1, boost::numeric::ublas::trans(F));
-
+		PREDICT_LOG(logDEBUG4) << "F*P*F' = " << temp1;
 		m_latestCovariance = temp1 + Q;
 
 		//estimate = prod(F,estimate);
 		m_latestEstimate.X() = fValue(0,0);
 		m_latestEstimate.Y() = fValue(1,0);
 		m_latestEstimate.setTheta(fValue(2,0));
-		PREDICT_LOG(logDEBUG3) << "predict estimativa: " << m_latestEstimate;
-		PREDICT_LOG(logDEBUG3) << "predict covariância: " << m_latestCovariance;
+		PREDICT_LOG(logDEBUG4) << "predict estimativa: " << m_latestEstimate;
+		PREDICT_LOG(logDEBUG4) << "predict covariância: " << m_latestCovariance;
 	}
 
 	void ExtendedKalmanFilter::initCovariance()

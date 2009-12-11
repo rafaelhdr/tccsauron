@@ -66,6 +66,10 @@ public:
 				 const Model &dynModel,
 				 const Covariance &dynNoise);
 
+	Covariance getPoseEstimateCovariance() {
+		return mp_ekf->getLatestCovariance();
+	}
+
 private:
 	LocalizationManager(LocalizationManager& original);
 	MapManager& m_mapManager;
