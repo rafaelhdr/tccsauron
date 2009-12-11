@@ -1,6 +1,8 @@
 #pragma once
 #include "Pose.h"
 #include <boost/thread.hpp>
+#include "Sonar/SonarReading.h"
+
 class ArRobot;
 namespace sauron
 {
@@ -22,6 +24,7 @@ namespace sauron
 		RouteExecuter(ArRobot* robot, LocalizationManager* locManager);
 		
 		MoveResult goTo(const Point2DDouble& to);
+		void AvoidObstacle(int sonarNumber, sauron::SonarReading reading);
 
 
 	public:

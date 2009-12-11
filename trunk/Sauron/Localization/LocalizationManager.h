@@ -50,6 +50,8 @@ public:
 		return removeCallback(callbackId);
 	}
 
+	ISonarDataAsyncProvider* getSonarDataProvider();
+
 	Pose getPose();
 	boost::recursive_mutex* getPoseMutex() { return &m_ekfMutex; }
 	Map* getMap() { return m_mapManager.getCurrentMap(); }
