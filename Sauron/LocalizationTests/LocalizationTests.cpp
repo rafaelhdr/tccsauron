@@ -16,6 +16,8 @@
 
 ULONGLONG epoch = -1;
 
+
+
 ULONGLONG getTimeMs()
 {
 	SYSTEMTIME systemTime;
@@ -94,7 +96,6 @@ void testNavigation(ArMap& arMap, sauron::LocalizationManager& locManager, sauro
 	
 	
 	sauron::tests::NavigationMonitorConsole monitor(&planner.getPathPlanner(), &planner);
-	planner.addMapPlannerCallback(changeMap);
 	while(true)
 	{
 		std::string goalName;
@@ -269,6 +270,7 @@ int principal(int argc, char** argv)
   sauron::MapPlanner planner(&robot, &mapManager); 
   sauron::LocalizationManager locManager(&robot, mapManager, std::string(""));
   planner.setLocalizationManager(&locManager);
+  planner.addMapPlannerCallback(changeMap);
 
   plocManager = &locManager;
 
@@ -287,12 +289,13 @@ int principal(int argc, char** argv)
 	  
 	  std::cout << "Escolha a opção:"  << std::endl 
 		  << "1. (M) Mostrar Posicao;" << std::endl
-		  << "2. (P) Setar a Posição Inicial;" << std::endl
-	  	  << "3. (I) Setar Mapa Inicial" << std::endl
-		  << "4. (S) Pegar a Posicao do Simulador;" << std::endl
-		  << "5. (V) Setar Velocidades;" << std::endl
-		  << "6. (T) Modo teleoperação;" << std::endl
-		  << "7. (N) Navegacao automatica" << std::endl;
+		  << "2. (R) Setar a Posição Inicial por Marco;" << std::endl
+  		  << "3. (P) Setar a Posição Inicial por Coordenadas;" << std::endl
+	  	  << "4. (I) Setar Mapa Inicial" << std::endl
+		  << "5. (S) Pegar a Posicao do Simulador;" << std::endl
+		  << "6. (V) Setar Velocidades;" << std::endl
+		  << "7. (T) Modo teleoperação;" << std::endl
+		  << "8. (N) Navegacao automatica" << std::endl;
 
 
 	  std::cin >> c;
@@ -314,6 +317,29 @@ int principal(int argc, char** argv)
 			std::cin >> th;
 			locManager.setInitialPose(sauron::Pose(x, y, th));
 			break;
+		case 'r':
+		case 'R':
+			{
+			std::cout << "Nome do marco e ângulo: ";
+			double theta;
+			std::string markName;
+			std::cin >> markName;
+			std::cin >> theta;
+			
+			sauron::Graph& graph = planner.getGraph(mapManager.getCurrentMap());
+			
+			sauron::Graph::iterator it;
+
+			for(it = graph.begin(); it != graph.end(); it++)
+			{
+				if((*it).getName() == markName)
+				{
+					locManager.setInitialPose(sauron::Pose((*it).getPosition().X(), (*it).getPosition().Y(), theta));
+				}
+			}
+			
+			break;
+			}
 		case 'i':
 		case 'I':
 			{

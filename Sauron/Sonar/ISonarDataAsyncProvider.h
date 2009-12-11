@@ -10,6 +10,8 @@ public:
 	
 	virtual void setAddReadingCallback(int sonarNumber,
 		AddReadingCallback* p_callback) = 0;
+	virtual void removeAddReadingCallback(int sonarNumber,
+		AddReadingCallback* p_callback) = 0;
 	virtual void removeCallback(int sonarNumber) = 0;
 	virtual void removeAllCallbacks() = 0;
 };

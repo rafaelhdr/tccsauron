@@ -5,6 +5,7 @@
 #include "RobotController.h"
 #include "Localization/LocalizationManager.h"
 #include "Map.h"
+#include <boost/thread/thread.hpp>
 
 namespace sauron
 {
@@ -29,6 +30,7 @@ namespace sauron
 
 	bool PathPlanner::goTo(const sauron::Node& destination, Graph& graph)
 	{
+		static int numberCollisionAvoided = 0;
 		if(!hasReachedDestination(destination))
 		{
 			Node currentNode = getCurrentPoseAsNode();
@@ -40,10 +42,12 @@ namespace sauron
 				invokeCallbacks(GOING_TO_WAYPOINT, &path[0]);
 				RouteExecuter::MoveResult moveResult = RouteExecuter(mp_robot, mp_localization).goTo(path[0].getPosition());
 				if(moveResult == RouteExecuter::SUCCESS) {
+					numberCollisionAvoided = 0;
 					invokeCallbacks(ARRIVED_AT_WAYPOINT, &path[0]);
 					return goTo(destination, graph);
 				} else if(moveResult == RouteExecuter::FAILED_STRAYED) {
 					// desviou-se da rota. há algo de podre no reino da dinamarca, mas somos brasileiros e não desistimos nunca.
+					numberCollisionAvoided = 0;
 					invokeCallbacks(FAILED_STRAYED, &Node());
 					return goTo(destination, graph);
 				} else if(moveResult == RouteExecuter::FAILED_EMERGENCY_STOP) {
@@ -51,6 +55,15 @@ namespace sauron
 					// TODO dormir por alguns segundos antes de tentar de novo
 					// TODO contar quantas vezes falhamos e desistir depois de um tempo
 					invokeCallbacks(FAILED_COLLISION_AVOIDANCE,  &Node());
+					numberCollisionAvoided++;
+					if(numberCollisionAvoided >= 5) {
+						return false;
+					}
+					boost::xtime time;  
+					boost::xtime_get(&time, boost::TIME_UTC); //current time  
+					time.sec += 3; //adds 1 secs to time  
+					boost::thread::sleep(time);  
+
 					return goTo(destination, graph);
 				}
 			}
