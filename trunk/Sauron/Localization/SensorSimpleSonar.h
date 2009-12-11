@@ -34,7 +34,7 @@ namespace sauron
 			/*out*/Measure &z,
 			/*out*/Model &H,
 			/*out*/Covariance &R );
-
+		double getFancyCovariance(double expected, double actual);
 		void readingAvailable(int sonarNumber, SonarReading reading);
 
 	};

@@ -31,8 +31,12 @@ void LocalizationMonitorConsole::printFunction(const Pose& currentPose) {
 	m_console.printf("Erro em X = %.3f cm\n", erroX );
 	m_console.printf("Erro em Y = %.3f cm\n", erroY );
 	m_console.printf("Erro em Theta = %.3f radianos\n", erroTheta );
+	m_console.printf("Covariancia do erro:");
+	std::stringstream ss;
+	ss << mp_localization->getPoseEstimateCovariance();
+	m_console.print(ss.str().c_str());
 
-	cls(19);
+	cls(16);
 }
 void LocalizationMonitorConsole::cls(int n)
 {

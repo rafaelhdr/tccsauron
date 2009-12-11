@@ -206,17 +206,20 @@ bool WaypointLinker::isLinkPossible(Node& node1, Node& node2, Map& map)
 
 void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, Map& map )
 {
+	bool linkedPrimary = false;
     if ( toLink.Type() == Node::PRIMARY )
     {
 		bool down = linkClosestPossibleDown(graph, toLink, map);
 		bool left = linkClosestPossibleLeft(graph, toLink, map);
 		bool right = linkClosestPossibleRight(graph, toLink, map);
 		bool up = linkClosestPossibleUp(graph, toLink, map);
-		if(!(up || down || left || right)){
-			std::cerr << "Ah, poxa! Nao linkou o no' " << toLink.getName() << "." << std::endl;
+		if(!(up || down || left || right)) {
+			std::cerr << "Vai linkar " << toLink.getName() << " com o mais proximo." << std::endl;
+		} else  {
+			linkedPrimary = true;
 		}
     }
-    else // secundary and temporary
+    if(!linkedPrimary) // também conta secondary
     {
         Graph::iterator closestIt;
         Graph::iterator tempIt;

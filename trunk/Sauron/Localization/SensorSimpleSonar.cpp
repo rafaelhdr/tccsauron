@@ -58,7 +58,7 @@ namespace sauron
 		if(expectedReading != -1) {
 			hValue(0,0) = expectedReading;
 
-			R(0,0) = 60;
+			R(0,0) = getFancyCovariance(expectedReading, z(0,0));
 
 			Pose sonarRelativePose = configs::sonars::getSonarPose(m_sonarNumber);
 			double beta = sonarRelativePose.Theta() + (trigonometry::PI / 2 - matchedLine.getTheta()) + last.Theta();
@@ -85,6 +85,17 @@ namespace sauron
 		else
 		{
 			return false;
+		}
+	}
+
+	double SensorSimpleSonar::getFancyCovariance(double expected, double actual)
+	{
+		double delta = expected - actual;
+		if(delta > 100) {
+			double covariance = 2.34 * ::exp(0.0375 * delta);
+			return covariance;
+		} else {
+			return 100;
 		}
 	}
 
