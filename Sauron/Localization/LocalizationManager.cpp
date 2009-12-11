@@ -70,8 +70,14 @@ namespace sauron
 		//buildDefaultVision();
 	}
 
+	ISonarDataAsyncProvider* LocalizationManager::getSonarDataProvider()
+	{
+		return mp_sonarDataProvider.get();
+	}
+
 	void LocalizationManager::buildDefaultSonars()
 	{
+		
 		for(int i = 0; i < 8; i++) {
 			ISensorSonarModelPtr sonarModel = ISensorSonarModelPtr(new SensorSonar(i, *mp_sonarDataProvider));
 			sonarModel->setLocalizationManager(*this);

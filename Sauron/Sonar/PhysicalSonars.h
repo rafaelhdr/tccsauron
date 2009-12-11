@@ -1,5 +1,7 @@
 #pragma once
 #include <map>
+#include <vector>
+
 #include "ArFunctor.h"
 
 #include "ISonarDataAsyncProvider.h"
@@ -25,6 +27,6 @@ private:
 	struct SonarFunctor {
 		int sonarNumber; ArFunctor1<SonarReading>* p_functor;
 	};
-	std::map<int, AddReadingCallback*> m_addReadingCallbacks;
+	std::map<int, std::vector<AddReadingCallback*>> m_addReadingCallbacks;
 };
 }

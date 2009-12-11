@@ -13,6 +13,7 @@ namespace sauron
 
 	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager)
 	{
+		
 	}
 	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot), mp_localization(locManager)
 	{
@@ -42,6 +43,14 @@ namespace sauron
 		while(!m_movementStopped) {
 			m_movementStoppedCond.wait(lock);
 		}
+	}
+
+
+	void RouteExecuter::AvoidObstacle(int sonarNumber, sauron::SonarReading reading)
+	{
+
+
+
 	}
 
 	void RouteExecuter::reachedGoal(MoveResult result) {
