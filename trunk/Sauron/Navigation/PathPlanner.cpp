@@ -52,8 +52,6 @@ namespace sauron
 					return goTo(destination, graph);
 				} else if(moveResult == RouteExecuter::FAILED_EMERGENCY_STOP) {
 					// algum idiota pôs o pé na frente, ou estamos perdidinhos. vamos tentar de novo, mas com parcimônia
-					// TODO dormir por alguns segundos antes de tentar de novo
-					// TODO contar quantas vezes falhamos e desistir depois de um tempo
 					invokeCallbacks(FAILED_COLLISION_AVOIDANCE,  &Node());
 					numberCollisionAvoided++;
 					if(numberCollisionAvoided >= 5) {

@@ -4,55 +4,20 @@
 #include "MathHelper.h"
 #include "RobotController.h"
 #include "PoseTracker.h"
-
+#include "CruiseControl.h"
+#include "ObstacleMonitor.h"
 #include "Localization/LocalizationManager.h"
 
 namespace sauron
 {
 	class LocalizationManager;
 
-	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager),
-		 m_callback(this, &RouteExecuter::AvoidObstacle)
+	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager)
 	{
-		for(int i = 0; i < 8; i++)
-		{
-			locManager->getSonarDataProvider()->setAddReadingCallback(i, &m_callback);
-		}
 	}
-	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot), mp_localization(locManager),
-		 m_callback(this, &RouteExecuter::AvoidObstacle)
+	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot),
+		mp_localization(locManager)
 	{
-		for(int i = 0; i < 8; i++)
-		{
-			locManager->getSonarDataProvider()->setAddReadingCallback(i, &m_callback);
-		}
-	}
-
-	RouteExecuter::~RouteExecuter()
-	{
-		for(int i = 0; i < 8; i++)
-		{
-			mp_localization->getSonarDataProvider()->removeAddReadingCallback(i, &m_callback);
-		}
-	}
-
-
-	
-
-	void RouteExecuter::AvoidObstacle(int sonarNumber, sauron::SonarReading reading)
-	{
-		const int LIMIT = 50;
-
-		if(!m_movementStopped && sonarNumber > 0 && sonarNumber < 7 && reading.getReading() < LIMIT)
-		{
-			m_moveResult = RouteExecuter::FAILED_EMERGENCY_STOP;
-			{
-				boost::lock_guard<boost::mutex> lock(m_mutex);
-				m_movementStopped = true;
-			}
-			m_movementStoppedCond.notify_all();
-		}
-
 	}
 
 
@@ -65,36 +30,12 @@ namespace sauron
 		robotController::turn(deltaHeading);
 		mp_localization->setIsTurning(false);
 
-		ArLineSegment route(currentPose.X(), currentPose.Y(), to.X(), to.Y());
-
-		
-		PoseTracker tracker(mp_localization, to, route);
-		tracker.trackAsync(boost::bind(&RouteExecuter::reachedGoal, this, _1));
-		mp_robot->setVel(500);
-		waitGoalIsReached();
-		mp_robot->stop();
-		return m_moveResult;
+		CruiseControl cruiseControl(mp_robot, mp_localization, to);
+		ObstacleMonitor monitor(mp_localization, &cruiseControl);
+		MoveResult result = cruiseControl.go();
+		return result;
 	}
 
-	void RouteExecuter::waitGoalIsReached() {
-		m_movementStopped = false;
-		boost::unique_lock<boost::mutex> lock(m_mutex);
-		while(!m_movementStopped) {
-			m_movementStoppedCond.wait(lock);
-		}
-	}
-
-
-	
-
-	void RouteExecuter::reachedGoal(MoveResult result) {
-		m_moveResult = result;
-		{
-			boost::lock_guard<boost::mutex> lock(m_mutex);
-			m_movementStopped = true;
-		}
-		m_movementStoppedCond.notify_all();
-	}
 
 	double RouteExecuter::getTurnAngle(const Pose& from, const Point2DDouble& to)
 	{
