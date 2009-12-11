@@ -243,10 +243,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ObstacleAvoider.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\PathPlanner.cpp"
 				>
 			</File>
@@ -294,10 +290,6 @@
 			</File>
 			<File
 				RelativePath=".\NodesPersistence.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ObstacleAvoider.h"
 				>
 			</File>
 			<File

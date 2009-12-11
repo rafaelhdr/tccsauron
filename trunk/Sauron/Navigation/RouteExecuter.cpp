@@ -11,13 +11,50 @@ namespace sauron
 {
 	class LocalizationManager;
 
-	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager)
+	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager),
+		 m_callback(this, &RouteExecuter::AvoidObstacle)
 	{
-		
+		for(int i = 0; i < 8; i++)
+		{
+			locManager->getSonarDataProvider()->setAddReadingCallback(i, &m_callback);
+		}
 	}
-	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot), mp_localization(locManager)
+	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot), mp_localization(locManager),
+		 m_callback(this, &RouteExecuter::AvoidObstacle)
 	{
+		for(int i = 0; i < 8; i++)
+		{
+			locManager->getSonarDataProvider()->setAddReadingCallback(i, &m_callback);
+		}
 	}
+
+	RouteExecuter::~RouteExecuter()
+	{
+		for(int i = 0; i < 8; i++)
+		{
+			mp_localization->getSonarDataProvider()->removeAddReadingCallback(i, &m_callback);
+		}
+	}
+
+
+	
+
+	void RouteExecuter::AvoidObstacle(int sonarNumber, sauron::SonarReading reading)
+	{
+		const int LIMIT = 30;
+
+		if(!m_movementStopped && sonarNumber > 0 && sonarNumber < 7 && reading.getReading() < LIMIT)
+		{
+			m_moveResult = RouteExecuter::FAILED_EMERGENCY_STOP;
+			{
+				boost::lock_guard<boost::mutex> lock(m_mutex);
+				m_movementStopped = true;
+			}
+			m_movementStoppedCond.notify_all();
+		}
+
+	}
+
 
 	RouteExecuter::MoveResult RouteExecuter::goTo(const Point2DDouble& to)
 	{
@@ -46,12 +83,7 @@ namespace sauron
 	}
 
 
-	void RouteExecuter::AvoidObstacle(int sonarNumber, sauron::SonarReading reading)
-	{
-
-
-
-	}
+	
 
 	void RouteExecuter::reachedGoal(MoveResult result) {
 		m_moveResult = result;

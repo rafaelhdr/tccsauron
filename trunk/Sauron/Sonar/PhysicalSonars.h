@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <vector>
-
+#include <boost/thread.hpp>
 #include "ArFunctor.h"
 
 #include "ISonarDataAsyncProvider.h"
@@ -16,6 +16,7 @@ class PhysicalSonars : public ISonarDataAsyncProvider
 public:
 	PhysicalSonars(ArRobot* robot);
 	void setAddReadingCallback(int sonarNumber, AddReadingCallback* p_callback);
+	void removeAddReadingCallback(int sonarNumber, AddReadingCallback* p_callback);
 	void removeCallback(int sonarNumber);
 	void removeAllCallbacks();
 	~PhysicalSonars(void);
@@ -28,5 +29,6 @@ private:
 		int sonarNumber; ArFunctor1<SonarReading>* p_functor;
 	};
 	std::map<int, std::vector<AddReadingCallback*>> m_addReadingCallbacks;
+	boost::mutex m_callbackMutex;
 };
 }

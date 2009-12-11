@@ -2,6 +2,7 @@
 #include "Pose.h"
 #include <boost/thread.hpp>
 #include "Sonar/SonarReading.h"
+#include "ArFunctor.h"
 
 class ArRobot;
 namespace sauron
@@ -22,6 +23,7 @@ namespace sauron
 
 		RouteExecuter(LocalizationManager* locManager);
 		RouteExecuter(ArRobot* robot, LocalizationManager* locManager);
+		~RouteExecuter();
 		
 		MoveResult goTo(const Point2DDouble& to);
 		void AvoidObstacle(int sonarNumber, sauron::SonarReading reading);
@@ -34,6 +36,8 @@ namespace sauron
 	private:
 		ArRobot* mp_robot;
 		LocalizationManager* mp_localization;
+		ArFunctor2C<RouteExecuter, int, sauron::SonarReading> m_callback;
+
 
 		boost::condition_variable m_movementStoppedCond;
 		bool m_movementStopped;
