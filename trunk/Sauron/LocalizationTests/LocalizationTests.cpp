@@ -263,6 +263,8 @@ int principal(int argc, char** argv)
   //sauron::MapManager mapManager("corredorfake.map", names);
   names.push_back("mezanino.map");
   names.push_back("pavsup_mod.map");
+  names.push_back("pavinf.map");
+
   sauron::MapManager mapManager("pavsup_mod.map", names);
   /*names.push_back("horizontal.map");
   names.push_back("vertical.map");

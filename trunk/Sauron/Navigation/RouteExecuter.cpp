@@ -41,7 +41,7 @@ namespace sauron
 
 	void RouteExecuter::AvoidObstacle(int sonarNumber, sauron::SonarReading reading)
 	{
-		const int LIMIT = 30;
+		const int LIMIT = 50;
 
 		if(!m_movementStopped && sonarNumber > 0 && sonarNumber < 7 && reading.getReading() < LIMIT)
 		{
@@ -61,7 +61,9 @@ namespace sauron
 		Pose currentPose = mp_localization->getPose();
 
 		double deltaHeading = getTurnAngle(currentPose, to);
+		mp_localization->setIsTurning(true);
 		robotController::turn(deltaHeading);
+		mp_localization->setIsTurning(false);
 
 		ArLineSegment route(currentPose.X(), currentPose.Y(), to.X(), to.Y());
 

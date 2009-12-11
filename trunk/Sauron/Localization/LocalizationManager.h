@@ -70,6 +70,10 @@ public:
 		return mp_ekf->getLatestCovariance();
 	}
 
+	void setIsTurning(bool isTurning) {
+		m_isTurning = isTurning;
+	}
+
 private:
 	LocalizationManager(LocalizationManager& original);
 	MapManager& m_mapManager;
@@ -80,6 +84,7 @@ private:
     ISensorModelPtr m_visionSensor;
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
+	bool m_isTurning;
 
 	void invokePoseChangedCallbacks();
 	void updateArRobotPose(const Pose& newPose);

@@ -207,50 +207,50 @@ bool WaypointLinker::isLinkPossible(Node& node1, Node& node2, Map& map)
 void WaypointLinker::linkNodeToNearest( Graph &graph, Node &toLink, Map& map )
 {
 	bool linkedPrimary = false;
+	double adjacentDistance = 300;
     if ( toLink.Type() == Node::PRIMARY )
     {
 		bool down = linkClosestPossibleDown(graph, toLink, map);
 		bool left = linkClosestPossibleLeft(graph, toLink, map);
 		bool right = linkClosestPossibleRight(graph, toLink, map);
 		bool up = linkClosestPossibleUp(graph, toLink, map);
-		if(!(up || down || left || right)) {
-			std::cerr << "Vai linkar " << toLink.getName() << " com o mais proximo." << std::endl;
-		} else  {
-			linkedPrimary = true;
-		}
+		//if(!(up || down || left || right)) {
+		//	std::cerr << "Vai linkar " << toLink.getName() << " com o mais proximo." << std::endl;
+		//} else  {
+		//	linkedPrimary = true;
+		//}
     }
-    if(!linkedPrimary) // também conta secondary
-    {
-        Graph::iterator closestIt;
-        Graph::iterator tempIt;
-        pose_t minDist = -1.0;
+    
+	Graph::iterator closestIt;
+	Graph::iterator tempIt;
+	pose_t minDist = -1.0;
 
-        for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
-        {
-			if(*tempIt == toLink)
-				continue;
+	for ( tempIt = graph.begin(); tempIt != graph.end(); ++tempIt )
+	{
+		if(*tempIt == toLink)
+			continue;
 
-            if ( tempIt->Type() == Node::SECONDARY || 
-				!isLinkPossible(*tempIt, toLink, map))
-                continue;
+		if ( tempIt->Type() == Node::SECONDARY || 
+			!isLinkPossible(*tempIt, toLink, map))
+			continue;
 
-            if ( minDist < 0.0 )
-            {
-                closestIt = tempIt;
-                minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
-            }
-            else if ( minDist > toLink.getPosition().getDistance( tempIt->getPosition() ) )
-            {
-                closestIt = tempIt;
-                minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
-            }
-        }
-
-		if(minDist > 0.0) {
-			toLink.addAdjacent( *closestIt );
-			closestIt->addAdjacent( toLink );
+		if ( minDist < 0.0 )
+		{
+			closestIt = tempIt;
+			minDist = toLink.getPosition().getDistance( closestIt->getPosition() );
+		}
+		else if ( minDist > toLink.getPosition().getDistance( tempIt->getPosition() ) )
+		{
+			closestIt = tempIt;
+			minDist = toLink.getPosition().getDistance( tempIt->getPosition() );
 		}
 	}
+
+	if(minDist > 0 && minDist < adjacentDistance) {
+		toLink.addAdjacent( *closestIt );
+		closestIt->addAdjacent( toLink );
+	}
+
 }
 
 void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node &goal, Map* map )
