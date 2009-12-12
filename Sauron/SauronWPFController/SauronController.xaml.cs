@@ -48,9 +48,7 @@ namespace SauronWPFController
             this.image3.MouseMove += new MouseEventHandler(image3_MouseMove);
             this.image4.MouseMove += new MouseEventHandler(image4_MouseMove);
             this.image5.MouseMove += new MouseEventHandler(image5_MouseMove);
-
-           
-           
+                     
             timePassing = new Timer();
             timePassing.Elapsed += new ElapsedEventHandler(LeaveEvent);
             timePassing.Interval = 10;
@@ -59,7 +57,10 @@ namespace SauronWPFController
 
         void navigationClick(object sender, MouseButtonEventArgs e)
         {
-            
+            NavigationWindow navigation = new NavigationWindow();
+            navigation.Show();
+
+            this.gridNavigation.Visibility = Visibility.Visible;
         }
 
         void markClick(object sender, MouseButtonEventArgs e)
@@ -247,6 +248,7 @@ namespace SauronWPFController
             image_MouseMove(5, e);
         }
 
+       
 
 
         void Resize(Image image, double newWidth)
