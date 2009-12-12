@@ -8,6 +8,7 @@ namespace sauron
 {
 	class RobotController;
 	class LocalizationManager;
+	class CruiseControl;
 
 	class RouteExecuter
 	{
@@ -25,8 +26,7 @@ namespace sauron
 		~RouteExecuter(){}
 		
 		MoveResult goTo(const Point2DDouble& to);
-		
-
+		void halt();
 
 	public:
 		static double getTurnAngle(const Pose& from, const Point2DDouble& to);
@@ -34,6 +34,10 @@ namespace sauron
 
 	private:
 		ArRobot* mp_robot;
+		CruiseControl* mp_cruiseControl;
 		LocalizationManager* mp_localization;
+		bool m_halt;
+
+		boost::mutex m_cruiseControlMutex;
 	};
 }

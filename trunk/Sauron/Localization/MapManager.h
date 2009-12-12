@@ -8,7 +8,7 @@ namespace sauron
 	class MapManager
 	{
 	public:
-		MapManager(const std::string& initialMapName, std::vector<std::string>& mapNames)
+		MapManager(const std::string& initialMapName, const std::vector<std::string>& mapNames)
 			: m_initialMapName(initialMapName), m_mapNames(mapNames)
 		{
 		}

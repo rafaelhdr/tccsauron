@@ -3,6 +3,7 @@
 #include "AStar.h"
 #include <string>
 #include <boost/function.hpp>
+#include <boost/thread.hpp>
 #include "CallbackProvider.h"
 
 class ArRobot;
@@ -11,6 +12,7 @@ namespace sauron
 	class LocalizationManager;
 	class Map;
 	class PathPlanner;
+	class RouteExecuter;
 	enum PathPlannerStatus
 		{
 			GOING_TO_WAYPOINT, // Node* = próximo waypoint/goal
@@ -37,10 +39,14 @@ namespace sauron
 			removeCallback(callbackId);
 		}
 
+		bool halt();
+
 	private:
 		ArRobot* mp_robot;
 		LocalizationManager* mp_localization;
 
+		RouteExecuter* mp_executer;
+		boost::mutex m_routeExecuterMutex;
 		void removeNodesTooCloseFromPath(const Node& currentNode, Path &path);
 		//void loadWaypointsGraphFromMap(const std::string& mapFilename);
 		Node getCurrentPoseAsNode();

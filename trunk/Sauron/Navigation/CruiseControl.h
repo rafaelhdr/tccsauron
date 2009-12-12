@@ -16,6 +16,7 @@ public:
 	~CruiseControl(void);
 
 	RouteExecuter::MoveResult go();
+	void halt();
 	void setDistanceToObstacle(double distanceCm);
 	
 private:

@@ -33,6 +33,17 @@ namespace sauron
 		return m_moveResult;
 	}
 
+	void CruiseControl::halt()
+	{
+		mp_robot->stop();
+		m_moveResult = RouteExecuter::FAILED_OTHER;
+		{
+			boost::lock_guard<boost::mutex> lock(m_mutex);
+			m_movementStopped = true;
+		}
+		m_movementStoppedCond.notify_all();
+	}
+
 	void CruiseControl::takeoff()
 	{
 		CC_LOG(logDEBUG1) << "decolando...";
@@ -72,8 +83,11 @@ namespace sauron
 			// speed = a = 1/4260; b = 75/710; c = -95/213; d = 100; 0 <= x <= 60 cm
 			double speed = 1.0/4260 * distToGoal * distToGoal * distToGoal +
 				75.0/710 * distToGoal * distToGoal - 95.0/213 * distToGoal + 100;
-			setCruiseControlSpeed(speed);
-			CC_LOG(logDEBUG1) << "aproximacao: v = " << speed << " (distToGoal = " << distToGoal << " cm)";
+			if(m_cruiseControlSpeed > speed) // só atualiza se for para reduzir
+			{
+				setCruiseControlSpeed(speed);
+				CC_LOG(logDEBUG1) << "aproximacao: v = " << speed << " (distToGoal = " << distToGoal << " cm)";
+			}
 		} else {
 			m_isApproaching = false;
 			if(!m_isInTakeoff)
@@ -126,6 +140,7 @@ namespace sauron
 		if(floating_point::equalOrLess(speed, 0)) {
 			CC_LOG(logERROR) << "PARADA ANTICOLISAO (v = " << speed << ")";
 			reachedGoal(RouteExecuter::FAILED_EMERGENCY_STOP);
+			m_maxSpeed = 0;
 		} else {
 			m_maxSpeed = speed;
 		}

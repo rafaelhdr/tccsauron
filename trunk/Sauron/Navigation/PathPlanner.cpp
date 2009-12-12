@@ -10,10 +10,9 @@
 namespace sauron
 {
 	PathPlanner::PathPlanner(ArRobot* robot, LocalizationManager* locManager)
-		: mp_robot(robot), mp_localization(locManager)
+		: mp_robot(robot), mp_localization(locManager), mp_executer(0)
 	{
 		robotController::setRobot(robot);
-		//loadWaypointsGraphFromMap(mapFilename);
 	}
 
 	bool PathPlanner::goTo(const std::string& name,  Graph& graph)
@@ -40,7 +39,19 @@ namespace sauron
 			
 			if(path.size() > 0) {
 				invokeCallbacks(GOING_TO_WAYPOINT, &path[0]);
-				RouteExecuter::MoveResult moveResult = RouteExecuter(mp_robot, mp_localization).goTo(path[0].getPosition());
+				
+				{
+					boost::unique_lock<boost::mutex> lock(m_routeExecuterMutex);
+					mp_executer = new RouteExecuter(mp_robot, mp_localization);
+				}
+
+				RouteExecuter::MoveResult moveResult = mp_executer->goTo(path[0].getPosition());
+				
+				{
+					boost::unique_lock<boost::mutex> lock(m_routeExecuterMutex);
+					delete mp_executer; mp_executer = 0;
+				}
+
 				if(moveResult == RouteExecuter::SUCCESS) {
 					numberCollisionAvoided = 0;
 					invokeCallbacks(ARRIVED_AT_WAYPOINT, &path[0]);
@@ -73,6 +84,17 @@ namespace sauron
 		return false; // caminho não foi encontrado, ou não conseguiu se movimentar
 	}
 
+	bool PathPlanner::halt()
+	{
+		boost::unique_lock<boost::mutex> lock(m_routeExecuterMutex);
+		if(mp_executer != 0) {
+			mp_executer->halt();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	void PathPlanner::removeNodesTooCloseFromPath(const Node& currentNode, Path &path)
 	{
 		Path cleanPath;
@@ -85,14 +107,6 @@ namespace sauron
 		path.clear();
 		path.insert(path.begin(), cleanPath.begin(), cleanPath.end());
 	}
-
-	//void PathPlanner::loadWaypointsGraphFromMap(const std::string& mapFilename)
-	//{
-	//	ArMap map;
-	//	map.readFile(mapFilename.c_str());
-	//	util::MapFileParser::loadWaypoints( mapFilename, m_graph );
-	//	util::WaypointLinker::link(m_graph, Map(map));
-	//}
 
 	Node PathPlanner::getCurrentPoseAsNode()
 	{
