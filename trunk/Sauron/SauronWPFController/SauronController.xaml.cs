@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Timers;
 using System.Windows.Threading;
+using System.Net;
 
 namespace SauronWPFController
 {
@@ -29,9 +30,12 @@ namespace SauronWPFController
         }
       
         private Image[] images;
+        private string[] names;
         private Timer timePassing;
         private MyTimer moveMouseTimer;
         private int moveCount = 0;
+        private EnviadorComandos enviador = new EnviadorComandos();
+        private delegate void SimpleDelegate();
 
         private int MAXCOUNT = 10;
         private int range = 2;
@@ -41,8 +45,9 @@ namespace SauronWPFController
         public SauronController()
         {
             InitializeComponent();
-            this.gridNavigation.Visibility = Visibility.Collapsed;
             images = new Image[] { null, image1, image2, image3, image4, image5 };
+            names = new string[] { null, "Mark", "Stop", "Navigation", "Freeze", "Position" };
+
             this.image1.MouseMove += new MouseEventHandler(image1_MouseMove);
             this.image2.MouseMove += new MouseEventHandler(image2_MouseMove);
             this.image3.MouseMove += new MouseEventHandler(image3_MouseMove);
@@ -55,12 +60,25 @@ namespace SauronWPFController
             timePassing.Start();
         }
 
+        public IPAddress IP
+        {
+            get
+            {
+                return enviador.IP;
+            }
+            set
+            {
+                enviador.IP = value;
+                this.txtIpSauron.Content = enviador.IP.ToString();
+            }
+        }
+
+
         void navigationClick(object sender, MouseButtonEventArgs e)
         {
-            NavigationWindow navigation = new NavigationWindow();
+            NavigationWindow navigation = new NavigationWindow(enviador);
             navigation.Show();
-
-            this.gridNavigation.Visibility = Visibility.Visible;
+           
         }
 
         void markClick(object sender, MouseButtonEventArgs e)
@@ -79,11 +97,17 @@ namespace SauronWPFController
         {
         }
 
+        void configureClick(object sender, MouseButtonEventArgs e)
+        {
+            IpConfigurator ipConfigurator = new IpConfigurator(this);
+            ipConfigurator.Show();
+
+        }
 
 
 
        
-        private delegate void SimpleDelegate();
+       
 
        private void LeaveEvent(object source, ElapsedEventArgs e )
        {
@@ -102,6 +126,7 @@ namespace SauronWPFController
 
                 if (!isOver)
                 {
+                    lblTitle.Visibility = Visibility.Hidden;
                     double step = (max - min) / MAXCOUNT;
 
                     for (int i = 1; i <= 5; i++)
@@ -143,6 +168,8 @@ namespace SauronWPFController
            moveCount++;
            SimpleDelegate del = delegate()
            {
+               lblTitle.Content = names[index];
+               lblTitle.Visibility = Visibility.Visible;
                MoveMouse(index, (MyTimer)source);
            };
            this.Dispatcher.BeginInvoke(DispatcherPriority.Send, del);
