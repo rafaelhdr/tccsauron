@@ -16,6 +16,7 @@ public:
 	// comandos
 	bool setInitialMap(const std::string& initialMap);
 	bool goTo(const std::string& goalName);
+	Pose getPose();
 	void setPose(const Pose& pose);
 	bool setPose(const std::string& nodeName, pose_t theta);
 	void halt();
@@ -24,16 +25,23 @@ public:
 
 	// componentes principais
 	// localização
-	LocalizationManager* getLocalizationManager();
+	LocalizationManager* getLocalizationManager() {
+		return mp_localization;
+	}
 	// navegação
-	MapPlanner* getMapPlanner();
+	MapPlanner* getMapPlanner() {
+		return mp_planner;
+	}
 private:
+	Sauron(const Sauron& other);
 	ArRobot* mp_robot;
 	std::string m_goal;
 	bool m_isMoving;
+	
+	MapManager* mp_mapManager;
+	MapPlanner* mp_planner;
+	LocalizationManager*  mp_localization;
 
-	boost::shared_ptr<LocalizationManager>  mp_localization;
-	boost::shared_ptr<MapPlanner> mp_planner;
-	boost::shared_ptr<MapManager> mp_mapManager;
+	void unfreeze();
 };
 }

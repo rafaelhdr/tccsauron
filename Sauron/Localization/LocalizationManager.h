@@ -74,6 +74,9 @@ public:
 		m_isTurning = isTurning;
 	}
 
+	void freeze() { m_freeze = true; }
+	void unfreeze() { m_freeze = false; }
+
 private:
 	LocalizationManager(LocalizationManager& original);
 	MapManager& m_mapManager;
@@ -85,6 +88,7 @@ private:
 	ISonarDataProviderPtr mp_sonarDataProvider;
 	IDynamicModelPtr mp_dynamic;
 	bool m_isTurning;
+	bool m_freeze;
 
 	void invokePoseChangedCallbacks();
 	void updateArRobotPose(const Pose& newPose);

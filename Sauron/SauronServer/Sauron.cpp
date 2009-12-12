@@ -6,11 +6,12 @@ namespace sauron
 	Sauron::Sauron(ArRobot* robot, const std::vector<std::string>& maps,
 		const std::string& initialMap, const std::string& marksFile)
 		: mp_robot(robot),
-		mp_mapManager(new MapManager(initialMap, maps)),
-		mp_localization(new LocalizationManager(mp_robot, *mp_mapManager, marksFile)),
-		mp_planner(new MapPlanner(mp_robot, mp_mapManager.get())),
 		m_isMoving(false)
 	{
+		mp_mapManager = new MapManager(initialMap, maps);
+		mp_planner = new MapPlanner(mp_robot, mp_mapManager);
+		mp_localization = new LocalizationManager(mp_robot,	*mp_mapManager, marksFile);
+		mp_planner->setLocalizationManager(mp_localization);
 	}
 
 	void Sauron::setPose(const Pose& pose)
@@ -43,7 +44,12 @@ namespace sauron
 	void Sauron::freeze()
 	{
 		halt();
+		mp_localization->freeze();
+	}
 
+	void Sauron::unfreeze()
+	{
+		mp_localization->unfreeze();
 	}
 
 	void Sauron::continueAfterStop()
@@ -51,8 +57,14 @@ namespace sauron
 		goTo(m_goal);
 	}
 
+	Pose Sauron::getPose()
+	{
+		return mp_localization->getPose();
+	}
+
 	bool Sauron::goTo(const std::string& goalName)
 	{
+		unfreeze();
 		m_isMoving = true;
 		m_goal = goalName;
 		return mp_planner->goTo(m_goal);
@@ -77,5 +89,8 @@ namespace sauron
 
 	Sauron::~Sauron(void)
 	{
+		delete mp_planner;
+		delete mp_mapManager;
+		delete mp_localization;
 	}
 }
