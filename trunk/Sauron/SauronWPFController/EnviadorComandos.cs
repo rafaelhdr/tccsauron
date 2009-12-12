@@ -34,9 +34,11 @@ namespace SauronWPFController
                         if (socket.Connected)
                         {
                             socket.Disconnect(true);
+                            socket.Close();
                         }
 
                         EndPoint endPoint = new IPEndPoint(IP, port);
+                        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                         socket.Connect(endPoint);
                     }
                 }
@@ -55,12 +57,9 @@ namespace SauronWPFController
         {
             string result = "Erro! Não conseguiu conectar no robô.";
 
-            if (Socket != null)
-            {
-                Send("n " + markName);
-                result = Receive();
-            }
-
+            Send("n " + markName);
+            result = Receive();
+            
             return result;
         }
 
