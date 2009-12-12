@@ -20,7 +20,7 @@ namespace sauron
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
           m_visionMarksFilename( marksFile ),
-		  m_isTurning(false)
+		  m_isTurning(false), m_freeze(false)
 	{
 		buildDefaultSensors();
 		addPoseChangedCallback(boost::bind(&LocalizationManager::updateArRobotPose, this, _1));
@@ -33,7 +33,7 @@ namespace sauron
 		  mp_ekf(buildDefaultEKF()), 
           mp_sonarDataProvider(buildDefaultSonarDataProvider()),
           m_visionMarksFilename( marksFile ),
-		  m_isTurning(false)
+		  m_isTurning(false), m_freeze(false)
 	{
 		buildDefaultSensors();
 		setInitialPose(initialPose);

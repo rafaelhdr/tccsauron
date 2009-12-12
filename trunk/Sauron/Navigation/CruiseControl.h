@@ -39,6 +39,7 @@ private:
 	boost::condition_variable m_movementStoppedCond;
 	bool m_movementStopped;
 	boost::mutex m_mutex;
+	boost::mutex m_speedMutex;
 
 	void reachedGoal(RouteExecuter::MoveResult result);
 
