@@ -50,8 +50,10 @@ void StatusServer::stop()
 void StatusServer::statusServerLoop()
 {
     boost::asio::io_service         service;
-    boost::asio::ip::tcp::acceptor  acceptor( service );
+    boost::asio::ip::tcp::acceptor  acceptor( service, boost::asio::ip::tcp::endpoint( boost::asio::ip::tcp::v4(), 5006 ) );
     boost::system::error_code       error;
+
+    service.run();
 
     while ( m_serverRunningFlag )
     {
