@@ -8,7 +8,7 @@ namespace sauron
 		CruiseControl* cruiseControl)
 		: mp_localization(localization),
 		m_callback(this, &ObstacleMonitor::monitorReading),
-		mp_cruiseControl(cruiseControl)
+		mp_cruiseControl(cruiseControl), m_stopUpdate(false)
 	{
 		for(int i = 0; i < 8; i++)
 		{
@@ -25,6 +25,8 @@ namespace sauron
 
 	void ObstacleMonitor::updateCruiseControlWithClosestObstacle()
 	{
+		if(!m_stopUpdate)
+		{
 		double minReading = -1;
 		for(int i = 1; i < 7; i++)
 		{
@@ -37,6 +39,7 @@ namespace sauron
 
 		if(!(minReading < 0)) {
 			mp_cruiseControl->setDistanceToObstacle(minReading);
+		}
 		}
 	}
 

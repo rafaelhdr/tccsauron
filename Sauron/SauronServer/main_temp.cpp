@@ -182,7 +182,7 @@ int principal(int argc, char** argv)
   robot.enableMotors();
   robot.runAsync(true);
 
-  //drawings.addRobotsRangeDevices(&robot);
+  drawings.addRobotsRangeDevices(&robot);
 
   // log whatever we wanted to before the runAsync
   simpleOpener.checkAndLog();

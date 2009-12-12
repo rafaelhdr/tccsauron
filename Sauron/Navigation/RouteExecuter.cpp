@@ -40,6 +40,7 @@ namespace sauron
 			MoveResult result = mp_cruiseControl->go();
 			{
 				boost::unique_lock<boost::mutex> lock(m_cruiseControlMutex);
+				monitor.stopUpdate();
 				delete mp_cruiseControl; mp_cruiseControl = 0;
 			}
 			return result;

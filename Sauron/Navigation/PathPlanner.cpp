@@ -68,10 +68,7 @@ namespace sauron
 					if(numberCollisionAvoided >= 5) {
 						return false;
 					}
-					boost::xtime time;  
-					boost::xtime_get(&time, boost::TIME_UTC); //current time  
-					time.sec += 3; //adds 1 secs to time  
-					boost::thread::sleep(time);  
+					boost::this_thread::sleep(boost::posix_time::seconds(3)); 
 
 					return goTo(destination, graph);
 				}
