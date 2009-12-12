@@ -13,11 +13,11 @@ namespace sauron
 	class LocalizationManager;
 
 	RouteExecuter::RouteExecuter(LocalizationManager* locManager)
-		: mp_robot(0), mp_localization(locManager), mp_cruiseControl(0)
+		: mp_robot(0), mp_localization(locManager), mp_cruiseControl(0), m_halt(false)
 	{
 	}
 	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot),
-		mp_localization(locManager), mp_cruiseControl(0)
+		mp_localization(locManager), mp_cruiseControl(0), m_halt(false)
 	{
 	}
 

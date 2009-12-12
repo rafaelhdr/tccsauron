@@ -14,21 +14,25 @@ namespace sauron
 		mp_robot(robot)
 	{
 		std::vector<std::string> mapNames = mapManager->getMapNames();
-
+		bool initialMapSet = false;
 		std::vector<std::string>::iterator it;
 		for(it = mapNames.begin(); it != mapNames.end(); it++)
 		{
 			ArMap arMap;
 			if(!arMap.readFile(it->c_str()))
 				throw std::exception((std::string("Mapa nao encontrado: ") + *it).c_str());
-			
+
 			m_maps.push_back(new Map(arMap));
 			if(mp_mapManager->getInitialMapName() == *it)
 			{
 				mp_mapManager->setCurrentMap(m_maps.back());
+				initialMapSet = true;
 			}
 			loadWaypointsGraph(m_maps.back());
 		}
+
+		if(!initialMapSet)
+			throw std::exception(std::string("O mapa inicial nao foi encontrado").c_str());
 
 		findLinksBetweenMaps();
 	}

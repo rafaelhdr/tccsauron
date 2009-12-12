@@ -117,7 +117,7 @@ namespace sauron
 									 const Model &H,
 									 const Covariance &R)
 	{
-		if(!m_isTurning) {
+		if(!m_isTurning && !m_freeze) {
 			{
 				boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
 				mp_ekf->update(z, hValue, H, R);
@@ -127,14 +127,16 @@ namespace sauron
 	}
 
 	void LocalizationManager::predict(const Matrix &fValue,
-									  const Model &dynModel,
-									  const Covariance &dynNoise)
+		const Model &dynModel,
+		const Covariance &dynNoise)
 	{
-		{
-			boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
-			mp_ekf->predict(fValue, dynModel, dynNoise);
+		if(!m_freeze) {
+			{
+				boost::unique_lock<boost::recursive_mutex> lock(m_ekfMutex);
+				mp_ekf->predict(fValue, dynModel, dynNoise);
+			}
+			invokePoseChangedCallbacks();
 		}
-		invokePoseChangedCallbacks();
 	}
 
 	Pose LocalizationManager::getPose()

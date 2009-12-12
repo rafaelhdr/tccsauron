@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\main_temp.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Sauron.cpp"
 				>
 			</File>
