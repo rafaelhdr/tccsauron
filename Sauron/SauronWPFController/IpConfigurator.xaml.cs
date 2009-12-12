@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Net;
 
 namespace SauronWPFController
 {
@@ -18,9 +19,41 @@ namespace SauronWPFController
     /// </summary>
     public partial class IpConfigurator : Window
     {
-        public IpConfigurator()
+        private SauronController controller;
+
+        public IpConfigurator(SauronController controller)
         {
             InitializeComponent();
+            this.controller = controller;
+            if (controller.IP != null)
+            {
+                this.txtIP.Text = controller.IP.ToString();
+            }
+            lblErro.Visibility = Visibility.Hidden;
         }
+
+        private void btnOK_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                controller.IP = IPAddress.Parse(txtIP.Text);
+                this.Close();
+            }
+            catch (Exception)
+            {
+                lblErro.Visibility = Visibility.Visible;
+            }
+
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+
+
+
+
     }
 }

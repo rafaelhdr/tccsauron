@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B25E3989-2694-45FE-9A7B-5263A54377D0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -85,10 +85,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComandoConnection.cs" />
     <Compile Include="EnviadorComandos.cs" />
+    <Compile Include="GoalsFinder.cs" />
     <Compile Include="IpConfigurator.xaml.cs">
       <DependentUpon>IpConfigurator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NavigationCommand.cs" />
     <Compile Include="NavigationWindow.xaml.cs">
       <DependentUpon>NavigationWindow.xaml</DependentUpon>
     </Compile>
@@ -132,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\configure.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

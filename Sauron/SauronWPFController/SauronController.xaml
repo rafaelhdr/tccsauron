@@ -1,32 +1,17 @@
 ﻿<Window x:Class="SauronWPFController.SauronController"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="SAURON Controller" Height="455" Width="778">
-    <Grid Width="752" Height="419">
-        <Image Margin="-500,0,0,220"  Name="image1" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/mark.png"  MouseLeftButtonUp="markClick" VerticalAlignment="Bottom" />
-        <Image Margin="-250,0,0,220" Name="image2" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/stop.png"   MouseLeftButtonUp="stopClick" VerticalAlignment="Bottom" />
-        <Image Margin="0,0,0,220" Name="image3" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/safari.png"  MouseLeftButtonUp="navigationClick" VerticalAlignment="Bottom" />
-        <Image Margin="250,0,0,220" Name="image4" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/freeze.jpg" MouseLeftButtonUp="freezeClick"  VerticalAlignment="Bottom" /> 
-        <Image Margin="500,0,0,220" Name="image5" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/position.jpg"  MouseLeftButtonUp="positionClick" VerticalAlignment="Bottom" /> 
-        
-        <ContentControl Height="75" Margin="-500,0,0,220" Name="contentControl1" VerticalAlignment="Bottom"  Width="75" />
-        <ContentControl Height="75" Margin="-250,0,0,220" Name="contentControl2" VerticalAlignment="Bottom"  Width="75" />
-        <ContentControl Height="75" Margin="0,0,0,220" Name="contentControl3" VerticalAlignment="Bottom"  Width="75" />
-        <ContentControl Height="75" Margin="250,0,0,220" Name="contentControl4" VerticalAlignment="Bottom"  Width="75" />
-        <ContentControl Height="75" Margin="500,0,0,220" Name="contentControl5" VerticalAlignment="Bottom"  Width="75" />
-        
-       <Grid Name="gridNavigation" Height="205" VerticalAlignment="Bottom">
-            <Label FontSize="24" HorizontalAlignment="Left" Margin="101,17,0,0" Name="lblObjetivo" Width="190.443" Height="43" VerticalAlignment="Top">Objetivo:</Label>
-               
-                <Label FontSize="24" Foreground="Green" Margin="337,0,249,145" Name="msgObjetivo" Height="43" VerticalAlignment="Bottom">C2-50</Label>
-                    <Label FontSize="24" HorizontalAlignment="Left" Margin="101,52,0,0" Name="lblNext" Width="211" Height="38" VerticalAlignment="Top">Próximo Waypoint:</Label>
-            <Label FontSize="24" Foreground="Black" Height="39" Margin="337,0,249,115" Name="msgNextWaypoint" VerticalAlignment="Bottom">C2-50</Label>
-            <Label FontSize="24" Foreground="Black" Margin="0,193,249,187" Name="txtIp" HorizontalAlignment="Right" Width="166">0.0.0.0</Label>
-            <GroupBox Header="Última Mensagem do Robô" Margin="65,0,71,14" Name="groupBox1" Height="84" VerticalAlignment="Bottom">
-                <Label FontFamily="Calibri" FontSize="20" Height="34" Name="msgRobo" Width="583" />
-            </GroupBox>
-        </Grid>
-        <Label FontSize="24" Foreground="Black" Height="39" Margin="-50,19,0,0" Name="txtIpSauron" HorizontalAlignment="Center" VerticalAlignment="Top">IP SAURON: 0.0.0.0</Label>
-        <Image Height="48" HorizontalAlignment="Right" Margin="0,16,224,0" Name="image6" Stretch="Fill" VerticalAlignment="Top" Width="64" Source="/SauronWPFController;component/Images/configure.png" />
+    Title="SAURON Controller" Height="272" Width="778">
+    <Grid Width="754" Height="240">
+        <Label FontSize="24" Foreground="Black" Height="39" Margin="0,8,53,0" Name="txtIpSauron" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="207">0.0.0.0</Label>
+        <Image Height="35" HorizontalAlignment="Right" Margin="0,12,12,0" Name="image6" Stretch="Fill" VerticalAlignment="Top" Width="35" Source="/SauronWPFController;component/Images/configure.png"  MouseLeftButtonUp="configureClick" />
+
+
+        <Image Margin="-500,0,0,10"  Name="image1" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/mark.png"  MouseLeftButtonUp="markClick" VerticalAlignment="Bottom" />
+        <Image Margin="-250,0,0,10" Name="image2" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/stop.png"   MouseLeftButtonUp="stopClick" VerticalAlignment="Bottom" />
+        <Image Margin="0,0,0,10" Name="image3" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/safari.png"  MouseLeftButtonUp="navigationClick" VerticalAlignment="Bottom" />
+        <Image Margin="250,0,0,10" Name="image4" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/freeze.jpg" MouseLeftButtonUp="freezeClick"  VerticalAlignment="Bottom" /> 
+        <Image Margin="500,0,0,10" Name="image5" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/position.jpg"  MouseLeftButtonUp="positionClick" VerticalAlignment="Bottom" />
+        <Label FontSize="24" Foreground="Black" Height="53" Margin="0,37,0,0" Name="lblTitle" VerticalAlignment="Top" HorizontalAlignment="Center">Navegação</Label>
     </Grid>
 </Window>
