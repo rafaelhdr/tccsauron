@@ -12,11 +12,12 @@ namespace sauron
 {
 	class LocalizationManager;
 
-	RouteExecuter::RouteExecuter(LocalizationManager* locManager) : mp_robot(0), mp_localization(locManager)
+	RouteExecuter::RouteExecuter(LocalizationManager* locManager)
+		: mp_robot(0), mp_localization(locManager), mp_cruiseControl(0)
 	{
 	}
 	RouteExecuter::RouteExecuter(ArRobot* robot, LocalizationManager* locManager) : mp_robot(robot),
-		mp_localization(locManager)
+		mp_localization(locManager), mp_cruiseControl(0)
 	{
 	}
 
@@ -29,11 +30,33 @@ namespace sauron
 		mp_localization->setIsTurning(true);
 		robotController::turn(deltaHeading);
 		mp_localization->setIsTurning(false);
+		if(!m_halt)
+		{
+			{
+				boost::unique_lock<boost::mutex> lock(m_cruiseControlMutex);
+				mp_cruiseControl = new CruiseControl(mp_robot, mp_localization, to);
+			}
+			ObstacleMonitor monitor(mp_localization, mp_cruiseControl);
+			MoveResult result = mp_cruiseControl->go();
+			{
+				boost::unique_lock<boost::mutex> lock(m_cruiseControlMutex);
+				delete mp_cruiseControl; mp_cruiseControl = 0;
+			}
+			return result;
+		} else {
+			m_halt = false;
+			return FAILED_OTHER;
+		}
+	}
 
-		CruiseControl cruiseControl(mp_robot, mp_localization, to);
-		ObstacleMonitor monitor(mp_localization, &cruiseControl);
-		MoveResult result = cruiseControl.go();
-		return result;
+	void RouteExecuter::halt()
+	{
+		m_halt = true;
+		boost::unique_lock<boost::mutex> lock(m_cruiseControlMutex);
+		if(mp_cruiseControl != 0)
+		{
+			mp_cruiseControl->halt();
+		}
 	}
 
 

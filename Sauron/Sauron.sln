@@ -81,6 +81,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestInfrastructure", "TestI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SauronWPFController", "SauronWPFController\SauronWPFController.csproj", "{B25E3989-2694-45FE-9A7B-5263A54377D0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SauronServer", "SauronServer\SauronServer.vcproj", "{AB113112-25B2-4069-9555-BC24F3C5265E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D} = {BE154110-BA5F-4DA4-B9C3-517CE4CAAA0D}
+		{04ED78B1-D2D4-48EE-BC76-461390E5F098} = {04ED78B1-D2D4-48EE-BC76-461390E5F098}
+		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8} = {C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -260,6 +267,21 @@ Global
 		{B25E3989-2694-45FE-9A7B-5263A54377D0}.UnitTest|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B25E3989-2694-45FE-9A7B-5263A54377D0}.UnitTest|Mixed Platforms.Build.0 = Release|Any CPU
 		{B25E3989-2694-45FE-9A7B-5263A54377D0}.UnitTest|Win32.ActiveCfg = Release|Any CPU
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Debug|Win32.Build.0 = Debug|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Release|Win32.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.Release|Win32.Build.0 = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.UnitTest|Any CPU.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.UnitTest|Mixed Platforms.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.UnitTest|Mixed Platforms.Build.0 = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.UnitTest|Win32.ActiveCfg = Release|Win32
+		{AB113112-25B2-4069-9555-BC24F3C5265E}.UnitTest|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
