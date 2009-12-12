@@ -1,0 +1,33 @@
+﻿<Window x:Class="SauronWPFController.SauronController"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="SAURON Controller" Height="455" Width="778">
+    <Grid Width="752" Height="419">
+        <Image Margin="-500,0,0,270"  Name="image1" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/mark.png"  MouseLeftButtonUp="markClick" VerticalAlignment="Bottom" />
+        <Image Margin="-250,0,0,270" Name="image2" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/stop.png"   MouseLeftButtonUp="stopClick" VerticalAlignment="Bottom" />
+        <Image Margin="0,0,0,270" Name="image3" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/safari.png"  MouseLeftButtonUp="navigationClick" VerticalAlignment="Bottom" />
+        <Image Margin="250,0,0,270" Name="image4" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/freeze.jpg" MouseLeftButtonUp="freezeClick"  VerticalAlignment="Bottom" /> 
+        <Image Margin="500,0,0,270" Name="image5" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/position.jpg"  MouseLeftButtonUp="positionClick" VerticalAlignment="Bottom" /> 
+        
+        <ContentControl Height="75" Margin="-500,0,0,270" Name="contentControl1" VerticalAlignment="Bottom"  Width="75" />
+        <ContentControl Height="75" Margin="-250,0,0,270" Name="contentControl2" VerticalAlignment="Bottom"  Width="75" />
+        <ContentControl Height="75" Margin="0,0,0,270" Name="contentControl3" VerticalAlignment="Bottom"  Width="75" />
+        <ContentControl Height="75" Margin="250,0,0,270" Name="contentControl4" VerticalAlignment="Bottom"  Width="75" />
+        <ContentControl Height="75" Margin="500,0,0,270" Name="contentControl5" VerticalAlignment="Bottom"  Width="75" />
+        
+       <Grid Margin="0,197,0,0" Name="gridNavigation">
+            <Label FontSize="24" HorizontalAlignment="Left" Margin="101,32,0,0" Name="lblObjetivo" Width="190.443" Height="43" VerticalAlignment="Top">Objetivo:</Label>
+               
+                <Label FontSize="24" Foreground="Green" Margin="337,0,249,145" Name="msgObjetivo" Height="43" VerticalAlignment="Bottom">C2-50</Label>
+                    <Label FontSize="24" HorizontalAlignment="Left" Margin="101,65,0,102" Name="lblNext" Width="211">Próximo Waypoint:</Label>
+            <Label FontSize="24" Foreground="Black" Height="39" Margin="337,0,249,115" Name="msgNextWaypoint" VerticalAlignment="Bottom">C2-50</Label>
+            <Label FontSize="24" Foreground="Black" Margin="0,193,249,187" Name="txtIp" HorizontalAlignment="Right" Width="166">0.0.0.0</Label>
+            <Label FontSize="24" Name="label1" Width="170" Height="45" HorizontalAlignment="Right" Margin="0,36,139,0" VerticalAlignment="Top">IP SAURON:</Label>
+
+            <GroupBox Header="Última Mensagem do Robô" Margin="65,0,71,14" Name="groupBox1" Height="84" VerticalAlignment="Bottom">
+                <Label FontFamily="Calibri" FontSize="20" Height="34" Name="msgRobo" Width="583" />
+            </GroupBox>
+            <Label FontSize="24" Foreground="Black" Height="39" Margin="0,36,11,0" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="155">0.0.0.0</Label>
+        </Grid>
+    </Grid>
+</Window>
