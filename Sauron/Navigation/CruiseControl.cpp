@@ -47,7 +47,7 @@ namespace sauron
 
 	void CruiseControl::takeoff()
 	{
-		CC_LOG(logDEBUG1) << "decolando...";
+		CC_LOG(logDEBUG1) << "decolando... (movementStopped = " << m_movementStopped << "; isApproaching = " << m_isApproaching << ")";
 		m_isInTakeoff = true;
 		boost::posix_time::ptime startTime(boost::posix_time::microsec_clock::local_time());
 
@@ -56,8 +56,10 @@ namespace sauron
 			boost::posix_time::ptime currentTime(boost::posix_time::microsec_clock::local_time());
 			boost::posix_time::time_duration delta = 
 				boost::posix_time::time_period(startTime, currentTime).length();
-			if(delta.total_milliseconds() > 2000)
+			if(delta.total_milliseconds() > 2000) {
+				CC_LOG(logDEBUG1) << "decolagem chegou ao fim ( /\\t = " << delta.total_milliseconds() / 1000.0 << ")";
 				break;
+			}
 			else
 			{
 				//v(x) = -187,5x^2(x-3), 0 <= x <= 2
@@ -80,13 +82,13 @@ namespace sauron
 		m_isApproaching = false;
 		double distToGoal = currentPose.getDistance(Pose(m_goal));
 		if(distToGoal < 60) {
-			m_isApproaching = true;
 			//Para aterrissagem, usar a funÃƒÂ§ÃƒÂ£o f(x) = ax^3+bx^2+cx+d com x em centÃƒÂ­metros, com 0 <= x <= 60 e 
 			//a = -13/10000, b = 39/200, c = 0, d = 100
 			double speed = -13/10000 * distToGoal * distToGoal * distToGoal +
 				39/200 * distToGoal * distToGoal + 100;
 			if(m_cruiseControlSpeed > speed) // sÃƒÂ³ atualiza se for para reduzir
 			{
+				m_isApproaching = true;
 				setCruiseControlSpeed(speed);
 				CC_LOG(logDEBUG1) << "aproximacao: v = " << speed << " (distToGoal = " << distToGoal << " cm)";
 			}
