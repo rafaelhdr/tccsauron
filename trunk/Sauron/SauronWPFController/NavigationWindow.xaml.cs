@@ -31,7 +31,8 @@ namespace SauronWPFController
         private Dictionary<string, List<string>> goalsNames = new GoalsFinder().GetGoalsNames();
         private EnviadorComandos enviador;
         private Status status = Status.Parado;
-        private delegate void SimpleDelegate();
+        private delegate void SimpleDelegate(string result);
+        private string goal;
 
         public NavigationWindow(EnviadorComandos enviador)
         {
@@ -57,29 +58,27 @@ namespace SauronWPFController
                 // erro seleção
             }
             else{
-                string goal = lstGoals.SelectedItem.ToString();
+                goal = lstGoals.SelectedItem.ToString();
                 status = Status.Navegando;
                 txtStatus.Content = status.ToString();
                 txtObjetivo.Content = goal;
-
-               
-                
+               Thread execution = new Thread(new ThreadStart(this.Navega));
+               execution.Start();
                 
             }
         }
 
         private void Navega()
         {
-
-            enviador.Navigate(txtObjetivo.Content.ToString());
-
+            string result = enviador.Navigate(goal);
+            SimpleDelegate del = new SimpleDelegate(this.AtualizaStatus);
+            this.Dispatcher.BeginInvoke(del, result);
         }
 
 
-        private void AtualizaStatus(Status status)
+        private void AtualizaStatus(string result)
         {
-
-
+            this.txtMsgRobo.Content = result;
         }
 
     }

@@ -9,7 +9,7 @@
         <Label FontSize="24" Margin="12,0,309,118" Name="lblNext" Height="48" VerticalAlignment="Bottom">Próximo Waypoint:</Label>
         <Label FontSize="24" Foreground="Black" Margin="239,0,283,118" Name="txtNextWaypoint" Height="49" VerticalAlignment="Bottom">-</Label>
         <GroupBox Header="Última Mensagem do Robô" Margin="12,0,12,14" Name="groupBox1" Height="98" VerticalAlignment="Bottom">
-            <Label FontFamily="Calibri" FontSize="20" Height="34" Name="msgRobo" Width="583" />
+            <Label FontFamily="Calibri" FontSize="20" Height="34" Name="txtMsgRobo" Width="583" />
         </GroupBox>
         <ComboBox Margin="172,45,332,0" Name="cmbMapNames" FontSize="25" SelectionChanged="comboBox1_SelectionChanged" Height="45" VerticalAlignment="Top" />
         <ListBox Height="154" HorizontalAlignment="Right" Margin="0,22,12,0" Name="lstGoals" VerticalAlignment="Top" Width="294" />
