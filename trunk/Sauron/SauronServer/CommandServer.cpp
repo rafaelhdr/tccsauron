@@ -42,9 +42,11 @@ void CommandServer::stop()
 void CommandServer::commandServerLoop()
 {
     boost::asio::io_service         service;
-    boost::asio::ip::tcp::acceptor  acceptor( service );
+    boost::asio::ip::tcp::acceptor  acceptor( service, boost::asio::ip::tcp::endpoint( boost::asio::ip::tcp::v4(), 5005 ) );
     boost::array< char, 128 >       buffer;
     boost::system::error_code       error;
+
+    service.run();
 
     boost::asio::ip::tcp::socket socket( service );
     acceptor.accept( socket );
