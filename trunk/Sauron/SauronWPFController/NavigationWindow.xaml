@@ -1,0 +1,8 @@
+﻿<Window x:Class="SauronWPFController.NavigationWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="NavigationWindow" Height="300" Width="561">
+    <Grid>
+        
+    </Grid>
+</Window>
