@@ -139,8 +139,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="AriaVC9.lib ArNetworkingVC9.lib SonArnlVC9.lib BaseArnlVC9.lib ws2_32.lib winmm.lib advapi32.lib cv.lib cxcore.lib highgui.lib "
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\MobileRobots\Aria\lib;..\..\OpenCV\lib;..\..\boost\lib"
+				IgnoreDefaultLibraryNames="atlthunk.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -191,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StatusServer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 			</File>
@@ -206,6 +212,10 @@
 			</File>
 			<File
 				RelativePath=".\Sauron.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StatusServer.h"
 				>
 			</File>
 			<File

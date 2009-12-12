@@ -11,6 +11,8 @@
 #include "Navigation/MapPlanner.h"
 
 #include "Sauron.h"
+#include "CommandServer.h"
+#include "StatusServer.h"
 
 #define TEST_LOG(level) FILE_LOG(level) << "LocalizationTests: "
 #include <windows.h>
@@ -203,6 +205,12 @@ int principal(int argc, char** argv)
   names.push_back("pavinf.map");
 
   sauron::Sauron sauronzito(&robot, names, "pavsup_mod.map");
+
+  sauron::StatusServer  statusServer( sauronzito );
+  sauron::CommandServer commandServer( sauronzito );  
+
+  statusServer.start();
+  commandServer.start();
 
   /*names.push_back("horizontal.map");
   names.push_back("vertical.map");
