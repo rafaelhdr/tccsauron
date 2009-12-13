@@ -11,7 +11,7 @@
         <Image Margin="-250,0,0,30" Name="image2" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/applet-critical.png"   MouseLeftButtonUp="stopClick" VerticalAlignment="Bottom" />
         <Image Margin="0,0,0,30" Name="image3" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/bittorrent.png"  MouseLeftButtonUp="navigationClick" VerticalAlignment="Bottom" />
         <Image Margin="250,0,0,30" Name="image4" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/applet-disconnect.png" MouseLeftButtonUp="freezeClick"  VerticalAlignment="Bottom" /> 
-        <Image Margin="500,0,0,30" Name="image5" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/applet-okay.png"  MouseLeftButtonUp="positionClick" VerticalAlignment="Bottom" />
+        <Image Margin="500,0,0,30" Name="image5" Stretch="Fill"  Width="75" Height="75" Source="/SauronWPFController;component/Images/applet-okay.png"  MouseLeftButtonUp="continueClick" VerticalAlignment="Bottom" />
         <Label FontSize="24" Foreground="Black" Height="53" Margin="0,37,0,0" Name="lblTitle" VerticalAlignment="Top" HorizontalAlignment="Center">Navegação</Label>
     </Grid>
 </Window>

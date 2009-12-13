@@ -13,26 +13,56 @@ namespace SauronWPFController
         private string extension = ".map";
 
         private string basePath = "Maps/";
-             
-        public Dictionary<string, List<string>> GetGoalsNames()
-        {
-            Dictionary<string, List<string>> goals = new Dictionary<string, List<string>>();
 
-            foreach(string mapName in mapNames)
+
+        private Dictionary<string, List<string>> goalsNames;
+        private Dictionary<string, List<string>> waypointsNames;
+
+        public GoalsFinder()
+        {
+            Generate();
+
+        }
+
+        private void Generate()
+        {
+            goalsNames = new Dictionary<string, List<string>>();
+            waypointsNames = new Dictionary<string, List<string>>();
+            foreach (string mapName in mapNames)
             {
-                goals.Add(mapName, new List<string>());
-                string[] mapLines =  File.ReadAllLines(basePath + mapName + extension);
+                goalsNames.Add(mapName, new List<string>());
+                waypointsNames.Add(mapName, new List<string>());
+                string[] mapLines = File.ReadAllLines(basePath + mapName + extension);
 
                 foreach (string mapLine in mapLines)
                 {
                     if (mapLine.StartsWith("Cairn: Goal"))
                     {
-                        goals[mapName].Add(mapLine.Split(' ').Last().Replace("\"", null));
+                        string goal = mapLine.Split(' ').Last().Replace("\"", null);
+                        goalsNames[mapName].Add(goal);
+                        waypointsNames[mapName].Add(goal);
+                    }
+                    else if (mapLine.StartsWith("Cairn: Dock"))
+                    {
+                        string waypoint = mapLine.Split(' ').Last().Replace("\"", null);
+                        waypointsNames[mapName].Add(waypoint);
                     }
                 }
+                goalsNames[mapName].Sort();
+                waypointsNames[mapName].Sort();
             }
+           
 
-            return goals;
+        }
+             
+        public Dictionary<string, List<string>> GetGoalsNames()
+        {
+            return goalsNames;
+        }
+
+        public Dictionary<string, List<string>> GetWaypoints()
+        {
+            return waypointsNames;
         }
 
 

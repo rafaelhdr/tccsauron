@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'WPFSauron|AnyCPU' ">
+    <OutputPath>bin\WPFSauron\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -71,6 +74,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PositionConfigurator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SauronController.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,6 +101,9 @@
     <Compile Include="NavigationCommand.cs" />
     <Compile Include="NavigationWindow.xaml.cs">
       <DependentUpon>NavigationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PositionConfigurator.xaml.cs">
+      <DependentUpon>PositionConfigurator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -158,6 +168,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy ..\..\..\Maps\* Maps</PostBuildEvent>
+    <PostBuildEvent>if not exist Maps mkdir Maps
+copy ..\..\..\Maps\* Maps</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -30,7 +30,7 @@ namespace SauronWPFController
                 socket.Connect(ipManager.GetCommandEndPoint());
             }
         }
-        
+
         public string Navigate(string markName)
         {
             try
@@ -41,44 +41,83 @@ namespace SauronWPFController
             }
             catch (Exception e)
             {
-                return "Erro de conexão: "+e.Message;
+                return "Erro de conexão: " + e.Message;
             }
 
-            return Receive();     
+            return Receive();
         }
 
         public string Freeze()
         {
-            InitializeSocket();
-            Send("freeze");
+            try
+            {
+                InitializeSocket();
+                Send("freeze");
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: " + e.Message;
+            }
             return Receive();
         }
 
         public string Halt()
         {
-            InitializeSocket();
-            Send("halt");
+            try
+            {
+
+                InitializeSocket();
+                Send("halt");
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: " + e.Message;
+            }
             return Receive();
         }
 
         public string Position(double x, double y, double theta)
         {
-            InitializeSocket();
-            Send("p "+x+" "+y+" "+theta);
+            try
+            {
+
+                InitializeSocket();
+                Send("p " + x + " " + y + " " + theta);
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: " + e.Message;
+            }
             return Receive();
         }
 
         public string Mark(string markName, double theta)
         {
-            InitializeSocket();
-            Send("r " + markName + " " + theta);
+            try
+            {
+
+                InitializeSocket();
+                Send("r " + markName + " " + theta);
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: " + e.Message;
+            }
             return Receive();
         }
 
         public string Map(string mapName)
         {
-            InitializeSocket();
-            Send("i " + mapName);
+            try
+            {
+
+                InitializeSocket();
+                Send("i " + mapName);
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: " + e.Message;
+            }
             return Receive();
         }
 

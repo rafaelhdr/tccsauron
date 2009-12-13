@@ -13,7 +13,7 @@
         </GroupBox>
         <ComboBox Margin="172,45,332,0" Name="cmbMapNames" FontSize="25" SelectionChanged="comboBox1_SelectionChanged" Height="45" VerticalAlignment="Top" />
         <ListBox Height="154" HorizontalAlignment="Right" Margin="0,22,12,0" Name="lstGoals" VerticalAlignment="Top" Width="294" />
-        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,190,119.384" Name="button1" VerticalAlignment="Bottom" Width="113" FontSize="20" Click="button1_Click">GO!</Button>
+        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,190,119.384" Name="button1" VerticalAlignment="Bottom" Width="113" FontSize="20" Click="button1_Click" IsDefault="True">GO!</Button>
         <Button Height="50" HorizontalAlignment="Right" Margin="0,0,27,119.384" Name="button2" VerticalAlignment="Bottom" Width="113" FontSize="20">Cancel</Button>
         <Label FontSize="24" Height="38" Margin="12,0,309,164" Name="label2" VerticalAlignment="Bottom">Status:</Label>
         <Label FontSize="24" Foreground="Black" Height="39" Margin="239,0,283,163" Name="txtStatus" VerticalAlignment="Bottom">Parado.</Label>

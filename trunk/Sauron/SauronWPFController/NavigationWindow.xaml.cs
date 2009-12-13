@@ -91,9 +91,6 @@ namespace SauronWPFController
             else
             {
                 goal = lstGoals.SelectedItem.ToString();
-                status = Status.Navegando;
-                txtStatus.Content = status.ToString();
-                txtObjetivo.Content = goal;
                 Thread execution = new Thread(new ThreadStart(this.Navega));
                 execution.Start();
             }
@@ -113,6 +110,19 @@ namespace SauronWPFController
             this.Dispatcher.BeginInvoke(del, result);
         }
 
+        public void Continue()
+        {
+            if (!string.IsNullOrEmpty(goal) && goal != "-")
+            {
+                Thread execution = new Thread(new ThreadStart(this.Navega));
+                execution.Start();
+            }
+            else
+            {
+                Erro("Não pode continuar algo que nunca começou.");
+            }
+        }
+
         public void AtualizaStatus(string result)
         {
             if (!string.IsNullOrEmpty(result))
@@ -127,13 +137,28 @@ namespace SauronWPFController
                     this.txtNextWaypoint.Content = proximoRegex.Match(result).Groups[1].Value;
                 }
 
-                if(result.Contains("CHEGOU_DESTINO") || result.Contains("Erro de conexão") || result.Contains("SUCESSO HALT") || result.Contains("SUCESSO FREEZE") || result.Contains("OBSTRUIDO"))
+                // se chegou nao eh possivel continuar
+                else if(result.Contains("CHEGOU_DESTINO"))
                 {
                     status = Status.Parado;
                     txtStatus.Content = status.ToString();
                     goal = "-";
                     txtObjetivo.Content = goal;
                     this.txtNextWaypoint.Content = "-";
+                }
+                // se halt, freeze, ou parou por obstrução ou erro, então pode continuar, nao zera o goal
+                else if (result.Contains("SUCESSO HALT") || result.Contains("SUCESSO FREEZE") || result.Contains("Erro de conexão") || result.Contains("OBSTRUIDO"))
+                {
+                    status = Status.Parado;
+                    txtStatus.Content = status.ToString();
+                    txtObjetivo.Content = goal;
+                    this.txtNextWaypoint.Content = "-";
+                }
+                else if (result.Contains("SUCESSO ESCOLHA DESTINO"))
+                {
+                    status = Status.Navegando;
+                    txtStatus.Content = status.ToString();
+                    txtObjetivo.Content = goal;
                 }
 
             }
