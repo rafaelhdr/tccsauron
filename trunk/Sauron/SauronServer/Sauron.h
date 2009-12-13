@@ -16,7 +16,7 @@ public:
 	// comandos
 	bool setInitialMap(const std::string& initialMap);
 	bool goTo(const std::string& goalName);
-    void goToAsync( const std::string &goalName );
+    bool goToAsync( const std::string &goalName );
 	Pose getPose();
 	void setPose(const Pose& pose);
 	bool setPose(const std::string& nodeName, pose_t theta);
@@ -38,6 +38,7 @@ private:
 	ArRobot* mp_robot;
 	std::string m_goal;
 	bool m_isMoving;
+    bool m_isGoingAsync;
 	
 	MapManager* mp_mapManager;
 	MapPlanner* mp_planner;

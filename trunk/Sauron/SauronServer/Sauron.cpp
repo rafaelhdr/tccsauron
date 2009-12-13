@@ -6,7 +6,8 @@ namespace sauron
 	Sauron::Sauron(ArRobot* robot, const std::vector<std::string>& maps,
 		const std::string& initialMap, const std::string& marksFile)
 		: mp_robot(robot),
-		m_isMoving(false)
+		m_isMoving(false),
+        m_isGoingAsync( false )
 	{
 		mp_mapManager = new MapManager(initialMap, maps);
 		mp_planner = new MapPlanner(mp_robot, mp_mapManager);
@@ -62,10 +63,16 @@ namespace sauron
 		return mp_localization->getPose();
 	}
 
-    void Sauron::goToAsync( const std::string &goalName )
+    bool Sauron::goToAsync( const std::string &goalName )
     {
-        m_goToThread.detach();
-        m_goToThread = boost::thread( &Sauron::goTo, this, goalName );
+        if ( !m_isGoingAsync )
+        {
+            m_goToThread = boost::thread( &Sauron::goTo, this, goalName );
+            m_isGoingAsync = true;
+            return true;
+        }
+        else
+            return false;
     }
 
 	bool Sauron::goTo(const std::string& goalName)
@@ -73,7 +80,9 @@ namespace sauron
 		unfreeze();
 		m_isMoving = true;
 		m_goal = goalName;
-		return mp_planner->goTo(m_goal);
+		bool ret = mp_planner->goTo(m_goal);
+        m_isGoingAsync = false;
+        return ret;
 	}
 
 	bool Sauron::setInitialMap(const std::string& mapName)

@@ -2,6 +2,9 @@
 #include <string>
 #include <sstream>
 
+#include "log.h"
+#define STATUS_SERVER_LOG(level) FILE_LOG(level) << "StatusServer: "
+
 namespace sauron
 {
 
@@ -68,7 +71,9 @@ void StatusServer::statusServerLoop()
         else
         {
             mp_socket = new boost::asio::ip::tcp::socket( service );
+            STATUS_SERVER_LOG(logDEBUG4) << "Aguardando conexao" << std::endl;
             acceptor.accept( *mp_socket );
+            STATUS_SERVER_LOG(logDEBUG4) << "Conexao estabelecida" << std::endl;
         }
     }
 }
@@ -102,13 +107,17 @@ void StatusServer::statusServerMapCallback( MapPlannerStatus status, const Map *
 
     if ( toSend.size() )
     {
+        STATUS_SERVER_LOG(logDEBUG4) << "Enviando " << toSend << std::endl;
         mp_socket->write_some( boost::asio::buffer( toSend ), error );
         if ( error )
         {
+            STATUS_SERVER_LOG(logDEBUG4) << "Conexao interrompida" << std::endl;
             mp_socket->close();
             delete mp_socket;
             mp_socket = NULL;
         }
+        else
+            STATUS_SERVER_LOG(logDEBUG4) << "Dados enviados com sucesso" << std::endl;
     }
 }
 
