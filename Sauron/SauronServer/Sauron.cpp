@@ -62,6 +62,12 @@ namespace sauron
 		return mp_localization->getPose();
 	}
 
+    void Sauron::goToAsync( const std::string &goalName )
+    {
+        m_goToThread.detach();
+        m_goToThread = boost::thread( &Sauron::goTo, this, goalName );
+    }
+
 	bool Sauron::goTo(const std::string& goalName)
 	{
 		unfreeze();

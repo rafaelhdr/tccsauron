@@ -62,11 +62,16 @@ namespace sauron
 					invokeCallbacks(FAILED_STRAYED, &Node());
 					return goTo(destination, graph);
 				} else if(moveResult == RouteExecuter::FAILED_EMERGENCY_STOP) {
-					// algum idiota pôs o pé na frente, ou estamos perdidinhos. vamos tentar de novo, mas com parcimônia
-					invokeCallbacks(FAILED_COLLISION_AVOIDANCE,  &Node());
-					numberCollisionAvoided++;
-					if(numberCollisionAvoided >= 5) {
-						return false;
+                    if( ++numberCollisionAvoided >= 5) 
+                    {
+                        invokeCallbacks(FAILED_OBSTRUCTED_PATH, &Node() );
+                        numberCollisionAvoided = 0;
+                    }
+                    else
+                    {
+					    // algum idiota pôs o pé na frente, ou estamos perdidinhos. vamos tentar de novo, mas com parcimônia
+					    invokeCallbacks(FAILED_COLLISION_AVOIDANCE,  &Node());
+					    numberCollisionAvoided++;					
 					}
 					boost::this_thread::sleep(boost::posix_time::seconds(3)); 
 

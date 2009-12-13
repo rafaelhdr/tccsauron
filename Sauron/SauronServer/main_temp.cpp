@@ -209,8 +209,8 @@ int principal(int argc, char** argv)
   sauron::StatusServer  statusServer( sauronzito );
   sauron::CommandServer commandServer( sauronzito );  
 
-  //statusServer.start();
-  //commandServer.start();
+  statusServer.start();
+  commandServer.start();
 
   /*names.push_back("horizontal.map");
   names.push_back("vertical.map");
