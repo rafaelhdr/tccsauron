@@ -39,10 +39,13 @@ namespace SauronWPFController
 
         private void AtualizaSocket(IPAddress ip)
         {
-            socket.Disconnect(true);
-            socket.Close();
-            socket = null;
-            InitializeSocket();
+            if (socket != null)
+            {
+                socket.Disconnect(true);
+                socket.Close();
+                socket = null;
+                InitializeSocket();
+            }
         }
 
         public void AddListener(Action<string> action)
