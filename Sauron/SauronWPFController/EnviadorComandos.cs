@@ -25,13 +25,25 @@ namespace SauronWPFController
                 socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                 socket.Connect(ipManager.GetCommandEndPoint());
             }
+            else if (!socket.Connected)
+            {
+                socket.Connect(ipManager.GetCommandEndPoint());
+            }
         }
         
         public string Navigate(string markName)
         {
+            try
+            {
 
-            InitializeSocket();
-            Send("n " + markName);
+                InitializeSocket();
+                Send("n " + markName);
+            }
+            catch (Exception e)
+            {
+                return "Erro de conexão: "+e.Message;
+            }
+
             return Receive();     
         }
 

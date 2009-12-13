@@ -80,6 +80,7 @@ namespace SauronWPFController
         void SauronController_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.navigationMonitor.ForceClose();
+            this.recebedor.Kill();
         }
 
      

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace SauronWPFController
 {
@@ -111,7 +112,32 @@ namespace SauronWPFController
 
         public void AtualizaStatus(string result)
         {
-            this.txtMsgRobo.Text += result + Environment.NewLine;
+            if (!string.IsNullOrEmpty(result))
+            {
+                this.txtMsgRobo.Text += result + Environment.NewLine;
+
+                Regex proximoRegex = new Regex("proximo \\w*");
+                if (proximoRegex.IsMatch(result))
+                {
+                    this.txtNextWaypoint.Content = proximoRegex.Match(result).Groups[1].Value;
+                }
+
+                if(result.Contains("CHEGOU_DESTINO") || result.Contains("Erro de conexão"))
+                {
+                    status = Status.Parado;
+                    txtStatus.Content = status.ToString();
+                    goal = "-";
+                    txtObjetivo.Content = goal;
+                }
+
+                if (result.Contains("OBSTRUIDO"))
+                {
+                    status = Status.Parado;
+                    txtStatus.Content = status.ToString();
+                    goal = "-";
+                    txtObjetivo.Content = goal;
+                }
+            }
         }
     }
 }
