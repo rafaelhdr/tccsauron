@@ -117,7 +117,7 @@ namespace sauron
 
 	bool PathPlanner::hasReachedDestination(const Node& destination)
 	{
-		const int okDistance = 30; // cm
+		const int okDistance = 40; // cm
 		return mp_localization->getPose().getDistance(destination.getPosition()) < okDistance;
 	}
 }
