@@ -114,9 +114,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Maps\mezanino.map" />
-    <None Include="Maps\pavinf.map" />
-    <None Include="Maps\pavsup_mod.map" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -142,6 +139,7 @@
     <Resource Include="Images\configure.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Maps\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
