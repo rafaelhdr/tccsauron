@@ -7,16 +7,17 @@
 
         <Label FontSize="24" Foreground="Green" Margin="239,172,271,194" Name="txtObjetivo">-</Label>
         <Label FontSize="24" Margin="12,0,309,118" Name="lblNext" Height="48" VerticalAlignment="Bottom">Próximo Waypoint:</Label>
-        <Label FontSize="24" Foreground="Black" Margin="239,0,283,118" Name="txtNextWaypoint" Height="49" VerticalAlignment="Bottom">-</Label>
+        <Label FontSize="24" Foreground="Black" Margin="239,242,283,0" Name="txtNextWaypoint" Height="49" VerticalAlignment="Top">-</Label>
         <GroupBox Header="Última Mensagem do Robô" Margin="12,0,12,14" Name="groupBox1" Height="98" VerticalAlignment="Bottom">
-            <Label FontFamily="Calibri" FontSize="20" Height="34" Name="txtMsgRobo" Width="583" />
+            <TextBox Height="66" Name="txtMsgRobo" Width="645" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" IsReadOnly="True" />
         </GroupBox>
         <ComboBox Margin="172,45,332,0" Name="cmbMapNames" FontSize="25" SelectionChanged="comboBox1_SelectionChanged" Height="45" VerticalAlignment="Top" />
         <ListBox Height="154" HorizontalAlignment="Right" Margin="0,22,12,0" Name="lstGoals" VerticalAlignment="Top" Width="294" />
-        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,190,152" Name="button1" VerticalAlignment="Bottom" Width="113" FontSize="20" Click="button1_Click">GO!</Button>
-        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,27,152" Name="button2" VerticalAlignment="Bottom" Width="113" FontSize="20">Cancel</Button>
+        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,190,119.384" Name="button1" VerticalAlignment="Bottom" Width="113" FontSize="20" Click="button1_Click">GO!</Button>
+        <Button Height="50" HorizontalAlignment="Right" Margin="0,0,27,119.384" Name="button2" VerticalAlignment="Bottom" Width="113" FontSize="20">Cancel</Button>
         <Label FontSize="24" Height="38" Margin="12,0,309,164" Name="label2" VerticalAlignment="Bottom">Status:</Label>
         <Label FontSize="24" Foreground="Black" Height="39" Margin="239,0,283,163" Name="txtStatus" VerticalAlignment="Bottom">Parado.</Label>
         <Label FontSize="24" Foreground="Black" Height="39" HorizontalAlignment="Left" Margin="40,45,0,0" Name="label1" VerticalAlignment="Top" Width="161">Mapa:</Label>
+        <Label HorizontalAlignment="Right" Margin="0,187,12,194" Name="lblErro" Width="291" Foreground="Red">Label</Label>
     </Grid>
 </Window>

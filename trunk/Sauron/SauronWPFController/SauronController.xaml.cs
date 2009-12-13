@@ -14,15 +14,20 @@ using System.Windows.Shapes;
 using System.Timers;
 using System.Windows.Threading;
 using System.Net;
+using System.Threading;
 
 namespace SauronWPFController
 {
+
+
+    public delegate void StatusDelegate(string result);
+
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class SauronController : Window
     {
-        public class MyTimer : Timer
+        public class MyTimer : System.Timers.Timer
         {
             public MyTimer(int index, double across) { this.Index = index; this.Across = across; }
             public int Index { get; set; }
@@ -31,11 +36,16 @@ namespace SauronWPFController
       
         private Image[] images;
         private string[] names;
-        private Timer timePassing;
+        private System.Timers.Timer timePassing;
         private MyTimer moveMouseTimer;
         private int moveCount = 0;
-        private EnviadorComandos enviador = new EnviadorComandos();
+        private IPManager ipManager = new IPManager();
+        private EnviadorComandos enviador;
+        private RecebedorStatus recebedor;
         private delegate void SimpleDelegate();
+
+
+        private NavigationWindow navigationMonitor;
 
         private int MAXCOUNT = 10;
         private int range = 2;
@@ -47,6 +57,12 @@ namespace SauronWPFController
             InitializeComponent();
             images = new Image[] { null, image1, image2, image3, image4, image5 };
             names = new string[] { null, "Mark", "Stop", "Navigation", "Freeze", "Position" };
+            this.enviador = new EnviadorComandos(ipManager);
+            this.recebedor = new RecebedorStatus(ipManager);
+            this.navigationMonitor = new NavigationWindow(enviador, recebedor);
+            this.ipManager.AddListener(ip => this.txtIpSauron.Content = ip.ToString());
+
+            this.Closing += new System.ComponentModel.CancelEventHandler(SauronController_Closing);
 
             this.image1.MouseMove += new MouseEventHandler(image1_MouseMove);
             this.image2.MouseMove += new MouseEventHandler(image2_MouseMove);
@@ -54,35 +70,28 @@ namespace SauronWPFController
             this.image4.MouseMove += new MouseEventHandler(image4_MouseMove);
             this.image5.MouseMove += new MouseEventHandler(image5_MouseMove);
                      
-            timePassing = new Timer();
+            timePassing = new System.Timers.Timer();
             timePassing.Elapsed += new ElapsedEventHandler(LeaveEvent);
             timePassing.Interval = 10;
             timePassing.Start();
         }
 
-        public IPAddress IP
+        void SauronController_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            get
-            {
-                return enviador.IP;
-            }
-            set
-            {
-                enviador.IP = value;
-                this.txtIpSauron.Content = enviador.IP.ToString();
-            }
+            this.navigationMonitor.ForceClose();
         }
 
+     
 
         void navigationClick(object sender, MouseButtonEventArgs e)
         {
-            NavigationWindow navigation = new NavigationWindow(enviador);
-            navigation.Show();
-           
+            navigationMonitor.Show();
+            navigationMonitor.Focus();
         }
 
         void markClick(object sender, MouseButtonEventArgs e)
         {
+
         }
 
         void positionClick(object sender, MouseButtonEventArgs e)
@@ -91,15 +100,29 @@ namespace SauronWPFController
 
         void freezeClick(object sender, MouseButtonEventArgs e)
         {
+            Thread execution = new Thread(new ThreadStart(this.Freeze));
+            execution.Start();
         }
+
+        private void Freeze()
+        {
+            string result = enviador.Freeze();
+            StatusDelegate del = new StatusDelegate(navigationMonitor.AtualizaStatus);
+            this.Dispatcher.BeginInvoke(del, result);
+        }
+
+
 
         void stopClick(object sender, MouseButtonEventArgs e)
         {
+            string result = enviador.Halt();
+            StatusDelegate del = new StatusDelegate(navigationMonitor.AtualizaStatus);
+            this.Dispatcher.BeginInvoke(del, result);
         }
 
         void configureClick(object sender, MouseButtonEventArgs e)
         {
-            IpConfigurator ipConfigurator = new IpConfigurator(this);
+            IpConfigurator ipConfigurator = new IpConfigurator(ipManager);
             ipConfigurator.Show();
 
         }

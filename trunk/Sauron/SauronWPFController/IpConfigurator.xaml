@@ -5,7 +5,7 @@
     <Grid>
         <TextBox Margin="0,28,12,0" Name="txtIP" FontSize="25" Height="39" VerticalAlignment="Top" HorizontalAlignment="Right" Width="206">0.0.0.0</TextBox>
         <Label Margin="84,28,0,0" Name="label1" HorizontalAlignment="Left" Width="148" FontSize="25" Height="45" VerticalAlignment="Top">IP SAURON:</Label>
-        <Button Height="45" HorizontalAlignment="Left" Margin="84,0,0,22" Name="btnOK" VerticalAlignment="Bottom" Width="109" FontSize="20" Click="btnOK_Click">OK</Button>
+        <Button Height="45" HorizontalAlignment="Left" Margin="84,0,0,22" Name="btnOK" VerticalAlignment="Bottom" Width="109" FontSize="20" Click="btnOK_Click" IsDefault="True">OK</Button>
         <Button Height="45" HorizontalAlignment="Right" Margin="0,0,109,22" Name="btnCancel" VerticalAlignment="Bottom" Width="109" FontSize="20" Click="btnCancel_Click">Cancel</Button>
         <Label Margin="84,67,177,73" Name="lblErro" Foreground="Red">Erro! Formato de IP inválido.</Label>
     </Grid>
