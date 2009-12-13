@@ -9,7 +9,7 @@
 
 namespace sauron
 {
-	static const int MAX_SPEED = 750;
+	static const int MAX_SPEED = 500;
 	CruiseControl::CruiseControl(ArRobot* robot, LocalizationManager* localization, const Point2DDouble& goal)
 		: mp_robot(robot), m_goal(goal), mp_localization(localization), m_maxSpeed(-1),
 		m_cruiseControlSpeed(-1), m_poseChangedCallbackId(-1)
