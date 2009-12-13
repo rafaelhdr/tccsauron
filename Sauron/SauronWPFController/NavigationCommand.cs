@@ -20,11 +20,7 @@ namespace SauronWPFController
             this.dispatcher = dispatcher;
         }
 
-        public void Navigate()
-        {
-            string result = enviador.Navigate(goal);
-           
-        }
+        
 
       
 

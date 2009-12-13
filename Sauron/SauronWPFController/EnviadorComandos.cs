@@ -11,74 +11,91 @@ namespace SauronWPFController
     public class EnviadorComandos
     {
 
-        public IPAddress IP { get; set; }
 
-        private const int port = 5005;
 
         private Socket socket;
+        private IPManager ipManager;
 
-       
-        private Socket Socket
+        public EnviadorComandos(IPManager ipManager)
         {
-            get {
-
-                
-                if (socket == null)
-                    socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-
-                try
-                {
-                    // se estiver conectado e o ip for certo, nem entra
-                    if (!(socket.Connected && ((IPEndPoint)socket.RemoteEndPoint).Address == IP))
-                    {
-                        if (socket.Connected)
-                        {
-                            socket.Disconnect(true);
-                            socket.Close();
-                        }
-
-                        EndPoint endPoint = new IPEndPoint(IP, port);
-                        socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
-                        socket.Connect(endPoint);
-                    }
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-
-                return socket;
-                }
-            
+            this.ipManager = ipManager;
         }
 
-
+        private void InitializeSocket()
+        {
+            if (socket == null)
+            {
+                socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
+                socket.Connect(ipManager.GetCommandEndPoint());
+            }
+        }
+        
         public string Navigate(string markName)
         {
-            string result = "Erro! Não conseguiu conectar no robô.";
 
+            InitializeSocket();
             Send("n " + markName);
-            result = Receive();
-            
-            return result;
+            return Receive();     
+        }
+
+        public string Freeze()
+        {
+            InitializeSocket();
+            Send("freeze");
+            return Receive();
+        }
+
+        public string Halt()
+        {
+            InitializeSocket();
+            Send("halt");
+            return Receive();
+        }
+
+        public string Position(double x, double y, double theta)
+        {
+            InitializeSocket();
+            Send("p "+x+" "+y+" "+theta);
+            return Receive();
+        }
+
+        public string Mark(string markName, double theta)
+        {
+            InitializeSocket();
+            Send("r " + markName + " " + theta);
+            return Receive();
+        }
+
+        public string Map(string mapName)
+        {
+            InitializeSocket();
+            Send("i " + mapName);
+            return Receive();
         }
 
 
         private void Send(string data)
         {
             byte[] byteData = System.Text.Encoding.ASCII.GetBytes(data);
-            Socket.Send(byteData);
+            socket.Send(byteData);
         }
 
         private string Receive()
         {
-            byte [] buffer = new byte[1024];
-            int received = Socket.Receive(buffer);
-            char[] chars = new char[received + 1];
-
-            System.Text.Encoding.ASCII.GetDecoder().GetChars(buffer, 0,  received, chars, 0);
-
-            return new String(chars);
+            try
+            {
+                byte[] buffer = new byte[100];
+                int received = socket.Receive(buffer, 0, buffer.Length, SocketFlags.None);
+                char[] chars = new char[received + 1];
+                socket.Close();
+                socket = null;
+                System.Text.Encoding.ASCII.GetDecoder().GetChars(buffer, 0, received, chars, 0);
+                return new String(chars);
+            }
+            catch (Exception e)
+            {
+                return "Erro de Recepção:" + e.Message;
+            }
         }
 
     }

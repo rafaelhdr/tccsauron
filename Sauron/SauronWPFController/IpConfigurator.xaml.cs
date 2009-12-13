@@ -19,16 +19,13 @@ namespace SauronWPFController
     /// </summary>
     public partial class IpConfigurator : Window
     {
-        private SauronController controller;
+        private IPManager ipManager;
 
-        public IpConfigurator(SauronController controller)
+        public IpConfigurator(IPManager ipManager)
         {
             InitializeComponent();
-            this.controller = controller;
-            if (controller.IP != null)
-            {
-                this.txtIP.Text = controller.IP.ToString();
-            }
+            this.ipManager = ipManager;
+            this.txtIP.Text = ipManager.IP.ToString();
             lblErro.Visibility = Visibility.Hidden;
         }
 
@@ -36,7 +33,7 @@ namespace SauronWPFController
         {
             try
             {
-                controller.IP = IPAddress.Parse(txtIP.Text);
+                ipManager.IP = IPAddress.Parse(txtIP.Text);
                 this.Close();
             }
             catch (Exception)
