@@ -66,17 +66,22 @@ namespace SauronWPFController
 
         private void InitializeSocket()
         {
-            if (socket == null)
+            try
             {
-                try
+                if (socket == null)
                 {
+
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                     socket.Connect(ipManager.GetStatusEndPoint());
                 }
-                catch (Exception)
+                else if (!socket.Connected)
                 {
-                    socket = null;
+                    socket.Connect(ipManager.GetStatusEndPoint());
                 }
+            }
+            catch (Exception)
+            {
+                socket = null;
             }
         }
 
@@ -86,8 +91,9 @@ namespace SauronWPFController
             {
                 InitializeSocket();
                 string result = Receive();
-                if(ReceiveAction != null && result != null)
+                if (ReceiveAction != null && result != null)
                     ReceiveAction(result);
+                Thread.Sleep(100);
             }
         }
 
@@ -101,7 +107,7 @@ namespace SauronWPFController
                 System.Text.Encoding.ASCII.GetDecoder().GetChars(buffer, 0, received, chars, 0);
                 return new String(chars);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
