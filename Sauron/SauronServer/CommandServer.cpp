@@ -14,8 +14,8 @@
 namespace sauron
 {
 
-CommandServer::CommandServer( Sauron &sauron )
-    : mp_sauron( &sauron ),
+CommandServer::CommandServer( Sauron &sauron, ArServerHandlerMap* mapHandler )
+    : mp_sauron( &sauron ), mp_mapHandler(mapHandler),
       m_serverRunningFlag( false )
 {
 }
@@ -54,11 +54,11 @@ void CommandServer::commandServerLoop()
 
     service.run();
 
-    boost::asio::ip::tcp::socket *socket;
-    socket = new boost::asio::ip::tcp::socket( service );
+    boost::asio::ip::tcp::socket socket( service );
+    //socket = new boost::asio::ip::tcp::socket( service );
     
     COMMAND_SERVER_LOG(logDEBUG4) << "Esperando conexao" << std::endl;
-    acceptor.accept( *socket );
+    acceptor.accept( socket );
     COMMAND_SERVER_LOG(logDEBUG4) << "Conexao estabelecida" << std::endl;
 
     std::string strInput;
@@ -71,18 +71,18 @@ void CommandServer::commandServerLoop()
     while ( m_serverRunningFlag )
     {
         COMMAND_SERVER_LOG(logDEBUG4) << "Recebendo dados..." << std::endl;
-        int numBytes = socket->read_some( boost::asio::buffer( buffer ), error );
+        int numBytes = socket.read_some( boost::asio::buffer( buffer ), error );
         COMMAND_SERVER_LOG(logDEBUG4) << "Numero de bytes recebidos: " << numBytes << std::endl;
 
         if ( error == boost::asio::error::eof || error )
         {
             COMMAND_SERVER_LOG(logDEBUG4) << "Conexao perdida" << std::endl;
-            socket->close();
-            delete socket;
+            socket.close();
+            /*delete socket;
 
-            socket = new boost::asio::ip::tcp::socket( service );
+            socket = new boost::asio::ip::tcp::socket( service );*/
             COMMAND_SERVER_LOG(logDEBUG4) << "Aguardando nova conexao" << std::endl;
-            acceptor.accept( *socket );
+            acceptor.accept( /***/socket );
             COMMAND_SERVER_LOG(logDEBUG4) << "Nova conexao realizada" << std::endl;
             continue;
         }
@@ -125,7 +125,10 @@ void CommandServer::commandServerLoop()
             ss >> strInput;
             COMMAND_SERVER_LOG(logDEBUG4) << "Definindo mapa" << strInput << std::endl;
             if ( mp_sauron->setInitialMap( strInput ) )
+            {
+                mp_mapHandler->loadMap(strInput.c_str());
                 statusCode = "SUCESSO ESCOLHA MAPA";
+            }
             else
                 statusCode = "ERRO ESCOLHA MAPA";
         }
@@ -147,16 +150,16 @@ void CommandServer::commandServerLoop()
         }
         
         COMMAND_SERVER_LOG(logDEBUG4) << "Enviando status: " << statusCode << std::endl;
-        socket->write_some( boost::asio::buffer( statusCode ), error );
+        socket.write_some( boost::asio::buffer( statusCode ), error );
         if ( error == boost::asio::error::eof || error )
         {
             COMMAND_SERVER_LOG(logDEBUG4) << "Conexao perdida" << std::endl;
-            socket->close();
-            delete socket;
+            socket.close();
+            /*delete socket;
 
-            socket = new boost::asio::ip::tcp::socket( service );
+            socket = new boost::asio::ip::tcp::socket( service );*/
             COMMAND_SERVER_LOG(logDEBUG4) << "Aguardando nova conexao" << std::endl;
-            acceptor.accept( *socket );
+            acceptor.accept( /***/socket );
             COMMAND_SERVER_LOG(logDEBUG4) << "Nova conexao realizada" << std::endl;
             continue;
         }
@@ -164,8 +167,8 @@ void CommandServer::commandServerLoop()
         COMMAND_SERVER_LOG(logDEBUG4) << "Status enviado" << std::endl;
     }
 
-    socket->close();
-    delete socket;
+    socket.close();
+    //delete socket;
 }
 
 }   // namespace sauron

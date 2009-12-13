@@ -207,7 +207,7 @@ int principal(int argc, char** argv)
   sauron::Sauron sauronzito(&robot, names, "pavsup_mod.map");
 
   sauron::StatusServer  statusServer( sauronzito );
-  sauron::CommandServer commandServer( sauronzito );  
+  sauron::CommandServer commandServer( sauronzito, &serverMap );  
 
   statusServer.start();
   commandServer.start();
@@ -332,7 +332,7 @@ int main(int argc, char** argv)
 	try
 	{
 		Output2FILE::Stream() = fopen("sonar_log.log", "w");
-		FILELog::ReportingLevel() = logDEBUG4;
+		FILELog::ReportingLevel() = logDEBUG1;
 
 		return principal(argc, argv);
 	} catch(std::exception& e)

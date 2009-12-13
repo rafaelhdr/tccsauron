@@ -26,7 +26,8 @@ ULONGLONG getTimeMs()
 	FILETIME fileTime;
 	SystemTimeToFileTime( &systemTime, &fileTime );
 
-	ULARGE_INTEGER uli;
+
+    ULARGE_INTEGER uli;
 	uli.LowPart = fileTime.dwLowDateTime; // could use memcpy here!
 	uli.HighPart = fileTime.dwHighDateTime;
 
@@ -38,7 +39,7 @@ ULONGLONG getTimeMs()
 	}
 }
 
-std::ofstream grafico("grafico.csv", std::ios::trunc);
+//std::ofstream grafico("grafico.csv", std::ios::trunc);
 sauron::SauronArRobot* pRobot;
 
 sauron::Pose lastEstimatedPose;
@@ -46,40 +47,40 @@ sauron::Pose lastTruePose;
 
 sauron::LocalizationManager* plocManager;
 
-void printEstimatedPose(const sauron::Pose& currentPose)
-{
-	using namespace sauron;
-
-	//pRobot->lock();
-	
-	//pRobot->unlock();
-
-    ArPose arPose = pRobot->getTruePose();
-	Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
-	
-	double erroX = currentPose.X() - truePose.X();
-	double erroY = currentPose.Y() - truePose.Y();
-	double erroTheta = currentPose.Theta() - truePose.Theta();
-
-	grafico << getTimeMs() / 1000.0 << ";" << erroX << ";" << erroY << ";" << erroTheta << ";" << currentPose.X() << ";" << currentPose.Y() << ";" << currentPose.Theta() << ";" <<
-		truePose.X() << ";" << truePose.Y() << ";" << truePose.Theta() << ";" << truePose.getDistance(currentPose) << std::endl;
-	grafico.flush();
-
-	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
-		currentPose.Theta() == lastEstimatedPose.Theta())) {
-		TEST_LOG(logDEBUG1) << "Posição estimada: " << currentPose;
-		TEST_LOG(logDEBUG1) << "Erro: ( " << erroX << " , " << erroY << " , " << erroTheta << " )";
-		lastEstimatedPose = currentPose;
-	}
-	if(!(truePose.X() == lastTruePose.X() && truePose.Y() == lastTruePose.Y() &&
-		truePose.Theta() == lastTruePose.Theta())) {
-		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
-		lastTruePose = truePose;
-	}
-
-	/*pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
-		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
-}
+//void printEstimatedPose(const sauron::Pose& currentPose, const std::string abc)
+//{
+//	using namespace sauron;
+//
+//	//pRobot->lock();
+//	
+//	//pRobot->unlock();
+//
+//    ArPose arPose = pRobot->getTruePose();
+//	Pose truePose(arPose.getX(), arPose.getY(), sauron::trigonometry::degrees2rads(arPose.getTh()));
+//	
+//	double erroX = currentPose.X() - truePose.X();
+//	double erroY = currentPose.Y() - truePose.Y();
+//	double erroTheta = currentPose.Theta() - truePose.Theta();
+//
+//	grafico << getTimeMs() / 1000.0 << ";" << erroX << ";" << erroY << ";" << erroTheta << ";" << currentPose.X() << ";" << currentPose.Y() << ";" << currentPose.Theta() << ";" <<
+//		truePose.X() << ";" << truePose.Y() << ";" << truePose.Theta() << ";" << truePose.getDistance(currentPose) << std::endl;
+//	grafico.flush();
+//
+//	if(!(currentPose.X() == lastEstimatedPose.X() && currentPose.Y() == lastEstimatedPose.Y() &&
+//		currentPose.Theta() == lastEstimatedPose.Theta())) {
+//		TEST_LOG(logDEBUG1) << "Posição estimada: " << currentPose;
+//		TEST_LOG(logDEBUG1) << "Erro: ( " << erroX << " , " << erroY << " , " << erroTheta << " )";
+//		lastEstimatedPose = currentPose;
+//	}
+//	if(!(truePose.X() == lastTruePose.X() && truePose.Y() == lastTruePose.Y() &&
+//		truePose.Theta() == lastTruePose.Theta())) {
+//		TEST_LOG(logDEBUG1) << "Posição real: " << truePose;
+//		lastTruePose = truePose;
+//	}
+//
+//	/*pRobot->moveTo(ArPose(currentPose.X() * 10, currentPose.Y() * 10,
+//		sauron::trigonometry::rads2degrees(currentPose.Theta())));*/
+//}
 
 ArServerHandlerMap* p_mapHandler;
 void changeMap(sauron::MapPlannerStatus status, const sauron::Map* map)
@@ -92,8 +93,6 @@ void changeMap(sauron::MapPlannerStatus status, const sauron::Map* map)
 
 
 void testNavigation(ArMap& arMap, sauron::LocalizationManager& locManager, sauron::MapPlanner& planner) {
-	
-	
 	
 	sauron::tests::NavigationMonitorConsole monitor(&planner.getPathPlanner(), &planner);
 	while(true)
@@ -187,7 +186,6 @@ int principal(int argc, char** argv)
 
   // Make the path task planning task
   ArPathPlanningTask pathTask(&robot, &sonarDev, &map);
-
 
   // Forbidden regions from the map
   ArForbiddenRangeDevice forbidden(&map);

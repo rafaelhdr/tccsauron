@@ -92,7 +92,7 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
 
         for ( projIt = projections.begin(); projIt != projections.end(); ++projIt )
         {
-            if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 20 )
+            if ( abs( projIt->getDiscretizedLine().getMeanX() - posU ) > 10 )
                 continue;
 
             correlationMap[ mIt->compare( *projIt ) ] = &(*projIt);
@@ -101,7 +101,7 @@ void MarkAssociator::associateMarks(const ProjectionVector &projections,
         if ( correlationMap.size() )
         {
             // TODO Move the mim value to a more appropriate place
-            if ( correlationMap.rbegin()->first > 0.3 )
+            if ( correlationMap.rbegin()->first > 0.0 )
             {
                 associatedMarks.push_back( *mIt );
                 associatedProjs.push_back( *(correlationMap.rbegin()->second) );

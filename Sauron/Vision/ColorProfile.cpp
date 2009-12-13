@@ -97,10 +97,10 @@ void ColorProfile::calculate( const Image &im, const DiscretizedLine &line, uint
 
 float ColorProfile::compare( const ColorProfile &other ) const
 {
-    const float maxVar = 50.0f;
-    const float maxMeanVar = 80.0f;
+    const float maxVar = 80.0f;
+    const float maxMeanVar = 100.0f;
 
-    const float colorProportion = 0.8f;
+    const float colorProportion = 1.0f;
     const float meanProportion  = 1.0f - colorProportion;
 
     float ret = 0.0f;
@@ -108,8 +108,8 @@ float ColorProfile::compare( const ColorProfile &other ) const
         ret += colorProportion / 6.0f * ( maxVar - abs( m_left[i]  - other.m_left[i] ) ) +
                colorProportion / 6.0f * ( maxVar - abs( m_right[i] - other.m_right[i] ) );
 
-    ret += meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanLeft - other.m_meanLeft ) ) +
-           meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanRight - other.m_meanRight ) );
+    //ret += meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanLeft - other.m_meanLeft ) ) +
+    //       meanProportion  / 2.0f * ( maxMeanVar - abs( m_meanRight - other.m_meanRight ) );
 
     return ret / ( colorProportion * maxVar + meanProportion * maxMeanVar );
 }
