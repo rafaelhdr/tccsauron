@@ -56,7 +56,7 @@ namespace SauronWPFController
         {
             InitializeComponent();
             images = new Image[] { null, image1, image2, image3, image4, image5 };
-            names = new string[] { null, "Mark", "Stop", "Navigation", "Freeze", "Position" };
+            names = new string[] { null, "Posição", "Parada", "Navegação", "Congelamento", "Continua" };
             this.enviador = new EnviadorComandos(ipManager);
             this.recebedor = new RecebedorStatus(ipManager);
             this.navigationMonitor = new NavigationWindow(enviador, recebedor);
@@ -93,11 +93,16 @@ namespace SauronWPFController
 
         void markClick(object sender, MouseButtonEventArgs e)
         {
-
+            PositionConfigurator positionConfigurator = new PositionConfigurator(enviador);
+            positionConfigurator.Show();
         }
 
-        void positionClick(object sender, MouseButtonEventArgs e)
+        void continueClick(object sender, MouseButtonEventArgs e)
         {
+            navigationMonitor.Show();
+            navigationMonitor.Focus();
+            navigationMonitor.Continue();
+            
         }
 
         void freezeClick(object sender, MouseButtonEventArgs e)
@@ -116,6 +121,13 @@ namespace SauronWPFController
 
 
         void stopClick(object sender, MouseButtonEventArgs e)
+        {
+            Thread execution = new Thread(new ThreadStart(this.Stop));
+            execution.Start();
+        }
+
+
+        private void Stop()
         {
             string result = enviador.Halt();
             StatusDelegate del = new StatusDelegate(navigationMonitor.AtualizaStatus);
