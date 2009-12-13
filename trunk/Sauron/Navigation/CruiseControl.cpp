@@ -82,11 +82,11 @@ namespace sauron
 		m_isApproaching = false;
 		double distToGoal = currentPose.getDistance(Pose(m_goal));
 		if(distToGoal < 60) {
-			//Para aterrissagem, usar a funÃƒÂ§ÃƒÂ£o f(x) = ax^3+bx^2+cx+d com x em centÃƒÂ­metros, com 0 <= x <= 60 e 
+			//Para aterrissagem, usar a função f(x) = ax^3+bx^2+cx+d com x em centí­metros, com 0 <= x <= 60 e 
 			//a = -13/10000, b = 39/200, c = 0, d = 100
 			double speed = -13/10000 * distToGoal * distToGoal * distToGoal +
 				39/200 * distToGoal * distToGoal + 100;
-			if(m_cruiseControlSpeed > speed) // sÃƒÂ³ atualiza se for para reduzir
+			if(m_cruiseControlSpeed > speed) // só atualiza se for para reduzir
 			{
 				m_isApproaching = true;
 				setCruiseControlSpeed(speed);
@@ -130,7 +130,7 @@ namespace sauron
 	void CruiseControl::setDistanceToObstacle(double distanceCm)
 	{
 		if(distanceCm < 70) {
-			//EquaÃƒÂ§ÃƒÂ£o anticolisÃƒÂ£o do tipo f(x) = a ln(bx + c): x em cm, 20 <= x <= 70
+			//Equação anticolisão do tipo f(x) = a ln(bx + c): x em cm, 20 <= x <= 70
             //a = 262,879; b = 0,114; c = -1,28;
 			double speed = 262.879 * ::log(0.114 * distanceCm -1.28);
 			setMaxSpeed(speed);

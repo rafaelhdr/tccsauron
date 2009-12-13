@@ -184,13 +184,14 @@ namespace sauron
 		std::vector<Map*> path;
 		if(dfs(destinationMap, mp_mapManager->getCurrentMap(), queuePath, std::set<Map*>()))
 		{
+			if(queuePath.size() > 0)
+				queuePath.pop_front(); // retira o mapa atual
 			while(queuePath.size() != 0)
 			{
-				path.push_back(queuePath.back());
-				queuePath.pop_back();
+				path.push_back(queuePath.front());
+				queuePath.pop_front();
 			}
 		}
-		path.pop_back(); // retira o mapa atual
 		return path;
 	}
 
@@ -211,6 +212,8 @@ namespace sauron
 			path.pop_back();
 			return false;
 		}
+
+		visited.insert(current);
 	
 		std::vector<Map*>::iterator it;
 		for(it = children.begin(); it != children.end(); it++)
