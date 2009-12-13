@@ -247,7 +247,6 @@ Global
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Debug|Win32.Build.0 = Debug|Win32
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{C80409F3-4BDA-4F3A-9A93-E987CC10FAF8}.Release|Mixed Platforms.Build.0 = Release|Win32
