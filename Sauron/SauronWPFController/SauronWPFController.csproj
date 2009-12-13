@@ -151,6 +151,14 @@
     <Resource Include="Images\map.PNG" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\applet-critical.png" />
+    <Resource Include="Images\applet-disconnect.png" />
+    <Resource Include="Images\applet-okay.png" />
+    <Resource Include="Images\bittorrent.png" />
+    <Resource Include="Images\gconf-editor.png" />
+    <Resource Include="Images\gnome-mines.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
