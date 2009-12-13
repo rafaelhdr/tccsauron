@@ -2,8 +2,11 @@
 #include "Sauron.h"
 #include <string>
 #include <sstream>
+#include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
+
+#include <iostream>
 
 namespace sauron
 {
@@ -48,8 +51,10 @@ void CommandServer::commandServerLoop()
 
     service.run();
 
-    boost::asio::ip::tcp::socket socket( service );
-    acceptor.accept( socket );
+    boost::asio::ip::tcp::socket *socket;
+    socket = new boost::asio::ip::tcp::socket( service );
+
+    acceptor.accept( *socket );
 
     std::string strInput;
     std::string statusCode;
@@ -60,16 +65,20 @@ void CommandServer::commandServerLoop()
 
     while ( m_serverRunningFlag )
     {
-        socket.read_some( boost::asio::buffer( buffer ), error );
+        int numBytes = socket->read_some( boost::asio::buffer( buffer ), error );
         if ( error == boost::asio::error::eof || error )
         {
-            socket.close();
-            boost::asio::ip::tcp::socket socket( service );
-            acceptor.accept( socket );
+            socket->close();
+            delete socket;
+
+            socket = new boost::asio::ip::tcp::socket( service );
+            acceptor.accept( *socket );  
+            continue;
         }
 
         std::stringstream ss;
-        ss << buffer.data();
+        buffer.data()[numBytes] = '\0';
+        ss << buffer.c_array();
         
         ss >> strInput;
         boost::to_lower( strInput );
@@ -77,10 +86,8 @@ void CommandServer::commandServerLoop()
         if ( strInput == "n" )
         {
             ss >> strInput;
-            if ( mp_sauron->goTo( strInput ) )
-                statusCode = "SUCESSO";
-            else
-                statusCode = "ERRO";
+            mp_sauron->goToAsync( strInput );
+            statusCode = "SUCESSO";
         }
         else if ( strInput == "r" )
         {
@@ -88,7 +95,7 @@ void CommandServer::commandServerLoop()
             if ( mp_sauron->setPose( strInput, (pose_t)theta ) )
                 statusCode = "SUCESSO";
             else
-                statusCode = "ERROR";
+                statusCode = "ERRO";
         }
         else if ( strInput == "p" )
         {
@@ -119,8 +126,11 @@ void CommandServer::commandServerLoop()
             statusCode = "INVALIDO";
         }
         
-        socket.write_some( boost::asio::buffer( statusCode ) );
+        socket->write_some( boost::asio::buffer( statusCode ) );
     }
+
+    socket->close();
+    delete socket;
 }
 
 }   // namespace sauron

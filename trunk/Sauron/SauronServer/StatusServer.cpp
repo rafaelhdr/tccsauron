@@ -41,6 +41,12 @@ void StatusServer::stop()
         mp_sauron->getMapPlanner()->getPathPlanner().removePathplanningCallback( m_pathCallbackId );
         mp_sauron->getMapPlanner()->removeMapPlannerCallback( m_mapCallbackId );
 
+        if ( mp_socket )
+        {
+            delete mp_socket;
+            mp_socket = NULL;
+        }
+
         m_serverRunningFlag = false;
         m_thread.join();
     }
@@ -135,6 +141,10 @@ void StatusServer::statusServerPathCallback( PathPlannerStatus status, const Nod
 
 	    case FAILED_STRAYED:
             toSend = "nav_status DESVIOU";
+            break;
+
+        case FAILED_OBSTRUCTED_PATH:
+            toSend = "nav_status OBSTRUIDO";
             break;
 
 	    default:

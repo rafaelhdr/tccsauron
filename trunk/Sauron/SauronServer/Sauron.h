@@ -16,6 +16,7 @@ public:
 	// comandos
 	bool setInitialMap(const std::string& initialMap);
 	bool goTo(const std::string& goalName);
+    void goToAsync( const std::string &goalName );
 	Pose getPose();
 	void setPose(const Pose& pose);
 	bool setPose(const std::string& nodeName, pose_t theta);
@@ -41,6 +42,8 @@ private:
 	MapManager* mp_mapManager;
 	MapPlanner* mp_planner;
 	LocalizationManager*  mp_localization;
+
+    boost::thread m_goToThread;
 
 	void unfreeze();
 };

@@ -19,6 +19,7 @@ namespace sauron
 			ARRIVED_AT_WAYPOINT, // Node* = waypoint alcançado
 			FAILED_STRAYED, // Node* = null
 			FAILED_COLLISION_AVOIDANCE, // Node* = null
+            FAILED_OBSTRUCTED_PATH, // Node* = null
 			GOAL_REACHED // Node = goal
 		};
 
