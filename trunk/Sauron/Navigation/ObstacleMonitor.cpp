@@ -23,25 +23,32 @@ namespace sauron
 		updateCruiseControlWithClosestObstacle();
 	}
 
-	void ObstacleMonitor::updateCruiseControlWithClosestObstacle()
-	{
-		if(!m_stopUpdate)
-		{
-		double minReading = -1;
-		for(int i = 1; i < 7; i++)
-		{
-			if(m_readings[i] != -1)
-			{
-				if(m_readings[i] != -1 && (minReading < 0 || minReading > m_readings[i]))
-					minReading = m_readings[i];
-			}
-		}
+    void ObstacleMonitor::stopUpdate()
+    {
+        boost::unique_lock<boost::mutex> lock(m_stopUpdateMutex);
+        m_stopUpdate = true;
+    }
 
-		if(!(minReading < 0)) {
-			mp_cruiseControl->setDistanceToObstacle(minReading);
-		}
-		}
-	}
+    void ObstacleMonitor::updateCruiseControlWithClosestObstacle()
+    {
+        boost::unique_lock<boost::mutex> lock(m_stopUpdateMutex);
+        if(!m_stopUpdate)
+        {
+            double minReading = -1;
+            for(int i = 1; i < 7; i++)
+            {
+                if(m_readings[i] != -1)
+                {
+                    if(m_readings[i] != -1 && (minReading < 0 || minReading > m_readings[i]))
+                        minReading = m_readings[i];
+                }
+            }
+
+            if(!(minReading < 0)) {
+                mp_cruiseControl->setDistanceToObstacle(minReading);
+            }
+        }
+    }
 
 	ObstacleMonitor::~ObstacleMonitor(void)
 	{
