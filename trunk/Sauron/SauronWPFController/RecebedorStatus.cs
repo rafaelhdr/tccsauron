@@ -12,7 +12,7 @@ namespace SauronWPFController
     {
         private Socket socket;
         private IPManager ipManager;
-
+        private Thread executionThread;
         private List<Action<string>> listeners = new List<Action<string>>();
         public Action<string> ReceiveAction { get; set; }
 
@@ -20,8 +20,21 @@ namespace SauronWPFController
         {
             this.ipManager = ipManager;
             this.ipManager.AddListener(AtualizaSocket);
-            Thread execution = new Thread(new ThreadStart(BeginReceive));
-            execution.Start();
+            executionThread = new Thread(new ThreadStart(BeginReceive));
+            executionThread.Start();
+        }
+
+
+        public void Kill()
+        {
+            if (this.executionThread != null)
+            {
+                try
+                {
+                    this.executionThread.Abort();
+                }
+                catch (Exception) { }
+            }
         }
 
         private void AtualizaSocket(IPAddress ip)
@@ -46,7 +59,7 @@ namespace SauronWPFController
                     socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IP);
                     socket.Connect(ipManager.GetStatusEndPoint());
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     socket = null;
                 }
