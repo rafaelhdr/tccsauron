@@ -60,6 +60,7 @@ namespace SauronWPFController
             this.enviador = new EnviadorComandos(ipManager);
             this.recebedor = new RecebedorStatus(ipManager);
             this.navigationMonitor = new NavigationWindow(enviador, recebedor);
+            this.recebedor.ReceiveAction = navigationMonitor.AtualizaStatus;
             this.ipManager.AddListener(ip => this.txtIpSauron.Content = ip.ToString());
 
             this.Closing += new System.ComponentModel.CancelEventHandler(SauronController_Closing);
