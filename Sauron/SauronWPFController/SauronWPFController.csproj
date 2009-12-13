@@ -139,9 +139,6 @@
     <Resource Include="Images\configure.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\map.PNG" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\applet-critical.png" />
     <Resource Include="Images\applet-disconnect.png" />
     <Resource Include="Images\applet-okay.png" />
