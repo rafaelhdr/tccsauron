@@ -293,7 +293,7 @@ void WaypointLinker::linkTemporaryNode( Graph &graph, Node &tempNode, const Node
 
 	if(minDistanceToGoal < 0)
 	{
-		std::cerr << "Ah, poxa! Nao achei ninguem perto do objetivo." << std::endl;
+		std::cerr << "Ah, poxa! Nao achei ninguem perto do objetivo " << goal.getName() << "." << std::endl;
 		return;
 	}
 
