@@ -206,11 +206,11 @@ int principal(int argc, char** argv)
 
   sauron::Sauron sauronzito(&robot, names, "pavsup_mod.map");
 
-  //sauron::StatusServer  statusServer( sauronzito );
-  //sauron::CommandServer commandServer( sauronzito, &serverMap );  
+  sauron::StatusServer  statusServer( sauronzito );
+  sauron::CommandServer commandServer( sauronzito, &serverMap );  
 
-  //statusServer.start();
-  //commandServer.start();
+  statusServer.start();
+  commandServer.start();
 
   /*names.push_back("horizontal.map");
   names.push_back("vertical.map");
