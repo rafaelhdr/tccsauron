@@ -104,39 +104,38 @@ namespace SauronWPFController
         private void Navega()
         {
             string result = enviador.Navigate(goal);
+            DispatchStatus(result);
+        }
+
+        public void DispatchStatus(string result)
+        {
             StatusDelegate del = new StatusDelegate(this.AtualizaStatus);
             this.Dispatcher.BeginInvoke(del, result);
         }
-
-
 
         public void AtualizaStatus(string result)
         {
             if (!string.IsNullOrEmpty(result))
             {
+                result = result.Replace("\0", null);
                 this.txtMsgRobo.Text += result + Environment.NewLine;
+                this.txtMsgRobo.ScrollToEnd();
 
-                Regex proximoRegex = new Regex("proximo \\w*");
+                Regex proximoRegex = new Regex("proximo ([^\\s]*)");
                 if (proximoRegex.IsMatch(result))
                 {
                     this.txtNextWaypoint.Content = proximoRegex.Match(result).Groups[1].Value;
                 }
 
-                if(result.Contains("CHEGOU_DESTINO") || result.Contains("Erro de conexão"))
+                if(result.Contains("CHEGOU_DESTINO") || result.Contains("Erro de conexão") || result.Contains("SUCESSO HALT") || result.Contains("SUCESSO FREEZE") || result.Contains("OBSTRUIDO"))
                 {
                     status = Status.Parado;
                     txtStatus.Content = status.ToString();
                     goal = "-";
                     txtObjetivo.Content = goal;
+                    this.txtNextWaypoint.Content = "-";
                 }
 
-                if (result.Contains("OBSTRUIDO"))
-                {
-                    status = Status.Parado;
-                    txtStatus.Content = status.ToString();
-                    goal = "-";
-                    txtObjetivo.Content = goal;
-                }
             }
         }
     }
