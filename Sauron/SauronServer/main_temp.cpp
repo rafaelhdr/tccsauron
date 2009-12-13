@@ -332,7 +332,7 @@ int main(int argc, char** argv)
 	try
 	{
 		Output2FILE::Stream() = fopen("sonar_log.log", "w");
-		FILELog::ReportingLevel() = logDEBUG1;
+		FILELog::ReportingLevel() = logDEBUG4;
 
 		return principal(argc, argv);
 	} catch(std::exception& e)
