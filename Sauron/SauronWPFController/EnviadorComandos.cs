@@ -10,9 +10,6 @@ namespace SauronWPFController
 {
     public class EnviadorComandos
     {
-
-
-
         private Socket socket;
         private IPManager ipManager;
 
