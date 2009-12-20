@@ -6,7 +6,11 @@ O modelo de observação de cada sensor sabe qual é a observação esperada para uma
 
 Essas predições, que são corrigidas pelos modelos de observação dos sensores externos, são geradas pelo modelo de dinâmica. O papel deste modelo é predizer a postura atual a partir da última postura estimada do robô, sabendo o quanto se andou nesse intervalo. Existem duas abordagens a esse problema. A primeira é utilizar os sinais de controle, como velocidade de cada roda, para prever o movimento do robô. A segunda, utilizada neste trabalho, é obter as informações a partir do odômetro do robô.
 
-O uso de modelos de observação e de dinâmica decorre da escolha pela utilização de uma arquitetura baseada no uso do EKF. O EKF é um filtro matemático capaz de estimar o estado de um sistema não-linear a partir de predições do estado atual e de correções dessa predição. As equações para cada uma das etapas podem ser vistas na tabela \ref{table:kalman}, e são executadas na ordem da tabela. O EKF lineariza o sistema em sua borda a fim de que o filtro de Kalman comum possa ser utilizado com sucesso. Como o método de linearização utilizado no EKF é a expansão de Taylor de primeira ordem, são geradas as matrizes $F$, jacobiano de $f(\textbf{x},\textbf{u})$, e $H$, jacobiano de $h(\textbf{x})$. 
+O uso de modelos de observação e de dinâmica decorre da escolha pela utilização de uma arquitetura baseada no uso do EKF. O EKF é um filtro matemático capaz de estimar o estado de um sistema não-linear a partir de predições do estado atual e de correções dessa predição. 
+
+Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}}_{t-1}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção nessa predição, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo.
+
+As equações para cada uma das etapas podem ser vistas na tabela \ref{table:kalman}, e são executadas na ordem da tabela. O EKF lineariza o sistema em sua borda a fim de que o filtro de Kalman comum possa ser utilizado com sucesso. Como o método de linearização utilizado no EKF é a expansão de Taylor de primeira ordem, são geradas as matrizes $F$, jacobiano de $f(\textbf{x},\textbf{u})$, e $H$, jacobiano de $h(\textbf{x})$.
 
 \begin{table}[ht]
 \centering
@@ -17,11 +21,11 @@ $\bar{\textbf{x}}_{t} = f(\textbf{x}_{t-1},\textbf{u}_{t-1})$ & $K_{t} = P_{t}^{
 $P_{t}^{-} = F_{t-1}P_{t-1}^{+}F_{t-1}^{T} + Q_{t-1}$ & $\hat{\textbf{x}}_{t}^{+} = \hat{\textbf{x}}_{t}^{-} + K_{t}(\textbf{z}_{t}-h(\bar{\textbf{x}}_{t}^{-}))$ \\
 & $P_{t}^{+} = (I - K_{t}H_{t})P_{t}^{-}$ \\ \hline
 \end{tabular}
-\caption{As equações principais do filtro de Kalman estendido (EKF).}
+\caption{As equações principais do filtro de Kalman estendido (EKF), onde $P$ é a matriz de covariância do sistema, $Q$ a matriz de covariância do processo, $R$ o erro da observação e K o ganho de Kalman.}
 \label{table:kalman}
 \end{table}
 
-Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}}_{t-1}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção nessa predição, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo.
+Os passos de funcionamento do módulo de localização usando o EKF está ilustrada na figura \ref{fig:dinamicaekf}. Inicialmente, tem-se uma postura estimada $\hat{\textbf{x}}_{t-1}$ que é usada para que o modelo de dinâmica, através da leitura do odômetro, prediga uma nova postura $\bar{\textbf{x}_{t}}$. O sistema então utiliza as medidas dos sensores para efetuar uma correção nessa predição, estimando a nova postura do robô, $\hat{\textbf{x}_{t}}$, que é a saída do sistema. O processo se repete enquanto o módulo de localização estiver ativo. Maiores detalhes dobre o EKF são fornecidos em \ref{sec:apendicea}.
 
 O último componente do sistema é o módulo de gerenciamento, que liga os demais componentes do sistema de localização, iniciando os sensores e associando-os ao EKF.
 
