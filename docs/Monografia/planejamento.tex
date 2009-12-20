@@ -65,6 +65,8 @@ No intuito de possibilitar a navegação em ambientes complexos e interligados, ad
 
 Para isso, carrega-se o sistema com todos os mapas disponíveis e cria-se ligações entre os mapas através de \textit{waypoints} especiais chamados portais.
 
+Os portais são pontos comuns a dois mapas distintos e representam o mesmo ponto no mundo físico, porém com coordenadas relativas diferentes em cada um dos mapas.
+
 A camada intermapas é então o ponto de entrada do módulo de navegação, pois é responsável por gerenciar também a navegação intramapa, utilizando as técnicas descritas acima. O algoritmo \ref{algo:intermapas} ilustra seu funcionamento. Nele, a referência \textbf{pathPlanner} indica o algoritmo de planejamento e navegação intramapa.
    
  \begin{algorithm}
@@ -88,5 +90,18 @@ A camada intermapas é então o ponto de entrada do módulo de navegação, pois é re
 	\caption{Algoritmo de navegação entre múltiplos mapas}
 		\label{algo:intermapas}
 \end{algorithm}
+
+
+A figura \ref{figura:navegacao} abaixo mostra o funcionamento global da navegação. Os mapas são ligados através dos portais e, para cada mapa, é criada uma rota para o destino final dentro daquele mapa.
+
+
+\begin{figure}[htbp]%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/navegacao.jpg}
+\caption{Figura ilustrando funcionamento do módulo de navegação.}%
+\label{figura:navegacao}%
+\end{center}
+\end{figure}
+
 
 Para determinação da rota entre mapas utilizou-se um algoritmo de busca em profundidade aplicado ao grafo da relação entre os mapas (isto é, um grafo formado pelos portais). Como o número de mapas será sempre pequeno, o tempo de busca é irrisório e algoritmos mais complexos, como busca com profundidade limitada, não são necessários.
