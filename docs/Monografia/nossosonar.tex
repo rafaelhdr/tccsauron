@@ -19,7 +19,7 @@
 \newcommand{\hx}{$h(\bar{\bf{x}})$}
 
 \chapter{Modelos de Observação dos Sonares}\label{chp:modelosonares}
-\todo[inline]{Revisar a notação matemática das equações do sonar}
+
 No contexto de localização robótica, um modelo de observação é usado para representar o comportamento de sensores e, em especial, como as medidas obtidas se relacionam com grandezas do ambiente observado. 
 
 Como descrito na seção \ref{subsec:arqloc}, a localização bayesiana por filtro de Kalman estendido utiliza as informações dos sensores para corrigir a do estado atual. Essencialmente, a informação utilizada pelo filtro é a diferença entre a observação esperada (aqui indicada por $h(\hat{\bf{x}})$, onde $\hat{\bf{x}}$ é a estimativa da postura) e a observação real (denotada por $z$). Por exemplo, suponha um robô equipado com um sonar que incide perpendicularmente à uma parede, como na figura \ref{fig:exemplo_modelo}. Se ele estima estar em uma posição tal que a leitura esperada do sonar é 100 cm, mas a observação real é 80 cm, sabe-se que o robô está de fato mais perto da parede do que acredita. O papel do modelo de observação de um sensor é gerar as estimativas de observação \hx.
@@ -32,6 +32,16 @@ Como descrito na seção \ref{subsec:arqloc}, a localização bayesiana por filtro d
 \end{figure}
 
 Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor de profundidade que emite ondas sonoras e, a partir do tempo entre emissão e recepção, calcula a distância ao obstáculo mais próximo. Ele opera de maneira similar a um sensor laser, mas com menor precisão e densidade. Contudo, um sensor laser é muito caro para algumas aplicações. Um dos objetivos deste projeto é construir um robô de baixo custo, utilizando sensores simples, de modo que a escolha do sonar se faz adequada.
+
+\begin{figure}%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaGeral.pdf}
+\caption{Arquitetura do sistema. Este capítulo trata de uma parte do módulo de localização, o modelo de de observação dos sonares. Os sonares, além de alimentar o módulo de localização, também fornecem dados ao submódulo de execução. Essa relação não é discutida neste capítulo.}%
+\label{arquitetura:globalsonar}%
+\end{center}
+\end{figure}
+
+A figura \ref{arquitetura:globalsonar} apresenta novamente a arquitetura de software do sistema. O modelo de observação dos sonares, que utiliza informações dos sonares, é parte importante do módulo de localização, que provê estimativas de postura ao módulo de navegação.
 
 \section{Modelo Baseado em Associações}
 \label{sec:nossosonar}

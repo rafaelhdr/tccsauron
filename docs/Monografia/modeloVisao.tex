@@ -6,6 +6,16 @@ O modelo aqui apresentado é uma modificação do modelo descrito em \cite{barra}, 
 
 Neste trabalho, emprega-se a visão monocular, cujo sensor é uma câmera de vídeo montada sobre o robô, apontada na direção frontal dele. 
 
+\begin{figure}%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaGeral.pdf}
+\caption{Arquitetura do sistema. Este capítulo trata de uma parte do módulo de localização, o modelo de de observação dos sonares. Os sonares, além de alimentar o módulo de localização, também fornecem dados ao submódulo de execução. Essa relação não é discutida neste capítulo.}%
+\label{arquitetura:globalvisao}%
+\end{center}
+\end{figure}
+
+A arquitetura de software do sistema é ilustrada na figura \ref{arquitetura:globalvisao}. Utilizando informações de uma câmera, o modelo de observação da visão, que compõe o módulo de localização, é capaz de gerar correções de postura.
+
 \section{Modelo da Câmera}
 Dada a característica de baixo custo desejada, a câmera usada é uma \textit{webcam} convencional, baseada na tecnologia CCD. O modelo da câmera segue o modelo de câmera de orifício, também conhecido como \textit{pinhole}. Nesse modelo, a câmera possui um centro focal C e um plano de projeção, onde as imagens são formadas, representado como um espaço discreto cujo tamanho indica a resolução da câmera e em que cada elemento discreto é um pixel da imagem. 
 

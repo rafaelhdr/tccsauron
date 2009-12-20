@@ -1,8 +1,16 @@
 \chapter{Modelo de Dinâmica}\label{chp:modelodinamica}
 
+\begin{figure}%
+\begin{center}
+\includegraphics[width=.5\columnwidth]{imagens/arquiteturaGeral.pdf}
+\caption{Arquitetura do sistema. Este capítulo trata de uma parte do módulo de localização, o modelo de observação da visão. São utilizadas as informações do odômetro, um sensor interno.}%
+\label{arquitetura:globaldinamica}%
+\end{center}
+\end{figure}
+
 A função do modelo de dinâmica é modelar o resultado da ação que ocorreu no sistema (neste caso, o robô) desde a última estimativa, ou seja, realizar a etapa de predição do EKF. Para isso, o modelo pode levar em conta o funcionamento do sistema, como ele opera, como os sinais de controle gerados atuam e como o ambiente interage com o sistema \cite{barra}. 
 
-A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, prever a postura do robô no instante atual. Essa é a mesma abordagem utilizada em \cite{barra}.
+A alternativa escolhida para a implementação desse modelo foi a utilização do sensor interno de odômetro, para, através de suas medidas e conhecimento do sistema, prever a postura do robô no instante atual. Essa é a mesma abordagem utilizada em \cite{barra}. A figura \ref{arquitetura:globaldinamica} apresenta a arquitetura de software do sistema. O modelo de dinâmica faz parte do módulo de localização e utiliza, como mencionado, as informações dos odômetros.
 
 Esse modelo é mais simples, pois não leva em consideração todos os sinais de controle do robô e os detalhes de sua operação interna. Dessa forma, apresenta menor possibilidade de erros, mas também menor acurácia na predição.
 
