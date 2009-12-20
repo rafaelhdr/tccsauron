@@ -18,7 +18,7 @@
 
 \newcommand{\hx}{$h(\bar{\bf{x}})$}
 
-\chapter{Modelos de Observação dos Sonares}\label{subsec:modelosonares}
+\chapter{Modelos de Observação dos Sonares}\label{chp:modelosonares}
 \todo[inline]{Revisar a notação matemática das equações do sonar}
 No contexto de localização robótica, um modelo de observação é usado para representar o comportamento de sensores e, em especial, como as medidas obtidas se relacionam com grandezas do ambiente observado. 
 
@@ -35,7 +35,7 @@ Foram desenvolvidos dois modelos de observação dos sonares. O sonar é um sensor 
 
 \section{Modelo Baseado em Associações}
 \label{sec:nossosonar}
-A seção \ref{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações é uma modificação desse modelo. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
+A seção \ref{subsec:sonarbarra} apresentou o modelo de observação desenvolvido em \cite{barra}. O modelo de observação baseado em associações, aqui apresentado, é uma modificação desse modelo realizada pela equipe e caracteriza-se como uma contribuição deste trabalho. Em particular, as equações foram refeitas para incluir o efeito do ângulo relativo de cada sonar em relação ao centro do robô, e a manutenção de associações já realizadas foi facilitada através do método de rastreamento de paredes.
 
 Este modelo é chamado de baseado em associações porque, antes de gerar observações esperadas e corrigir a postura predita, é necessária a confirmação de que um sonar está de fato observando uma determinada parede. A tarefa de relacionar as últimas leituras com uma parede do mapa chama-se associação. A principal motivação de um modelo deste tipo é diminuir os erros causados pelos sonares, dispositivos imprecisos.
 
@@ -332,6 +332,8 @@ Há diversos parâmetros utilizados no modelo de associações. Nesta seção, os valo
 \section{Modelo Simples de Observação dos Sonares}\label{subsec:modeloSimplesSonar}
 
 O desempenho do modelo de observação baseado em associações nos testes realizados foi abaixo do esperado, devido a fatos discutidos na seção \ref{sec:discussao}. O principal problema encontrado foi a baixa frequência de associações, o que motivou o desenvolvimento de um modelo mais simples, e, portanto, mais veloz.
+
+O modelo simples de observação dos sonares é uma realização exclusiva da equipe deste trabalho e caracteriza-se, portanto, como uma contribuição deste trabalho.
 
 O ciclo de operação do modelo simples é curto e eficiente. Cada vez que uma leitura é fornecida pelo sonar, obtém-se a posição predita do robô naquele instante. De posse dessa informação, e do mapa, é descoberta a parede que seria observada caso a predição da postura estivesse correta. Calcula-se, então, a observação que seria esperada para aquela parede, e compara-se esse valor com a leitura real.
 

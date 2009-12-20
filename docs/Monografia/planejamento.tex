@@ -1,6 +1,7 @@
 \section{Navegação}\label{subsec:navegacao}
 
-A arquitetura do módulo de navegação está representada na figura \ref{navegacao:arquitetura}, e possui os submódulos de planejamento intermapas, planejamento de rota e execução.
+A arquitetura do módulo de navegação está representada na figura \ref{navegacao:arquitetura}, e possui os submódulos de planejamento intermapas, planejamento de rota e execução. Este módulo de navegação foi totalmente desenvolvido pela equipe, caracterizando-se como uma das contribuições deste trabalho.
+
 
 \begin{figure}[h]%
 \begin{center}
@@ -10,9 +11,9 @@ A arquitetura do módulo de navegação está representada na figura \ref{navegacao:
 \end{center}
 \end{figure}
 
-O objetivo do módulo de navegação é guiar o SAURON até destinos escolhidos por um usuário, dentro de um conjunto de mapas previamente informados. Além disso, o módulo deve trabalhar de modo a otimizar o resultado do módulo de localização, essencial ao bom funcionamento do sistema.
+O objetivo do módulo de navegação é guiar o SAURON até destinos escolhidos por um usuário, dentro de um conjunto de mapas previamente informados. Além disso, o módulo deve trabalhar de modo a otimizar o resultado do módulo de localização, essencial ao bom funcionamento do sistema. Para o módulo de localização detalhado na seção anterior, nota-se que a participação do odômetro prejudica consideravelmente a estimativa da postura durante a realização de curvas, portanto, o módulo aqui descrito tem, como uma de suas prioridades: uma atuação de forma a realizar poucas curvas.
 
-Esses mapas sao marcados com alguns pontos, formando um grafo e permitindo a utilização de algoritmos de busca em grafos para planejamento de rota.
+Os mapas utilizados pelo SAURON foram marcados com alguns pontos, formando nós de um grafo e permitindo a utilização de algoritmos de busca em grafos para planejamento de rota.
 
 \subsection{Planejamento de rota}
 O módulo de navegação usa o algoritmo de busca em grafo conhecido por A* (lê-se "A estrela") \cite{Korf85depth-firstiterative-deepening}. Ao adaptar esse problema à navegação, os nós do grafo passam a representar pontos em um mapa. Simplificadamente, pode-se dizer que o algoritmo parte de um nó inicial do seu grafo, a postura atual nesse caso, e começa a visitar os nós adjacentes, usando um critério de custo para determinação de qual nó deve ser visitado. O custo considerado é o custo de se locomover até o nó adjacente somado ao custo de se locomover do nó adjacente até o nó destino. 
