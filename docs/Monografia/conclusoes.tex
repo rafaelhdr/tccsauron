@@ -1,8 +1,8 @@
 \chapter{Conclusões} \label{chp:Conclusoes}
 
-O objetivo do projeto, construir um robô-guia de baixo custo, foi alcançado, tendo em vista que o sistema desenvolvido é capaz de navegar pelo prédio da Engenharia Elétrica da Escola Politécnica da USP com erro aproximadamente constante e independentemente da distância percorrida, como pode ser visto na tabela \ref{tab:resultadosRealTabela}.
+O objetivo do projeto, construir um robô-guia de baixo custo, foi alcançado. Os erros na navegação aos destinos de interesse se mantiveram abaixo de 50 cm, como pode ser visto na tabela \ref{tab:resultadosRealTabela}. Para os propósitos deste projeto, imprecisões dessa ordem de grandeza são aceitáveis. Deve ser notado que domínios diferentes, como robôs-cirurgiões, necessitam de precisão milimétrica. Esse não é caso de guias robóticos.
 
-O modelo simples de observação dos sonares surgiu como uma alternativa ao modelo original, que buscava validar as medidas para que somente as mais precisas fossem aproveitadas. A principal característica desse modelo, a elevada frequência com que novas medidas são fornecidas, aproveita o mais importante aspecto do EKF, isto é, a capacidade de gerar de estimativas mesmo com medidas de baixa qualidade.
+O modelo simples de observação dos sonares surgiu como uma alternativa ao modelo original, baseado em associações, que buscava validar as medidas para que somente as mais precisas fossem aproveitadas. A principal característica desse modelo, a elevada frequência com que novas medidas são fornecidas, aproveita o mais importante aspecto do EKF, isto é, a capacidade de gerar de estimativas mesmo com medidas de baixa qualidade.
 
 A arquitetura de software desenvolvida apresentou grande eficiência, sendo capaz de realizar todas as tarefas necessárias (execução da navegação, calculo de estimativas, análise dos quadros da câmera), sem consumir toda a capacidade de processamento do computador embarcado no robô. Com isso, a taxa de obtenção de medidas dos sensores é elevada e limitada à capacidade física de cada sensor.
 
